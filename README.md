@@ -73,6 +73,12 @@ For example, in a host that uses slash commands:
 We welcome new plugins and skills. See [CONTRIBUTING.md](CONTRIBUTING.md) for the
 repository layout, how to add a plugin or a skill, and how to run the generator.
 
+## Acknowledgements
+
+The README generation tooling and the validation workflow are adapted from
+[github/awesome-copilot](https://github.com/github/awesome-copilot) (MIT). See
+[ATTRIBUTIONS.md](ATTRIBUTIONS.md) for the full notice.
+
 ## License
 
 [MIT](LICENSE). Copyright Skyetrail.

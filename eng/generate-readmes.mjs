@@ -5,10 +5,13 @@
 //   node eng/generate-readmes.mjs            write the generated files
 //   node eng/generate-readmes.mjs --check    report drift and exit non-zero
 //
-// The script has no dependencies. It reads .claude-plugin/marketplace.json,
-// walks each plugin, and rewrites the generated content. The repository README
-// keeps its hand-written text. Only the content between the marker comments is
-// replaced. Each plugin README is written in full.
+// The script has no dependencies. It reads marketplace.json, walks each plugin,
+// and rewrites the generated content. The repository README keeps its
+// hand-written text. Only the content between the marker comments is replaced.
+// Each plugin README is written in full.
+//
+// This generator and the validate-readme workflow are adapted from
+// github/awesome-copilot (MIT, Copyright GitHub, Inc.). See ATTRIBUTIONS.md.
 
 import fs from "node:fs";
 import path from "node:path";
