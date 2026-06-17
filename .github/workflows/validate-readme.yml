@@ -1,0 +1,47 @@
+name: Validate generated READMEs
+
+# Regenerates the repo and plugin READMEs and fails if the committed files are
+# out of date. This mirrors the local pre-commit hook so a contributor who has
+# not installed pre-commit still gets a clear signal in their pull request.
+#
+# Adapted from github/awesome-copilot (MIT, Copyright GitHub, Inc.).
+# See ATTRIBUTIONS.md.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - "plugins/**"
+      - "eng/**"
+      - "marketplace.json"
+      - ".claude-plugin/**"
+      - "README.md"
+      - "package.json"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-readmes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generate READMEs
+        run: node eng/generate-readmes.mjs
+
+      - name: Fail if generated files are out of date
+        run: |
+          if ! git diff --exit-code; then
+            echo ""
+            echo "Generated README files are out of date."
+            echo "Run 'node eng/generate-readmes.mjs' (or 'npm run build') and commit the result."
+            exit 1
+          fi
