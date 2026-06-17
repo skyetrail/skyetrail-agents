@@ -36,10 +36,10 @@ Lint progress:
 Find each directory that contains a `SKILL.md` under the target. Each one is a skill. List them before you start so the report covers all of them.
 
 **Step 2: Run the mechanical checks**
-Run the bundled checker on the target:
+Run the bundled checker on the target. It is a TypeScript file that runs on Node 22.6 or newer with no install:
 
 ```bash
-python scripts/lint_skill.py <target-path>
+node --disable-warning=ExperimentalWarning --experimental-strip-types scripts/lint_skill.ts <target-path>
 ```
 
 It checks the rules that can be measured exactly, such as frontmatter limits, body length, file references, and path style, and prints a pass or fail line for each. Use its output for those rules. Pass `--json` if you want structured output to fold into the report.

@@ -6,7 +6,7 @@ which rules pass or fail.
 
 ## Keeping the rules current
 
-The rules in `SKILL.md`, `references/rules.md`, and `scripts/lint_skill.py` are
+The rules in `SKILL.md`, `references/rules.md`, and `scripts/lint_skill.ts` are
 derived from the official best practices guide:
 
 <https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices>
@@ -19,7 +19,8 @@ it periodically so the rules stay accurate:
 2. Compare each item and limit on the page against the rules in
    `references/rules.md` and the checks in `scripts/lint_skill.py`.
 3. Add, remove, or reword rules so they match the page. Keep the rule ids stable
-   where you can, and update the short list in `SKILL.md` to match.
+   where you can, and update the short list in `SKILL.md` and the checks in
+   `scripts/lint_skill.ts` to match.
 4. Bump `metadata.version` in the `SKILL.md` frontmatter.
 
 A good cadence is every few months, or whenever you learn the guide has changed.
@@ -28,5 +29,6 @@ A good cadence is every few months, or whenever you learn the guide has changed.
 
 - `SKILL.md` — the lint workflow, the rule list, and the report format.
 - `references/rules.md` — the full criteria and fixes for every rule.
-- `scripts/lint_skill.py` — the mechanical checks, written with the Python
-  standard library so it runs anywhere with no install.
+- `scripts/lint_skill.ts` — the mechanical checks, written in TypeScript and run
+  with Node's built-in type stripping (Node 22.6 or newer), so it needs no
+  install.

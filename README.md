@@ -67,7 +67,7 @@ For example, in a host that uses slash commands:
 <!-- END: skills -->
 
 > The two tables above are generated from the plugin manifests and the skill
-> frontmatter by `eng/generate-readmes.mjs`. Do not edit them by hand.
+> frontmatter by `eng/generate-readmes.ts`. Do not edit them by hand.
 
 ## Contributing
 
