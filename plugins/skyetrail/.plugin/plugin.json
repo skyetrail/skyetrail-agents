@@ -1,10 +1,10 @@
 {
   "name": "skyetrail",
   "description": "Skyetrail house tools for agents. Starts with the Skyetrail plain-English writing style and grows as we share more of our working setup.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": {
     "name": "Skyetrail",
-    "email": "pete@skyetrail.com",
+    "email": "info@skyetrail.com",
     "url": "https://skyetrail.com"
   },
   "homepage": "https://github.com/skyetrail/skyetrail-agents/tree/main/plugins/skyetrail",

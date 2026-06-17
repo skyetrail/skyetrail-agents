@@ -2,22 +2,20 @@
   "name": "skyetrail-agents",
   "owner": {
     "name": "Skyetrail",
-    "email": "pete@skyetrail.com",
+    "email": "info@skyetrail.com",
     "url": "https://skyetrail.com"
   },
   "metadata": {
-    "description": "Open source, MIT licensed agent plugins from Skyetrail.",
-    "version": "0.1.0"
+    "description": "Open source, MIT licensed agent plugins from Skyetrail."
   },
   "plugins": [
     {
       "name": "skyetrail",
       "source": "./plugins/skyetrail",
       "description": "Skyetrail house tools for agents. Starts with the Skyetrail plain-English writing style and grows as we share more of our working setup.",
-      "version": "0.1.0",
       "author": {
         "name": "Skyetrail",
-        "email": "pete@skyetrail.com"
+        "email": "info@skyetrail.com"
       },
       "license": "MIT",
       "keywords": [

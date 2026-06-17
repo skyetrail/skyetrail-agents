@@ -49,9 +49,9 @@ For example, in a host that uses slash commands:
 
 <!-- BEGIN: plugins -->
 
-| Plugin | Description | Skills | Commands | Agents |
-| --- | --- | --- | --- | --- |
-| [`skyetrail`](plugins/skyetrail) | Skyetrail house tools for agents. Starts with the Skyetrail plain-English writing style and grows as we share more of our working setup. | 1 | 0 | 0 |
+| Plugin | Version | Description | Skills | Commands | Agents |
+| --- | --- | --- | --- | --- | --- |
+| [`skyetrail`](plugins/skyetrail) | 1.0.0 | Skyetrail house tools for agents. Starts with the Skyetrail plain-English writing style and grows as we share more of our working setup. | 1 | 0 | 0 |
 
 <!-- END: plugins -->
 
@@ -59,9 +59,9 @@ For example, in a host that uses slash commands:
 
 <!-- BEGIN: skills -->
 
-| Skill | Plugin | Description |
-| --- | --- | --- |
-| [`skyetrail-writing`](plugins/skyetrail/skills/skyetrail-writing/SKILL.md) | [`skyetrail`](plugins/skyetrail) | Skyetrail's plain-English house writing style for this Obsidian vault. Use whenever creating or editing any vault page, note, meeting note, source summary, ingested wiki content, the hot cache, the log, or Skyetrail copy. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery. Triggers include writing a note, saving to the vault, ingesting a source, updating a page, drafting copy, or any edit to a file under wiki/. |
+| Skill | Plugin | Version | Description |
+| --- | --- | --- | --- |
+| [`skyetrail-writing`](plugins/skyetrail/skills/skyetrail-writing/SKILL.md) | [`skyetrail`](plugins/skyetrail) | 1.0.0 | Skyetrail's plain-English house writing style. Use whenever creating or editing any page, note, meeting note, source summary, wiki content or document. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery. |
 
 <!-- END: skills -->
 

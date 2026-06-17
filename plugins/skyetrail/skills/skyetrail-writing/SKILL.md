@@ -1,14 +1,17 @@
 ---
 name: skyetrail-writing
-description: Skyetrail's plain-English house writing style for this Obsidian vault. Use whenever creating or editing any vault page, note, meeting note, source summary, ingested wiki content, the hot cache, the log, or Skyetrail copy. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery. Triggers include writing a note, saving to the vault, ingesting a source, updating a page, drafting copy, or any edit to a file under wiki/.
+description: Skyetrail's plain-English house writing style. Use whenever creating or editing any page, note, meeting note, source summary, wiki content or document. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery.
+license: MIT
+metadata:
+  version: "1.0.0"
 ---
 
 # Skyetrail writing style
 
-Write everything in this vault in plain English. The goal is text that is easy to read, not like an AI tool generated it. Plain does not mean short. Clarity comes first.
+Write everything in plain English. The goal is text that is easy to read, not like an AI tool generated it. Plain does not mean short. Clarity comes first.
 
 ## When to use
-Use this skill whenever you create or edit prose in the vault. This includes a new page, an edit to an existing page, a meeting note, a source summary, an ingested wiki page, the hot cache, the log, and any Skyetrail marketing copy.
+Use this skill whenever you create or edit prose. This includes a new page, an edit to an existing page, a meeting note, a source summary, a document, and any Skyetrail marketing copy.
 
 ## Checklist before you save
 - No em dashes. Reword so the sentence flows without one, using a period, a comma, or a connector such as "such as", "since", or "including".

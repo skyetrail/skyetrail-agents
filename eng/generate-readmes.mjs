@@ -28,26 +28,36 @@ function exists(file) {
   return fs.existsSync(file);
 }
 
-// Parse a simple YAML frontmatter block. Skill, command, and agent files use
-// single-line scalar values for name and description, so a line based parser is
-// enough. Values may be wrapped in straight quotes.
+// Parse a small YAML frontmatter block. It handles single-line scalar values
+// and one level of nested mapping, which is enough for the skill metadata block
+// (for example metadata.version). Values may be wrapped in straight quotes.
 function parseFrontmatter(content) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return {};
+  const stripQuotes = (v) =>
+    (v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))
+      ? v.slice(1, -1)
+      : v;
   const out = {};
+  let parent = null;
   for (const line of match[1].split(/\r?\n/)) {
+    if (!line.trim()) continue;
     const idx = line.indexOf(":");
     if (idx === -1) continue;
+    const indented = /^\s/.test(line);
     const key = line.slice(0, idx).trim();
     if (!key) continue;
-    let value = line.slice(idx + 1).trim();
-    if (
-      (value.startsWith('"') && value.endsWith('"')) ||
-      (value.startsWith("'") && value.endsWith("'"))
-    ) {
-      value = value.slice(1, -1);
+    const value = stripQuotes(line.slice(idx + 1).trim());
+    if (indented && parent) {
+      if (typeof out[parent] !== "object" || out[parent] === null) out[parent] = {};
+      out[parent][key] = value;
+    } else if (value === "") {
+      out[key] = "";
+      parent = key;
+    } else {
+      out[key] = value;
+      parent = null;
     }
-    out[key] = value;
   }
   return out;
 }
@@ -111,6 +121,7 @@ function readComponents(pluginDir) {
       items.push({
         name: fm.name || fallbackName,
         description: fm.description || "",
+        version: (fm.metadata && fm.metadata.version) || fm.version || "",
         relPath: path.relative(ROOT, file),
       });
     }
@@ -163,13 +174,18 @@ function pluginReadme(plugin) {
   if (!skills.length && !commands.length && !agents.length) {
     lines.push("This plugin does not declare any components yet.", "");
   }
+  const pluginVersion = manifest.version || "";
   const section = (heading, label, items) => {
     if (!items.length) return;
     lines.push(`### ${heading}`, "");
     lines.push(
       table(
-        [label, "Description"],
-        items.map((i) => [`\`${cell(i.name)}\``, cell(i.description)])
+        [label, "Version", "Description"],
+        items.map((i) => [
+          `\`${cell(i.name)}\``,
+          cell(i.version || pluginVersion),
+          cell(i.description),
+        ])
       ),
       ""
     );
@@ -259,9 +275,10 @@ function main() {
   // Repository README: a plugins table and a flat skills table.
   const pluginsTable = plugins.length
     ? table(
-        ["Plugin", "Description", "Skills", "Commands", "Agents"],
+        ["Plugin", "Version", "Description", "Skills", "Commands", "Agents"],
         plugins.map((p) => [
           `[\`${cell(p.manifest.name)}\`](${p.relDir})`,
+          cell(p.manifest.version),
           cell(p.manifest.description),
           String(p.components.skills.length),
           String(p.components.commands.length),
@@ -276,12 +293,13 @@ function main() {
       skillRows.push([
         `[\`${cell(s.name)}\`](${s.relPath})`,
         `[\`${cell(p.manifest.name)}\`](${p.relDir})`,
+        cell(s.version || p.manifest.version),
         cell(s.description),
       ]);
     }
   }
   const skillsTable = skillRows.length
-    ? table(["Skill", "Plugin", "Description"], skillRows)
+    ? table(["Skill", "Plugin", "Version", "Description"], skillRows)
     : "_No skills yet._";
 
   const readmePath = path.join(ROOT, "README.md");

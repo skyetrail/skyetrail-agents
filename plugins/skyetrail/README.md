@@ -19,9 +19,9 @@ For example, in a host that uses slash commands:
 
 ### Skills
 
-| Skill | Description |
-| --- | --- |
-| `skyetrail-writing` | Skyetrail's plain-English house writing style for this Obsidian vault. Use whenever creating or editing any vault page, note, meeting note, source summary, ingested wiki content, the hot cache, the log, or Skyetrail copy. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery. Triggers include writing a note, saving to the vault, ingesting a source, updating a page, drafting copy, or any edit to a file under wiki/. |
+| Skill | Version | Description |
+| --- | --- | --- |
+| `skyetrail-writing` | 1.0.0 | Skyetrail's plain-English house writing style. Use whenever creating or editing any page, note, meeting note, source summary, wiki content or document. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery. |
 
 ## License
 
