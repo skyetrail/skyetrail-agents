@@ -1,0 +1,28 @@
+{
+  "name": "skyetrail-agents",
+  "version": "0.1.0",
+  "description": "Open source, MIT licensed agent plugins from Skyetrail.",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "node eng/generate-readmes.mjs",
+    "readmes": "node eng/generate-readmes.mjs",
+    "check": "node eng/generate-readmes.mjs --check"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skyetrail/skyetrail-agents.git"
+  },
+  "author": "Skyetrail",
+  "keywords": [
+    "open-plugin-spec",
+    "agent-skills",
+    "plugins",
+    "claude-code",
+    "skyetrail"
+  ]
+}

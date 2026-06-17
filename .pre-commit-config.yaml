@@ -1,0 +1,22 @@
+# Pre-commit hook for skyetrail-agents.
+#
+# It regenerates the repository README and each plugin README from the plugin
+# manifests and the skill, command, and agent frontmatter, so the generated
+# files always match the source. If the hook changes a file, the commit stops
+# so you can review and stage the result, then commit again.
+#
+# Install once per clone:
+#   pip install pre-commit   # or: brew install pre-commit
+#   pre-commit install
+#
+# Node.js must be on your PATH. The generator has no dependencies.
+repos:
+  - repo: local
+    hooks:
+      - id: generate-readmes
+        name: Generate plugin and repo READMEs
+        entry: node eng/generate-readmes.mjs
+        language: system
+        pass_filenames: false
+        files: >-
+          (^plugins/.*/(\.plugin/plugin\.json|\.claude-plugin/plugin\.json|skills/.*/SKILL\.md|commands/.*\.md|agents/.*\.md)$|^plugins/[^/]+/README\.md$|^marketplace\.json$|^\.claude-plugin/marketplace\.json$|^eng/generate-readmes\.mjs$|^README\.md$)
