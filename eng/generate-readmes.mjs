@@ -1,14 +1,13 @@
-#!/usr/bin/env node
 // Generates the repository README catalog and each plugin's README from the
 // marketplace manifest, the plugin manifests, and the component frontmatter.
 //
-//   node eng/generate-readmes.mjs            write the generated files
-//   node eng/generate-readmes.mjs --check    report drift and exit non-zero
+//   npm run build            write the generated files
+//   npm run check            report drift and exit non-zero
 //
-// The script has no dependencies. It reads marketplace.json, walks each plugin,
-// and rewrites the generated content. The repository README keeps its
-// hand-written text. Only the content between the marker comments is replaced.
-// Each plugin README is written in full.
+// The script reads marketplace.json, walks each plugin, and rewrites the
+// generated content. The repository README keeps its hand-written text. Only the
+// content between the marker comments is replaced. Each plugin README is written
+// in full. It runs on Node with no install and no dependencies.
 //
 // This generator and the validate-readme workflow are adapted from
 // github/awesome-copilot (MIT, Copyright GitHub, Inc.). See ATTRIBUTIONS.md.
@@ -52,7 +51,7 @@ function parseFrontmatter(content) {
     if (!key) continue;
     const value = stripQuotes(line.slice(idx + 1).trim());
     if (indented && parent) {
-      if (typeof out[parent] !== "object" || out[parent] === null) out[parent] = {};
+      if (typeof out[parent] !== "object") out[parent] = {};
       out[parent][key] = value;
     } else if (value === "") {
       out[key] = "";
@@ -67,7 +66,7 @@ function parseFrontmatter(content) {
 
 // Make a string safe to place inside a Markdown table cell.
 function cell(text) {
-  return (text || "").replace(/\r?\n/g, " ").replace(/\|/g, "\\|").trim();
+  return String(text ?? "").replace(/\r?\n/g, " ").replace(/\|/g, "\\|").trim();
 }
 
 // Turn a GitHub repository URL into an "owner/repo" slug.
@@ -90,9 +89,9 @@ function packageRepository() {
   if (!exists(pkgPath)) return null;
   const pkg = JSON.parse(read(pkgPath));
   if (pkg.repository) {
-    return typeof pkg.repository === "string" ? pkg.repository : pkg.repository.url || null;
+    return typeof pkg.repository === "string" ? pkg.repository : pkg.repository.url ?? null;
   }
-  return pkg.homepage || null;
+  return pkg.homepage ?? null;
 }
 
 function table(headers, rows) {
@@ -121,10 +120,15 @@ function readComponents(pluginDir) {
       }
       if (!exists(file)) continue;
       const fm = parseFrontmatter(read(file));
+      const metadata = fm.metadata;
+      const version =
+        (metadata && typeof metadata === "object" ? metadata.version : "") ||
+        (typeof fm.version === "string" ? fm.version : "") ||
+        "";
       items.push({
         name: fm.name || fallbackName,
         description: fm.description || "",
-        version: (fm.metadata && fm.metadata.version) || fm.version || "",
+        version,
         relPath: path.relative(ROOT, file),
       });
     }
@@ -144,13 +148,7 @@ function replaceBetween(content, begin, end, inner) {
   if (b === -1 || e === -1) {
     throw new Error(`Could not find markers ${begin} ... ${end} in README.md`);
   }
-  return (
-    content.slice(0, b + begin.length) +
-    "\n\n" +
-    inner.trim() +
-    "\n\n" +
-    content.slice(e)
-  );
+  return content.slice(0, b + begin.length) + "\n\n" + inner.trim() + "\n\n" + content.slice(e);
 }
 
 function pluginReadme(plugin) {
@@ -184,11 +182,7 @@ function pluginReadme(plugin) {
     lines.push(
       table(
         [label, "Version", "Description"],
-        items.map((i) => [
-          `\`${cell(i.name)}\``,
-          cell(i.version || pluginVersion),
-          cell(i.description),
-        ])
+        items.map((i) => [`\`${cell(i.name)}\``, cell(i.version || pluginVersion), cell(i.description)])
       ),
       ""
     );
@@ -227,9 +221,7 @@ function main() {
 
   for (const entry of marketplace.plugins || []) {
     if (typeof entry.source !== "string") {
-      console.warn(
-        `Skipping ${entry.name}: source is not a local path, so no README is generated here.`
-      );
+      console.warn(`Skipping ${entry.name}: source is not a local path, so no README is generated here.`);
       continue;
     }
     const pluginDir = resolvePluginDir(entry.source, pluginRoot);
@@ -261,10 +253,7 @@ function main() {
       repoUrl,
     };
     plugins.push(plugin);
-    outputs.push({
-      file: path.join(pluginDir, "README.md"),
-      content: pluginReadme(plugin),
-    });
+    outputs.push({ file: path.join(pluginDir, "README.md"), content: pluginReadme(plugin) });
   }
 
   // Vendor mirror of the marketplace index, for the same reason as the manifest
@@ -327,7 +316,7 @@ function main() {
   }
 
   if (CHECK && changed > 0) {
-    console.error(`\n${changed} file(s) out of date. Run: node eng/generate-readmes.mjs`);
+    console.error(`\n${changed} file(s) out of date. Run: npm run build`);
     process.exit(1);
   }
   console.log(

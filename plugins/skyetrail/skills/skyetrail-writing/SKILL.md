@@ -1,6 +1,6 @@
 ---
 name: skyetrail-writing
-description: Skyetrail's plain-English house writing style. Use whenever creating or editing any page, note, meeting note, source summary, wiki content or document. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery.
+description: Skyetrail's plain-English house writing style. Use whenever writing or editing prose, such as documents, emails, messages, marketing copy, or posts. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery.
 license: MIT
 metadata:
   version: "1.0.0"
@@ -10,10 +10,7 @@ metadata:
 
 Write everything in plain English. The goal is text that is easy to read, not like an AI tool generated it. Plain does not mean short. Clarity comes first.
 
-## When to use
-Use this skill whenever you create or edit prose. This includes a new page, an edit to an existing page, a meeting note, a source summary, a document, and any Skyetrail marketing copy.
-
-## Checklist before you save
+## Checklist before you finish
 - No em dashes. Reword so the sentence flows without one, using a period, a comma, or a connector such as "such as", "since", or "including".
 - No en dashes, including in number ranges. Write a range with "to", e.g., "0.94 to 0.96".
 - Use simple, everyday words. Prefer the common word, e.g., "use" rather than "leverage". Avoid words that AI tools overuse, e.g., "delve", "robust", and "landscape".
@@ -31,4 +28,4 @@ Use this skill whenever you create or edit prose. This includes a new page, an e
 - Be optimistic.
 
 ## How to apply
-Draft the content, then read it against the checklist before you write the file. Pay closest attention to em dashes and jargon, since those are the most common slips.
+Draft the content, then read it against the checklist before you finalize it. Pay closest attention to em dashes and jargon, since those are the most common slips.

@@ -92,10 +92,12 @@ and the skill frontmatter. The generator also writes the `.claude-plugin/` mirro
 manifests. Do not edit the generated files or sections by hand.
 
 ```sh
-node eng/generate-readmes.mjs
-# or
 npm run build
 ```
+
+The scripts in this repository are plain Node-executable JavaScript (`.mjs`), so
+they need only Node and no install. See [AGENTS.md](AGENTS.md) for the
+convention.
 
 To install the pre-commit hook that runs this for you:
 

@@ -7,7 +7,6 @@
   "license": "MIT",
   "scripts": {
     "build": "node eng/generate-readmes.mjs",
-    "readmes": "node eng/generate-readmes.mjs",
     "check": "node eng/generate-readmes.mjs --check"
   },
   "engines": {

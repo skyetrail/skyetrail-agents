@@ -51,7 +51,7 @@ For example, in a host that uses slash commands:
 
 | Plugin | Version | Description | Skills | Commands | Agents |
 | --- | --- | --- | --- | --- | --- |
-| [`skyetrail`](plugins/skyetrail) | 1.0.0 | Skyetrail house tools for agents. Starts with the Skyetrail plain-English writing style and grows as we share more of our working setup. | 1 | 0 | 0 |
+| [`skyetrail`](plugins/skyetrail) | 1.0.0 | Skyetrail house tools for agents. Starts with the Skyetrail plain-English writing style and grows as we share more of our working setup. | 2 | 0 | 0 |
 
 <!-- END: plugins -->
 
@@ -61,7 +61,8 @@ For example, in a host that uses slash commands:
 
 | Skill | Plugin | Version | Description |
 | --- | --- | --- | --- |
-| [`skyetrail-writing`](plugins/skyetrail/skills/skyetrail-writing/SKILL.md) | [`skyetrail`](plugins/skyetrail) | 1.0.0 | Skyetrail's plain-English house writing style. Use whenever creating or editing any page, note, meeting note, source summary, wiki content or document. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery. |
+| [`skill-linting`](plugins/skyetrail/skills/skill-linting/SKILL.md) | [`skyetrail`](plugins/skyetrail) | 1.0.0 | Audits Agent Skills against the official Skill authoring best practices and reports which rules pass or fail. Use when asked to lint, audit, or review a skill or a SKILL.md, to check a skill against best practices, or to scan a repository or plugin for skills that need fixing. Works on a single skill directory or any repository that contains skills. |
+| [`skyetrail-writing`](plugins/skyetrail/skills/skyetrail-writing/SKILL.md) | [`skyetrail`](plugins/skyetrail) | 1.0.0 | Skyetrail's plain-English house writing style. Use whenever writing or editing prose, such as documents, emails, messages, marketing copy, or posts. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery. |
 
 <!-- END: skills -->
 
