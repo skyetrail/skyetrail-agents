@@ -11,14 +11,12 @@ by Anthropic at platform.claude.com.
 - Metadata rules (M1 to M8)
 - Structure and content rules (S1 to S13)
 - Code and script rules (C1 to C9)
-- Testing rules (T1 to T4)
 
 ## Statuses
 - pass: the skill meets the rule.
 - fail: the skill breaks the rule and should be fixed.
 - warn: a likely problem that needs a person to confirm.
 - n/a: the rule does not apply, for example a code rule on a skill with no code.
-- manual: the rule cannot be checked by reading files and needs the author to confirm.
 
 ## Metadata rules
 
@@ -176,22 +174,3 @@ Fix: add the server prefix, such as "GitHub:create_issue".
 Requires: the skill states its dependencies rather than assuming they are installed.
 Check: warn if the skill uses a tool or package it never says to install.
 Fix: add an install step or name the requirement.
-
-## Testing rules
-These cannot be checked by reading files. Mark each manual unless the author confirms it.
-
-### T1 evaluations exist
-Requires: at least three evaluations for the skill.
-Fix: write three scenarios that test the gaps the skill fills.
-
-### T2 tested across models
-Requires: the skill was tested with Haiku, Sonnet, and Opus.
-Fix: run the skill on each model you plan to use and adjust the detail.
-
-### T3 tested with real usage
-Requires: the skill was tested on real tasks, not only sample inputs.
-Fix: use the skill on real work and refine it from what you see.
-
-### T4 team feedback
-Requires: team feedback was gathered, where a team uses the skill.
-Fix: share the skill, watch others use it, and fold in what you learn.

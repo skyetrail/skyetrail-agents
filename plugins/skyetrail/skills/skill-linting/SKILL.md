@@ -48,7 +48,7 @@ It checks the rules that can be measured exactly, such as frontmatter limits, bo
 Read each `SKILL.md` and judge the rules the checker cannot measure, such as whether the description says both what the skill does and when to use it, whether examples are concrete, and whether terminology stays consistent. Full criteria and how to decide pass or fail for every rule are in [references/rules.md](references/rules.md).
 
 **Step 4: Write the report**
-Produce the report in the format below. Cover every rule for every skill. Do not skip a rule. If a rule does not apply, mark it n/a. If it needs a person to confirm, mark it manual.
+Produce the report in the format below. Cover every rule for every skill. Do not skip a rule. If a rule does not apply, mark it n/a.
 
 ## Rules
 Each rule has an id. Full criteria and fixes are in [references/rules.md](references/rules.md).
@@ -89,12 +89,6 @@ Each rule has an id. Full criteria and fixes are in [references/rules.md](refere
 - C8 MCP tools use fully qualified names, such as "GitHub:create_issue".
 - C9 the skill states its dependencies rather than assuming they are installed.
 
-**Testing** (mark manual if you cannot confirm with the author)
-- T1 at least three evaluations exist.
-- T2 tested with Haiku, Sonnet, and Opus.
-- T3 tested with real usage.
-- T4 team feedback gathered, if applicable.
-
 ## Report format
 For each skill, write a heading and a table:
 
@@ -106,7 +100,7 @@ For each skill, write a heading and a table:
 | M1 name format | pass | ... |
 | M2 name safe and specific | pass | ... |
 
-Result: <p> pass, <f> fail, <w> warn, <n> n/a, <m> manual.
+Result: <p> pass, <f> fail, <w> warn, <n> n/a.
 ```
 
-Use pass, fail, warn, n/a, or manual for each status. After the per-skill tables, add a short summary: how many skills you checked, how many are clean, and the first fixes to make.
+Use pass, fail, warn, or n/a for each status. After the per-skill tables, add a short summary: how many skills you checked, how many are clean, and the first fixes to make.

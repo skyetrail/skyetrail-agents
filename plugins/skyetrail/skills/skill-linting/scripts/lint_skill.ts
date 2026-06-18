@@ -1,8 +1,8 @@
 // Mechanical checks for the skill-linting skill.
 //
 // Checks the Agent Skills best-practice rules that can be measured exactly and
-// prints a pass or fail line for each. The judgment and testing rules are left
-// to the caller, who reads references/rules.md and decides those.
+// prints a pass or fail line for each. The judgment rules are left to the
+// caller, who reads references/rules.md and decides those.
 //
 // Usage:
 //     node --experimental-strip-types lint_skill.ts <path> [--json]
@@ -238,7 +238,7 @@ function main(): number {
     }
   }
   console.log(`\nMechanical checks across ${report.length} skill(s): ${totals.pass} pass, ${totals.fail} fail, ${totals.warn} warn.`);
-  console.log("The judgment and testing rules in references/rules.md still need review.");
+  console.log("The judgment rules in references/rules.md still need review.");
   return totals.fail === 0 ? 0 : 2;
 }
 
