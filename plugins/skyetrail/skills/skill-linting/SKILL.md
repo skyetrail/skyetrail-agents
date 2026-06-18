@@ -10,9 +10,6 @@ metadata:
 
 Check one skill or a whole repository of skills against the Agent Skills authoring best practices, and return a report that marks each rule pass or fail.
 
-## When to use
-Use this when someone asks to lint, audit, or review a skill, to check a `SKILL.md` against best practices, or to scan a repository or plugin for skills that need work.
-
 ## Inputs
 The target is one of:
 - a single `SKILL.md` file
