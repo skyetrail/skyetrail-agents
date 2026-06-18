@@ -27,27 +27,17 @@ Copy this checklist and track progress:
 ```
 Lint progress:
 - [ ] Step 1: Find every skill under the target
-- [ ] Step 2: Run the mechanical checks
-- [ ] Step 3: Review the judgment rules for each skill
-- [ ] Step 4: Write the report
+- [ ] Step 2: Check each skill against the rules
+- [ ] Step 3: Write the report
 ```
 
 **Step 1: Find every skill**
 Find each directory that contains a `SKILL.md` under the target. Each one is a skill. List them before you start so the report covers all of them.
 
-**Step 2: Run the mechanical checks**
-Run the bundled checker on the target. It is a TypeScript file that runs on Node 22.6 or newer with no install:
+**Step 2: Check each skill against the rules**
+For each skill, read its `SKILL.md` and any files it bundles, then work through every rule. Some rules are exact, such as the character and line limits, so measure them against the file. Others need judgment, such as whether the description says both what the skill does and when to use it, or whether examples are concrete. The list below is the short form. Full pass or fail criteria for every rule are in [references/rules.md](references/rules.md).
 
-```bash
-node --disable-warning=ExperimentalWarning --experimental-strip-types scripts/lint_skill.ts <target-path>
-```
-
-It checks the rules that can be measured exactly, such as frontmatter limits, body length, file references, and path style, and prints a pass or fail line for each. Use its output for those rules. Pass `--json` if you want structured output to fold into the report.
-
-**Step 3: Review the judgment rules**
-Read each `SKILL.md` and judge the rules the checker cannot measure, such as whether the description says both what the skill does and when to use it, whether examples are concrete, and whether terminology stays consistent. Full criteria and how to decide pass or fail for every rule are in [references/rules.md](references/rules.md).
-
-**Step 4: Write the report**
+**Step 3: Write the report**
 Produce the report in the format below. Cover every rule for every skill. Do not skip a rule. If a rule does not apply, mark it n/a.
 
 ## Rules

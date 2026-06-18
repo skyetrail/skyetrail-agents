@@ -21,12 +21,10 @@ interfaces, and `as` casts only. Do not use enums, namespaces, or constructor
 parameter properties, since type stripping cannot run them. Use the Node
 standard library and avoid runtime dependencies so the scripts stay portable.
 
-The current scripts are:
+The repository has one script today:
 - `eng/generate-readmes.ts` — builds the generated README files and the manifest
   mirrors. Run it with `npm run build`, or `npm run check` to verify the
   committed files are current.
-- `plugins/skyetrail/skills/skill-linting/scripts/lint_skill.ts` — the mechanical
-  checks for the skill-linting skill.
 
 `tsconfig.json` is included so editors understand the project. Type-checking
 needs the TypeScript compiler and Node types, which the repository does not
