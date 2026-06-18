@@ -25,7 +25,7 @@ skyetrail-agents/
 │           └── <skill-name>/
 │               └── SKILL.md  # one skill
 ├── eng/
-│   └── generate-readmes.ts   # builds the generated READMEs and mirrors
+│   └── generate-readmes.mjs  # builds the generated READMEs and mirrors
 ├── .github/workflows/        # checks that the generated files are current
 ├── README.md                 # the repo catalog, partly generated
 └── LICENSE
@@ -95,9 +95,9 @@ manifests. Do not edit the generated files or sections by hand.
 npm run build
 ```
 
-The scripts in this repository are TypeScript, run with Node's built-in type
-stripping, so they need Node 22.6 or newer and no install. See
-[AGENTS.md](AGENTS.md) for the convention.
+The scripts in this repository are plain Node-executable JavaScript (`.mjs`), so
+they need only Node and no install. See [AGENTS.md](AGENTS.md) for the
+convention.
 
 To install the pre-commit hook that runs this for you:
 

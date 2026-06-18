@@ -9,15 +9,14 @@
 #   pip install pre-commit   # or: brew install pre-commit
 #   pre-commit install
 #
-# Node.js 22.6 or newer must be on your PATH. The scripts are TypeScript, run
-# with Node's built-in type stripping, and have no dependencies.
+# Node.js must be on your PATH. The generator has no dependencies.
 repos:
   - repo: local
     hooks:
       - id: generate-readmes
         name: Generate plugin and repo READMEs
-        entry: node --disable-warning=ExperimentalWarning --experimental-strip-types eng/generate-readmes.ts
+        entry: node eng/generate-readmes.mjs
         language: system
         pass_filenames: false
         files: >-
-          (^plugins/.*/(\.plugin/plugin\.json|\.claude-plugin/plugin\.json|skills/.*/SKILL\.md|commands/.*\.md|agents/.*\.md)$|^plugins/[^/]+/README\.md$|^marketplace\.json$|^\.claude-plugin/marketplace\.json$|^eng/generate-readmes\.ts$|^README\.md$)
+          (^plugins/.*/(\.plugin/plugin\.json|\.claude-plugin/plugin\.json|skills/.*/SKILL\.md|commands/.*\.md|agents/.*\.md)$|^plugins/[^/]+/README\.md$|^marketplace\.json$|^\.claude-plugin/marketplace\.json$|^eng/generate-readmes\.mjs$|^README\.md$)

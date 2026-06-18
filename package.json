@@ -6,11 +6,11 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "build": "node --disable-warning=ExperimentalWarning --experimental-strip-types eng/generate-readmes.ts",
-    "check": "npm run build -- --check"
+    "build": "node eng/generate-readmes.mjs",
+    "check": "node eng/generate-readmes.mjs --check"
   },
   "engines": {
-    "node": ">=22.6"
+    "node": ">=18"
   },
   "repository": {
     "type": "git",
