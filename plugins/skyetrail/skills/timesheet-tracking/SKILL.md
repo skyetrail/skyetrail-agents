@@ -13,18 +13,18 @@ Keep a project timesheet up to date. Each entry is one work session: the date, t
 ## Timesheet location
 Before you read or write, find where the timesheet lives:
 
-1. Check the active project's steering for a recorded location. Look in `CLAUDE.md` and `AGENTS.md` for a timesheet path or wiki page.
+1. Check the active steering and the chat history for a recorded location.
 2. Check memory for a recorded location.
-3. If neither has it, ask the user. The timesheet can be a file, such as `timesheet.md`, or an Obsidian wiki page, such as a note in a vault. Accept a path or a page name.
+3. If none of those has it, ask the user. The timesheet can be a file, such as `timesheet.md`, or an Obsidian wiki page, such as a note in a vault. Accept a path or a page name.
 
-Once you have the location and the user confirms it, offer to record it so you do not ask again. Save the path to the project's steering, in `CLAUDE.md` or `AGENTS.md`, or to memory, whichever the user prefers.
+Once you have the location and the user confirms it, offer to record it so you do not ask again. Save the path to the project's steering, preferring `AGENTS.md`, or to memory, whichever the user prefers.
 
 ## Timesheet format
 The timesheet is a Markdown table. The standard columns are Date, Time, Duration, and Description:
 
 | Date | Time | Duration | Description |
 | --- | --- | --- | --- |
-| 07/01/2026 | 11:00-11:30 AM | 0:30 | Final debrief call |
+| 03/12/2026 | 9:00-10:00 AM | 1:00 | Kickoff call |
 
 - Date is `MM/DD/YYYY`.
 - Time is the start and end joined with a hyphen, such as `2:30-5:00 PM`. Show the meridiem once when both times share it, and on both when they differ, such as `11:30 AM-1:00 PM`.
@@ -36,9 +36,9 @@ A timesheet can add custom columns. Custom columns go between Duration and Descr
 
 | Date | Time | Duration | Phase | Description |
 | --- | --- | --- | --- | --- |
-| 07/01/2026 | 11:00-11:30 AM | 0:30 | 4 | Final debrief call |
-| 06/29/2026 | 8:00-9:00 AM | 1:00 | 4 | Final memo draft |
-| 06/28/2026 | 2:30-5:00 PM | 2:30 | 4 | Final memo draft |
+| 03/12/2026 | 9:00-10:00 AM | 1:00 | 2 | Kickoff call |
+| 03/11/2026 | 1:00-3:30 PM | 2:30 | 2 | Requirements review |
+| 03/10/2026 | 10:00-11:30 AM | 1:30 | 1 | Project setup |
 
 ## Set up a new timesheet
 If the timesheet does not exist yet:
