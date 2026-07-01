@@ -22,7 +22,7 @@ For example, in a host that uses slash commands:
 | Skill | Version | Description |
 | --- | --- | --- |
 | `skyetrail-writing` | 1.0.0 | Skyetrail's plain-English house writing style. Use whenever writing or editing prose, such as documents, emails, messages, marketing copy, or posts. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery. |
-| `timesheet-tracking` | 1.0.0 | Creates and updates a project timesheet, one row per work session with the date, time range, duration, and description. Use when the user asks to log time, add or edit a timesheet entry, update the timesheet, or set up a timesheet for a project. Stores the timesheet as a Markdown table in a file or an Obsidian wiki page. |
+| `timesheet-tracking` | 1.0.0 | Creates and updates a project timesheet, one entry per work session with the date, time range, duration, and description. Use when the user asks to log time, add or edit a timesheet entry, update the timesheet, or set up a timesheet for a project. Stores the timesheet as a Markdown table in a file or an Obsidian wiki page. |
 
 ## License
 
