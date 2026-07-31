@@ -11,9 +11,8 @@ and how to add or change a plugin.
 
 ```
 skyetrail-agents/
-├── marketplace.json          # the catalog of plugins (source of truth)
 ├── .claude-plugin/
-│   └── marketplace.json      # generated mirror for Claude Code (do not edit)
+│   └── marketplace.json      # the catalog of plugins
 ├── plugins/
 │   └── <plugin-name>/
 │       ├── plugin.json       # the plugin manifest
@@ -29,9 +28,10 @@ skyetrail-agents/
 ```
 
 Each plugin carries one manifest, `plugin.json`, at its root, per the Agent
-Plugins specification. The catalog lives in `marketplace.json` at the repository
-root. The only generated mirror is `.claude-plugin/marketplace.json`, which
-Claude Code's installer requires; never edit it by hand.
+Plugins specification. The spec leaves distribution out of scope, so the catalog
+lives once at `.claude-plugin/marketplace.json`, the location Claude Code's
+installer requires. Edit it directly; nothing in the repository is a generated
+mirror.
 
 A plugin can also hold `commands/` and `agents/` folders. The generator picks up
 those too.
@@ -75,8 +75,8 @@ this repository is the house style we follow.
    ```
 
 2. Add the plugin's skills under `plugins/<plugin-name>/skills/`.
-3. Register the plugin in `marketplace.json` at the repository root by adding an
-   entry to the `plugins` array with a `name` and a `source`. The `source` is a
+3. Register the plugin in `.claude-plugin/marketplace.json` by adding an entry
+   to the `plugins` array with a `name` and a `source`. The `source` is a
    relative path from the repository root that must start with `./`, so a plugin
    in `plugins/my-plugin/` has `"source": "./plugins/my-plugin"`.
 4. Run the generator and commit the changes.
@@ -84,9 +84,7 @@ this repository is the house style we follow.
 ## Generate the README files
 
 The repository README and each plugin README are generated from the manifests
-and the skill frontmatter. The generator also writes the
-`.claude-plugin/marketplace.json` mirror. Do not edit the generated files or
-sections by hand.
+and the skill frontmatter. Do not edit the generated files or sections by hand.
 
 ```sh
 npm run build

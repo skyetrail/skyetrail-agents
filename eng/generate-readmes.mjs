@@ -4,10 +4,11 @@
 //   npm run build            write the generated files
 //   npm run check            report drift and exit non-zero
 //
-// The script reads marketplace.json, walks each plugin, and rewrites the
-// generated content. The repository README keeps its hand-written text. Only the
-// content between the marker comments is replaced. Each plugin README is written
-// in full. It runs on Node with no install and no dependencies.
+// The script reads .claude-plugin/marketplace.json, walks each plugin, and
+// rewrites the generated content. The repository README keeps its hand-written
+// text. Only the content between the marker comments is replaced. Each plugin
+// README is written in full. It runs on Node with no install and no
+// dependencies.
 //
 // This generator and the validate-readme workflow are adapted from
 // github/awesome-copilot (MIT, Copyright GitHub, Inc.). See ATTRIBUTIONS.md.
@@ -303,8 +304,14 @@ function resolvePluginDir(source, pluginRoot) {
   return path.resolve(ROOT, pluginRoot, source);
 }
 
+// The catalog lives once, hand edited, at .claude-plugin/marketplace.json: the
+// location Claude Code's installer requires (verified against CLI 2.1.179).
+// The Agent Plugins specification leaves distribution out of scope, so there is
+// no neutral catalog location to mirror and nothing here is generated.
+const CATALOG = path.join(ROOT, ".claude-plugin", "marketplace.json");
+
 function main() {
-  const marketplace = JSON.parse(read(path.join(ROOT, "marketplace.json")));
+  const marketplace = JSON.parse(read(CATALOG));
   const marketplaceName = marketplace.name;
   const meta = marketplace.metadata || {};
   const pluginRoot = meta.pluginRoot || ".";
@@ -321,11 +328,11 @@ function main() {
     }
     const pluginDir = resolvePluginDir(entry.source, pluginRoot);
     if (!exists(pluginDir)) {
-      lintProblem(path.join(ROOT, "marketplace.json"), `plugin source does not exist: ${entry.source}`);
+      lintProblem(CATALOG, `plugin source does not exist: ${entry.source}`);
       continue;
     }
     if (entry.name && !NAME_RE.test(entry.name)) {
-      lintProblem(path.join(ROOT, "marketplace.json"), `plugin name "${entry.name}" must be lowercase letters, numbers, and single hyphens`);
+      lintProblem(CATALOG, `plugin name "${entry.name}" must be lowercase letters, numbers, and single hyphens`);
     }
     // Agent Plugins (agent-plugins.org): one manifest, plugin.json, at the
     // plugin root. Claude Code ignores it and takes metadata from the
@@ -371,15 +378,6 @@ function main() {
     plugins.push(plugin);
     outputs.push({ file: path.join(pluginDir, "README.md"), content: pluginReadme(plugin) });
   }
-
-  // The one generated mirror in the repository. Claude Code's installer reads
-  // the catalog only from .claude-plugin/marketplace.json (verified against
-  // CLI 2.1.179), so the root marketplace.json stays the source of truth and
-  // the generator copies it here. Do not edit the copy by hand.
-  outputs.push({
-    file: path.join(ROOT, ".claude-plugin", "marketplace.json"),
-    content: read(path.join(ROOT, "marketplace.json")),
-  });
 
   // Repository README: a plugins table and a flat skills table.
   const pluginsTable = plugins.length
