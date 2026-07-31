@@ -17,16 +17,16 @@ loads the full instructions only when a task matches, so you can keep many skill
 on hand at a low cost.
 
 These plugins follow the
-[Open Plugin Specification](https://github.com/vercel-labs/open-plugin-spec) and
-the [Agent Skills](https://agentskills.io) format. They are not tied to one tool,
-so any host that supports the spec can load them. Each plugin keeps its manifest
-in `.plugin/plugin.json`, and the catalog of plugins lives in `marketplace.json`
-at the repository root.
+[Agent Plugins specification](https://agent-plugins.org) and the
+[Agent Skills](https://agentskills.io) format. They are not tied to one tool, so
+any client that supports the spec can load them. Each plugin carries one
+manifest, `plugin.json`, at its root, and the catalog of plugins lives in
+`marketplace.json` at the repository root.
 
-Some hosts, including Claude Code today, read the manifest only from the older
-`.claude-plugin/` location. The generator writes matching `.claude-plugin/`
-copies so the same plugins install in those hosts too. The open spec files stay
-the source of truth, and the copies are generated, so you never edit them by
+Claude Code's installer reads the catalog only from
+`.claude-plugin/marketplace.json`, so the generator keeps one copy of the
+catalog there. That is the only generated mirror in the repository. The root
+`marketplace.json` stays the source of truth, and you never edit the copy by
 hand.
 
 ## Install

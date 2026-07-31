@@ -238,7 +238,7 @@ function pluginReadme(plugin) {
 
   lines.push("## Install", "");
   lines.push(
-    "This plugin follows the [Open Plugin Specification](https://github.com/vercel-labs/open-plugin-spec), so any host that supports the spec can load it. Copy the plugin folder into your project, or add this repository as a marketplace in your host.",
+    "This plugin follows the [Agent Plugins specification](https://agent-plugins.org), so any client that supports the spec can load it. Copy the plugin folder into your project, or add this repository as a marketplace in your host.",
     ""
   );
   lines.push("For example, in a host that uses slash commands:", "");
@@ -308,22 +308,18 @@ function main() {
     if (entry.name && !NAME_RE.test(entry.name)) {
       lintProblem(path.join(ROOT, "marketplace.json"), `plugin name "${entry.name}" must be lowercase letters, numbers, and single hyphens`);
     }
-    const manifestPath = path.join(pluginDir, ".plugin", "plugin.json");
+    // Agent Plugins (agent-plugins.org): one manifest, plugin.json, at the
+    // plugin root. Claude Code ignores it and takes metadata from the
+    // marketplace entry, so no per-plugin mirror is needed.
+    const manifestPath = path.join(pluginDir, "plugin.json");
     const manifest = exists(manifestPath) ? JSON.parse(read(manifestPath)) : {};
+    if (!exists(manifestPath)) {
+      lintProblem(pluginDir, "no plugin.json manifest at the plugin root; Agent Plugins requires one");
+    } else if (manifest["$schema"] !== "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json") {
+      lintProblem(manifestPath, 'plugin.json must declare "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"');
+    }
     if (manifest.name && !NAME_RE.test(manifest.name)) {
       lintProblem(manifestPath, `plugin name "${manifest.name}" must be lowercase letters, numbers, and single hyphens`);
-    }
-
-    // Vendor mirror. Some hosts, including Claude Code today, read the manifest
-    // only from the vendor-prefixed .claude-plugin/ location. The Open Plugin
-    // Specification allows the same manifest in more than one location (Section
-    // 5.2). The .plugin/plugin.json file stays the source of truth and the
-    // generator copies it here. Do not edit the mirror by hand.
-    if (exists(manifestPath)) {
-      outputs.push({
-        file: path.join(pluginDir, ".claude-plugin", "plugin.json"),
-        content: read(manifestPath),
-      });
     }
     for (const key of ["name", "description", "version", "license", "displayName"]) {
       if (manifest[key] == null && entry[key] != null) manifest[key] = entry[key];
@@ -342,9 +338,10 @@ function main() {
     outputs.push({ file: path.join(pluginDir, "README.md"), content: pluginReadme(plugin) });
   }
 
-  // Vendor mirror of the marketplace index, for the same reason as the manifest
-  // mirror above. marketplace.json at the repository root stays the source of
-  // truth and the generator copies it to .claude-plugin/marketplace.json.
+  // The one generated mirror in the repository. Claude Code's installer reads
+  // the catalog only from .claude-plugin/marketplace.json (verified against
+  // CLI 2.1.179), so the root marketplace.json stays the source of truth and
+  // the generator copies it here. Do not edit the copy by hand.
   outputs.push({
     file: path.join(ROOT, ".claude-plugin", "marketplace.json"),
     content: read(path.join(ROOT, "marketplace.json")),

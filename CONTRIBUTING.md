@@ -2,8 +2,8 @@
 
 Thanks for your interest in Skyetrail Agents. This repository holds open source,
 MIT licensed plugins that follow the
-[Open Plugin Specification](https://github.com/vercel-labs/open-plugin-spec) and
-the [Agent Skills](https://agentskills.io/specification) format, so any host that
+[Agent Plugins specification](https://agent-plugins.org) and the
+[Agent Skills](https://agentskills.io/specification) format, so any client that
 supports them can load them. This guide explains how the repository is laid out
 and how to add or change a plugin.
 
@@ -16,27 +16,22 @@ skyetrail-agents/
 │   └── marketplace.json      # generated mirror for Claude Code (do not edit)
 ├── plugins/
 │   └── <plugin-name>/
-│       ├── .plugin/
-│       │   └── plugin.json   # the plugin manifest (source of truth)
-│       ├── .claude-plugin/
-│       │   └── plugin.json   # generated mirror for Claude Code (do not edit)
+│       ├── plugin.json       # the plugin manifest
 │       ├── README.md         # generated from the manifest and frontmatter
 │       └── skills/
 │           └── <skill-name>/
 │               └── SKILL.md  # one skill
 ├── eng/
-│   └── generate-readmes.mjs  # builds the generated READMEs and mirrors
+│   └── generate-readmes.mjs  # builds the generated files and lints the skills
 ├── .github/workflows/        # checks that the generated files are current
 ├── README.md                 # the repo catalog, partly generated
 └── LICENSE
 ```
 
-The manifest lives in `.plugin/plugin.json` and the catalog lives in
-`marketplace.json` at the repository root. These are the vendor-neutral locations
-from the Open Plugin Specification, so the plugins are not tied to one tool. The
-generator also writes copies under `.claude-plugin/` for hosts that read only
-that older location, such as Claude Code. Treat the `.claude-plugin/` files as
-generated output and do not edit them by hand.
+Each plugin carries one manifest, `plugin.json`, at its root, per the Agent
+Plugins specification. The catalog lives in `marketplace.json` at the repository
+root. The only generated mirror is `.claude-plugin/marketplace.json`, which
+Claude Code's installer requires; never edit it by hand.
 
 A plugin can also hold `commands/` and `agents/` folders. The generator picks up
 those too.
@@ -65,15 +60,16 @@ this repository is the house style we follow.
 
 ## Add a new plugin
 
-1. Create `plugins/<plugin-name>/.plugin/plugin.json`. The only required field is
-   `name`. A fuller manifest looks like this:
+1. Create `plugins/<plugin-name>/plugin.json`. The spec requires `$schema` and
+   `name`; the lint enforces both. A fuller manifest looks like this:
 
    ```json
    {
+     "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
      "name": "my-plugin",
      "description": "What the plugin is for.",
      "version": "0.1.0",
-     "author": { "name": "Skyetrail", "email": "pete@skyetrail.com" },
+     "author": { "name": "Skyetrail", "email": "info@skyetrail.com" },
      "license": "MIT"
    }
    ```
@@ -88,8 +84,9 @@ this repository is the house style we follow.
 ## Generate the README files
 
 The repository README and each plugin README are generated from the manifests
-and the skill frontmatter. The generator also writes the `.claude-plugin/` mirror
-manifests. Do not edit the generated files or sections by hand.
+and the skill frontmatter. The generator also writes the
+`.claude-plugin/marketplace.json` mirror. Do not edit the generated files or
+sections by hand.
 
 ```sh
 npm run build

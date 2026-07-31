@@ -6,7 +6,7 @@ Skyetrail house tools for agents. Starts with the Skyetrail plain-English writin
 
 ## Install
 
-This plugin follows the [Open Plugin Specification](https://github.com/vercel-labs/open-plugin-spec), so any host that supports the spec can load it. Copy the plugin folder into your project, or add this repository as a marketplace in your host.
+This plugin follows the [Agent Plugins specification](https://agent-plugins.org), so any client that supports the spec can load it. Copy the plugin folder into your project, or add this repository as a marketplace in your host.
 
 For example, in a host that uses slash commands:
 

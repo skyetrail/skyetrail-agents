@@ -36,10 +36,11 @@ workflow both regenerate the files and fail when they are out of date.
 
 ## Manifests
 
-Plugins follow the Open Plugin Specification. The source of truth is
-`marketplace.json` at the repository root and `.plugin/plugin.json` in each
-plugin. The `.claude-plugin/` copies are generated mirrors for hosts that read
-only that location, such as Claude Code. Never edit the mirrors by hand.
+Plugins follow the Agent Plugins specification (agent-plugins.org). Each plugin
+carries one manifest, `plugin.json`, at its root, with the spec's `$schema`
+field; the lint enforces both. The catalog is `marketplace.json` at the
+repository root. The only generated mirror is `.claude-plugin/marketplace.json`,
+which Claude Code's installer requires. Never edit the mirror by hand.
 
 ## Writing style
 
