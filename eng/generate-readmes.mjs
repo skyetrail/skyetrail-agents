@@ -94,6 +94,80 @@ function packageRepository() {
   return pkg.homepage ?? null;
 }
 
+// Mechanical lint. The generator already opens every manifest and component
+// file, so the limits are enforced here and a violation stops the build before
+// any generated file is written. Judgment rules stay in the skills' rule files;
+// this checks only what a script can decide.
+const MAX_NAME = 64; // Agent Skills frontmatter name limit
+const MAX_DESCRIPTION = 1024; // Agent Skills frontmatter description limit
+const MAX_BODY_LINES = 500; // recommended SKILL.md body length
+const NAME_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+const lintProblems = [];
+
+function lintProblem(file, msg) {
+  lintProblems.push(`${path.relative(ROOT, file)}: ${msg}`);
+}
+
+// Checks one component markdown file. dirName is the skill directory name for
+// directory-based skills, or null for flat command and agent files.
+function lintComponent(file, content, dirName) {
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) {
+    lintProblem(file, "no frontmatter block");
+    return;
+  }
+
+  // YAML hazards the tolerant parser here would hide: an unquoted value with
+  // ": " fails to parse in real YAML, and an unquoted "#" silently truncates
+  // the value as a comment.
+  for (const line of match[1].split(/\r?\n/)) {
+    if (/^\s/.test(line)) continue;
+    const m = line.match(/^([A-Za-z0-9_-]+):\s+(.*)$/);
+    if (!m) continue;
+    const [, key, value] = m;
+    if (value.startsWith('"') || value.startsWith("'")) continue;
+    if (value.includes(": ")) lintProblem(file, `unquoted ": " in ${key} breaks YAML; quote the value`);
+    if (value.includes(" #")) lintProblem(file, `unquoted "#" in ${key} starts a YAML comment; quote the value`);
+  }
+
+  const fm = parseFrontmatter(content);
+  const name = typeof fm.name === "string" ? fm.name : "";
+  const description = typeof fm.description === "string" ? fm.description : "";
+
+  if (!name) lintProblem(file, "frontmatter has no name");
+  else {
+    if (name.length > MAX_NAME) lintProblem(file, `name is ${name.length} characters; the limit is ${MAX_NAME}`);
+    if (!NAME_RE.test(name)) lintProblem(file, "name must be lowercase letters, numbers, and single hyphens");
+    if (dirName && name !== dirName) lintProblem(file, `name "${name}" does not match directory "${dirName}"`);
+  }
+
+  if (!description) lintProblem(file, "frontmatter has no description");
+  else if (description.length > MAX_DESCRIPTION) {
+    lintProblem(file, `description is ${description.length} characters; the limit is ${MAX_DESCRIPTION}`);
+  }
+
+  const body = content.slice(match[0].length);
+  const bodyLines = body.trim() ? body.replace(/^\n+/, "").replace(/\n+$/, "").split("\n").length : 0;
+  if (bodyLines > MAX_BODY_LINES) {
+    lintProblem(file, `body is ${bodyLines} lines; the limit is ${MAX_BODY_LINES}`);
+  }
+
+  for (const link of content.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
+    const target = link[1].split("#")[0].trim();
+    if (!target || /^(https?:\/\/|mailto:)/.test(target)) continue;
+    if (!exists(path.normalize(path.join(path.dirname(file), target)))) {
+      lintProblem(file, `reference does not resolve: ${link[1]}`);
+    }
+  }
+
+  // Relative paths in backticks are how these skills name their references.
+  for (const tick of content.matchAll(/`(\.{1,2}\/[^`\n]+\.md)`/g)) {
+    if (!exists(path.normalize(path.join(path.dirname(file), tick[1])))) {
+      lintProblem(file, `reference does not resolve: ${tick[1]}`);
+    }
+  }
+}
+
 function table(headers, rows) {
   const head = `| ${headers.join(" | ")} |`;
   const sep = `| ${headers.map(() => "---").join(" | ")} |`;
@@ -119,7 +193,9 @@ function readComponents(pluginDir) {
         fallbackName = name.replace(/\.md$/, "");
       }
       if (!exists(file)) continue;
-      const fm = parseFrontmatter(read(file));
+      const content = read(file);
+      lintComponent(file, content, isDirEntry ? name : null);
+      const fm = parseFrontmatter(content);
       const metadata = fm.metadata;
       const version =
         (metadata && typeof metadata === "object" ? metadata.version : "") ||
@@ -225,8 +301,18 @@ function main() {
       continue;
     }
     const pluginDir = resolvePluginDir(entry.source, pluginRoot);
+    if (!exists(pluginDir)) {
+      lintProblem(path.join(ROOT, "marketplace.json"), `plugin source does not exist: ${entry.source}`);
+      continue;
+    }
+    if (entry.name && !NAME_RE.test(entry.name)) {
+      lintProblem(path.join(ROOT, "marketplace.json"), `plugin name "${entry.name}" must be lowercase letters, numbers, and single hyphens`);
+    }
     const manifestPath = path.join(pluginDir, ".plugin", "plugin.json");
     const manifest = exists(manifestPath) ? JSON.parse(read(manifestPath)) : {};
+    if (manifest.name && !NAME_RE.test(manifest.name)) {
+      lintProblem(manifestPath, `plugin name "${manifest.name}" must be lowercase letters, numbers, and single hyphens`);
+    }
 
     // Vendor mirror. Some hosts, including Claude Code today, read the manifest
     // only from the vendor-prefixed .claude-plugin/ location. The Open Plugin
@@ -299,6 +385,12 @@ function main() {
   readme = replaceBetween(readme, "<!-- BEGIN: plugins -->", "<!-- END: plugins -->", pluginsTable);
   readme = replaceBetween(readme, "<!-- BEGIN: skills -->", "<!-- END: skills -->", skillsTable);
   outputs.push({ file: readmePath, content: readme });
+
+  if (lintProblems.length) {
+    for (const p of lintProblems) console.error(`lint: ${p}`);
+    console.error(`\n${lintProblems.length} lint problem(s). Nothing was written.`);
+    process.exit(1);
+  }
 
   let changed = 0;
   for (const out of outputs) {

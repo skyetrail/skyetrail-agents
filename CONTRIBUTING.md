@@ -95,6 +95,11 @@ manifests. Do not edit the generated files or sections by hand.
 npm run build
 ```
 
+The build also lints every skill: YAML hazards in the frontmatter, name format
+and directory match, description length, body line count, and reference
+resolution. A lint problem stops the build and fails the pull request, with each
+problem listed by file. `npm run lint` runs the same checks on their own.
+
 The scripts in this repository are plain Node-executable JavaScript (`.mjs`), so
 they need only Node and no install. See [AGENTS.md](AGENTS.md) for the
 convention.

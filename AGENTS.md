@@ -19,8 +19,11 @@ install.
 
 The repository has one script today:
 - `eng/generate-readmes.mjs` — builds the generated README files and the manifest
-  mirrors. Run it with `npm run build`, or `npm run check` to verify the
-  committed files are current.
+  mirrors, and lints every skill on the way: YAML hazards in frontmatter, name
+  format and directory match, description length, body line count, and reference
+  resolution. A lint problem stops the build before anything is written. Run it
+  with `npm run build`, `npm run check` to verify the committed files are
+  current, or `npm run lint` for the same check under its lint name.
 
 ## Generated files
 
