@@ -38,8 +38,9 @@ Run these in order. Step 1 before any writing, because it decides what the skill
 6. **Baseline again.** Same task, fresh subagent, skill loaded. Compare against step 1, and
    record the comparison and the failures the skill addresses in the plugin's
    `tests/baselines/<skill-name>.md`.
-7. **Audit.** Run the skills lint script for the mechanical limits, then audit against
-   `../shared/skill-rules.md` and `../shared/steering-rules.md`, or by using `auditing-skills`.
+7. **Audit.** Run the lint command named in `../shared/lint.md` for the mechanical limits, then
+   audit against `../shared/skill-rules.md` and `../shared/steering-rules.md`, or by using
+   `auditing-skills`.
 
 ## The baseline is the gate
 
@@ -47,7 +48,8 @@ If behaviour is the same with and without the skill, the skill has no effect and
 kept. If the second run fails in a new way, put that failure and the agent's own reasoning into
 the skill and run the loop again. Fix a failing baseline or audit by changing the skill, never by
 easing the task or loosening the rules. If the loop has not converged after two more full runs,
-stop and report what still fails rather than iterating further.
+stop and report what still fails rather than iterating further. Keep the draft when you stop, say
+in the report that it is unverified, and leave the keep-or-discard call to the person.
 
 Where subagents are not available, run the task yourself against the skill and say plainly in the
 skill's own record that this is weaker evidence, because you wrote the skill and are also using

@@ -20,8 +20,9 @@ report that instead of auditing from memory.
 
 ## Workflow
 
-1. Run the skills lint script over the target and record its result. If no linter is available,
-   say so in the report rather than silently re-deriving the mechanical limits by hand.
+1. Run the lint command named in `../shared/lint.md` over the target and record its result. If
+   none is named or it cannot run, say so in the report rather than silently re-deriving the
+   mechanical limits by hand.
 2. Read the file in full, including every reference file it names.
 3. Work through each rule. Mark it pass, fail, warn, or not applicable. A rule whose condition is
    not met is not applicable, which is not the same as a pass.
@@ -50,7 +51,10 @@ These are not findings.
 - A stylistic preference with no effect on behaviour.
 
 The default outcome is pass. Escalate only when you can say what an agent would do wrong because
-of it. When unsure, mark it warn and give one line of reason.
+of it. Fail means the rule is broken and you can point at where. Warn means you cannot tell from
+what you can read whether the rule is broken. How much the break matters is carried by the
+rule's severity, not by choosing warn over fail. When unsure, mark it warn and give one line of
+reason.
 
 Count one finding per root cause. A missing section is one finding even when several rules depend
 on it; list the dependent rules under that finding rather than as findings of their own. A rule

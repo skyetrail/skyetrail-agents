@@ -59,7 +59,8 @@ to be stated.
 
 Additions are allowed and are declared in the template rather than invented per call. A
 template's status set is fixed and documented, so two dispatch types can share a caller and their
-reports can be merged.
+reports can be merged. The same holds for a template's field set: fixed and documented, so it
+does not accumulate fields most callers never fill.
 
 Write the caller's obligation for each status into the artifact that runs the work. Held as a
 convention rather than written down, they are not a protocol.

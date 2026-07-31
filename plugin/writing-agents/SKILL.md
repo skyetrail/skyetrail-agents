@@ -37,28 +37,31 @@ agent.
    what happens to partial work when a run stops. See `../shared/dispatch-protocol.md`.
 4. **Fill every hole.** Each is marked required or given a default, so an unfilled one fails
    loudly rather than reaching the agent as empty text.
-5. **Dispatch**, naming the model explicitly rather than letting it inherit from this session.
-6. **Handle the return** per the status table, and check the report is complete rather than
+5. **Audit the filled prompt** against `../shared/steering-rules.md` before anything is sent.
+6. **Dispatch**, naming the model explicitly rather than letting it inherit from this session.
+7. **Handle the return** per the status table, and check the report is complete rather than
    re-running what the agent already proved.
 
 ## Converting a named agent
 
 Read the definition and split it into what is invariant and what varies by call. The invariant
-part becomes the template body. The varying part becomes named holes. Add the status set, the
-report shape, the escalation route, the retry limit, and the partial-work handling from
-`../shared/dispatch-protocol.md`, then audit the filled result against
+part becomes the template body. The varying part becomes named holes. From
+`../shared/dispatch-protocol.md`, add the status set with each status's scope of effect and the
+caller's obligation for each, the retry limit, the partial-work handling, and where the detail
+goes versus what returns to the caller. Then audit the filled result against
 `../shared/steering-rules.md`.
-
-## References
-
-- `../shared/steering-rules.md` for the prompt.
-- `../shared/dispatch-protocol.md` for the caller, the statuses, and the shapes of a run.
 
 ## When to stop
 
 If a fact cannot be established, a required hole has no value, or a rule file cannot be read,
 stop and say what is missing rather than dispatching anyway. Retry a dispatch only after
-something has changed, and at most twice per agent; then report instead.
+something has changed, and at most twice per agent; then report instead. Do not weaken a check,
+loosen a rule, or fill a hole with a placeholder to force a pass; fix the input or stop.
+
+## References
+
+- `../shared/steering-rules.md` for the prompt.
+- `../shared/dispatch-protocol.md` for the caller, the statuses, and the shapes of a run.
 
 ## Where this stops
 

@@ -1,24 +1,37 @@
 # Baseline record: auditing-skills
 
-Round 1, 2026-07-31. Full detail in the repository's TEST_REPORT.md. Behaviour was measured by
-running the skill fresh against three SKILL.md targets and one out-of-scope target. Model sonnet.
+Rounds 1 to 3, 2026-07-31. Full detail in the repository's TEST_REPORT.md. The comparison task:
+review `writing-agents/SKILL.md` before shipping. Model sonnet. The baseline reviewer was given
+the target and told it could read the files the target links; it was not given this skill.
 
-## What the runs showed
+## Without the skill
 
-The skill produced complete rule-by-rule reports with evidence on every in-scope target, and its
-three-fixes-first sections were coherent. The failures were calibration and scope, not coverage:
+The reviewer found the rule files through the target's own links and applied them competently,
+including the dependent-rule meta-rule. What it did not have was the calibration and the report
+discipline:
 
-- All three audits exceeded the five-finding gate (9, 9, and 16), driven by cascade counting,
-  where one missing section scored as two to four rule failures.
-- Identical defects drew different verdicts across runs: the same missing baseline record scored
-  fail, fail, and warn; dependent position rules scored not-applicable in one run and fail in
-  another.
-- Pointed at a file that is neither target kind, with no hint, the auditor forced a full audit
-  through rather than stopping. Primed with the expected behaviour, it stopped. The stop
-  behaviour came from the prompt, not the skill.
+- Findings came back in prose tiers (fix before shipping, worth fixing, nice to have) rather
+  than the fixed severity-tagged table, so two runs cannot be compared without editing.
+- No counts by severity and no lint statement.
+- A taste finding slipped in (no worked example, flagged from "my own general sense"), which the
+  calibration section exists to filter.
+- One rule was misapplied: sibling skill names were flagged as unresolvable nicknames, though a
+  skill name is the plugin's own resolution convention.
 
-## What the round changed
+It also independently found the same two genuine blocking defects the with-skill audit found,
+which raises confidence in both.
 
-Those observations produced the out-of-scope stop instruction, the mapping for the remaining
-steering-document kinds, the one-finding-per-root-cause counting rule, the dependent-rule
-not-applicable rule, and the lint-first workflow step.
+## With the skill
+
+Fresh agents running this skill produced the fixed Rule, Result, Evidence table with severity
+counts and a lint statement, applied the default-to-pass calibration, counted one finding per
+root cause, and checked the baseline records where the Evidence rule points. Round-over-round:
+9 findings before the calibration fixes, 2 to 5 after, with previously confirmed blocking items
+resolving and staying resolved.
+
+## What the comparison settled
+
+Rule application comes free once the rules are reachable from the target. The skill's value is
+the calibration, the fixed comparable report, the severity counts, and the out-of-scope stop.
+Known limit, observed both rounds: the fail-versus-warn line varies between runs; a
+discriminator line was added to Calibration in round 3 and has not yet been re-verified.

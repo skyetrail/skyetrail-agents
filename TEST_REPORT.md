@@ -180,6 +180,113 @@ Two additions the testing argues for that no decision covers:
 - "An existing lint script exists and was extended once already" is stale; the repo deliberately removed it. Mechanical checks ran as shell one-liners (pre-agreed with Pete).
 - Nested subagent dispatch works here, which `DECISIONS.md` did not assume; `writing-skills`' baseline loop ran literally, fixture and all.
 
+---
+
+# Round 2: updates applied and re-verified
+
+Run after Pete reviewed round 1 and approved the update set, with two amendments from
+discussion: mechanical limits belong to the external lint script (which lives in a separate
+repository), and no syntax teaching goes into the skills.
+
+## Changes applied
+
+- Redirect clauses cut from all three descriptions (per the A/B).
+- `auditing-skills`: out-of-scope stop and unreadable-file handling, mapping for the remaining
+  steering-document kinds, lint-first workflow step, root-cause counting rule, lint line in the
+  report format.
+- `steering-rules.md`: contents list, dependent-rule not-applicable guidance, Return cluster
+  rescoped from always to hand-off.
+- `skill-rules.md`: mechanical limits assigned to the lint script; Evidence rule now names
+  `tests/baselines/` as the record home.
+- `writing-skills`: baseline dispatches forbid installed skills and record any attempt to reach
+  for one; no body section restating the description; no-gaming line; retry cap with
+  keep-the-draft disposition; baseline recorded to `tests/baselines/`; lint-first audit step.
+- `writing-agents`: carry-over list extended with retry limit and partial-work handling; "When
+  to stop" section with the no-weakening line; description redirect cut.
+- `dispatch-protocol.md`: field sets fixed like status sets.
+- `shared/lint.md` added: names the lint command slot (external script, not in this checkout)
+  with an explicit unavailable-degrade. Both skills point at it.
+- Baseline records written for all three skills in `plugin/tests/baselines/`.
+- `DECISIONS.md` gained a "Resolved in the 2026-07-31 test round" section.
+
+## writing-agents behaviour test (the round-1 evidence gap)
+
+Task: convert a drifted named reviewer agent, dispatched from three pipelines, to composition
+at dispatch. Baseline dispatched with installed skills forbidden.
+
+Without the skill: strong prompt composition (drift diagnosed, per-pipeline scope fixed, a
+wording bug caught), but no status protocol, no caller obligations, no retry limit, no
+partial-work handling, no model naming, no hole defaults, and no fact/guess separation. With
+the skill: all of that appeared, including a declared custom status with its scope of effect,
+a per-pipeline retry argument, script-owned gate decisions, and unknowns listed as questions
+rather than guessed. Clearest with/without delta of the three skills. Record:
+`plugin/tests/baselines/writing-agents.md`.
+
+## Re-audit results
+
+Same dispatch shape as round 1, fresh sonnet agents, updated files, baseline records readable.
+The first attempt was killed by a session usage limit and re-dispatched unchanged after the
+window reset; an environment failure, not an instruction change.
+
+| Target | Round 1 | Round 2 | Gate (≤5) |
+| --- | --- | --- | --- |
+| writing-skills | 9 | 2 (0 blocking) | pass |
+| auditing-skills (self) | 9 | 2 (1 blocking) | pass |
+| writing-agents | 16 | 3 (1 blocking) | pass |
+
+The calibration fixes visibly worked: every auditor consolidated by root cause (one even wrote
+"no third item found" rather than padding), handled the absent linter per the new instruction,
+and verified the baseline records where the Evidence rule points.
+
+Surviving findings, all fixed in a follow-up commit: the lint script had no identity anywhere
+(both remaining audits found it; now `shared/lint.md`), writing-skills lacked a partial-work
+disposition (now: keep the draft, mark it unverified), writing-agents lacked the no-weakening
+prohibition (now in "When to stop", which also moved above References), and dispatch-protocol
+now fixes field sets like status sets. Verification of the two blocking fixes: see below.
+
+## Round 2 verification, and where the loop stopped
+
+Two targeted re-audits verified the blocking fixes, then the loop was capped.
+
+**Both blocking fixes held.** The lint reference now resolves through `shared/lint.md` (the
+auditor read it, reported the linter unavailable per its degrade instruction, and did not
+re-derive limits by hand), and the no-weakening rule in writing-agents passed on re-audit.
+
+**The pattern that ended the loop.** Each fresh auditor cleared the previous blocking items and
+surfaced roughly two new judgment-level findings: auditing-skills went 9, 2, 5 findings across
+runs; writing-agents went 16, 3, 4. All runs sit under the five-finding gate, previously
+confirmed defects stay fixed, but the count does not converge to zero because fresh judgment
+keeps finding new edges. writing-skills' own retry rule says to stop and report after two
+non-converging runs, so that is what happened: the last verified state ships, and the queue
+below is recorded instead of chased.
+
+**Fixed in round 3 before the cap** (both independently confirmed by two reviewers): the
+"report shape, escalation route" attribution in writing-agents' Converting section named terms
+that do not exist in dispatch-protocol.md, now reworded in that file's actual vocabulary; and
+the compose-fresh path gained the audit gate (new step 5) the Converting path already had.
+Applied but not re-verified: the fail-versus-warn discriminator added to auditing-skills'
+Calibration, and writing-skills' keep-the-draft disposition.
+
+**The auditing-skills baseline pair also ran** (its record previously lacked the unaided
+control, caught by the verification audit). Instructive result: the unaided reviewer found the
+rule files through the target's links and applied them well, so the skill's measured value is
+the calibration, the fixed comparable report, and the out-of-scope stop, not rule knowledge.
+Record rewritten with the without/with structure.
+
+**Known queue for a future round, deliberately not fixed under the cap:**
+
+- writing-agents promises parallel dispatch in its description but the workflow is written in
+  the singular; one line pointing fan-out cases at dispatch-protocol's Three Shapes would close
+  it. The best new finding of round 3.
+- Workflow step 3 could anchor to the four core statuses explicitly rather than by reference.
+- Advisory position notes (out-of-scope sections sit last in all three skills, a deliberate
+  consistency choice two auditors read differently), and surfacing the fixed-field-set principle
+  in writing-agents' front file.
+- `shared/lint.md` needs the real lint command when Pete wires his external linter in; until
+  then every mechanical row reports as unverified by design.
+
+---
+
 ## Deviations
 
 - Added the out-of-scope calibration probe (two extra dispatches). Not requested by the kickoff. The first probe's dispatch prompt named the expected behaviour, making it weak evidence; it was re-run unprimed, and the two results differ in the informative direction.
