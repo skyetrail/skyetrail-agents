@@ -18,6 +18,19 @@ If the target is none of these, stop and report it as out of scope, saying what 
 to be. Do not force the rules onto it. If the target or a rule file cannot be read, stop and
 report that instead of auditing from memory.
 
+## Where this stops
+
+Does not edit the file. If a fix is obvious, name it in the report rather than making it, and use
+`writing-skills` to apply it.
+
+Does not judge writing style, including punctuation, heading case, and tone. Those do not change
+what an agent does.
+
+Does not re-run checks the file's own author already ran and recorded. Confirm the record is
+complete instead.
+
+A direct instruction from the person wins over anything here.
+
 ## Workflow
 
 1. Run the lint command named in `../shared/lint.md` over the target and record its result. If
@@ -70,16 +83,3 @@ came from. Then give counts by severity, then the three fixes to make first.
 
 Any blocking failure means the file needs work before use. Advisory items are listed once and
 never block.
-
-## Where this stops
-
-Does not edit the file. If a fix is obvious, name it in the report rather than making it, and use
-`writing-skills` to apply it.
-
-Does not judge writing style, including punctuation, heading case, and tone. Those do not change
-what an agent does.
-
-Does not re-run checks the file's own author already ran and recorded. Confirm the record is
-complete instead.
-
-A direct instruction from the person wins over anything here.

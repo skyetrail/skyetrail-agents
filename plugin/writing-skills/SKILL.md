@@ -16,6 +16,12 @@ Produces a SKILL.md, any reference files it needs, and evidence that it changes 
   `writing-agents`.
 - A constraint a script or a regex could enforce. Automate it. Do not document it.
 
+## Where this stops
+
+Does not audit a skill without changing it, which is `auditing-skills`. Does not write prompts
+for subagents, which is `writing-agents`. Does not judge writing style. A direct instruction from
+the person wins over anything here.
+
 ## Workflow
 
 Run these in order. Step 1 before any writing, because it decides what the skill has to say.
@@ -60,9 +66,3 @@ it.
 - `../shared/skill-rules.md` for a SKILL.md.
 - `../shared/steering-rules.md` for anything written to steer an agent. These apply to a skill
   body too, with the condition **reused** met.
-
-## Where this stops
-
-Does not audit a skill without changing it, which is `auditing-skills`. Does not write prompts
-for subagents, which is `writing-agents`. Does not judge writing style. A direct instruction from
-the person wins over anything here.
