@@ -5,6 +5,10 @@ Rules for a SKILL.md. The rules in `steering-rules.md` also apply to a skill, wi
 
 Every entry here applies whenever the thing being audited is a SKILL.md.
 
+Mechanical limits are the lint script's job, not judgment work. The script checks that the
+frontmatter parses, the name format and length, the description length, the body line count, and
+that every reference resolves. Confirm the lint record rather than re-deriving those by hand.
+
 ## Discovery
 
 | Rule | Severity |
@@ -52,4 +56,4 @@ insistent is closer to right than one that reads as neutral.
 
 | Rule | Severity |
 | --- | --- |
-| The skill has been through a baseline comparison, with and without it loaded, and the observed failures it addresses are recorded. | Blocking |
+| The skill has been through a baseline comparison, with and without it loaded, and the observed failures it addresses are recorded in the plugin's `tests/baselines/` directory, one file per skill, linked from nothing. | Blocking |

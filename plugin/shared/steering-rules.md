@@ -7,6 +7,23 @@ below, not the subject of this file.
 Each entry has a severity and a condition. Report counts by severity. Any blocking failure means
 the document needs work before use. Advisory items are mentioned once and never block.
 
+A rule about the position or wording of a section applies only when that section exists. When the
+section is missing, the missing section is the finding, and the rules that depend on it are not
+applicable.
+
+## Contents
+
+- Conditions
+- Outcome
+- Context
+- Scope
+- Method
+- Finish
+- Failure
+- Return
+- Calibration
+- Composition
+
 **Conditions.** Use these and nothing else.
 
 - **always**
@@ -82,14 +99,17 @@ Some entries are about position, so check where a section appears, not only whet
 
 ## Return
 
+A report matters where results cross a context boundary. Inside a conversation, the artifact is
+the return, so every rule here binds hand-off documents.
+
 | Rule | Severity | Applies when |
 | --- | --- | --- |
-| The sections of the report are named. | Blocking | always |
-| The wording is fixed enough that results from two runs can be compared without editing. | Important | reused |
+| The sections of the report are named. | Blocking | hand-off |
+| The wording is fixed enough that results from two runs can be compared without editing. | Important | hand-off |
 | The detail goes to a named file, and only a capped summary returns to the caller. | Important | hand-off |
 | Failures are inlined in the summary rather than only written to the file. | Important | hand-off |
 | A section asks the agent to list anything it did that was not asked for. | Important | hand-off |
-| The report format sits at the end of the document. | Advisory | always |
+| The report format sits at the end of the document. | Advisory | hand-off |
 
 ## Calibration
 

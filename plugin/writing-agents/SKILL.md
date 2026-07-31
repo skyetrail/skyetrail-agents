@@ -1,6 +1,6 @@
 ---
 name: writing-agents
-description: Writes the prompt for an agent that will not see the current conversation, along with the caller side that dispatches it and handles what comes back. Use this whenever someone mentions handing work to a subagent, dispatching or spawning agents, writing a prompt or a template for an agent, running work in parallel across several agents, or turning a predefined named agent into something composed at the point of dispatch. Use it even when the word agent is not used, if work is being handed to something that starts with no context. To write a skill rather than a prompt, use writing-skills instead.
+description: Writes the prompt for an agent that will not see the current conversation, along with the caller side that dispatches it and handles what comes back. Use this whenever someone mentions handing work to a subagent, dispatching or spawning agents, writing a prompt or a template for an agent, running work in parallel across several agents, or turning a predefined named agent into something composed at the point of dispatch. Use it even when the word agent is not used, if work is being handed to something that starts with no context.
 ---
 
 # Writing agents
@@ -33,7 +33,8 @@ agent.
    assessment, neither for what you already know. Each fact carries where it came from.
 2. **Write the prompt** against `../shared/steering-rules.md`, with the condition **hand-off**
    met.
-3. **Name the statuses** and the caller's obligation for each. See `../shared/dispatch-protocol.md`.
+3. **Name the statuses** and the caller's obligation for each, along with the retry limit and
+   what happens to partial work when a run stops. See `../shared/dispatch-protocol.md`.
 4. **Fill every hole.** Each is marked required or given a default, so an unfilled one fails
    loudly rather than reaching the agent as empty text.
 5. **Dispatch**, naming the model explicitly rather than letting it inherit from this session.
@@ -44,13 +45,20 @@ agent.
 
 Read the definition and split it into what is invariant and what varies by call. The invariant
 part becomes the template body. The varying part becomes named holes. Add the status set, the
-report shape, and the escalation route from `../shared/dispatch-protocol.md`, then audit the
-filled result against `../shared/steering-rules.md`.
+report shape, the escalation route, the retry limit, and the partial-work handling from
+`../shared/dispatch-protocol.md`, then audit the filled result against
+`../shared/steering-rules.md`.
 
 ## References
 
 - `../shared/steering-rules.md` for the prompt.
 - `../shared/dispatch-protocol.md` for the caller, the statuses, and the shapes of a run.
+
+## When to stop
+
+If a fact cannot be established, a required hole has no value, or a rule file cannot be read,
+stop and say what is missing rather than dispatching anyway. Retry a dispatch only after
+something has changed, and at most twice per agent; then report instead.
 
 ## Where this stops
 

@@ -69,4 +69,32 @@ writing a second one.
 
 Claude Code, so subagents are available and the baseline comparison can actually run. `claude -p`
 is available, which the skill-creator description optimiser needs. An existing agent plugin is the
-target. An existing lint script exists and was extended once already.
+target. An existing lint script exists and was extended once already. The lint script lives in a
+separate repository, not in the target plugin's repo; the skills reference it as the mechanical
+gate and fall back to saying so when it is absent.
+
+## Resolved in the 2026-07-31 test round
+
+Evidence for each is in the repository's TEST_REPORT.md and in `tests/baselines/`.
+
+- **Redirect clauses: cut.** The A/B ran, three runs per variant. Variant B matched or beat A on
+  every measure: 39/39 versus 38/39 on positives, zero false fires both, and the same picks on 17
+  of 18 ambiguous classifications. The clauses were removed from all three descriptions.
+- **Format guidance: the model has the format.** The forbidden-skills baseline wrote a valid
+  SKILL.md unaided. Steps 2 and 3 keep only the house discipline; no syntax teaching was added,
+  and mechanical limits belong to the lint script.
+- **Boundary rules marked blocking: kept blocking.** An unprimed auditor, pointed at a file
+  outside its two target kinds, forced the audit through. That is a second reproduction of the
+  failure the rule exists to prevent.
+- **Return rules rescoped to hand-off.** The `always` condition made the Return cluster demand a
+  report format from in-conversation skills whose return is the artifact, which generated
+  blocking noise on every audited file. This is a condition change inside the settled flat
+  format, not a format change.
+- **Calibration.** All three audits exceeded the five-finding gate (9, 9, 16). The counting rule
+  (one finding per root cause, dependent rules not applicable) went into auditing-skills, and the
+  dependent-rule line into steering-rules.
+- **Baselines are contaminated by installed skills.** A bare baseline dispatch self-loaded an
+  installed skill-authoring skill. Baseline dispatches now forbid skill use and record the
+  attempt if the agent reaches for one anyway.
+- **Baseline records live in `tests/baselines/`, one file per skill,** named by the Evidence rule
+  so an auditor has a place to check, and linked from nothing so they never load with a skill.
