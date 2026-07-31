@@ -294,3 +294,33 @@ Record rewritten with the without/with structure.
 - Mechanical lint checks ran as shell one-liners because the lint script `KICKOFF.md` assumes does not exist in this repo (agreed with Pete before starting).
 - The with-skill format arm built a disposable fixture repo in the scratchpad and dispatched nested baseline subagents on its own initiative, disclosed in its report. Treated as the skill's workflow operating as designed, not suppressed.
 - Nothing else. No SKILL.md or `shared/` file was edited at any point; variant B existed only as description text in dispatch prompts and a scratchpad copy.
+
+---
+
+# Adoption sweep, 2026-07-31
+
+Run after the skills moved to `plugins/steering/` with `skills/` layout and `../../shared/`
+paths, skill-linting retired from the skyetrail plugin, and the capped queue applied
+(parallel-dispatch shapes note, status anchoring, scope sections above the method, field-set
+line). One verification audit per skill, fresh sonnet agents, at the adopted paths.
+
+| Target | Result | Blocking fails | Trajectory across all rounds |
+| --- | --- | --- | --- |
+| writing-skills | 1 warn | 0 | 9, 2, 1 |
+| auditing-skills | 3 warns | 0 | 9, 2, 5, 3 |
+| writing-agents | 1 advisory fail, 1 warn | 0 | 16, 3, 4, 2 |
+
+Zero blocking failures. Every previously confirmed fix held at the new paths, the moved
+references resolved, the baseline records were found and accepted where the Evidence rule
+points, and the fail-versus-warn discriminator was applied as written, including to the note
+about its own unverified convergence.
+
+Remaining queue, all judgment grade:
+
+- writing-agents: one wording drift ("field set" beside "hole" in step 4) and one section
+  adjacency note (Converting sits between the workflow's audit step and When to stop).
+- auditing-skills: state that stop-and-report is the whole failure path with no retry; confirm
+  the discriminator's convergence across repeated runs once more evidence accumulates; one
+  position note.
+- The lint command in `shared/lint.md` is Pete's to fill. It clears the only writing-skills
+  warn and the unverified mechanical rows everywhere.
