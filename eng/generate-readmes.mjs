@@ -4,10 +4,10 @@
 //   npm run build            write the generated files
 //   npm run check            report drift and exit non-zero
 //
-// The script reads .claude-plugin/marketplace.json, walks each plugin, and
-// rewrites the generated content. The repository README keeps its hand-written
-// text. Only the content between the marker comments is replaced. Each plugin
-// README is written in full. It runs on Node with no install and no
+// The script reads marketplace.json at the repository root, walks each plugin,
+// and rewrites the generated content. The repository README keeps its
+// hand-written text. Only the content between the marker comments is replaced.
+// Each plugin README is written in full. It runs on Node with no install and no
 // dependencies.
 //
 // This generator and the validate-readme workflow are adapted from
@@ -304,11 +304,12 @@ function resolvePluginDir(source, pluginRoot) {
   return path.resolve(ROOT, pluginRoot, source);
 }
 
-// The catalog lives once, hand edited, at .claude-plugin/marketplace.json: the
-// location Claude Code's installer requires (verified against CLI 2.1.179).
-// The Agent Plugins specification leaves distribution out of scope, so there is
-// no neutral catalog location to mirror and nothing here is generated.
-const CATALOG = path.join(ROOT, ".claude-plugin", "marketplace.json");
+// The catalog's source of truth is marketplace.json at the repository root,
+// the neutral location. The Agent Plugins specification leaves distribution
+// out of scope, so the root location is this repository's convention. Claude
+// Code's installer reads the catalog only from .claude-plugin/marketplace.json
+// (verified against CLI 2.1.179), so the generator writes that copy as a shim.
+const CATALOG = path.join(ROOT, "marketplace.json");
 
 function main() {
   const marketplace = JSON.parse(read(CATALOG));
@@ -378,6 +379,13 @@ function main() {
     plugins.push(plugin);
     outputs.push({ file: path.join(pluginDir, "README.md"), content: pluginReadme(plugin) });
   }
+
+  // The installer shim: a generated copy of the root catalog at the one path
+  // Claude Code reads. Do not edit the copy by hand.
+  outputs.push({
+    file: path.join(ROOT, ".claude-plugin", "marketplace.json"),
+    content: read(CATALOG),
+  });
 
   // Repository README: a plugins table and a flat skills table.
   const pluginsTable = plugins.length

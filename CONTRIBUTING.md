@@ -11,8 +11,9 @@ and how to add or change a plugin.
 
 ```
 skyetrail-agents/
+├── marketplace.json          # the catalog of plugins (edit this one)
 ├── .claude-plugin/
-│   └── marketplace.json      # the catalog of plugins
+│   └── marketplace.json      # generated shim for Claude Code (do not edit)
 ├── plugins/
 │   └── <plugin-name>/
 │       ├── plugin.json       # the plugin manifest
@@ -28,10 +29,10 @@ skyetrail-agents/
 ```
 
 Each plugin carries one manifest, `plugin.json`, at its root, per the Agent
-Plugins specification. The spec leaves distribution out of scope, so the catalog
-lives once at `.claude-plugin/marketplace.json`, the location Claude Code's
-installer requires. Edit it directly; nothing in the repository is a generated
-mirror.
+Plugins specification. The catalog's source of truth is `marketplace.json` at
+the repository root. Claude Code's installer reads the catalog only from
+`.claude-plugin/marketplace.json`, so the generator writes that copy as a shim;
+never edit the shim by hand.
 
 A plugin can also hold `commands/` and `agents/` folders. The generator picks up
 those too.
@@ -75,16 +76,18 @@ this repository is the house style we follow.
    ```
 
 2. Add the plugin's skills under `plugins/<plugin-name>/skills/`.
-3. Register the plugin in `.claude-plugin/marketplace.json` by adding an entry
-   to the `plugins` array with a `name` and a `source`. The `source` is a
-   relative path from the repository root that must start with `./`, so a plugin
-   in `plugins/my-plugin/` has `"source": "./plugins/my-plugin"`.
+3. Register the plugin in `marketplace.json` at the repository root by adding
+   an entry to the `plugins` array with a `name` and a `source`. The `source` is
+   a relative path from the repository root that must start with `./`, so a
+   plugin in `plugins/my-plugin/` has `"source": "./plugins/my-plugin"`.
 4. Run the generator and commit the changes.
 
 ## Generate the README files
 
 The repository README and each plugin README are generated from the manifests
-and the skill frontmatter. Do not edit the generated files or sections by hand.
+and the skill frontmatter, and the generator writes the
+`.claude-plugin/marketplace.json` shim from the root catalog. Do not edit the
+generated files or sections by hand.
 
 ```sh
 npm run build

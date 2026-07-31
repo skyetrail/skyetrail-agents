@@ -21,4 +21,4 @@ repos:
         language: system
         pass_filenames: false
         files: >-
-          (^plugins/.*/(plugin\.json|skills/.*/SKILL\.md|commands/.*\.md|agents/.*\.md)$|^plugins/[^/]+/README\.md$|^\.claude-plugin/marketplace\.json$|^eng/generate-readmes\.mjs$|^README\.md$)
+          (^plugins/.*/(plugin\.json|skills/.*/SKILL\.md|commands/.*\.md|agents/.*\.md)$|^plugins/[^/]+/README\.md$|^marketplace\.json$|^\.claude-plugin/marketplace\.json$|^eng/generate-readmes\.mjs$|^README\.md$)

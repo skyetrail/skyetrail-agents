@@ -20,12 +20,13 @@ These plugins follow the
 [Agent Plugins specification](https://agent-plugins.org) and the
 [Agent Skills](https://agentskills.io) format. They are not tied to one tool, so
 any client that supports the spec can load them. Each plugin carries one
-manifest, `plugin.json`, at its root.
+manifest, `plugin.json`, at its root, and the catalog of plugins lives in
+`marketplace.json` at the repository root.
 
-The Agent Plugins specification leaves distribution out of scope, so the
-catalog is Claude Code distribution config. It lives once, hand edited, at
-`.claude-plugin/marketplace.json`, the location Claude Code's installer
-requires. Nothing in the repository is a generated mirror.
+The Agent Plugins specification leaves distribution out of scope, so the root
+location for the catalog is this repository's neutral convention. Claude Code's
+installer reads the catalog only from `.claude-plugin/marketplace.json`, so the
+generator writes that one copy as a shim. Edit the root file; never the copy.
 
 ## Install
 
