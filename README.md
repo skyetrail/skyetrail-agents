@@ -51,7 +51,8 @@ For example, in a host that uses slash commands:
 
 | Plugin | Version | Description | Skills | Commands | Agents |
 | --- | --- | --- | --- | --- | --- |
-| [`skyetrail`](plugins/skyetrail) | 1.0.0 | Skyetrail house tools for agents. Starts with the Skyetrail plain-English writing style and grows as we share more of our working setup. | 2 | 0 | 0 |
+| [`skyetrail`](plugins/skyetrail) | 2.0.0 | Skyetrail house tools for agents. Starts with the Skyetrail plain-English writing style and grows as we share more of our working setup. | 1 | 0 | 0 |
+| [`steering`](plugins/steering) | 1.0.0 | Skills for steering agents. Write a skill with a measured baseline, audit a skill or an agent prompt against the house rules, and write the prompt and caller side for a dispatched agent. Shared rule files and a dispatch protocol back all three. | 3 | 0 | 0 |
 
 <!-- END: plugins -->
 
@@ -61,8 +62,10 @@ For example, in a host that uses slash commands:
 
 | Skill | Plugin | Version | Description |
 | --- | --- | --- | --- |
-| [`skill-linting`](plugins/skyetrail/skills/skill-linting/SKILL.md) | [`skyetrail`](plugins/skyetrail) | 1.0.0 | Audits Agent Skills against the official Skill authoring best practices and reports which rules pass or fail. Use when asked to lint, audit, or review a skill or a SKILL.md, to check a skill against best practices, or to scan a repository or plugin for skills that need fixing. Works on a single skill directory or any repository that contains skills. |
 | [`skyetrail-writing`](plugins/skyetrail/skills/skyetrail-writing/SKILL.md) | [`skyetrail`](plugins/skyetrail) | 1.0.0 | Skyetrail's plain-English house writing style. Use whenever writing or editing prose, such as documents, emails, messages, marketing copy, or posts. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery. |
+| [`auditing-skills`](plugins/steering/skills/auditing-skills/SKILL.md) | [`steering`](plugins/steering) | 1.0.0 | Audits a skill or an agent prompt against the house rules and reports what to fix, marking each finding blocking, important, or advisory. Use this whenever someone asks to review, check, audit, lint, or sanity-check a skill, a SKILL.md, or a prompt written for a subagent, when they want to know why a skill is not triggering or not being followed, or when a skill is about to ship. |
+| [`writing-agents`](plugins/steering/skills/writing-agents/SKILL.md) | [`steering`](plugins/steering) | 1.0.0 | Writes the prompt for an agent that will not see the current conversation, along with the caller side that dispatches it and handles what comes back. Use this whenever someone mentions handing work to a subagent, dispatching or spawning agents, writing a prompt or a template for an agent, running work in parallel across several agents, or turning a predefined named agent into something composed at the point of dispatch. Use it even when the word agent is not used, if work is being handed to something that starts with no context. |
+| [`writing-skills`](plugins/steering/skills/writing-skills/SKILL.md) | [`steering`](plugins/steering) | 1.0.0 | Writes a new Agent Skill or fixes an existing one, producing a SKILL.md and its reference files. Use this whenever someone mentions writing, creating, drafting, or improving a skill or a SKILL.md, and also when they ask how to get an agent to do something the same way every time, say a skill is not triggering, or say a skill is being ignored. Use it even when the word skill is not used, if the request is about capturing a repeatable way of working. |
 
 <!-- END: skills -->
 
