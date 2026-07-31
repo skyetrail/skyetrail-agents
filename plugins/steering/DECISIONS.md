@@ -69,9 +69,9 @@ writing a second one.
 
 Claude Code, so subagents are available and the baseline comparison can actually run. `claude -p`
 is available, which the skill-creator description optimiser needs. An existing agent plugin is the
-target. An existing lint script exists and was extended once already. The lint script lives in a
-separate repository, not in the target plugin's repo; the skills reference it as the mechanical
-gate and fall back to saying so when it is absent.
+target. An existing lint script exists and was extended once already. The lint script is built
+into this repository's README generator and runs as `npm run lint` from the repository root;
+`shared/lint.md` names it, and the skills fall back to saying so when the repository is absent.
 
 ## Resolved in the 2026-07-31 test round
 
