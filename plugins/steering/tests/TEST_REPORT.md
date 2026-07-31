@@ -324,3 +324,8 @@ Remaining queue, all judgment grade:
   position note.
 - The lint command in `shared/lint.md` is Pete's to fill. It clears the only writing-skills
   warn and the unverified mechanical rows everywhere.
+
+Post-sweep addendum: the lint queue item is closed. The mechanical linter was built into the
+repository's README generator, runs as `npm run lint`, fails pre-commit and CI on a violation,
+and `shared/lint.md` names it. References in earlier rounds to an external lint script in a
+separate repository describe what was believed at the time; the generator is the linter.
