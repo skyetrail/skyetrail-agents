@@ -98,3 +98,16 @@ Evidence for each is in the repository's TEST_REPORT.md and in `tests/baselines/
   attempt if the agent reaches for one anyway.
 - **Baseline records live in `tests/baselines/`, one file per skill,** named by the Evidence rule
   so an auditor has a place to check, and linked from nothing so they never load with a skill.
+
+## Changed in review, 2026-07-31
+
+- **The Method rule "The technique is left to the agent" was reworded.** As written it
+  contradicted "The exact commands are named" for hand-off documents, banned justified
+  low-freedom instructions such as a fragile runbook's exact command, and gave the auditor no
+  criterion. It now reads: constrain how only where a specific way is required for correctness
+  or safety, with the reason stated; everything else stays with the agent. No audit had misread
+  the old wording, so this fixes a latent defect, not an observed one.
+- **The lint gained two checks from review feedback:** the plugin's `shared/` files are linted
+  for reference resolution (they load with the skills that name them; `tests/` and working notes
+  stay excluded as historical), and a markdown link whose text reads as a filename must link to
+  that filename.

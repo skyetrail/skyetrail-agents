@@ -69,7 +69,7 @@ Some entries are about position, so check where a section appears, not only whet
 | --- | --- | --- |
 | One default approach is given rather than a menu of options. | Important | always |
 | The order is fixed where sequence affects correctness, and left open where it does not. | Blocking | always |
-| The technique is left to the agent. | Important | always |
+| How the work is done is constrained only where a specific way is required for correctness or safety, and each such constraint says why. Everything else is left to the agent. | Important | always |
 | Any check that must run before work starts is named as the first step. | Important | always |
 | A checklist the agent can copy and tick off is included. | Advisory | reused |
 

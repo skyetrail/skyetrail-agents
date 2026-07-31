@@ -25,6 +25,10 @@ For example, in a host that uses slash commands:
 | `writing-agents` | 1.0.0 | Writes the prompt for an agent that will not see the current conversation, along with the caller side that dispatches it and handles what comes back. Use this whenever someone mentions handing work to a subagent, dispatching or spawning agents, writing a prompt or a template for an agent, running work in parallel across several agents, or turning a predefined named agent into something composed at the point of dispatch. Use it even when the word agent is not used, if work is being handed to something that starts with no context. |
 | `writing-skills` | 1.0.0 | Writes a new Agent Skill or fixes an existing one, producing a SKILL.md and its reference files. Use this whenever someone mentions writing, creating, drafting, or improving a skill or a SKILL.md, and also when they ask how to get an agent to do something the same way every time, say a skill is not triggering, or say a skill is being ignored. Use it even when the word skill is not used, if the request is about capturing a repeatable way of working. |
 
+## Evidence
+
+The skills in this plugin were tested before adoption: baseline comparisons with and without each skill loaded, audit rounds against the shared rules, and a description A/B. The full narrative is in [TEST_REPORT.md](tests/TEST_REPORT.md), and the per-skill baseline records are in [tests/baselines/](tests/baselines/).
+
 ## License
 
 MIT. Part of the [skyetrail-agents](https://github.com/skyetrail/skyetrail-agents) plugin collection from Skyetrail.

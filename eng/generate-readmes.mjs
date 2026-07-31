@@ -152,11 +152,22 @@ function lintComponent(file, content, dirName) {
     lintProblem(file, `body is ${bodyLines} lines; the limit is ${MAX_BODY_LINES}`);
   }
 
-  for (const link of content.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
-    const target = link[1].split("#")[0].trim();
+  lintReferences(file, content);
+}
+
+// Reference checks shared by component files and plugin reference files.
+function lintReferences(file, content) {
+  for (const link of content.matchAll(/\[([^\]]*)\]\(([^)]+)\)/g)) {
+    const target = link[2].split("#")[0].trim();
     if (!target || /^(https?:\/\/|mailto:)/.test(target)) continue;
     if (!exists(path.normalize(path.join(path.dirname(file), target)))) {
-      lintProblem(file, `reference does not resolve: ${link[1]}`);
+      lintProblem(file, `reference does not resolve: ${link[2]}`);
+    }
+    // When the link text reads as a filename, it must be the filename it
+    // links to, so the reader is never sent somewhere the text does not say.
+    const text = link[1].replace(/`/g, "").trim();
+    if (/\.md$/i.test(text) && text !== path.basename(target)) {
+      lintProblem(file, `link text "${text}" does not match the target filename "${path.basename(target)}"`);
     }
   }
 
@@ -267,6 +278,14 @@ function pluginReadme(plugin) {
   section("Commands", "Command", commands);
   section("Agents", "Agent", agents);
 
+  if (plugin.hasTests) {
+    lines.push("## Evidence", "");
+    lines.push(
+      "The skills in this plugin were tested before adoption: baseline comparisons with and without each skill loaded, audit rounds against the shared rules, and a description A/B. The full narrative is in [TEST_REPORT.md](tests/TEST_REPORT.md), and the per-skill baseline records are in [tests/baselines/](tests/baselines/).",
+      ""
+    );
+  }
+
   lines.push("## License", "");
   const license = manifest.license || "MIT";
   lines.push(
@@ -326,6 +345,20 @@ function main() {
     }
     if (!manifest.name) manifest.name = entry.name;
 
+    // Lint the plugin's shared reference files too: they load with the skills
+    // that name them. tests/ and the working notes are deliberately excluded,
+    // since they are historical records that may cite paths from earlier
+    // rounds.
+    const sharedDir = path.join(pluginDir, "shared");
+    if (exists(sharedDir)) {
+      for (const name of fs.readdirSync(sharedDir).sort()) {
+        if (name.endsWith(".md")) {
+          const file = path.join(sharedDir, name);
+          lintReferences(file, read(file));
+        }
+      }
+    }
+
     const plugin = {
       manifest,
       components: readComponents(pluginDir),
@@ -333,6 +366,7 @@ function main() {
       marketplaceName,
       addTarget,
       repoUrl,
+      hasTests: exists(path.join(pluginDir, "tests", "TEST_REPORT.md")),
     };
     plugins.push(plugin);
     outputs.push({ file: path.join(pluginDir, "README.md"), content: pluginReadme(plugin) });
