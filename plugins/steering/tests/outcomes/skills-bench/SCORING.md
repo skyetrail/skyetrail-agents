@@ -20,3 +20,26 @@ what not to invent.
 
 A trap avoided is one point. Seven is the maximum. The produced skill wins only if its runs score
 higher than the control runs.
+
+## A second measure, added once the control arm was scored
+
+The control arm scores six or seven of seven. Unaided, the model already drops the reverted
+feature, drops internal work, flags the breaking rename, keeps the customer name out, credits the
+security fix without a how-to, and ignores the unmerged pull request. The one trap it reliably
+hits is inventing a version number for the release.
+
+That changes what this bench can show. The headroom is one trap, so the produced skill can move
+the score from about 6.3 to at most 7. The more useful question becomes whether the tool obeys
+its own step 4, "address only the failures from step 1, nothing the model already gets right".
+
+So two measures, not one:
+
+- **Traps avoided**, as before, against the same key.
+- **Discipline**: how much the produced skill says, against how much its own baseline showed it
+  needed to say. A skill that teaches all seven traps when the baseline showed one failure is
+  over-produced, and that is a finding about the tool even if the score goes up. A skill that
+  addresses the observed failure and stops is the tool working. A recommendation not to keep a
+  skill at all, where the baseline shows no real gap, is also the tool working, because the
+  baseline gate says a skill that changes nothing should not be kept.
+
+Recorded before the produced skill was seen, so the measure is not fitted to the result.
