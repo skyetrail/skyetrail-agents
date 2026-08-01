@@ -16,11 +16,13 @@ and templates are examples, not the whole list. If unescaped input reaches an in
 kind, it is in scope; do not exile it to a side note because its subtype is not named here.
 Authorization gaps are a missing or wrong access check, or a way to reach a higher privilege
 than intended.
-Secrets handling covers a credential, key, or token written into code or config, and any secret
-that leaves the process in a log or an error message. Check what every log and error call
-passes, not what it is named: passing a whole request, session, user, or config object is a
-finding, because the fields inside it are not visible at the call site and routinely include
-tokens and credentials.
+Secrets handling is any place a credential is fixed in the source or leaves the process. Written
+into code or config, written to a log or an error message, sent to another system, or left
+guessable so that whatever it protects can be forged, are examples, not the whole list. If a
+credential is knowable by someone who should not know it, it is in scope, whatever the route.
+Two patterns that are missed most often: a log or error call handed a whole request, session,
+user, or config object, because the fields inside it are not visible at the call site; and a
+credential sent over a connection whose authenticity is not checked.
 Do not review code style, formatting, naming, general performance, or test coverage. Do not
 comment on these.
 Do not change any file. If a fix is obvious, describe it in words in the finding. Do not apply
@@ -78,7 +80,8 @@ Counts as a finding: a SQL, shell, or template call built by joining strings tha
 request or user input, without a parameter or escape; a handler missing the access check that a
 similar handler in the same codebase has; a credential, private key, or token written into the
 code or config as a literal value; a log or error call handed an entire request, session, user,
-or config object rather than named safe fields.
+or config object rather than named safe fields; a credential sent over a connection whose
+certificate is not verified.
 Does not count: a parameterized query or prepared statement; a reference to an environment
 variable, such as process.env.DB_PASSWORD, where the finding would be that value hardcoded
 instead of read from the environment, not the reference itself.
