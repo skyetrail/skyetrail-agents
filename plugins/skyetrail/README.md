@@ -21,7 +21,8 @@ For example, in a host that uses slash commands:
 
 | Skill | Version | Description |
 | --- | --- | --- |
-| `skyetrail-writing` | 1.0.0 | Skyetrail's plain-English house writing style. Use whenever writing or editing prose, such as documents, emails, messages, marketing copy, or posts. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery. |
+| `skyetrail-chat` | 1.0.0 | Skyetrail's plain-English style for conversational replies. Use for every chat reply, answer, explanation, or discussion, not only for documents. Enforces no em dashes, plain everyday words, complete sentences, minimal formatting, and no imagery. |
+| `skyetrail-writing` | 1.1.0 | Skyetrail's plain-English house writing style. Use whenever writing or editing prose, such as documents, emails, messages, marketing copy, or posts. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery. |
 
 ## License
 

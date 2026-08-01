@@ -35,6 +35,15 @@ generated files or the content between the `<!-- BEGIN: ... -->` and
 `<!-- END: ... -->` markers by hand. A pre-commit hook and a GitHub Actions
 workflow both regenerate the files and fail when they are out of date.
 
+## Shared skill references
+
+Some rules apply to more than one skill, such as the plain-English rules that
+`skyetrail-writing` and `skyetrail-chat` both use. Keep one copy in
+`plugins/<plugin>/shared/` and reference it from each skill's `SKILL.md` by a
+relative markdown link, such as `[plain-english.md](../../shared/plain-english.md)`.
+The plugin ships with its `shared/` directory, so the link resolves wherever the
+plugin is installed. Do not copy a shared file into each skill that uses it.
+
 ## Manifests
 
 Plugins follow the Agent Plugins specification (agent-plugins.org). Each plugin
