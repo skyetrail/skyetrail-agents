@@ -4,10 +4,11 @@
 //   npm run build            write the generated files
 //   npm run check            report drift and exit non-zero
 //
-// The script reads marketplace.json, walks each plugin, and rewrites the
-// generated content. The repository README keeps its hand-written text. Only the
-// content between the marker comments is replaced. Each plugin README is written
-// in full. It runs on Node with no install and no dependencies.
+// The script reads marketplace.json at the repository root, walks each plugin,
+// and rewrites the generated content. The repository README keeps its
+// hand-written text. Only the content between the marker comments is replaced.
+// Each plugin README is written in full. It runs on Node with no install and no
+// dependencies.
 //
 // This generator and the validate-readme workflow are adapted from
 // github/awesome-copilot (MIT, Copyright GitHub, Inc.). See ATTRIBUTIONS.md.
@@ -94,6 +95,91 @@ function packageRepository() {
   return pkg.homepage ?? null;
 }
 
+// Mechanical lint. The generator already opens every manifest and component
+// file, so the limits are enforced here and a violation stops the build before
+// any generated file is written. Judgment rules stay in the skills' rule files;
+// this checks only what a script can decide.
+const MAX_NAME = 64; // Agent Skills frontmatter name limit
+const MAX_DESCRIPTION = 1024; // Agent Skills frontmatter description limit
+const MAX_BODY_LINES = 500; // recommended SKILL.md body length
+const NAME_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+const lintProblems = [];
+
+function lintProblem(file, msg) {
+  lintProblems.push(`${path.relative(ROOT, file)}: ${msg}`);
+}
+
+// Checks one component markdown file. dirName is the skill directory name for
+// directory-based skills, or null for flat command and agent files.
+function lintComponent(file, content, dirName) {
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) {
+    lintProblem(file, "no frontmatter block");
+    return;
+  }
+
+  // YAML hazards the tolerant parser here would hide: an unquoted value with
+  // ": " fails to parse in real YAML, and an unquoted "#" silently truncates
+  // the value as a comment.
+  for (const line of match[1].split(/\r?\n/)) {
+    if (/^\s/.test(line)) continue;
+    const m = line.match(/^([A-Za-z0-9_-]+):\s+(.*)$/);
+    if (!m) continue;
+    const [, key, value] = m;
+    if (value.startsWith('"') || value.startsWith("'")) continue;
+    if (value.includes(": ")) lintProblem(file, `unquoted ": " in ${key} breaks YAML; quote the value`);
+    if (value.includes(" #")) lintProblem(file, `unquoted "#" in ${key} starts a YAML comment; quote the value`);
+  }
+
+  const fm = parseFrontmatter(content);
+  const name = typeof fm.name === "string" ? fm.name : "";
+  const description = typeof fm.description === "string" ? fm.description : "";
+
+  if (!name) lintProblem(file, "frontmatter has no name");
+  else {
+    if (name.length > MAX_NAME) lintProblem(file, `name is ${name.length} characters; the limit is ${MAX_NAME}`);
+    if (!NAME_RE.test(name)) lintProblem(file, "name must be lowercase letters, numbers, and single hyphens");
+    if (dirName && name !== dirName) lintProblem(file, `name "${name}" does not match directory "${dirName}"`);
+  }
+
+  if (!description) lintProblem(file, "frontmatter has no description");
+  else if (description.length > MAX_DESCRIPTION) {
+    lintProblem(file, `description is ${description.length} characters; the limit is ${MAX_DESCRIPTION}`);
+  }
+
+  const body = content.slice(match[0].length);
+  const bodyLines = body.trim() ? body.replace(/^\n+/, "").replace(/\n+$/, "").split("\n").length : 0;
+  if (bodyLines > MAX_BODY_LINES) {
+    lintProblem(file, `body is ${bodyLines} lines; the limit is ${MAX_BODY_LINES}`);
+  }
+
+  lintReferences(file, content);
+}
+
+// Reference checks shared by component files and plugin reference files.
+function lintReferences(file, content) {
+  for (const link of content.matchAll(/\[([^\]]*)\]\(([^)]+)\)/g)) {
+    const target = link[2].split("#")[0].trim();
+    if (!target || /^(https?:\/\/|mailto:)/.test(target)) continue;
+    if (!exists(path.normalize(path.join(path.dirname(file), target)))) {
+      lintProblem(file, `reference does not resolve: ${link[2]}`);
+    }
+    // When the link text reads as a filename, it must be the filename it
+    // links to, so the reader is never sent somewhere the text does not say.
+    const text = link[1].replace(/`/g, "").trim();
+    if (/\.md$/i.test(text) && text !== path.basename(target)) {
+      lintProblem(file, `link text "${text}" does not match the target filename "${path.basename(target)}"`);
+    }
+  }
+
+  // Relative paths in backticks are how these skills name their references.
+  for (const tick of content.matchAll(/`(\.{1,2}\/[^`\n]+\.md)`/g)) {
+    if (!exists(path.normalize(path.join(path.dirname(file), tick[1])))) {
+      lintProblem(file, `reference does not resolve: ${tick[1]}`);
+    }
+  }
+}
+
 function table(headers, rows) {
   const head = `| ${headers.join(" | ")} |`;
   const sep = `| ${headers.map(() => "---").join(" | ")} |`;
@@ -119,7 +205,9 @@ function readComponents(pluginDir) {
         fallbackName = name.replace(/\.md$/, "");
       }
       if (!exists(file)) continue;
-      const fm = parseFrontmatter(read(file));
+      const content = read(file);
+      lintComponent(file, content, isDirEntry ? name : null);
+      const fm = parseFrontmatter(content);
       const metadata = fm.metadata;
       const version =
         (metadata && typeof metadata === "object" ? metadata.version : "") ||
@@ -162,7 +250,7 @@ function pluginReadme(plugin) {
 
   lines.push("## Install", "");
   lines.push(
-    "This plugin follows the [Open Plugin Specification](https://github.com/vercel-labs/open-plugin-spec), so any host that supports the spec can load it. Copy the plugin folder into your project, or add this repository as a marketplace in your host.",
+    "This plugin follows the [Agent Plugins specification](https://agent-plugins.org), so any client that supports the spec can load it. Copy the plugin folder into your project, or add this repository as a marketplace in your host.",
     ""
   );
   lines.push("For example, in a host that uses slash commands:", "");
@@ -191,6 +279,18 @@ function pluginReadme(plugin) {
   section("Commands", "Command", commands);
   section("Agents", "Agent", agents);
 
+  if (plugin.summary) {
+    lines.push(plugin.summary.trim(), "");
+  }
+
+  if (plugin.hasTests && !plugin.summary) {
+    lines.push("## Evidence", "");
+    lines.push(
+      "The skills in this plugin were tested before adoption: baseline comparisons with and without each skill loaded, audit rounds against the shared rules, and a description A/B. The full narrative is in [TEST_REPORT.md](tests/TEST_REPORT.md), and the per-skill baseline records are in [tests/baselines/](tests/baselines/).",
+      ""
+    );
+  }
+
   lines.push("## License", "");
   const license = manifest.license || "MIT";
   lines.push(
@@ -208,8 +308,15 @@ function resolvePluginDir(source, pluginRoot) {
   return path.resolve(ROOT, pluginRoot, source);
 }
 
+// The catalog's source of truth is marketplace.json at the repository root,
+// the neutral location. The Agent Plugins specification leaves distribution
+// out of scope, so the root location is this repository's convention. Claude
+// Code's installer reads the catalog only from .claude-plugin/marketplace.json
+// (verified against CLI 2.1.179), so the generator writes that copy as a shim.
+const CATALOG = path.join(ROOT, "marketplace.json");
+
 function main() {
-  const marketplace = JSON.parse(read(path.join(ROOT, "marketplace.json")));
+  const marketplace = JSON.parse(read(CATALOG));
   const marketplaceName = marketplace.name;
   const meta = marketplace.metadata || {};
   const pluginRoot = meta.pluginRoot || ".";
@@ -225,24 +332,53 @@ function main() {
       continue;
     }
     const pluginDir = resolvePluginDir(entry.source, pluginRoot);
-    const manifestPath = path.join(pluginDir, ".plugin", "plugin.json");
+    if (!exists(pluginDir)) {
+      lintProblem(CATALOG, `plugin source does not exist: ${entry.source}`);
+      continue;
+    }
+    if (entry.name && !NAME_RE.test(entry.name)) {
+      lintProblem(CATALOG, `plugin name "${entry.name}" must be lowercase letters, numbers, and single hyphens`);
+    }
+    // Agent Plugins (agent-plugins.org): one manifest, plugin.json, at the
+    // plugin root. Claude Code ignores it and takes metadata from the
+    // marketplace entry, so no per-plugin mirror is needed.
+    const manifestPath = path.join(pluginDir, "plugin.json");
     const manifest = exists(manifestPath) ? JSON.parse(read(manifestPath)) : {};
-
-    // Vendor mirror. Some hosts, including Claude Code today, read the manifest
-    // only from the vendor-prefixed .claude-plugin/ location. The Open Plugin
-    // Specification allows the same manifest in more than one location (Section
-    // 5.2). The .plugin/plugin.json file stays the source of truth and the
-    // generator copies it here. Do not edit the mirror by hand.
-    if (exists(manifestPath)) {
-      outputs.push({
-        file: path.join(pluginDir, ".claude-plugin", "plugin.json"),
-        content: read(manifestPath),
-      });
+    if (!exists(manifestPath)) {
+      lintProblem(pluginDir, "no plugin.json manifest at the plugin root; Agent Plugins requires one");
+    } else if (manifest["$schema"] !== "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json") {
+      lintProblem(manifestPath, 'plugin.json must declare "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"');
+    }
+    if (manifest.name && !NAME_RE.test(manifest.name)) {
+      lintProblem(manifestPath, `plugin name "${manifest.name}" must be lowercase letters, numbers, and single hyphens`);
     }
     for (const key of ["name", "description", "version", "license", "displayName"]) {
       if (manifest[key] == null && entry[key] != null) manifest[key] = entry[key];
     }
     if (!manifest.name) manifest.name = entry.name;
+
+    // Lint the plugin's shared reference files too: they load with the skills
+    // that name them. tests/ and the working notes are deliberately excluded,
+    // since they are historical records that may cite paths from earlier
+    // rounds.
+    const sharedDir = path.join(pluginDir, "shared");
+    if (exists(sharedDir)) {
+      for (const name of fs.readdirSync(sharedDir).sort()) {
+        if (name.endsWith(".md")) {
+          const file = path.join(sharedDir, name);
+          lintReferences(file, read(file));
+        }
+      }
+    }
+
+    // An optional hand-written SUMMARY.md at the plugin root is included
+    // verbatim in the generated README and linted like any reference surface.
+    const summaryPath = path.join(pluginDir, "SUMMARY.md");
+    let summary = null;
+    if (exists(summaryPath)) {
+      summary = read(summaryPath);
+      lintReferences(summaryPath, summary);
+    }
 
     const plugin = {
       manifest,
@@ -251,17 +387,18 @@ function main() {
       marketplaceName,
       addTarget,
       repoUrl,
+      hasTests: exists(path.join(pluginDir, "tests", "TEST_REPORT.md")),
+      summary,
     };
     plugins.push(plugin);
     outputs.push({ file: path.join(pluginDir, "README.md"), content: pluginReadme(plugin) });
   }
 
-  // Vendor mirror of the marketplace index, for the same reason as the manifest
-  // mirror above. marketplace.json at the repository root stays the source of
-  // truth and the generator copies it to .claude-plugin/marketplace.json.
+  // The installer shim: a generated copy of the root catalog at the one path
+  // Claude Code reads. Do not edit the copy by hand.
   outputs.push({
     file: path.join(ROOT, ".claude-plugin", "marketplace.json"),
-    content: read(path.join(ROOT, "marketplace.json")),
+    content: read(CATALOG),
   });
 
   // Repository README: a plugins table and a flat skills table.
@@ -299,6 +436,12 @@ function main() {
   readme = replaceBetween(readme, "<!-- BEGIN: plugins -->", "<!-- END: plugins -->", pluginsTable);
   readme = replaceBetween(readme, "<!-- BEGIN: skills -->", "<!-- END: skills -->", skillsTable);
   outputs.push({ file: readmePath, content: readme });
+
+  if (lintProblems.length) {
+    for (const p of lintProblems) console.error(`lint: ${p}`);
+    console.error(`\n${lintProblems.length} lint problem(s). Nothing was written.`);
+    process.exit(1);
+  }
 
   let changed = 0;
   for (const out of outputs) {

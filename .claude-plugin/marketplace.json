@@ -25,6 +25,24 @@
         "plain-english",
         "house-style"
       ]
+    },
+    {
+      "name": "steering",
+      "source": "./plugins/steering",
+      "description": "Skills for steering agents. Write a skill with a measured baseline, audit a skill or an agent prompt against the house rules, and write the prompt and caller side for a dispatched agent.",
+      "author": {
+        "name": "Skyetrail",
+        "email": "info@skyetrail.com"
+      },
+      "license": "MIT",
+      "keywords": [
+        "steering",
+        "skills",
+        "agents",
+        "prompts",
+        "auditing",
+        "dispatch"
+      ]
     }
   ]
 }

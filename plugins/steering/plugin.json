@@ -1,0 +1,22 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "steering",
+  "description": "Skills for steering agents. Write a skill with a measured baseline, audit a skill or an agent prompt against the house rules, and write the prompt and caller side for a dispatched agent. Shared rule files and a dispatch protocol back all three.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Skyetrail",
+    "email": "info@skyetrail.com",
+    "url": "https://skyetrail.com"
+  },
+  "homepage": "https://github.com/skyetrail/skyetrail-agents/tree/main/plugins/steering",
+  "repository": "https://github.com/skyetrail/skyetrail-agents",
+  "license": "MIT",
+  "keywords": [
+    "steering",
+    "skills",
+    "agents",
+    "prompts",
+    "auditing",
+    "dispatch"
+  ]
+}

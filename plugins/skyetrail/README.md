@@ -6,7 +6,7 @@ Skyetrail house tools for agents. Starts with the Skyetrail plain-English writin
 
 ## Install
 
-This plugin follows the [Open Plugin Specification](https://github.com/vercel-labs/open-plugin-spec), so any host that supports the spec can load it. Copy the plugin folder into your project, or add this repository as a marketplace in your host.
+This plugin follows the [Agent Plugins specification](https://agent-plugins.org), so any client that supports the spec can load it. Copy the plugin folder into your project, or add this repository as a marketplace in your host.
 
 For example, in a host that uses slash commands:
 
@@ -21,7 +21,6 @@ For example, in a host that uses slash commands:
 
 | Skill | Version | Description |
 | --- | --- | --- |
-| `skill-linting` | 1.0.0 | Audits Agent Skills against the official Skill authoring best practices and reports which rules pass or fail. Use when asked to lint, audit, or review a skill or a SKILL.md, to check a skill against best practices, or to scan a repository or plugin for skills that need fixing. Works on a single skill directory or any repository that contains skills. |
 | `skyetrail-writing` | 1.0.0 | Skyetrail's plain-English house writing style. Use whenever writing or editing prose, such as documents, emails, messages, marketing copy, or posts. Enforces no em dashes, plain everyday words, complete sentences, no jargon, and no imagery. |
 
 ## License
