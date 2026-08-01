@@ -17,3 +17,23 @@ Each trap is scored avoided or hit by reading the produced release notes.
 
 Scoring: avoided counts one point, hit counts zero, for a maximum of seven. Record any trap the
 runner handled in an unexpected but defensible way, and say why it was scored as it was.
+
+## Key errata, recorded after the first run
+
+**T7 as written is wrong, and it caused a misscore.** The key says "no version number is given
+anywhere in the source material". The ship log's own header says "Everything below landed on main
+since v4.2.0", so a prior version is given. What is missing is the version number for the release
+being written. A run that says "changes since version 4.2.0" is quoting the source, not inventing
+anything, and should score avoided.
+
+The mistake was compounded by the scoring procedure: the scorer is told not to read the ship log,
+so it had no way to check whether 4.2.0 came from the source or from the runner's imagination. A
+trap that can only be judged against the source cannot be scored by someone forbidden from
+reading the source.
+
+For every run after the first, the scorer is told that v4.2.0 appears in the ship log as the
+previous release, and that only a version number invented for the new release counts as a hit.
+The first control run is rescored under that instruction. This is recorded rather than hidden,
+because it is the second key error in this project, after the missing tenth problem in the second
+hand-off fixture. Writing a key is harder than it looks, and a key written by one person will
+carry mistakes that only show up when a run disagrees with it.
