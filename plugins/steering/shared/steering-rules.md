@@ -59,9 +59,27 @@ Some entries are about position, so check where a section appears, not only whet
 | --- | --- | --- |
 | What is in scope is named. | Blocking | always |
 | What is out of scope is named explicitly, rather than left implied by what is in scope. | Blocking | always |
+| Where a category of work is named, it is defined by what makes something a member, and any list of kinds is marked as examples rather than left to read as the whole set. | Blocking | always |
 | The instruction says to stop and report on reaching a scope limit, rather than work around it. | Blocking | always |
 | The scope statement sits above the method. | Advisory | always |
 | The instruction states that the agent must not modify anything, and says what to do instead when a fix looks obvious. | Blocking | advisory |
+
+A list of kinds tells the reader that a kind not on the list is out of scope, and the reader is
+right to read it that way. Write the test for membership, then give examples.
+
+Bad, because it reads as the whole set:
+
+> Review for injection: SQL, command, template, or path.
+
+Good, because a reader can decide a case the list does not cover:
+
+> Injection is any place input that was not checked or escaped is built into something another
+> system interprets. SQL, shell commands, file paths, and markup returned to a browser are
+> examples, not the whole list.
+
+This is measured, not a preference. In an outcome test, the first wording made a reviewer that
+had already found a reflected injection file it as out of scope, because markup was not one of
+the four kinds listed. The second wording recovered it in every run.
 
 ## Method
 
@@ -118,6 +136,24 @@ the return, so every rule here binds hand-off documents.
 | Examples of what counts are given. | Blocking | advisory |
 | Examples of what does not count are given. | Blocking | advisory |
 | The default outcome is stated, so the agent must justify escalating rather than justify approving. | Blocking | advisory |
+| Where a run showed something being missed, the instruction describes the shape it takes in the code, not the label it falls under. | Important | advisory |
+
+A label says which bucket a finding belongs in. The shape says what the agent is looking at on
+the screen, so it can recognise the case without already knowing it is there.
+
+Bad, and measured as ineffective:
+
+> Report any secret written to a log.
+
+Good, and measured as effective on the first run:
+
+> Check what every log and error call passes. Passing a whole request, session, user, or config
+> object is a finding, because the fields inside it are not visible at the call site.
+
+The first wording named the category and the finding stayed missed three times out of three. The
+second described what the code looks like where the problem lives, and the finding appeared three
+times out of three. Reach for this after a run shows a miss, not before: a shape written from
+imagination is a guess, and it costs the same context as a measured one.
 
 ## Composition
 

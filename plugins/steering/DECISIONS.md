@@ -175,11 +175,14 @@ at 7.67 and 3.0. Nine scored reviews across three rounds, every scorer blind to 
   already found a reflected injection filed it under "noticed but out of scope" because the
   subtype was not on the list. Every audit round had passed that instruction, because it was
   consistent with the rules and wrong about the world.
-- **Define a category by its mechanism, not by a list of members.** A list tells a reader that
-  anything absent from it is out of scope, and the reader is right to believe that.
-- **When a finding keeps being missed, name the pattern, not the category.** "A secret written to
-  a log" failed three times out of three. "A whole session object passed to a log call, because
-  the fields inside it are not visible at the call site" worked three times out of three.
+- **Both lessons are now rules in `steering-rules.md`, not slogans here.** The first draft of
+  this entry recorded them only in these notes and the test results, which no agent reads. That
+  is the same mistake as recording an accepted audit finding where auditors cannot see it. Scope
+  gained a blocking rule that a named category must define membership and mark any list of kinds
+  as examples. Calibration gained an important rule that a missed case is described by the shape
+  it takes in the code rather than the label it falls under. Each carries the bad wording, the
+  good wording, and the measured result, and the two skills point at them where an author writes
+  scope and addresses failures.
 - **The rule that produced all of this stands unchanged:** no steering change without a failing
   measurement behind it. Both cycles obeyed it, and the one change that did not move a score was
   recorded as a failure rather than kept for looking sensible.

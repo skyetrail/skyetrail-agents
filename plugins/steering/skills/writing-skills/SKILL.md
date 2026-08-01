@@ -39,7 +39,9 @@ Run these in order. Step 1 before any writing, because it decides what the skill
 3. **Write the body.** Open with what the skill produces. Then the workflow. Then what it does
    not cover and which skill takes over. Do not add a section that restates the description; the
    description is already loaded before the body, so a repeat spends context twice.
-4. **Address only the failures from step 1.** Nothing the model already gets right.
+4. **Address only the failures from step 1.** Nothing the model already gets right. For each
+   failure, describe the shape it takes in the work, not the label it falls under, so the agent
+   can recognise the case without already knowing it is there.
 5. **Move detail into reference files.** The body is an overview. Every reference is one hop from
    the SKILL.md and named from it.
 6. **Baseline again.** Same task, fresh subagent, skill loaded. Compare against step 1, and

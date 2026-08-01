@@ -33,7 +33,9 @@ here.
 1. **Establish the facts.** A script for anything determinable, an agent only for what needs an
    assessment, neither for what you already know. Each fact carries where it came from.
 2. **Write the prompt** against `../../shared/steering-rules.md`, with the condition **hand-off**
-   met.
+   met. Where the prompt names a category of work, define what makes something a member and mark
+   any list of kinds as examples, or the agent will treat a kind you did not list as out of
+   scope.
 3. **Name the statuses** and the caller's obligation for each, along with the retry limit and
    what happens to partial work when a run stops. See `../../shared/dispatch-protocol.md`, starting
    from the four core statuses there and adding only what a run needs.
