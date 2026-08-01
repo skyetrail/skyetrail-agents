@@ -102,3 +102,60 @@ The produced prompt now finds within one of the old prompt's average while raisi
 alarms against its three. It still does not beat it on the stated criterion, which is more found
 without more false alarms, because 7.0 is below 7.67. One planted problem separates them, and it
 is the same one in every run.
+
+---
+
+# Cycle 2: name the pattern, not the category
+
+Cycle 1 left one miss: secrets written to a log, missed in all three runs even after the secrets
+clause named logs and error messages. The category was named and the finding still did not
+appear, so cycle 2 named the pattern instead. The clause now says to check what every log and
+error call passes, and states that passing a whole request, session, user, or config object is a
+finding because the fields inside it are not visible at the call site. The calibration lists that
+pattern as counting.
+
+| Run | Found | False alarms |
+| --- | --- | --- |
+| 1 | 8 of 8 | 0 |
+| 3 | 8 of 8 | 0 |
+| 2 | see below | see below |
+
+Every run reports the log finding, and each gives the reason the instruction supplies: the fields
+inside a passed object are not visible where the call is written.
+
+# The whole bench, in order
+
+| Arm | Found | False alarms |
+| --- | --- | --- |
+| Old prompt | 7.67 | 3.0 |
+| Produced prompt, round 1 | 6.67 | 1.0 |
+| Produced prompt, cycle 1 | 7.0 | 0.0 |
+| Produced prompt, cycle 2 | 8.0 | 0.0 |
+
+The produced hand-off now beats the old prompt on the stated criterion: more planted problems
+found, and fewer false alarms. It took two cycles, and each change was tied to a scored failure
+rather than to an opinion.
+
+## What the bench proved that the audits could not
+
+The audits passed the round 1 prompt every time, because it was consistent with the rules. The
+bench found it telling a competent reviewer not to report a real vulnerability. A scope clause
+that listed injection subtypes made a reviewer file a reflected injection under "noticed but out
+of scope", which is a defect no amount of rule checking can see, because the instruction was
+wrong about the world rather than wrong about the rules.
+
+Two lessons transfer beyond this fixture.
+
+**Define a category by its mechanism, not by a list of its members.** A list invites a reviewer
+to treat anything absent from it as out of scope, and the reviewer will be right to, because that
+is what a list means.
+
+**Name the pattern, not the category, when a finding keeps being missed.** "A secret written to a
+log" did not work. "A whole session object passed to a log call, because the fields inside it are
+not visible at the call site" worked on the first try, three times out of three.
+
+## Cost
+
+Each bench round is six agent runs plus six scoring runs. The runs came in around 50 to 70
+thousand tokens each and the scoring runs around 49 thousand, so a full round of three arms with
+scoring is roughly 350 thousand tokens.
