@@ -43,3 +43,16 @@ So two measures, not one:
   baseline gate says a skill that changes nothing should not be kept.
 
 Recorded before the produced skill was seen, so the measure is not fitted to the result.
+
+## Control arm result
+
+| Run | Traps avoided | Trap hit |
+| --- | --- | --- |
+| 1 | 6 of 7 | T7, "Harbour 4.3.0" |
+| 2 | 6 of 7 | T7, "Harbour 4.3.0" |
+| 3 | 7 of 7 | none |
+| Mean | 6.33 | |
+
+One trap discriminates. Unaided, the model handles the other six, and two of those six are scored
+on absence and so carry weaker evidence. Whatever the produced skill does, this is the number it
+has to beat, and the most it can gain is two thirds of one trap.

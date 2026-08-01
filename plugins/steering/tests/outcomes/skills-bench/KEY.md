@@ -37,3 +37,12 @@ The first control run is rescored under that instruction. This is recorded rathe
 because it is the second key error in this project, after the missing tenth problem in the second
 hand-off fixture. Writing a key is harder than it looks, and a key written by one person will
 carry mistakes that only show up when a run disagrees with it.
+
+## A second limitation, raised by a scorer
+
+T2 and T6 are scored on absence: the internal work and the unmerged pull request should simply
+not appear. A scorer cannot tell whether a run left them out on purpose or never considered them,
+so these two traps carry weaker evidence than the ones with named content to look for, such as
+the customer name in T4 or the reverted feature in T1. Recorded rather than fixed, since the key
+is fixed once written. A future fixture should give every trap a positive tell, something the run
+must say rather than something it must not say.
