@@ -39,9 +39,10 @@ here.
    from the four core statuses there and adding only what a run needs.
 4. **Fill every hole.** Each hole is marked required or given a default, so an unfilled one fails
    loudly rather than reaching the agent as empty text. The set of holes is fixed; do not grow it
-   per caller.
+   per caller, or the template accumulates weight every caller pays for.
 5. **Audit the filled prompt** against `../../shared/steering-rules.md` before anything is sent.
-6. **Dispatch**, naming the model explicitly rather than letting it inherit from this session.
+6. **Dispatch**, naming the model explicitly rather than letting it inherit from this session,
+   so two runs of the same template stay comparable.
 7. **Handle the return** per the status table, and check the report is complete rather than
    re-running what the agent already proved.
 
@@ -63,8 +64,10 @@ goes versus what returns to the caller. Then audit the filled result against
 
 If a fact cannot be established, a required hole has no value, or a rule file cannot be read,
 stop and say what is missing rather than dispatching anyway. Retry a dispatch only after
-something has changed, and at most twice per agent; then report instead. Do not weaken a check,
-loosen a rule, or fill a hole with a placeholder to force a pass; fix the input or stop.
+something has changed, and at most twice per agent, since an unchanged retry repeats the
+failure; then report instead. Do not weaken a check, loosen a rule, or fill a hole with a
+placeholder to force a pass; fix the input or stop. When you stop, keep the established facts
+and any draft prompt, say where they sit, and leave the keep-or-discard call to the person.
 
 ## References
 

@@ -144,3 +144,19 @@ far made the tools sound and proved their outputs differ from unaided work. What
 proving the outputs are better in use: Test 3 in TESTING.md defines that measurement, and no
 output has run it yet. Future changes to the steering content should cite a failing audit, a
 failing comparison, or a failing outcome score, and nothing else.
+
+## Stage 0 before the outcome round, 2026-08-01
+
+- **Hole and field are two things, now defined once.** A hole is a named blank in a template; a
+  field is a named fact the caller establishes before dispatch. dispatch-protocol.md carries the
+  definitions. The rule files already used the right term for the right thing, so no rule
+  changed; the missing piece was the definitions.
+- **Invariant 7 added to the protocol:** an agent that dispatches work collects the result
+  before its own turn ends. Earned by a real stranding, where a runner ended its turn while its
+  worker was still running.
+- **The stop-conditions placement churn is closed by decision, not by edit.** Both skills keep
+  their current placement. The early stop in auditing-skills is a pre-work gate, and
+  writing-agents keeps its method sections together. An auditor that flags the placement is
+  flagging an accepted choice; the finding is expected and does not block.
+- **The last bare directives got their reasons**, and auditing-skills now states in its body the
+  approach that was tried and dropped, prose severity tiers, and why.

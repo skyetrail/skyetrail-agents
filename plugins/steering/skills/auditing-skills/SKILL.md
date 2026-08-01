@@ -94,7 +94,9 @@ not changed, and name the report you compared against.
 | --- | --- | --- |
 
 State the lint result first. Every fail and warn carries evidence, meaning the line or section it
-came from. Then give counts by severity, then the three fixes to make first.
+came from. Then give counts by severity, then the three fixes to make first. The fixed table
+replaced prose severity tiers, which were tried and dropped because two runs could not be
+compared.
 
 Any blocking failure means the file needs work before use. Advisory items are listed once and
 never block.
