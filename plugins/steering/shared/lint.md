@@ -1,18 +1,39 @@
 # Skills lint
 
-The mechanical gate for skills in this plugin. The linter checks that the frontmatter carries no
-YAML hazards, the name format and length and that the name matches its directory, the
-description length, the body line count, and that every reference resolves, in markdown links
-and in backticked relative paths alike. Judgment stays with the rules files; these limits belong
-to the script.
+The mechanical gate for skills. The linter checks that the frontmatter carries no YAML hazards,
+the name format and length and that the name matches its directory, the description length, the
+body line count, and that every reference resolves, in markdown links and in backticked relative
+paths alike. Judgment stays with the rules files; these limits belong to the script.
 
-The linter is built into the repository's README generator and runs from the repository root:
+## Finding the command
 
-- Command: `npm run lint`
+The lint command belongs to the repository being worked in, not to this plugin. Look for it in
+this order.
 
-The same checks run in the pre-commit hook and in CI, so a violation cannot merge. A lint
-failure writes nothing and lists every problem with its file.
+1. The `repo-setup` block in the repository's `AGENTS.md`, which records the command a person
+   confirmed. Where it exists, it is the answer.
+2. `npm run lint`, the default worth trying before anything else. In this plugin's own repository
+   it is the answer, it runs from the repository root, and it is fixed.
+3. Nothing recorded and no `npm run lint`. Use the `repo-setup` skill to establish the command and
+   record it, rather than guessing from what the repository appears to contain.
 
-If this file is read where the repository is not present, such as the plugin installed on its
-own, treat the linter as unavailable: say so in the report and continue with the judgment rules.
-Do not re-derive the mechanical limits by hand and present them as a lint result.
+## When it cannot be run
+
+Two cases, and they are not the same.
+
+Where no lint command exists for this repository, say so in the report and continue with the
+judgment rules. Do not re-derive the mechanical limits by hand and present the result as a lint
+result. Where a person is present, tell them the repository needs a lint command, because every
+skill that leans on this file is working without its mechanical gate until it has one.
+
+Where a command exists but you cannot run it from where you are, which is the usual case for an
+agent scoped to a subdirectory of a repository whose lint runs from the root, report the command
+you could not run and why, then continue with the judgment rules. That is a gap in coverage rather
+than a clean pass, and the report should read that way. Do not run a command whose reach you
+cannot bound in order to avoid reporting the gap.
+
+## In this repository
+
+`npm run lint` runs from the repository root. The same checks run in the pre-commit hook and in
+CI, so a violation cannot merge. A lint failure writes nothing and lists every problem with its
+file.
