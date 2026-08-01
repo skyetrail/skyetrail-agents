@@ -117,8 +117,11 @@ pattern as counting.
 | Run | Found | False alarms |
 | --- | --- | --- |
 | 1 | 8 of 8 | 0 |
+| 2 | 8 of 8 | 0 |
 | 3 | 8 of 8 | 0 |
-| 2 | see below | see below |
+| Mean | 8.0 | 0.0 |
+
+All three runs found every planted problem, avoided every decoy, and invented nothing.
 
 Every run reports the log finding, and each gives the reason the instruction supplies: the fields
 inside a passed object are not visible where the call is written.

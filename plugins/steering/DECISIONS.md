@@ -163,3 +163,25 @@ failing comparison, or a failing outcome score, and nothing else.
   finding.
 - **The last bare directives got their reasons**, and auditing-skills now states in its body the
   approach that was tried and dropped, prose severity tiers, and why.
+
+## Outcome testing, 2026-08-01
+
+The bench ran to the agreed two-cycle minimum and the produced hand-off finished ahead on both
+measures: 8 of 8 planted problems found with no false alarms, against the instruction it replaced
+at 7.67 and 3.0. Nine scored reviews across three rounds, every scorer blind to the fixture.
+
+- **Round 1 was a loss and is recorded as one.** The produced instruction found fewer problems
+  than the one it replaced. Its scope clause listed injection subtypes, and a reviewer that had
+  already found a reflected injection filed it under "noticed but out of scope" because the
+  subtype was not on the list. Every audit round had passed that instruction, because it was
+  consistent with the rules and wrong about the world.
+- **Define a category by its mechanism, not by a list of members.** A list tells a reader that
+  anything absent from it is out of scope, and the reader is right to believe that.
+- **When a finding keeps being missed, name the pattern, not the category.** "A secret written to
+  a log" failed three times out of three. "A whole session object passed to a log call, because
+  the fields inside it are not visible at the call site" worked three times out of three.
+- **The rule that produced all of this stands unchanged:** no steering change without a failing
+  measurement behind it. Both cycles obeyed it, and the one change that did not move a score was
+  recorded as a failure rather than kept for looking sensible.
+- **What is still unmeasured:** the produced skills, as opposed to this one produced hand-off,
+  and any fixture other than this one. One fixture is not proof that the gains generalize.
