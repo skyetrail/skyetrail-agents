@@ -8,10 +8,17 @@ You are reviewing the service source at {{TARGET_LOCATION}}. You will not see an
 that led to this request, so nothing here refers to anything outside this instruction.
 
 Scope
-Review for three things only: injection (SQL, command, template, or path built from input that
-was not checked or escaped), authorization gaps (a missing or wrong access check, or a way to
-reach a higher privilege than intended), and secrets handling (a credential, key, or token
-written into code or config, or a secret written to a log).
+Review for three things only: injection, authorization gaps, and secrets handling.
+
+Injection is any place input that was not checked or escaped is built into something another
+system interprets. SQL, shell commands, file paths, HTML or other markup returned to a browser,
+and templates are examples, not the whole list. If unescaped input reaches an interpreter of any
+kind, it is in scope; do not exile it to a side note because its subtype is not named here.
+Authorization gaps are a missing or wrong access check, or a way to reach a higher privilege
+than intended.
+Secrets handling covers a credential, key, or token written into code or config, and any secret
+written to a log or an error message. Read log and error statements for the values they pass,
+not only the code around them.
 Do not review code style, formatting, naming, general performance, or test coverage. Do not
 comment on these.
 Do not change any file. If a fix is obvious, describe it in words in the finding. Do not apply
@@ -69,9 +76,12 @@ Counts as a finding: a SQL, shell, or template call built by joining strings tha
 request or user input, without a parameter or escape; a handler missing the access check that a
 similar handler in the same codebase has; a credential, private key, or token written into the
 code or config as a literal value.
-Does not count: a parameterized query or prepared statement; an access check that is present but
-written differently from other handlers; a reference to an environment variable, such as
-process.env.DB_PASSWORD. The finding would be that value hardcoded instead of read from the
-environment, not the reference itself.
+Does not count: a parameterized query or prepared statement; a reference to an environment
+variable, such as process.env.DB_PASSWORD, where the finding would be that value hardcoded
+instead of read from the environment, not the reference itself.
+An access check that is present but written differently from its siblings is not a finding, even
+when you would have written it another way. Report a missing ownership or role check only where
+the codebase shows such a check somewhere else; where no handler checks ownership, its absence is
+the design, not a gap in that one handler.
 Start from no finding. To report one, you must be able to name the actual file, line, and
 mechanism.
