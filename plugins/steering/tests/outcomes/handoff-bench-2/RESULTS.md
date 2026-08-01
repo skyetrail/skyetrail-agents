@@ -55,3 +55,32 @@ Apply to secrets the fix that worked for injection. Secrets handling is any plac
 leaves the process or is fixed in the source: written into code or config, written to a log or
 an error, sent to another system, or left able to be forged because the value is known. The
 patterns that keep being missed are named as examples, not as the boundary of the category.
+
+---
+
+# Cycle 3: the mechanism rule applied to secrets
+
+One change, the same shape as the injection fix: secrets handling defined as any place a
+credential is fixed in source or leaves the process, with code, config, logs, network calls, and
+guessable values named as examples rather than as the boundary.
+
+| Arm | Found, per key | False alarms | Real problems found |
+| --- | --- | --- | --- |
+| Old prompt | 8 of 9 | 5 | 9 of 10 |
+| Produced, cycle 2 wording | 7 of 9 | 1 | 8 of 10 |
+| Produced, cycle 3 wording | 8 of 9 | 1 | 9 of 10 |
+
+J6 moved from "noticed but out of scope" into the findings, reported as a high severity secrets
+problem. The one false alarm in each produced-prompt row is the unlisted tenth problem described
+in the key errata, which is a real vulnerability the key does not carry.
+
+On this fixture the produced prompt now matches the old prompt's recall while raising a fifth of
+its false alarms, and its single false alarm is a real finding rather than an invention.
+
+## What this settles
+
+The lesson holds on a second category and a second fixture. Defining a category by its mechanism
+and marking any list of kinds as examples fixed injection in cycle 1 and fixed secrets in cycle
+3. The failure in between was mine: cycle 2 fixed a specific missed case by naming its pattern so
+tightly that the pattern became a new list, and the next fixture found it. Naming a pattern is
+for recognising a case, not for bounding a category, and the two have to be written separately.
