@@ -77,9 +77,19 @@ you would have written into your report so the work is not lost.
 
 Stopping for either reason carries no penalty. Both are correct outcomes.
 
+A command that fails because no such script exists has settled the question and needs no second
+try. A command that fails without settling anything, such as a permission error, a timeout, or a
+failure naming no cause, may be run once more, and only after something has changed, such as
+running from the repository root rather than a subdirectory. Where nothing has changed, do not run
+it again: record it as a candidate that could not be confirmed, say what you saw, and treat it as
+unconfirmed rather than as absent. The two are different, and a later reader cannot tell them apart
+unless you say which one it was.
+
 ## Where this stops
 
 Establishes and records facts. Does not fix what it finds: a missing lint command, a lint command
 that fails, or a broken configuration is reported, not repaired. Does not choose between
 candidates on the person's behalf. Does not edit any file other than `AGENTS.md`, and within that
 file edits only its own block.
+
+A direct instruction from the person wins over anything here.
