@@ -162,3 +162,23 @@ not visible at the call site" worked on the first try, three times out of three.
 Each bench round is six agent runs plus six scoring runs. The runs came in around 50 to 70
 thousand tokens each and the scoring runs around 49 thousand, so a full round of three arms with
 scoring is roughly 350 thousand tokens.
+
+---
+
+# Cycle 3 regression check
+
+Cycle 3 changed the secrets clause to fix a failure found on the second fixture. This run checks
+that the change cost nothing here.
+
+| Arm | Found | False alarms |
+| --- | --- | --- |
+| Produced, cycle 2 wording | 8 of 8 | 0 |
+| Produced, cycle 3 wording | 8 of 8 | 0 |
+
+No regression. The log secrets finding that cycle 2 recovered is still reported under the cycle 3
+wording, which matters because cycle 3 replaced the tightly named log pattern with a broader
+definition and kept the pattern only as an example. Both decoys the report touched were cited as
+evidence of safety rather than flagged as problems.
+
+Running this check is the step that was skipped after cycle 2. Skipping it is why a defect
+introduced by the cycle 2 fix survived until a second fixture found it.
