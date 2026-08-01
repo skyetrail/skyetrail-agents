@@ -22,6 +22,7 @@ For example, in a host that uses slash commands:
 | Skill | Version | Description |
 | --- | --- | --- |
 | `auditing-skills` | 1.0.0 | Audits a skill or an agent prompt against the house rules and reports what to fix, marking each finding blocking, important, or advisory. Use this whenever someone asks to review, check, audit, lint, or sanity-check a skill, a SKILL.md, or a prompt written for a subagent, when they want to know why a skill is not triggering or not being followed, or when a skill is about to ship. |
+| `repo-setup` | 1.0.0 | Establishes the basic facts about the repository an agent is working in, starting with its lint command, and records them in AGENTS.md so no later agent has to work them out again. Use whenever someone asks to set up, configure, or onboard a repository for agent work, asks what the lint or test or build command here is, says an agent could not find the lint command, or when a skill needs a repository fact that has not been recorded yet. Safe to run again at any time. |
 | `writing-agents` | 1.0.0 | Writes the prompt for an agent that will not see the current conversation, along with the caller side that dispatches it and handles what comes back. Use this whenever someone mentions handing work to a subagent, dispatching or spawning agents, writing a prompt or a template for an agent, running work in parallel across several agents, or turning a predefined named agent into something composed at the point of dispatch. Use it even when the word agent is not used, if work is being handed to something that starts with no context. |
 | `writing-skills` | 1.0.0 | Writes a new Agent Skill or fixes an existing one, producing a SKILL.md and its reference files. Use this whenever someone mentions writing, creating, drafting, or improving a skill or a SKILL.md, and also when they ask how to get an agent to do something the same way every time, say a skill is not triggering, or say a skill is being ignored. Use it even when the word skill is not used, if the request is about capturing a repeatable way of working. |
 
@@ -119,10 +120,10 @@ Problems are counted per skill in the order: writing-skills, auditing-skills, wr
 7. **A fix that works can still be the wrong fix.** The wording that recovered the missed finding
    in round 8 named logs specifically. On a second fixture in a different language, that same
    wording made both runs dismiss a password sent over an unverified connection, because it was
-   not a log. The repair had quietly recreated the original fault in a new place. It only showed
-   up because we built a second fixture instead of trusting the first, and the rule we ended up
-   with, describe what makes something a member of a category rather than listing kinds, is now
-   in the shared rules and is the single most load-bearing thing we learned.
+   not a log. The repair had recreated the original fault in a new place, and nobody noticed until
+   we built a second fixture instead of trusting the first. The rule we ended up with, describe
+   what makes something a member of a category rather than listing kinds, is now in the shared
+   rules and is the most useful thing we learned.
 8. **The tools show restraint, which matters as much as coverage.** Told to write a release-notes
    skill, the skill writer ran four comparison runs, found the model already handled six of the
    seven traps we had planted, and taught none of them. It wrote only about the two things that
