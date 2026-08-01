@@ -131,4 +131,7 @@ produced four changes and a caveat.
 - **The "because" clauses the Method rule flagged were added** in writing-skills and
   auditing-skills.
 - **Caveat, recorded rather than fixed:** every measurement so far is sonnet. No cross-model
-  evidence exists, and none is claimed.
+  evidence exists, and none is claimed. Amended later the same day: an opus round put opus in
+  the main-agent role with sonnet workers, exercised all three new patterns untelegraphed, and
+  matched the sonnet record with no divergence. Haiku and version-pinned opus remain
+  unmeasured, and no claim is made about them.
