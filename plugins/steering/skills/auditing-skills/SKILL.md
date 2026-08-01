@@ -39,8 +39,8 @@ A direct instruction from the person wins over anything here.
 
 1. Run the lint command named in `../../shared/lint.md` over the target and record its result,
    so the mechanical limits are settled once and never re-argued in the findings. If none is
-   named or it cannot run, say so in the report rather than silently re-deriving the mechanical
-   limits by hand.
+   named or it cannot run, say so in the report rather than re-deriving the mechanical limits by
+   hand without saying you have done so.
 2. Read the file in full, including every reference file it names.
 3. Work through each rule. Mark it pass, fail, warn, or not applicable. A rule whose condition is
    not met is not applicable, which is not the same as a pass.

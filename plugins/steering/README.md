@@ -120,10 +120,10 @@ Problems are counted per skill in the order: writing-skills, auditing-skills, wr
 7. **A fix that works can still be the wrong fix.** The wording that recovered the missed finding
    in round 8 named logs specifically. On a second fixture in a different language, that same
    wording made both runs dismiss a password sent over an unverified connection, because it was
-   not a log. The repair had quietly recreated the original fault in a new place. It only showed
-   up because we built a second fixture instead of trusting the first, and the rule we ended up
-   with, describe what makes something a member of a category rather than listing kinds, is now
-   in the shared rules and is the single most load-bearing thing we learned.
+   not a log. The repair had recreated the original fault in a new place, and nobody noticed until
+   we built a second fixture instead of trusting the first. The rule we ended up with, describe
+   what makes something a member of a category rather than listing kinds, is now in the shared
+   rules and is the most useful thing we learned.
 8. **The tools show restraint, which matters as much as coverage.** Told to write a release-notes
    skill, the skill writer ran four comparison runs, found the model already handled six of the
    seven traps we had planted, and taught none of them. It wrote only about the two things that
