@@ -188,3 +188,25 @@ at 7.67 and 3.0. Nine scored reviews across three rounds, every scorer blind to 
   recorded as a failure rather than kept for looking sensible.
 - **What is still unmeasured:** the produced skills, as opposed to this one produced hand-off,
   and any fixture other than this one. One fixture is not proof that the gains generalize.
+
+## What the second fixture changed, 2026-08-01
+
+- **Stopping at the agreed minimum was wrong.** The stop rule says to stop when two consecutive
+  cycles fail to move the scores. Cycle 2 moved them by a full finding, so the rule called for
+  another cycle and the round stopped anyway because the agreed minimum had been met. A floor was
+  reported as a finish line.
+- **The cycle 2 fix carried the defect it was fixing.** Naming the log pattern tightly enough to
+  recover that finding turned the pattern into a new implicit list, so a credential sent over an
+  unverified connection read as out of scope on the second fixture. Two independent runs made the
+  same call. Cycle 3 defined secrets by mechanism, in the shape that had already worked for
+  injection, and the finding came back with no cost on the first fixture.
+- **Naming a pattern and bounding a category are different jobs.** A pattern is for recognising a
+  case that keeps being missed. A boundary is for deciding what is in scope. Written in one
+  sentence, the pattern silently becomes the boundary. Both rules in `steering-rules.md` now say
+  this explicitly.
+- **New fixtures teach, repeat rounds on a saturated fixture do not.** Fixture one reached eight
+  of eight after cycle 2 and could not show improvement again. Every defect found since came from
+  new code. Future rounds should spend on a new fixture before another cycle on an old one.
+- **The key was wrong and stayed wrong on purpose.** It omits a real privilege bypass that every
+  arm found and that is therefore counted against every arm. Recorded as errata rather than
+  corrected, because a key edited after seeing the answers stops being a key.

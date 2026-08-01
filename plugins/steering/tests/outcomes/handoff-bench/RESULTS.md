@@ -182,3 +182,22 @@ evidence of safety rather than flagged as problems.
 
 Running this check is the step that was skipped after cycle 2. Skipping it is why a defect
 introduced by the cycle 2 fix survived until a second fixture found it.
+
+---
+
+# Where the whole bench ended
+
+| Arm | Fixture one | Fixture two |
+| --- | --- | --- |
+| Old prompt | 7.67 found, 3.0 false alarms | 8 of 9, 5 false alarms |
+| Produced, round 1 | 6.67, 1.0 | not run |
+| Produced, cycle 1 | 7.0, 0.0 | not run |
+| Produced, cycle 2 | 8 of 8, 0 | 7 of 9, 1 |
+| Produced, cycle 3 | 8 of 8, 0 | 8 of 9, 1 |
+
+Both fixture two false alarms in the produced rows are the same real vulnerability, which the key
+does not list. On the code as it stands, cycle 3 finds nine of ten real problems on fixture two
+and eight of eight on fixture one, and invents nothing on either.
+
+Three rounds of runs, twenty-one scored reviews, one loss, two fixtures, and one error found in
+the key itself.

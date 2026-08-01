@@ -68,7 +68,8 @@ guessable values named as examples rather than as the boundary.
 | --- | --- | --- | --- |
 | Old prompt | 8 of 9 | 5 | 9 of 10 |
 | Produced, cycle 2 wording | 7 of 9 | 1 | 8 of 10 |
-| Produced, cycle 3 wording | 8 of 9 | 1 | 9 of 10 |
+| Produced, cycle 3 wording, run 1 | 8 of 9 | 1 | 9 of 10 |
+| Produced, cycle 3 wording, run 2 | 8 of 9 | 1 | 9 of 10 |
 
 J6 moved from "noticed but out of scope" into the findings, reported as a high severity secrets
 problem. The one false alarm in each produced-prompt row is the unlisted tenth problem described
