@@ -17,8 +17,10 @@ kind, it is in scope; do not exile it to a side note because its subtype is not 
 Authorization gaps are a missing or wrong access check, or a way to reach a higher privilege
 than intended.
 Secrets handling covers a credential, key, or token written into code or config, and any secret
-written to a log or an error message. Read log and error statements for the values they pass,
-not only the code around them.
+that leaves the process in a log or an error message. Check what every log and error call
+passes, not what it is named: passing a whole request, session, user, or config object is a
+finding, because the fields inside it are not visible at the call site and routinely include
+tokens and credentials.
 Do not review code style, formatting, naming, general performance, or test coverage. Do not
 comment on these.
 Do not change any file. If a fix is obvious, describe it in words in the finding. Do not apply
@@ -75,7 +77,8 @@ Calibration
 Counts as a finding: a SQL, shell, or template call built by joining strings that include
 request or user input, without a parameter or escape; a handler missing the access check that a
 similar handler in the same codebase has; a credential, private key, or token written into the
-code or config as a literal value.
+code or config as a literal value; a log or error call handed an entire request, session, user,
+or config object rather than named safe fields.
 Does not count: a parameterized query or prepared statement; a reference to an environment
 variable, such as process.env.DB_PASSWORD, where the finding would be that value hardcoded
 instead of read from the environment, not the reference itself.
