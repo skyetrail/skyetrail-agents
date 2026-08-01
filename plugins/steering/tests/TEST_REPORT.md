@@ -329,3 +329,59 @@ Post-sweep addendum: the lint queue item is closed. The mechanical linter was bu
 repository's README generator, runs as `npm run lint`, fails pre-commit and CI on a violation,
 and `shared/lint.md` names it. References in earlier rounds to an external lint script in a
 separate repository describe what was believed at the time; the generator is the linter.
+
+---
+
+# Re-run with the live lint gate, 2026-07-31
+
+Pete asked for a fresh round after the review changes. Since the adoption sweep: the lint
+command became real (`shared/lint.md` names `npm run lint`, built into the repository's README
+generator), the Method rule was reworded to bound constraints rather than ban them, the plugins
+moved to the Agent Plugins manifest layout, and the sweep's small queue items were deliberately
+left unfixed so this round could measure whether they recur. The description A/B was not re-run
+because all three descriptions are unchanged since the tested variant; the behaviour baselines
+stand as recorded.
+
+Two runs were killed mid-flight by a session usage limit and re-dispatched unchanged after the
+window reset. One of the killed runs had produced a near-complete findings table before dying;
+it is counted below as an extra sample, not as an official run.
+
+## Results
+
+| Target | Adoption sweep | This round | Blocking fails |
+| --- | --- | --- | --- |
+| writing-skills | 1 warn | 1 warn (a different one) | 0 |
+| auditing-skills (self) | 3 warns | 1 blocking fail, 2 warns, 1 advisory | 1, see below |
+| writing-agents | 1 advisory fail, 1 warn | 0 findings | 0 |
+
+## What the round established
+
+**The lint gate ran live in every audit.** Each auditor executed `npm run lint`, recorded the
+pass, and reported line counts as lint-confirmed instead of unverified. The sweep's
+blocking-severity item (a named check the agent could not run) and the writing-skills
+line-count warn are both closed by execution, not by argument.
+
+**The reworded Method rule behaves well.** Two different auditors applied it the same way,
+flagging constraints that state no reason (two spots in writing-skills, two in
+auditing-skills), and it passed where rationale exists inline or one hop away
+(writing-agents). A rule change shipped in review produced consistent, small, actionable
+findings on its first field test.
+
+**Reproducibility, honestly scored.** The self-audit's one blocking fail cites this plugin's
+own baseline record, which said the round-3 fail-versus-warn discriminator had not yet been
+re-verified. This round supplies the verification the finding asks for: across the sweep, this
+round, and the interrupted extra sample, severity-level calls never moved on any target, and
+every remaining divergence was a pass-versus-warn flip on an advisory or minor row (the
+writing-agents extra sample flagged three such rows that the official run passed). The
+baseline record now carries that result, which resolves the finding on its own terms. Margin
+wobble persists and is documented; the calls that gate shipping are stable.
+
+## Queue after this round
+
+- Add the missing "because" clauses the Method rule flagged: writing-skills step 3 and its
+  gate line, and the two procedural imperatives in auditing-skills' workflow.
+- auditing-skills: state in the body the approaches already tried and rejected (prose severity
+  tiers), which today live only in the unlinked baseline record; and the recurring advisory
+  position note.
+- The known borderline rows (hole wording, section adjacency in writing-agents) passed the
+  official run this round and stay on watch rather than on the fix list.

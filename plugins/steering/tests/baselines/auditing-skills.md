@@ -33,5 +33,8 @@ resolving and staying resolved.
 
 Rule application comes free once the rules are reachable from the target. The skill's value is
 the calibration, the fixed comparable report, the severity counts, and the out-of-scope stop.
-Known limit, observed both rounds: the fail-versus-warn line varies between runs; a
-discriminator line was added to Calibration in round 3 and has not yet been re-verified.
+The discriminator added in round 3 was re-verified in the 2026-07-31 re-run round. Across the
+adoption sweep, the re-run, and one interrupted extra sample, severity-level calls were stable
+on every target, and all remaining variance was confined to pass-versus-warn calls on advisory
+and minor rows, at most three rows between any two runs of the same target. The margin wobble
+is real and recorded; the calls that gate shipping did not move.
