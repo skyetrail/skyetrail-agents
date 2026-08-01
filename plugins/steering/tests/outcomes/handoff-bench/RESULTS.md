@@ -55,3 +55,50 @@ One change per cycle, then re-run and re-score.
 
 Item 1 is the one the evidence supports most strongly, since it is the only case where the
 instruction demonstrably suppressed a correct finding.
+
+---
+
+# Cycle 1: one change, three runs
+
+The round 1 evidence pointed at three edits: define injection by mechanism with subtypes as
+examples rather than a closed list, name logs and error messages in the secrets clause, and turn
+the decoy example into an instruction with a test. All three went in, then three fresh runs on
+the same fixture with the same model, scored the same way.
+
+| Run | Found | False alarms |
+| --- | --- | --- |
+| 1 | 7 of 8 | 0 |
+| 2 | 7 of 8 | 0 |
+| 3 | 7 of 8 | 0 |
+| Mean | 7.0 | 0.0 |
+
+| Arm | Found | False alarms |
+| --- | --- | --- |
+| Old prompt, round 1 | 7.67 | 3.0 |
+| Produced prompt, round 1 | 6.67 | 1.0 |
+| Produced prompt, cycle 1 | 7.0 | 0.0 |
+
+Every arm returned the same numbers, which is itself worth noting: three independent runs of the
+revised instruction agreed exactly, where round 1 varied by two findings across its runs.
+
+## What moved
+
+**The scope fix worked.** All three runs report the reflected injection as a finding. In round 3
+of the previous round the same prompt had filed that same defect under "noticed but out of
+scope" because its subtype was not on the list. Defining the category by mechanism removed the
+suppression.
+
+**The decoy fix worked.** No run flagged the differently styled authorization check. Every run in
+both arms of round 1 flagged it, six times out of six. Turning the calibration example into an
+instruction with a test changed the behaviour completely.
+
+**The log fix did not work.** Secrets written to a log is still missed in all three runs, even
+though the secrets clause now names logs and error messages explicitly. Naming the category was
+not enough.
+
+## Where it stands against the old prompt
+
+The produced prompt now finds within one of the old prompt's average while raising zero false
+alarms against its three. It still does not beat it on the stated criterion, which is more found
+without more false alarms, because 7.0 is below 7.67. One planted problem separates them, and it
+is the same one in every run.
