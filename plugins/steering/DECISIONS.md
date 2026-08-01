@@ -261,3 +261,22 @@ Not fixed here. Pete has said he will supply the real lint command later, and th
 the fix depends on what that command turns out to be: a check that reads only the target file can
 be named as such and run from anywhere, whereas a whole-repository build-and-compare cannot. Worth
 raising with him when the command lands, rather than guessing now and having the guess baked in.
+
+## The skills bench blind was broken, 2026-08-01
+
+Every run file in the skills bench opens with a line naming its arm, so all six scorers knew whether
+they held a control run or a produced-skill run. Caught by the third scorer, which was not asked to
+look for it and flagged the header as harness labelling it had treated as non-content.
+
+Left as recorded rather than rescored. The traps are mechanically checkable, every scorer quoted the
+words that decided each call, and the deciding trap can be confirmed by eye: the control runs say
+"Harbour 4.3.0" and the produced runs say "[VERSION]". Rescoring with the same key and the same
+model would reproduce the same mechanical calls and buy confidence the design does not deserve.
+
+For any later bench, a run file carries an opaque identifier and the mapping from identifier to arm
+lives where the scorer cannot read it.
+
+Third method error in this project, after the missing tenth problem in the second hand-off fixture
+and the wrong T7 wording in this key. Every one was found by a worker disagreeing with the harness,
+never by the harness checking itself. Whatever else the benches have shown, they have shown that
+consistently.
