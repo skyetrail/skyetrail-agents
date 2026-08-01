@@ -241,3 +241,23 @@ make the skill worse to follow.
 important 0, advisory 1, that being the accepted placement item. All three skills are now verified
 against the rules as they currently stand, which was not true at any earlier point this session,
 because every rule change since the first audit had gone unchecked against the files that carry it.
+
+## The lint step degrades quietly for a scoped agent, 2026-08-01
+
+The agent producing the bench skill declined to run the lint command and said why: it was scoped
+to one directory, and `shared/lint.md` names a command that runs from the repository root. From
+inside that scope it could not bound what a repository-wide command would read, including files
+the bench forbids it to read, or what the generator side of it would write. It followed the
+fallback in `lint.md`, declared the linter unavailable, and did not re-derive the mechanical checks
+by hand as a substitute. That is exactly the instructed behaviour and the fallback earned its keep.
+
+The finding is about our steering, not about that agent. Any agent working under a directory scope,
+which is the normal shape of a dispatched worker, will land in this branch every time. So the
+mechanical checks that `writing-skills` step 7 and `auditing-skills` step 1 both lean on are, for
+dispatched work, usually not run at all. Both skills then proceed on the honest but weaker footing
+of a hand audit that has been told not to re-derive what the linter would have settled.
+
+Not fixed here. Pete has said he will supply the real lint command later, and the right shape of
+the fix depends on what that command turns out to be: a check that reads only the target file can
+be named as such and run from anywhere, whereas a whole-repository build-and-compare cannot. Worth
+raising with him when the command lands, rather than guessing now and having the guess baked in.
