@@ -236,3 +236,8 @@ The placement advisory stands and is accepted. The auditor is right that stating
 position does not change the position, so the finding will recur. It never blocks, the reasoning
 is in the body where an auditor can read it, and moving pre-work gates away from the top would
 make the skill worse to follow.
+
+**Confirmed.** The re-audit after the fix retired both findings and raised nothing new: blocking 0,
+important 0, advisory 1, that being the accepted placement item. All three skills are now verified
+against the rules as they currently stand, which was not true at any earlier point this session,
+because every rule change since the first audit had gone unchecked against the files that carry it.
