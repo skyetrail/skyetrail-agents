@@ -90,3 +90,25 @@ can say whether you agree with the findings. Start there.
 Point `auditing-skills` at the other two skills and at itself. It costs one command, it exercises
 the calibration, and the failure it catches is the one that matters most. An auditor that returns
 twenty findings on a 59 line skill is too aggressive and will be abandoned within a month.
+
+---
+
+## Test 3: outcomes
+
+Test 2 shows a tool changes what an agent does. Test 3 shows the change is an improvement. Run
+it once the first two pass.
+
+For a hand-off produced by `writing-agents`: seed a small fixture repository with a known set of
+problems, written into an answer key before any run. Dispatch the old instruction and the
+tool-produced instruction against the same fixture with the same worker model, at least three
+runs each, since single runs vary. Score every review against the key: problems found, problems
+missed, false alarms. The produced hand-off wins only if it finds more of the planted problems
+without raising more false alarms.
+
+For a skill produced by `writing-skills`: same shape. One agent gets the produced skill, another
+gets the plain request, on a fixture task with known traps. Score the completed work against the
+key, not the wording of the output.
+
+Two rules keep the scores honest. The answer key never appears in any prompt. Whoever scores a
+run is not the agent that ran it, and counting against the key is script work where a script can
+do it.

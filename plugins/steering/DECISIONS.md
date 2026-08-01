@@ -135,3 +135,12 @@ produced four changes and a caveat.
   the main-agent role with sonnet workers, exercised all three new patterns untelegraphed, and
   matched the sonnet record with no divergence. Haiku and version-pinned opus remain
   unmeasured, and no claim is made about them.
+
+## The goal, restated, 2026-08-01
+
+The mission is not the three skill files. They are tools, and the goal is that what they produce,
+new skills and agent hand-offs, is the best it can be on current Anthropic models. The rounds so
+far made the tools sound and proved their outputs differ from unaided work. What remains is
+proving the outputs are better in use: Test 3 in TESTING.md defines that measurement, and no
+output has run it yet. Future changes to the steering content should cite a failing audit, a
+failing comparison, or a failing outcome score, and nothing else.

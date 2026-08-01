@@ -32,9 +32,13 @@ the same way every time. This plugin holds three of them: one for writing new sk
 checking a skill or an agent instruction against our written rules, and one for handing work to
 a second agent that starts with no memory of the conversation.
 
-The goal was not just to write these files. It was to prove, with tests, that each one changes
-what an agent actually does. An instruction file that changes nothing is dead weight, so
-evidence was the requirement from the start.
+These three are tools, and the goal is what they produce. When an agent uses them, the new
+skills and the hand-off instructions that come out should be the best they can be on current
+Anthropic models. Everything below serves that aim in two steps. First, make the tools
+themselves sound: the rules they apply come from real failures we observed, and every output is
+checked against those rules before it ships. Second, prove the outputs are better in use, by
+running them and scoring the work they lead to. The rounds below completed the first step and
+took one measurement of the second; the outcome tests described at the end are the rest of it.
 
 ## What we did
 
@@ -94,13 +98,19 @@ Problems are counted per skill in the order: writing-skills, auditing-skills, wr
 4. **The final state is clean.** No skill has a problem serious enough to block use, each one
    has a recorded before-and-after comparison proving it changes behaviour, and the behaviours
    hold with either model in charge.
+5. **The outputs are proven changed, not yet proven best.** Each tool's output was compared
+   once with and without the tool, and checked against the rules. No output has yet been run to
+   score the work it leads to. That is the next test, and it is written down in the testing
+   notes.
 
 ## Limits of the evidence
 
 The worker runs used Sonnet and the final round used Opus in charge. The small model (Haiku)
 and older Opus versions were not measured, and we claim nothing about them. On minor items,
 two runs of the same check can still differ; that is measured, small, and does not affect
-whether a file is judged fit for use.
+whether a file is judged fit for use. The outputs the tools produced were judged against our
+rules and compared once each against unaided runs; none has yet been executed to measure the
+downstream work, which is what the planned outcome tests cover.
 
 ## Where the detail lives
 
