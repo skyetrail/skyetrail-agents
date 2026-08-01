@@ -144,3 +144,139 @@ far made the tools sound and proved their outputs differ from unaided work. What
 proving the outputs are better in use: Test 3 in TESTING.md defines that measurement, and no
 output has run it yet. Future changes to the steering content should cite a failing audit, a
 failing comparison, or a failing outcome score, and nothing else.
+
+## Stage 0 before the outcome round, 2026-08-01
+
+- **Hole and field are two things, now defined once.** A hole is a named blank in a template; a
+  field is a named fact the caller establishes before dispatch. dispatch-protocol.md carries the
+  definitions. The rule files already used the right term for the right thing, so no rule
+  changed; the missing piece was the definitions.
+- **Invariant 7 added to the protocol:** an agent that dispatches work collects the result
+  before its own turn ends. Earned by a real stranding, where a runner ended its turn while its
+  worker was still running.
+- **The stop-conditions placement churn is closed, and the reasoning is visible to auditors.**
+  The first attempt recorded the decision here, which auditors are told not to read, so the
+  finding would have recurred forever. Fixed properly instead: writing-agents moves "When to
+  stop" directly after the workflow, which satisfies the rule, and auditing-skills states in its
+  own body why its stop conditions sit early, since they are pre-work gates that decide whether
+  the audit starts at all. A decision an auditor cannot see is not a decision; it is a repeat
+  finding.
+- **The last bare directives got their reasons**, and auditing-skills now states in its body the
+  approach that was tried and dropped, prose severity tiers, and why.
+
+## Outcome testing, 2026-08-01
+
+The bench ran to the agreed two-cycle minimum and the produced hand-off finished ahead on both
+measures: 8 of 8 planted problems found with no false alarms, against the instruction it replaced
+at 7.67 and 3.0. Nine scored reviews across three rounds, every scorer blind to the fixture.
+
+- **Round 1 was a loss and is recorded as one.** The produced instruction found fewer problems
+  than the one it replaced. Its scope clause listed injection subtypes, and a reviewer that had
+  already found a reflected injection filed it under "noticed but out of scope" because the
+  subtype was not on the list. Every audit round had passed that instruction, because it was
+  consistent with the rules and wrong about the world.
+- **Both lessons are now rules in `steering-rules.md`, not slogans here.** The first draft of
+  this entry recorded them only in these notes and the test results, which no agent reads. That
+  is the same mistake as recording an accepted audit finding where auditors cannot see it. Scope
+  gained a blocking rule that a named category must define membership and mark any list of kinds
+  as examples. Calibration gained an important rule that a missed case is described by the shape
+  it takes in the code rather than the label it falls under. Each carries the bad wording, the
+  good wording, and the measured result, and the two skills point at them where an author writes
+  scope and addresses failures.
+- **The rule that produced all of this stands unchanged:** no steering change without a failing
+  measurement behind it. Both cycles obeyed it, and the one change that did not move a score was
+  recorded as a failure rather than kept for looking sensible.
+- **What is still unmeasured:** the produced skills, as opposed to this one produced hand-off,
+  and any fixture other than this one. One fixture is not proof that the gains generalize.
+
+## What the second fixture changed, 2026-08-01
+
+- **Stopping at the agreed minimum was wrong.** The stop rule says to stop when two consecutive
+  cycles fail to move the scores. Cycle 2 moved them by a full finding, so the rule called for
+  another cycle and the round stopped anyway because the agreed minimum had been met. A floor was
+  reported as a finish line.
+- **The cycle 2 fix carried the defect it was fixing.** Naming the log pattern tightly enough to
+  recover that finding turned the pattern into a new implicit list, so a credential sent over an
+  unverified connection read as out of scope on the second fixture. Two independent runs made the
+  same call. Cycle 3 defined secrets by mechanism, in the shape that had already worked for
+  injection, and the finding came back with no cost on the first fixture.
+- **Naming a pattern and bounding a category are different jobs.** A pattern is for recognising a
+  case that keeps being missed. A boundary is for deciding what is in scope. Written in one
+  sentence, the pattern silently becomes the boundary. Both rules in `steering-rules.md` now say
+  this explicitly.
+- **New fixtures teach, repeat rounds on a saturated fixture do not.** Fixture one reached eight
+  of eight after cycle 2 and could not show improvement again. Every defect found since came from
+  new code. Future rounds should spend on a new fixture before another cycle on an old one.
+- **The key was wrong and stayed wrong on purpose.** It omits a real privilege bypass that every
+  arm found and that is therefore counted against every arm. Recorded as errata rather than
+  corrected, because a key edited after seeing the answers stops being a key.
+
+## The new Scope rule caught our own file, 2026-08-01
+
+The re-audit after the rule change found a blocking failure in `auditing-skills` itself. Its
+"Which rules apply" section listed "a command, a hand-off brief, or a one-off request", a bare
+list of kinds with no membership test, which is the exact shape the new Scope rule prohibits and
+the exact shape of the bad example written beside that rule. A runbook or a style guide would have
+fallen through to the out-of-scope branch and been refused.
+
+Two things worth keeping from that.
+
+- **The rule is real, not a slogan.** It was written from bench evidence about prompts, added to
+  the shared rules, and the first audit run after it immediately failed the file of the skill that
+  applies it. A rule that only ever catches other people's work is a rule nobody has tested.
+- **The verification debt was worth clearing.** This finding existed the moment the rule landed
+  and would have shipped unnoticed if the audit had been skipped, exactly as the cycle 2 defect
+  shipped when the regression check was skipped. That is twice in one project that the skipped
+  check was the one that mattered.
+
+Also fixed: the calibration section now says a sibling skill named by its name is a working
+reference, closing a miss the baseline record had carried since the first round.
+
+The placement advisory stands and is accepted. The auditor is right that stating a reason for a
+position does not change the position, so the finding will recur. It never blocks, the reasoning
+is in the body where an auditor can read it, and moving pre-work gates away from the top would
+make the skill worse to follow.
+
+**Confirmed.** The re-audit after the fix retired both findings and raised nothing new: blocking 0,
+important 0, advisory 1, that being the accepted placement item. All three skills are now verified
+against the rules as they currently stand, which was not true at any earlier point this session,
+because every rule change since the first audit had gone unchecked against the files that carry it.
+
+## The lint step degrades quietly for a scoped agent, 2026-08-01
+
+The agent producing the bench skill declined to run the lint command and said why: it was scoped
+to one directory, and `shared/lint.md` names a command that runs from the repository root. From
+inside that scope it could not bound what a repository-wide command would read, including files
+the bench forbids it to read, or what the generator side of it would write. It followed the
+fallback in `lint.md`, declared the linter unavailable, and did not re-derive the mechanical checks
+by hand as a substitute. That is exactly the instructed behaviour and the fallback earned its keep.
+
+The finding is about our steering, not about that agent. Any agent working under a directory scope,
+which is the normal shape of a dispatched worker, will land in this branch every time. So the
+mechanical checks that `writing-skills` step 7 and `auditing-skills` step 1 both lean on are, for
+dispatched work, usually not run at all. Both skills then proceed on the honest but weaker footing
+of a hand audit that has been told not to re-derive what the linter would have settled.
+
+Not fixed here. Pete has said he will supply the real lint command later, and the right shape of
+the fix depends on what that command turns out to be: a check that reads only the target file can
+be named as such and run from anywhere, whereas a whole-repository build-and-compare cannot. Worth
+raising with him when the command lands, rather than guessing now and having the guess baked in.
+
+## The skills bench blind was broken, 2026-08-01
+
+Every run file in the skills bench opens with a line naming its arm, so all six scorers knew whether
+they held a control run or a produced-skill run. Caught by the third scorer, which was not asked to
+look for it and flagged the header as harness labelling it had treated as non-content.
+
+Left as recorded rather than rescored. The traps are mechanically checkable, every scorer quoted the
+words that decided each call, and the deciding trap can be confirmed by eye: the control runs say
+"Harbour 4.3.0" and the produced runs say "[VERSION]". Rescoring with the same key and the same
+model would reproduce the same mechanical calls and buy confidence the design does not deserve.
+
+For any later bench, a run file carries an opaque identifier and the mapping from identifier to arm
+lives where the scorer cannot read it.
+
+Third method error in this project, after the missing tenth problem in the second hand-off fixture
+and the wrong T7 wording in this key. Every one was found by a worker disagreeing with the harness,
+never by the harness checking itself. Whatever else the benches have shown, they have shown that
+consistently.

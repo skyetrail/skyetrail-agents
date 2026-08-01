@@ -18,7 +18,14 @@ One caution. An agent that cannot find something says so, while a script often r
 result, which reads as nothing to do. State what an empty result means and whether it is
 expected.
 
-## Six invariants
+## Two terms
+
+A hole is a named blank in a prompt template. A field is a named fact in the record the caller
+establishes before dispatch. Filling a template writes field values into holes. The two
+correspond, and they are not the same thing: fields exist before any template, and a template
+need not use every field.
+
+## Seven invariants
 
 1. The facts the prompt asserts are established before dispatch, and each carries its origin.
    Neither a script nor an agent is needed for what the caller already knows.
@@ -32,6 +39,8 @@ expected.
 6. What happens to partial work when a run stops is stated. The default is to keep it, name its
    location in the report, and leave the decision to a person. Do not revert automatically, since
    partial work that passes its own gates is often worth keeping.
+7. An agent that dispatches work collects the result before its own turn ends. A dispatched task
+   with no collected result is unfinished work, not a hand-off.
 
 ## Statuses
 
@@ -59,8 +68,8 @@ to be stated.
 
 Additions are allowed and are declared in the template rather than invented per call. A
 template's status set is fixed and documented, so two dispatch types can share a caller and their
-reports can be merged. The same holds for a template's field set: fixed and documented, so it
-does not accumulate fields most callers never fill.
+reports can be merged. The same holds for the set of fields a template's callers establish:
+fixed and documented, so it does not accumulate fields most callers never fill.
 
 Write the caller's obligation for each status into the artifact that runs the work. Held as a
 convention rather than written down, they are not a protocol.

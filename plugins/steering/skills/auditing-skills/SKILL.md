@@ -11,12 +11,16 @@ Produces a findings list ordered by severity, and the three things to fix first.
 
 - A SKILL.md. Use `../../shared/skill-rules.md` and `../../shared/steering-rules.md`.
 - A prompt written for a subagent. Use `../../shared/steering-rules.md` only.
-- A command, a hand-off brief, or a one-off request. Use `../../shared/steering-rules.md` only, with
-  the conditions that match how the document will be used.
+- Anything else written to shape what an agent does. A command, a hand-off brief, a runbook, and a
+  one-off request are examples, not the whole list. If a person wrote it to steer an agent, it
+  belongs here. Use `../../shared/steering-rules.md` only, with the conditions that match how the
+  document will be used.
 
 If the target is none of these, stop and report it as out of scope, saying what the file appears
 to be. Do not force the rules onto it. If the target or a rule file cannot be read, stop and
-report that instead of auditing from memory.
+report that instead of auditing from memory. These stop conditions sit here, ahead of the
+workflow, rather than beside the report, because they are pre-work gates: they decide whether
+the audit starts at all.
 
 ## Where this stops
 
@@ -64,6 +68,8 @@ These are not findings.
 - A heading you would have named something else.
 - A missing section the task did not need.
 - A stylistic preference with no effect on behaviour.
+- A sibling skill named by its name, such as `writing-skills`. A skill name is how this plugin
+  resolves a skill, so it is a working reference and not an unresolvable nickname.
 
 The default outcome is pass. Escalate only when you can say what an agent would do wrong because
 of it. Fail means the rule is broken and you can point at where. Warn means you cannot tell from
@@ -94,7 +100,9 @@ not changed, and name the report you compared against.
 | --- | --- | --- |
 
 State the lint result first. Every fail and warn carries evidence, meaning the line or section it
-came from. Then give counts by severity, then the three fixes to make first.
+came from. Then give counts by severity, then the three fixes to make first. The fixed table
+replaced prose severity tiers, which were tried and dropped because two runs could not be
+compared.
 
 Any blocking failure means the file needs work before use. Advisory items are listed once and
 never block.
