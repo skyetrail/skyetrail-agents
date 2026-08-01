@@ -29,3 +29,20 @@ and a different spread of problems. Three entries exist to test rules added afte
 | E2 | app/store.py | adjust_qty | Parameterized update. |
 | E3 | app/settings.py | DB_DSN | Read from the environment, not hardcoded. |
 | E4 | app/auth.py | login_required and manager_required | Two decorators written in different styles from each other, both correct. Reporting the style difference as a gap is a false alarm. |
+
+## Key errata, recorded after the first runs
+
+The key is fixed once written, so these are recorded rather than corrected, and they bound what
+the scores mean.
+
+- **A tenth problem exists that the key does not list.** `bulk_import` performs the same mutation
+  as `adjust`, which is gated by `manager_required`, while `bulk_import` itself is only
+  `login_required`. Every arm found it. Under the mapping rule it scores as a false alarm in each
+  report, which is wrong about the code and right about the procedure. The lesson is that a
+  false-alarm count measures agreement with the key, not correctness, and a key written by one
+  person will miss things a reviewer finds.
+- **J9 competes with that unlisted problem.** Both are authorization findings in views.py that
+  lean on the same comparator, `adjust`'s manager_required. Reviewers reported the stronger of the
+  two, the privilege bypass, and passed over the weaker one, the unrestricted read. J9 was
+  intended to test whether a real gap is reported where a comparator exists; the unlisted problem
+  answers that question in the affirmative even though J9 scores as missed.
