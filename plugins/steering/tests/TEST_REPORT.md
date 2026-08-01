@@ -385,3 +385,39 @@ wobble persists and is documented; the calls that gate shipping are stable.
   position note.
 - The known borderline rows (hole wording, section adjacency in writing-agents) passed the
   official run this round and stay on watch rather than on the fix list.
+
+---
+
+# Opus main-agent round, 2026-07-31
+
+Every earlier measurement used sonnet in the skill-following role. The target environment's
+main agent is opus class, so this round put opus in that role: three opus runners, each loading
+a skill and following it, with any workers they dispatch pinned to sonnet so the orchestrator is
+the only changed variable. No prompt named the features under test; whether the runner
+discovered and applied them is what was measured. This round also served as the verification
+for the four class-5 changes.
+
+| Test | Feature under test | Result |
+| --- | --- | --- |
+| Ship-decision audit of writing-agents | Two-audit ensemble, positive case | Pass. The runner triggered the ensemble from "gates adoption" alone, ran one arm itself, dispatched the other to sonnet and withheld its own findings from it, then reconciled per the rule: one both-audit finding, two single-audit warns carrying both readings. Zero fails. |
+| Re-audit of auditing-skills with the prior report supplied | Delta mode, plus the ensemble negative case | Pass. A differences-only report naming the compared report: three prior findings retired with line-level evidence, one confirmed unchanged, no rows re-derived, and the ensemble correctly declined because nothing gated a release. |
+| Small wording fix to writing-agents | Proportionality path | Pass. The runner quoted the small-change clause, skipped the baseline loop, ran step 7 alone (lint plus one sonnet audit, 44 pass, 0 fail, 1 pre-existing advisory), unified on "hole", and recorded that the baseline was not repeated. |
+
+Integrity observations, all unprompted: the ensemble runner disclosed that it had messaged its
+worker with a wrong premise, and the sonnet worker declined the false premise and delivered its
+original report unchanged; the runner also disclosed two scope brushes by its worker with an
+impact assessment for each. The proportionality runner flagged, without touching, the same
+hole-versus-field ambiguity in the shared files, and noted that steering-rules.md line 128 may
+use "fields" for a genuinely different thing, the fact records that fill a template. That
+follow-up is queued, not fixed.
+
+Environment notes: the first ensemble attempt stranded when the runner ended its turn while
+waiting on its dispatched worker, and a resume died with the machine asleep; the retry added
+one rig instruction to collect dispatched results before finishing, which does not touch the
+feature-trigger decision. The ensemble costs roughly twice a single audit plus reconciliation,
+about 109k tokens here.
+
+Verdict: three for three, no divergence from the sonnet record anywhere in skill-following. Per
+the escalation rule agreed before the round, the version-pinned opus check is not spent. The
+caveat that all evidence was sonnet is retired for the main-agent role; haiku and version-pinned
+opus remain unmeasured, and no claim is made about them.

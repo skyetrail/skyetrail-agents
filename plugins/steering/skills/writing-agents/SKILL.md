@@ -37,8 +37,8 @@ here.
 3. **Name the statuses** and the caller's obligation for each, along with the retry limit and
    what happens to partial work when a run stops. See `../../shared/dispatch-protocol.md`, starting
    from the four core statuses there and adding only what a run needs.
-4. **Fill every hole.** Each is marked required or given a default, so an unfilled one fails
-   loudly rather than reaching the agent as empty text. The field set is fixed; do not grow it
+4. **Fill every hole.** Each hole is marked required or given a default, so an unfilled one fails
+   loudly rather than reaching the agent as empty text. The set of holes is fixed; do not grow it
    per caller.
 5. **Audit the filled prompt** against `../../shared/steering-rules.md` before anything is sent.
 6. **Dispatch**, naming the model explicitly rather than letting it inherit from this session.

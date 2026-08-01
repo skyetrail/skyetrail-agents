@@ -31,3 +31,17 @@ Steps that could not run in the test environment were named rather than skipped.
 The model composes good prompts unaided. The caller side, which is the half the skill and
 dispatch-protocol.md define, does not appear without the skill and appears nearly in full with
 it. The skill changes behaviour and earns its place.
+
+## Wording change, 2026-07-31
+
+Workflow step 4 now says "hole" for the template's named blanks in both of its sentences, where
+it used to switch to "field" in the second one. Reviewers were reading the two words as two
+different things. This is wording only and does not change what the skill claims to do, so it
+took the small-change path in `writing-skills`: step 7 alone, and the baseline was not repeated.
+
+`npm run lint` from the repository root passed. One audit on model sonnet worked through
+`shared/skill-rules.md` and `shared/steering-rules.md` and returned no failures. It raised one
+advisory warning that predates this change, which is that the stop conditions do not sit directly
+after the finish check, because the section on converting a named agent sits between them. It
+confirmed that no coverage was lost and that nothing in the file still reads as if "field" and
+"hole" are two things.
