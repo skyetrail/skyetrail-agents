@@ -11,8 +11,10 @@ Produces a findings list ordered by severity, and the three things to fix first.
 
 - A SKILL.md. Use `../../shared/skill-rules.md` and `../../shared/steering-rules.md`.
 - A prompt written for a subagent. Use `../../shared/steering-rules.md` only.
-- A command, a hand-off brief, or a one-off request. Use `../../shared/steering-rules.md` only, with
-  the conditions that match how the document will be used.
+- Anything else written to shape what an agent does. A command, a hand-off brief, a runbook, and a
+  one-off request are examples, not the whole list. If a person wrote it to steer an agent, it
+  belongs here. Use `../../shared/steering-rules.md` only, with the conditions that match how the
+  document will be used.
 
 If the target is none of these, stop and report it as out of scope, saying what the file appears
 to be. Do not force the rules onto it. If the target or a rule file cannot be read, stop and
@@ -66,6 +68,8 @@ These are not findings.
 - A heading you would have named something else.
 - A missing section the task did not need.
 - A stylistic preference with no effect on behaviour.
+- A sibling skill named by its name, such as `writing-skills`. A skill name is how this plugin
+  resolves a skill, so it is a working reference and not an unresolvable nickname.
 
 The default outcome is pass. Escalate only when you can say what an agent would do wrong because
 of it. Fail means the rule is broken and you can point at where. Warn means you cannot tell from

@@ -210,3 +210,29 @@ at 7.67 and 3.0. Nine scored reviews across three rounds, every scorer blind to 
 - **The key was wrong and stayed wrong on purpose.** It omits a real privilege bypass that every
   arm found and that is therefore counted against every arm. Recorded as errata rather than
   corrected, because a key edited after seeing the answers stops being a key.
+
+## The new Scope rule caught our own file, 2026-08-01
+
+The re-audit after the rule change found a blocking failure in `auditing-skills` itself. Its
+"Which rules apply" section listed "a command, a hand-off brief, or a one-off request", a bare
+list of kinds with no membership test, which is the exact shape the new Scope rule prohibits and
+the exact shape of the bad example written beside that rule. A runbook or a style guide would have
+fallen through to the out-of-scope branch and been refused.
+
+Two things worth keeping from that.
+
+- **The rule is real, not a slogan.** It was written from bench evidence about prompts, added to
+  the shared rules, and the first audit run after it immediately failed the file of the skill that
+  applies it. A rule that only ever catches other people's work is a rule nobody has tested.
+- **The verification debt was worth clearing.** This finding existed the moment the rule landed
+  and would have shipped unnoticed if the audit had been skipped, exactly as the cycle 2 defect
+  shipped when the regression check was skipped. That is twice in one project that the skipped
+  check was the one that mattered.
+
+Also fixed: the calibration section now says a sibling skill named by its name is a working
+reference, closing a miss the baseline record had carried since the first round.
+
+The placement advisory stands and is accepted. The auditor is right that stating a reason for a
+position does not change the position, so the finding will recur. It never blocks, the reasoning
+is in the body where an auditor can read it, and moving pre-work gates away from the top would
+make the skill worse to follow.
