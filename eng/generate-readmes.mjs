@@ -283,7 +283,7 @@ function pluginReadme(plugin) {
     lines.push(plugin.summary.trim(), "");
   }
 
-  if (plugin.hasTests) {
+  if (plugin.hasTests && !plugin.summary) {
     lines.push("## Evidence", "");
     lines.push(
       "The skills in this plugin were tested before adoption: baseline comparisons with and without each skill loaded, audit rounds against the shared rules, and a description A/B. The full narrative is in [TEST_REPORT.md](tests/TEST_REPORT.md), and the per-skill baseline records are in [tests/baselines/](tests/baselines/).",

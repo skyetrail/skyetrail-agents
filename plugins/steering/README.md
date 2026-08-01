@@ -107,10 +107,6 @@ whether a file is judged fit for use.
 The full round-by-round narrative is in [TEST_REPORT.md](tests/TEST_REPORT.md), and the
 before-and-after comparison for each skill is in [tests/baselines/](tests/baselines/).
 
-## Evidence
-
-The skills in this plugin were tested before adoption: baseline comparisons with and without each skill loaded, audit rounds against the shared rules, and a description A/B. The full narrative is in [TEST_REPORT.md](tests/TEST_REPORT.md), and the per-skill baseline records are in [tests/baselines/](tests/baselines/).
-
 ## License
 
 MIT. Part of the [skyetrail-agents](https://github.com/skyetrail/skyetrail-agents) plugin collection from Skyetrail.
