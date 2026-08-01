@@ -82,6 +82,9 @@ Problems are counted per skill in the order: writing-skills, auditing-skills, wr
 | 4 | Full check after moving into this plugin | 1, 3, 2 | none | Named a real command for the lint step, which earlier rounds could only describe. |
 | 5 | Rerun with the lint command live | 1, 4, 0 | one, self-resolving | The lint ran inside the checks for the first time. The one serious item asked for proof we were in the middle of producing, and the round itself supplied it. |
 | 6 | Opus in charge, three new behaviours under test | 0 serious | none | Nothing. All three behaviours worked without being pointed at: it ran two independent checks when the result gated a release, reported only differences when given an earlier report, and took the short path for a small wording fix. |
+| 7 | Outcome bench: the produced hand-off against the one it replaced, on seeded code | see below | n/a | The produced instruction lost: 6.67 of 8 problems found against 7.67, though with a third the false alarms. Its scope clause listed kinds of injection, and one run filed a real one out of scope for not being on the list. |
+| 8 | Outcome bench, first fix round | 7 of 8, no false alarms, three times | n/a | Defining the category by mechanism rather than by a list fixed the suppression; turning a calibration example into an instruction stopped a misfire that hit every earlier run. Naming logs in the secrets clause did not recover the missed log finding. |
+| 9 | Outcome bench, second fix round | 8 of 8, no false alarms | n/a | Naming the pattern rather than the category recovered the last finding. The produced instruction now beats the one it replaced on both measures. |
 
 ## Conclusions
 
@@ -98,19 +101,26 @@ Problems are counted per skill in the order: writing-skills, auditing-skills, wr
 4. **The final state is clean.** No skill has a problem serious enough to block use, each one
    has a recorded before-and-after comparison proving it changes behaviour, and the behaviours
    hold with either model in charge.
-5. **The outputs are proven changed, not yet proven best.** Each tool's output was compared
-   once with and without the tool, and checked against the rules. No output has yet been run to
-   score the work it leads to. That is the next test, and it is written down in the testing
-   notes.
+5. **The outputs were run, scored, and improved.** A hand-off written with these tools was
+   pointed at a small service seeded with eight known problems and three traps, against the
+   older instruction it replaced, three runs each, scored by someone who never saw the code.
+   The first round was a loss: the produced instruction found fewer problems. Two rounds of
+   fixes later it found all eight with no false alarms, against the older instruction's average
+   of 7.67 found and 3 false alarms.
+6. **Testing the outputs found what testing the tools could not.** Every rule check had passed
+   the produced instruction, because it was consistent with the rules. Running it showed it
+   telling a capable reviewer not to report a real vulnerability, because the instruction listed
+   kinds of injection and the reviewer decided the one it found was not on the list. A rule
+   check cannot see that. Only running the work can.
 
 ## Limits of the evidence
 
 The worker runs used Sonnet and the final round used Opus in charge. The small model (Haiku)
 and older Opus versions were not measured, and we claim nothing about them. On minor items,
 two runs of the same check can still differ; that is measured, small, and does not affect
-whether a file is judged fit for use. The outputs the tools produced were judged against our
-rules and compared once each against unaided runs; none has yet been executed to measure the
-downstream work, which is what the planned outcome tests cover.
+whether a file is judged fit for use. One produced hand-off has now been run and scored
+against a seeded fixture; the produced skills have not, and one fixture is not proof that the
+gains hold on tasks the instructions were not tuned against.
 
 ## Where the detail lives
 
