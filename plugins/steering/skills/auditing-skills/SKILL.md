@@ -16,7 +16,9 @@ Produces a findings list ordered by severity, and the three things to fix first.
 
 If the target is none of these, stop and report it as out of scope, saying what the file appears
 to be. Do not force the rules onto it. If the target or a rule file cannot be read, stop and
-report that instead of auditing from memory.
+report that instead of auditing from memory. These stop conditions sit here, ahead of the
+workflow, rather than beside the report, because they are pre-work gates: they decide whether
+the audit starts at all.
 
 ## Where this stops
 

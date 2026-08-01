@@ -51,15 +51,6 @@ fan out, chain, or establish then fan out. Have each worker recheck the facts it
 before starting, and treat agents that modify shared state as not a fan-out case even when the
 tasks look independent.
 
-## Converting a named agent
-
-Read the definition and split it into what is invariant and what varies by call. The invariant
-part becomes the template body. The varying part becomes named holes. From
-`../../shared/dispatch-protocol.md`, add the status set with each status's scope of effect and the
-caller's obligation for each, the retry limit, the partial-work handling, and where the detail
-goes versus what returns to the caller. Then audit the filled result against
-`../../shared/steering-rules.md`.
-
 ## When to stop
 
 If a fact cannot be established, a required hole has no value, or a rule file cannot be read,
@@ -68,6 +59,15 @@ something has changed, and at most twice per agent, since an unchanged retry rep
 failure; then report instead. Do not weaken a check, loosen a rule, or fill a hole with a
 placeholder to force a pass; fix the input or stop. When you stop, keep the established facts
 and any draft prompt, say where they sit, and leave the keep-or-discard call to the person.
+
+## Converting a named agent
+
+Read the definition and split it into what is invariant and what varies by call. The invariant
+part becomes the template body. The varying part becomes named holes. From
+`../../shared/dispatch-protocol.md`, add the status set with each status's scope of effect and the
+caller's obligation for each, the retry limit, the partial-work handling, and where the detail
+goes versus what returns to the caller. Then audit the filled result against
+`../../shared/steering-rules.md`.
 
 ## References
 

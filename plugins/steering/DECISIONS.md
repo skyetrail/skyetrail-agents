@@ -154,9 +154,12 @@ failing comparison, or a failing outcome score, and nothing else.
 - **Invariant 7 added to the protocol:** an agent that dispatches work collects the result
   before its own turn ends. Earned by a real stranding, where a runner ended its turn while its
   worker was still running.
-- **The stop-conditions placement churn is closed by decision, not by edit.** Both skills keep
-  their current placement. The early stop in auditing-skills is a pre-work gate, and
-  writing-agents keeps its method sections together. An auditor that flags the placement is
-  flagging an accepted choice; the finding is expected and does not block.
+- **The stop-conditions placement churn is closed, and the reasoning is visible to auditors.**
+  The first attempt recorded the decision here, which auditors are told not to read, so the
+  finding would have recurred forever. Fixed properly instead: writing-agents moves "When to
+  stop" directly after the workflow, which satisfies the rule, and auditing-skills states in its
+  own body why its stop conditions sit early, since they are pre-work gates that decide whether
+  the audit starts at all. A decision an auditor cannot see is not a decision; it is a repeat
+  finding.
 - **The last bare directives got their reasons**, and auditing-skills now states in its body the
   approach that was tried and dropped, prose severity tiers, and why.
