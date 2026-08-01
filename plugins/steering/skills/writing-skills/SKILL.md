@@ -37,7 +37,8 @@ Run these in order. Step 1 before any writing, because it decides what the skill
    trigger it, then the file types and casual phrasings people actually type. Do not summarise
    the workflow, because a summary gives the agent something to follow instead of the body.
 3. **Write the body.** Open with what the skill produces. Then the workflow. Then what it does
-   not cover and which skill takes over. Do not add a section that restates the description.
+   not cover and which skill takes over. Do not add a section that restates the description; the
+   description is already loaded before the body, so a repeat spends context twice.
 4. **Address only the failures from step 1.** Nothing the model already gets right.
 5. **Move detail into reference files.** The body is an overview. Every reference is one hop from
    the SKILL.md and named from it.
@@ -53,9 +54,14 @@ Run these in order. Step 1 before any writing, because it decides what the skill
 If behaviour is the same with and without the skill, the skill has no effect and should not be
 kept. If the second run fails in a new way, put that failure and the agent's own reasoning into
 the skill and run the loop again. Fix a failing baseline or audit by changing the skill, never by
-easing the task or loosening the rules. If the loop has not converged after two more full runs,
-stop and report what still fails rather than iterating further. Keep the draft when you stop, say
-in the report that it is unverified, and leave the keep-or-discard call to the person.
+easing the task or loosening the rules, since a pass bought that way measures nothing. If the
+loop has not converged after two more full runs, stop and report what still fails rather than
+iterating further. Keep the draft when you stop, say in the report that it is unverified, and
+leave the keep-or-discard call to the person.
+
+For a small change to a skill that already has a recorded baseline, run step 7 alone and say in
+the record that the baseline was not repeated. A change to what the skill claims to do runs the
+full loop.
 
 Where subagents are not available, run the task yourself against the skill and say plainly in the
 skill's own record that this is weaker evidence, because you wrote the skill and are also using

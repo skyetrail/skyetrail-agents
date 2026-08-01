@@ -111,3 +111,24 @@ Evidence for each is in the repository's TEST_REPORT.md and in `tests/baselines/
   for reference resolution (they load with the skills that name them; `tests/` and working notes
   stay excluded as historical), and a markdown link whose text reads as a filename must link to
   that filename.
+
+## Class 5 fit, 2026-07-31
+
+An assessment of the skills against current Anthropic models, drawing on the recorded rounds,
+produced four changes and a caveat.
+
+- **auditing-skills gained two dispatch patterns.** Two audits with reconciliation for a ship
+  decision, since severity-level calls proved stable across runs while pass-versus-warn calls on
+  minor rows did not, and sampling is the fix for judgment variance that more prose is not. And
+  a re-audit mode that reports differences against a supplied prior report instead of
+  re-deriving every row.
+- **writing-skills gained a proportionality clause.** A small change to a skill with a recorded
+  baseline runs the audit alone; models of this class over-comply with mandatory workflows
+  rather than judging them disproportionate, so the cheap path has to be written down.
+- **The compose-at-dispatch argument was cut to its conclusion.** Unaided models of this class
+  already prefer composition; the skill keeps the exceptions and the one-line reason, which are
+  the house-specific parts.
+- **The "because" clauses the Method rule flagged were added** in writing-skills and
+  auditing-skills.
+- **Caveat, recorded rather than fixed:** every measurement so far is sonnet. No cross-model
+  evidence exists, and none is claimed.

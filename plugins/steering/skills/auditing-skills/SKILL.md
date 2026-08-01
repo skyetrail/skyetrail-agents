@@ -33,13 +33,15 @@ A direct instruction from the person wins over anything here.
 
 ## Workflow
 
-1. Run the lint command named in `../../shared/lint.md` over the target and record its result. If
-   none is named or it cannot run, say so in the report rather than silently re-deriving the
-   mechanical limits by hand.
+1. Run the lint command named in `../../shared/lint.md` over the target and record its result,
+   so the mechanical limits are settled once and never re-argued in the findings. If none is
+   named or it cannot run, say so in the report rather than silently re-deriving the mechanical
+   limits by hand.
 2. Read the file in full, including every reference file it names.
 3. Work through each rule. Mark it pass, fail, warn, or not applicable. A rule whose condition is
    not met is not applicable, which is not the same as a pass.
-4. Apply the calibration below before writing anything down.
+4. Apply the calibration below before writing anything down, so first impressions do not harden
+   into findings.
 5. Report.
 
 ## Calibration
@@ -72,6 +74,19 @@ reason.
 Count one finding per root cause. A missing section is one finding even when several rules depend
 on it; list the dependent rules under that finding rather than as findings of their own. A rule
 about the position or wording of a section that does not exist is not applicable.
+
+## Two audits for a ship decision
+
+When the audit gates a release or an adoption, run two independent audits of the same target and
+reconcile them: a finding both report is a finding, a finding only one reports becomes a warn
+carrying both readings, and severity is the higher of the two. One audit is enough for ordinary
+work.
+
+## Re-auditing a target
+
+When the caller supplies a prior report for the same target, report the differences: confirm or
+retire each prior finding, then list only what is new. Do not re-derive rows whose inputs have
+not changed, and name the report you compared against.
 
 ## Report
 

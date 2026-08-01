@@ -10,15 +10,10 @@ and acts on what returns.
 
 ## Compose at dispatch
 
-A named agent is a definition written before anyone knows the call site, so at any given call it
-carries either more context than the job needs, which the agent must reason past, or less than it
-needs, which the caller patches at dispatch. The caller cannot tell which without reading the
-definition, and a patched definition is how an agent ends up holding two instructions that
-conflict.
-
-Compose the prompt at the moment of use instead. A checked-in template with named holes counts as
-composed, because the caller holds the filled text and can add to it, cut from it, or override it.
-The difference is control at dispatch, not the amount of content reused.
+A named agent carries one fixed instruction set to every call site, so each call gets too much
+context or too little, and callers patch it until two instructions conflict. Compose the prompt
+at the moment of use instead. A checked-in template with named holes counts as composed, because
+the caller holds the filled text; the difference is control at dispatch, not the amount reused.
 
 Keep a named agent when it is used identically in many places, when the harness enforces a tool
 restriction at that layer and nowhere else, or when someone else owns it as a policy boundary.
