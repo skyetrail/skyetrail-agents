@@ -17,6 +17,7 @@ skyetrail-agents/
 ├── plugins/
 │   └── <plugin-name>/
 │       ├── plugin.json       # the plugin manifest
+│       ├── SUMMARY.md        # optional hand-written summary, included in the README
 │       ├── README.md         # generated from the manifest and frontmatter
 │       └── skills/
 │           └── <skill-name>/

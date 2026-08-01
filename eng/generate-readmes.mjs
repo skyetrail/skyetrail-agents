@@ -279,6 +279,10 @@ function pluginReadme(plugin) {
   section("Commands", "Command", commands);
   section("Agents", "Agent", agents);
 
+  if (plugin.summary) {
+    lines.push(plugin.summary.trim(), "");
+  }
+
   if (plugin.hasTests) {
     lines.push("## Evidence", "");
     lines.push(
@@ -367,6 +371,15 @@ function main() {
       }
     }
 
+    // An optional hand-written SUMMARY.md at the plugin root is included
+    // verbatim in the generated README and linted like any reference surface.
+    const summaryPath = path.join(pluginDir, "SUMMARY.md");
+    let summary = null;
+    if (exists(summaryPath)) {
+      summary = read(summaryPath);
+      lintReferences(summaryPath, summary);
+    }
+
     const plugin = {
       manifest,
       components: readComponents(pluginDir),
@@ -375,6 +388,7 @@ function main() {
       addTarget,
       repoUrl,
       hasTests: exists(path.join(pluginDir, "tests", "TEST_REPORT.md")),
+      summary,
     };
     plugins.push(plugin);
     outputs.push({ file: path.join(pluginDir, "README.md"), content: pluginReadme(plugin) });
