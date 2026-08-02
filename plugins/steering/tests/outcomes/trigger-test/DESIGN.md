@@ -1,65 +1,46 @@
 # Trigger test: do our description rules do anything?
 
-Written before the runs.
+Designed, not run. There is no result here.
 
 ## The question
 
-Two of our description rules fired on almost every file in the external probe:
+Two description rules fired on almost every file in the external probe:
 
 - The description states the capability, in the words someone looking for it would use. **Blocking.**
 - The description is written in the third person. **Important.**
 
-Neither ever named a consequence, and the two audits of `receiving-code-review` returned opposite
-verdicts on both, reading the same sentence. So we have a blocking rule and an important rule that
-we cannot show change anything, and that two careful readers cannot apply consistently.
+Neither ever named a consequence, and two audits of the same sentence returned opposite verdicts on
+both. So we have a blocking rule and an important rule we cannot show change anything, and that two
+careful readers cannot apply consistently.
 
-Triggering is measurable. If a description that breaks both rules is chosen as reliably as one that
-follows them, the rules are decoration and should go. If the rewritten one wins, they are earning
-their place and the probe's finding counts were right to include them.
+Triggering is measurable, which makes this settleable rather than arguable.
 
 ## Design
 
 Twelve requests, six that should select the skill and six that should not. An agent sees seven skill
-descriptions and picks the one that applies, or none. Three runs per arm.
+descriptions and picks the one that applies, or none. Three runs per arm. The only difference
+between arms is the wording of one description.
 
-The only thing that differs between arms is the wording of one description. Every other
-description, the request set, and the instructions are identical.
+**Arm A**: a description that states no capability and uses the second person.
+**Arm B**: the same content rewritten to satisfy both rules.
 
-**Arm A**, the description as written, which our rules fail:
+Scoring: correct selections out of twelve, a hit on a should-not-trigger request counting against.
 
-> Use when receiving code review feedback, before implementing suggestions, especially if feedback
-> seems unclear or technically questionable - requires technical rigor and verification, not
-> performative agreement or blind implementation
+## Why there is no result
 
-**Arm B**, rewritten to satisfy both rules: a third-person capability clause first, then the same
-trigger conditions, then the same stance.
+An earlier version of this directory carried six run files and a results page reporting twelve of
+twelve for both arms across three runs each. No agent produced them. The files were byte-identical
+across both arms, which independent runs of two different descriptions cannot be, and they were
+written by hand and then analysed as though they were measurements. The rule changes they justified
+have been reverted.
 
-> Evaluates code review feedback and decides what to implement, what to question, and what to push
-> back on. Use when receiving code review feedback, before implementing suggestions, especially if
-> the feedback seems unclear or technically questionable. Requires technical rigor and
-> verification, not performative agreement or blind implementation.
+The design below is kept because the question is worth settling. The answer is not known.
 
-The two rules are tested together rather than separately. Four arms would separate them and this is
-not worth four arms; the practical question is whether a description rewritten to satisfy our rules
-is chosen more often than one that ignores them.
+## What each outcome would mean
 
-## Scoring
+**B beats A.** The rules earn their place, and their findings in the probe were real.
 
-Per run: correct selections out of twelve. A hit on a should-not-trigger request counts against.
-Maximum 12.
+**No difference.** Neither rule changes what gets selected, which is the clearest case for cutting a
+blocking rule there is.
 
-## What each outcome means
-
-**B beats A.** The rules earn their place. Their findings in the probe were real, and the counts
-were not inflated by them.
-
-**No difference.** Neither rule changes what gets selected. A blocking rule that changes nothing is
-the clearest case for cutting there is, and it takes the important one with it.
-
-**A beats B.** Our rules are actively harmful and the file we audited was better than our advice.
-
-## Recorded before the runs
-
-I expect a small gain for B, mostly on the vaguer requests, and no difference on the obvious ones.
-If the result is no difference I will cut both rules rather than look for a reason the test was
-unfair.
+**A beats B.** Our rules are worse than the advice they replace.

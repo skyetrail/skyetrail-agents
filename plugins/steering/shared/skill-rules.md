@@ -13,17 +13,19 @@ that every reference resolves. Confirm the lint record rather than re-deriving t
 
 | Rule | Severity |
 | --- | --- |
+| The description states the capability, in the words someone looking for it would use. | Blocking |
 | The description states the conditions that should trigger it. | Blocking |
-| The description states the capability, in the words someone looking for it would use. | Important |
 | The description includes the file types, error text, and casual phrasings people actually type. | Important |
 | The description does not summarise the workflow or the process. | Important |
+| The description is written in the third person. | Important |
 
 Skills undertrigger more often than they overtrigger, so a description that reads as slightly
 insistent is closer to right than one that reads as neutral.
 
-There was a third-person rule here and it was cut, and stating the capability was blocking and is
-now important. Both changes came from a routing test, recorded in
-`tests/outcomes/trigger-test/RESULTS.md`.
+The last two rules here are unverified. Ten external audits fired them repeatedly without ever
+naming a consequence, and two audits of one description returned opposite verdicts on both. A
+routing test would settle whether either changes what gets selected. That test has not been run.
+Until it is, both stay as written rather than being cut on an argument.
 
 ## Boundary
 
