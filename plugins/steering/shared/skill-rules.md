@@ -13,14 +13,17 @@ that every reference resolves. Confirm the lint record rather than re-deriving t
 
 | Rule | Severity |
 | --- | --- |
-| The description states the capability, in the words someone looking for it would use. | Blocking |
 | The description states the conditions that should trigger it. | Blocking |
+| The description states the capability, in the words someone looking for it would use. | Important |
 | The description includes the file types, error text, and casual phrasings people actually type. | Important |
 | The description does not summarise the workflow or the process. | Important |
-| The description is written in the third person. | Important |
 
 Skills undertrigger more often than they overtrigger, so a description that reads as slightly
 insistent is closer to right than one that reads as neutral.
+
+There was a third-person rule here and it was cut, and stating the capability was blocking and is
+now important. Both changes came from a routing test, recorded in
+`tests/outcomes/trigger-test/RESULTS.md`.
 
 ## Boundary
 
@@ -48,7 +51,7 @@ insistent is closer to right than one that reads as neutral.
 | The SKILL.md body is 500 lines or fewer. | Blocking |
 | Every reference is one hop from the SKILL.md that names it. | Blocking |
 | Detail sits in reference files rather than the front file. | Important |
-| A reference file longer than 100 lines opens with a contents list. | Important |
+| A reference file longer than 100 lines opens with a contents list. | Advisory |
 | Material used to test the skill is not reachable from it, so it never loads with it. | Important |
 | No reference file instructs the reader to ignore or skip part of itself. Content that one caller must skip is a separate file. | Important |
 
@@ -57,3 +60,7 @@ insistent is closer to right than one that reads as neutral.
 | Rule | Severity |
 | --- | --- |
 | The skill has been through a baseline comparison, with and without it loaded, and the observed failures it addresses are recorded in the plugin's `tests/baselines/` directory, one file per skill, linked from nothing. | Blocking |
+
+Applies only to a skill this plugin maintains. A skill read from elsewhere has no
+`tests/baselines/` here and never will, so the rule cannot tell a good one from a bad one. Where the
+target is not ours, mark it not applicable and say its own evidence was not available to check.

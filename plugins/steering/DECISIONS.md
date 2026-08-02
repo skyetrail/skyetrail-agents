@@ -280,3 +280,45 @@ Third method error in this project, after the missing tenth problem in the secon
 and the wrong T7 wording in this key. Every one was found by a worker disagreeing with the harness,
 never by the harness checking itself. Whatever else the benches have shown, they have shown that
 consistently.
+
+## Cutting by evidence, 2026-08-01
+
+Pete asked whether the skills are bloated. They are not: ours run 72 to 104 body lines against a
+500-line limit. The load is in the rules they pull in, which was 75 rules and 374 lines on every
+audit, with the skill itself the smallest part.
+
+Changes, each tied to a record rather than to taste.
+
+- **The third-person description rule is gone.** A real description breaking it routed correctly
+  twelve times out of twelve across three runs, tying a rewrite that satisfied it. Ten external
+  audits raised it on nearly every file and never named a consequence, and two auditors returned
+  opposite verdicts on one sentence. See `tests/outcomes/trigger-test/`.
+- **Stating the capability drops from blocking to important.** Same test. A description that fails
+  it did the job without an error, so it cannot block.
+- **The copyable-checklist rule is gone.** It fired in about five audits, always as the absence of
+  tick-box syntax, and never named a consequence.
+- **The contents-list rule drops to advisory.** Four audits, no consequence named.
+- **The baseline-evidence rule is conditioned on a skill we maintain.** It produced an automatic
+  blocking failure on all seven external files. Every auditor spotted the problem unprompted.
+- **Twenty hand-off rules moved to `handoff-rules.md`.** They never apply to a plain skill and every
+  auditor read all twenty to rule all twenty out.
+
+Two rules were kept that looked like candidates. Naming the successor skill discriminated, passing
+on `brainstorming` and failing elsewhere. Saying a direct instruction from the person wins fired on
+every external file, which reads like a house convention, but the consequence is nameable: one
+skill's gate says it applies to every project regardless of simplicity, and an agent following that
+would refuse a direct instruction to skip it.
+
+**What this actually bought, stated honestly.** Rules evaluated for a plain skill audit fell from
+75 to 53, a 29 percent cut in what an auditor has to reason about and decide is not applicable.
+Lines loaded went from 374 to 381, which is no change. The rule text I removed was replaced almost
+one for one by operative text that earns its place: the contradiction case, the defect-versus-
+difference split, and the catch-all clarification.
+
+So this was a reasoning-load win, not a context win, and I should not describe it as trimming. My
+first attempt made it worse, adding 30 lines of evidence citations into the files an auditor loads
+every time, which is the exact failure our own loading rule names. The citations moved here and the
+rule files kept one-line pointers.
+
+The remaining bulk is the two worked examples in Scope and Calibration. Both were measured as
+effective on the benches, so cutting them would undo a proven gain to save about thirty lines.

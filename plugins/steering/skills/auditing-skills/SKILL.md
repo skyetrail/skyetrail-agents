@@ -10,7 +10,8 @@ Produces a findings list ordered by severity, and the three things to fix first.
 ## Which rules apply
 
 - A SKILL.md. Use `../../shared/skill-rules.md` and `../../shared/steering-rules.md`.
-- A prompt written for a subagent. Use `../../shared/steering-rules.md` only.
+- A prompt written for a subagent. Use `../../shared/steering-rules.md` and
+  `../../shared/handoff-rules.md`.
 - Anything else written to shape what an agent does. A command, a hand-off brief, a runbook, and a
   one-off request are examples, not the whole list. If a person wrote it to steer an agent, it
   belongs here. Use `../../shared/steering-rules.md` only, with the conditions that match how the
@@ -88,6 +89,11 @@ reconcile them: a finding both report is a finding, a finding only one reports b
 carrying both readings, and severity is the higher of the two. One audit is enough for ordinary
 work.
 
+Where the two audits pass and fail the same rule on the same text, that is not a one-reporter
+finding and does not become a warn. Report it as a finding against that text, at the higher
+severity, giving both readings. Two readers who disagreed about what a line says have shown the
+line is unclear, which is worth more than either verdict.
+
 ## Re-auditing a target
 
 When the caller supplies a prior report for the same target, report the differences: confirm or
@@ -103,6 +109,13 @@ State the lint result first. Every fail and warn carries evidence, meaning the l
 came from. Then give counts by severity, then the three fixes to make first. The fixed table
 replaced prose severity tiers, which were tried and dropped because two runs could not be
 compared.
+
+Mark every fail and warn a defect or a difference, and count them separately. A defect is one where
+you can name what an agent would do wrong: an unlisted project type gets no setup, a real finding is
+filed out of scope, a credential reaches a log. A difference is where the target works another way
+and you cannot say what goes wrong, only that we would have written it otherwise. Unmarked, the two
+read alike at the same severity, and nobody can tell a document that will misbehave from one that is
+merely unfamiliar.
 
 Any blocking failure means the file needs work before use. Advisory items are listed once and
 never block.

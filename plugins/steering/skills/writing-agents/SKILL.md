@@ -32,17 +32,18 @@ here.
 
 1. **Establish the facts.** A script for anything determinable, an agent only for what needs an
    assessment, neither for what you already know. Each fact carries where it came from.
-2. **Write the prompt** against `../../shared/steering-rules.md`, with the condition **hand-off**
-   met. Where the prompt names a category of work, define what makes something a member and mark
-   any list of kinds as examples, or the agent will treat a kind you did not list as out of
-   scope.
+2. **Write the prompt** against `../../shared/steering-rules.md` and
+   `../../shared/handoff-rules.md`, with the condition **hand-off** met. Where the prompt names a
+   category of work, define what makes something a member and mark any list of kinds as examples,
+   or the agent will treat a kind you did not list as out of scope.
 3. **Name the statuses** and the caller's obligation for each, along with the retry limit and
    what happens to partial work when a run stops. See `../../shared/dispatch-protocol.md`, starting
    from the four core statuses there and adding only what a run needs.
 4. **Fill every hole.** Each hole is marked required or given a default, so an unfilled one fails
    loudly rather than reaching the agent as empty text. The set of holes is fixed; do not grow it
    per caller, or the template accumulates weight every caller pays for.
-5. **Audit the filled prompt** against `../../shared/steering-rules.md` before anything is sent.
+5. **Audit the filled prompt** against `../../shared/steering-rules.md` and
+   `../../shared/handoff-rules.md` before anything is sent.
 6. **Dispatch**, naming the model explicitly rather than letting it inherit from this session,
    so two runs of the same template stay comparable.
 7. **Handle the return** per the status table, and check the report is complete rather than
@@ -69,9 +70,11 @@ part becomes the template body. The varying part becomes named holes. From
 `../../shared/dispatch-protocol.md`, add the status set with each status's scope of effect and the
 caller's obligation for each, the retry limit, the partial-work handling, and where the detail
 goes versus what returns to the caller. Then audit the filled result against
-`../../shared/steering-rules.md`.
+`../../shared/steering-rules.md` and `../../shared/handoff-rules.md`.
 
 ## References
 
 - `../../shared/steering-rules.md` for the prompt.
+- `../../shared/handoff-rules.md` for the rules that apply because the agent will not see this
+  conversation. Everything this skill produces is a hand-off, so this file always applies.
 - `../../shared/dispatch-protocol.md` for the caller, the statuses, and the shapes of a run.
