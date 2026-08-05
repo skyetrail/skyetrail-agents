@@ -25,9 +25,13 @@ one person's preference is not a repo fact and does not belong in the block.
    again about a question the block already answers.
 2. **Establish the lint command.** Try `npm run lint` first, because that is this project's
    default and a repository that has it needs no further discussion. If it is absent or fails
-   because no such script exists, gather the candidates by reading files only: the scripts in
-   `package.json`, targets in a `Makefile`, hooks in `.pre-commit-config.yaml`, the commands a CI
-   workflow runs, and whatever the README tells contributors to run.
+   because no such script exists, gather the candidates by reading files only. A candidate is
+   anywhere this repository records a command that checks the code without changing it. The scripts
+   in `package.json`, targets in a `Makefile`, hooks in `.pre-commit-config.yaml`, the commands a CI
+   workflow runs, and whatever the README tells contributors to run are examples, not the whole
+   list. A repository that keeps its configuration somewhere else, such as `pyproject.toml`,
+   `tox.ini`, or a tool's own config file, is covered by the same test. Where you find no candidate,
+   say you found none rather than concluding none exists.
 3. **Do not change the repository to find out.** Establishing a fact is a read. Do not install
    packages, do not run a package manager's install step, do not create a file to see what a tool
    says about it, and do not run a command that writes or fixes in place, such as a formatter. A
@@ -44,10 +48,12 @@ one person's preference is not a repo fact and does not belong in the block.
 5. **Write the block.** Replace everything between the markers, keeping the rest of `AGENTS.md`
    untouched. Where `AGENTS.md` does not exist, create it with the block. Where it exists without
    the block, append the block and change nothing else. Never rewrite the whole file.
-6. **Check your own work before reporting.** Re-read `AGENTS.md` and confirm three things: it
+6. **Check your own work before reporting.** Re-read `AGENTS.md` and confirm four things: it
    contains exactly one opening marker and one closing marker, the content outside them is
-   unchanged, and every command recorded inside them is one you actually observed working. Fix
-   anything that does not hold before you report.
+   unchanged, every command recorded inside them is one you actually observed working, and no
+   placeholder text from the template survives in what you wrote. Fix anything that does not hold
+   before you report. Do not weaken or skip this check to finish, and do not report a check you did
+   not run: an unverified block is worse than no block, because everything downstream trusts it.
 
 ## The block
 
@@ -91,5 +97,8 @@ Establishes and records facts. Does not fix what it finds: a missing lint comman
 that fails, or a broken configuration is reported, not repaired. Does not choose between
 candidates on the person's behalf. Does not edit any file other than `AGENTS.md`, and within that
 file edits only its own block.
+
+No skill takes over where this one stops. Both stop conditions hand back to a person, because both
+are decisions about how this repository is meant to work, and nothing here can settle them.
 
 A direct instruction from the person wins over anything here.
