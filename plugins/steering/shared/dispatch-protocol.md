@@ -3,6 +3,15 @@
 The caller's side of dispatching an agent. `steering-rules.md` covers the agent's side, meaning
 what the prompt says and what the agent returns. This covers what the caller does with it.
 
+## Contents
+
+- One principle
+- Two terms
+- Seven invariants
+- Statuses
+- Three shapes
+- Establishing facts
+
 ## One principle
 
 Any determination that can be made deterministically is made by a script, and an agent is

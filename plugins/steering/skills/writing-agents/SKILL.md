@@ -69,7 +69,8 @@ Read the definition and split it into what is invariant and what varies by call.
 part becomes the template body. The varying part becomes named holes. From
 `../../shared/dispatch-protocol.md`, add the status set with each status's scope of effect and the
 caller's obligation for each, the retry limit, the partial-work handling, and where the detail
-goes versus what returns to the caller. Then audit the filled result against
+goes versus what returns to the caller. The set of fields the callers establish is fixed and
+documented, the same way the set of holes is. Then audit the filled prompt against
 `../../shared/steering-rules.md` and `../../shared/handoff-rules.md`.
 
 ## References
