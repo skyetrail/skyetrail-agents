@@ -51,3 +51,19 @@ Write prose in plain English. No em dashes, plain everyday words, complete
 sentences, no jargon, and no imagery. The
 [skyetrail-writing](plugins/skyetrail/skills/skyetrail-writing/SKILL.md) skill in
 this repository is the house style.
+
+<!-- BEGIN: repo-setup -->
+## Repository facts
+
+Established by the `repo-setup` skill. Re-run it rather than editing this block by hand.
+
+- **Lint command:** `npm run lint`, run from the repository root. Confirmed by running it. It runs
+  `eng/generate-readmes.mjs --check`, which checks frontmatter for YAML hazards, the name format and
+  that a name matches its directory, description length, body line count, and that every reference
+  resolves, and it checks that the generated README files are current. `npm run check` is the same
+  command under a second name. It walks only `plugins/<plugin>/skills/` for the plugins listed in
+  `marketplace.json`, so it does not reach anything under a plugin's `tests/` directory. An agent
+  auditing a file outside that path should report a coverage gap rather than a clean pass.
+
+Unresolved: none.
+<!-- END: repo-setup -->
