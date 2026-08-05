@@ -11,8 +11,9 @@ A rule about the position or wording of a section applies only when that section
 section is missing, the missing section is the finding, and the rules that depend on it are not
 applicable.
 
-Where the **hand-off** condition is met, read `handoff-rules.md` as well. Twenty rules that apply
-only to hand-off live there, so a document that is not a hand-off does not pay to rule them out.
+Where the **hand-off** condition is met, read `handoff-rules.md` as well. Every rule conditioned on
+hand-off lives there and none of them lives here, so a document that is not a hand-off never reads
+them.
 
 ## Contents
 

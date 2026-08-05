@@ -22,11 +22,6 @@ that every reference resolves. Confirm the lint record rather than re-deriving t
 Skills undertrigger more often than they overtrigger, so a description that reads as slightly
 insistent is closer to right than one that reads as neutral.
 
-The last two rules here are unverified. Ten external audits fired them repeatedly without ever
-naming a consequence, and two audits of one description returned opposite verdicts on both. A
-routing test would settle whether either changes what gets selected. That test has not been run.
-Until it is, both stay as written rather than being cut on an argument.
-
 ## Boundary
 
 | Rule | Severity |

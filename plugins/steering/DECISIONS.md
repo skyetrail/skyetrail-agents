@@ -322,3 +322,35 @@ rule files kept one-line pointers.
 
 The remaining bulk is the two worked examples in Scope and Calibration. Both were measured as
 effective on the benches, so cutting them would undo a proven gain to save about thirty lines.
+
+## Author notes do not belong in files agents load, 2026-08-01
+
+Pete caught two of these in one read.
+
+The first was a paragraph in `skill-rules.md` saying two description rules were unverified, that ten
+audits had fired them without naming a consequence, and that a routing test would settle it. All
+true, and useless to a runtime agent. It cannot run the test, cannot decide the question, and gains
+no instruction from knowing we are unsure. It reads as a diary entry in a file loaded on every audit.
+
+The mechanism for "this rule matters less" already exists and it is severity. Advisory means
+mentioned once and never blocks. Writing prose to express doubt bypasses the mechanism the agent
+already knows how to act on.
+
+Worth noting the note was not inert: an auditor read it and marked its finding a warn rather than a
+fail. It changed behaviour, and still it was wrong to be there, because a paragraph nudging a
+severity is a worse instrument than the severity field.
+
+The rules themselves stay at the severities they were restored to. Changing a severity now would be
+changing rules on an argument, which is the thing the fabricated test already got wrong once. The
+provenance lives here, where authors read it, and the routing test remains designed and not run.
+
+The second was `steering-rules.md` telling the reader that twenty rules live in `handoff-rules.md`.
+Never count things across files. The number gives the agent nothing, and it becomes wrong the moment
+someone adds a rule, so it is a maintenance liability that buys no behaviour. It now says every rule
+conditioned on hand-off lives there and none lives here, which is the fact that matters and cannot
+go stale.
+
+Both violated a rule we already had, that content which would not change what an agent does is
+absent. Our own rules file broke a rule from our own rules file, in two places, and neither audit
+caught it. Worth sitting with: the audits check targets against the rules, and nothing checks the
+rule files themselves the same way.
