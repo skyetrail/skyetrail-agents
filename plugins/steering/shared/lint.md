@@ -51,14 +51,22 @@ again: record that it could not be run and say what you saw.
 with its file.
 
 What it opens differs by check, so say which check did not run rather than that the lint did not
-run.
+run. Which checks a file gets follows from what kind of file it is.
 
-- A `SKILL.md` under a plugin's `skills/` gets everything: frontmatter hazards, name format and
-  directory match, description length, body line count, and reference resolution.
-- A top-level `.md` under a plugin's `shared/` gets reference resolution only. The frontmatter and
-  length checks never run there, because those are scoped to component files.
-- Anything under a plugin's `tests/` is not opened at all, by design, since those are records that
-  may cite paths from earlier rounds.
+- **A component**, meaning a file the plugin manifest lists as something an agent loads by name.
+  `skills/*/SKILL.md`, `commands/*.md`, and `agents/*.md` are the components today. These get
+  everything: frontmatter hazards, description length, body line count, and reference resolution.
+  Only a skill also has its name checked against its directory, because only a skill is named by
+  its directory.
+- **A reference surface**, meaning a file that loads alongside a component rather than being one.
+  A top-level `.md` under `shared/` and a plugin's `SUMMARY.md` are reference surfaces today. These
+  get reference resolution only. The frontmatter and length checks read a component's frontmatter,
+  and these files have none.
+- **Excluded**, meaning anything under a plugin's `tests/`. Not opened at all, by design, since
+  those are records that may cite paths from earlier rounds.
+
+Where a target is none of these, say so and name the checks that did not reach it, rather than
+reporting either a pass or a total gap.
 
 CI runs on any change under `plugins/**`, so a broken reference anywhere above cannot merge. The
 pre-commit hook is narrower: its file trigger matches component files and the manifests, not

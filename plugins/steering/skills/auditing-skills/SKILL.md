@@ -53,7 +53,8 @@ A direct instruction from the person wins over anything here.
 
 ## Calibration
 
-A finding is something that would change what an agent does.
+A finding is something that would change what an agent does. That test decides any case the two
+lists below do not name; both are examples, not the whole set.
 
 These are findings.
 

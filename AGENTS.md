@@ -60,11 +60,12 @@ Established by the `repo-setup` skill. Re-run it rather than editing this block 
 - **Lint command:** `npm run lint`, run from the repository root. Confirmed by running it. It runs
   `eng/generate-readmes.mjs --check` and also checks that the generated README files are current.
   `npm run check` is the same command under a second name. What it opens differs by check, for the
-  plugins listed in `marketplace.json`: a `SKILL.md` under a plugin's `skills/` gets frontmatter
-  hazards, name format and directory match, description length, body line count, and reference
-  resolution; a top-level `.md` under a plugin's `shared/` gets reference resolution only; anything
-  under a plugin's `tests/` is not opened. An agent auditing a file should say which check did not
-  reach it rather than reporting either a clean pass or a total gap.
+  plugins listed in `marketplace.json`. Components, meaning `skills/*/SKILL.md`, `commands/*.md`,
+  and `agents/*.md`, get frontmatter hazards, description length, body line count, and reference
+  resolution, with the name-matches-directory check on skills only. Reference surfaces, meaning a
+  top-level `.md` under `shared/` and a plugin's `SUMMARY.md`, get reference resolution only.
+  Anything under a plugin's `tests/` is not opened. An agent auditing a file should say which check
+  did not reach it rather than reporting either a clean pass or a total gap.
 
 Unresolved: none.
 <!-- END: repo-setup -->
