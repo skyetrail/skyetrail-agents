@@ -31,3 +31,22 @@ in its own first draft at the audit step.
 The skill's value is the method, not format teaching: the baseline gate, the description and
 scope discipline, and the audit step. Format prose would fail the "nothing the model already
 knows" rule.
+
+## Step 7 changed, 2026-08-01, baseline not repeated
+
+Step 7 read "audit against the rule files, or by using `auditing-skills`". That choice let the
+author audit its own draft. The skill this plugin's own tooling produced took it, self-audited,
+fixed three gaps and missed four that an independent auditor later found, one of them blocking.
+Step 7 now requires dispatching a fresh agent, with self-audit allowed only where no subagent
+exists and only if the record says the audit was not independent.
+
+Handled under this skill's own small-change clause: step 7 alone, and the baseline was not
+repeated. The change does not alter what the skill claims to produce, only who checks it.
+
+Recorded here because an audit found the record missing, not because the change was noticed at the
+time. The rule requiring this note is in the file that was edited, and editing it is exactly when
+it was forgotten.
+
+Later the same day, three further audit findings were fixed without repeating the baseline: the
+artifact-check list was opened with a membership test and a fallback, and two passages restating
+`skill-rules.md` were replaced with pointers, one of which had already drifted from its source.
