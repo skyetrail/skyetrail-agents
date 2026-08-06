@@ -62,6 +62,10 @@ Problems are counted per skill in the order: writing-skills, auditing-skills, wr
 | 10 | Second seeded fixture, different language and framework, to check the gains were not tuned to the first one | 7 of 9, against the older instruction's 8 of 9 | n/a | The gains did not fully carry. The wording that fixed round 8 named logs specifically, and on new code both runs filed a password sent over an unverified connection as out of scope, because it was not a log. Defining a secret by what makes it one, rather than by where it leaks, fixed it. |
 | 11 | Second fixture after that fix, twice | 8 of 9, one false alarm, both runs | n/a | Nothing. It now matches the older instruction on problems found with a fifth of the false alarms, and its one false alarm is a real vulnerability the answer key had missed rather than an invention. |
 | 12 | Outcome bench for the skill writer: a release-notes skill written by the tool, against no skill at all, three runs each | 7 of 7 against 6.33 | n/a | Nothing. The tool addressed the two failures its own baseline showed and left alone the six things the model already did well. |
+| 13 | Ten checks of seven skills written by someone else, to see whether our rules mean anything on work we did not write | 10 to 22 problems per file | in every file | Cut two rules that kept firing without ever naming a consequence, moved the hand-off rules to their own file, and split every finding into a real defect or a difference of style. |
+| 14 | Checked our own rule files for the first time, as things to be judged rather than as the yardstick | problems in all five | in all five | Our rules broke their own rules: the file that says never to write a closed list wrote two in its opening paragraph. Fixed all five. |
+| 15 | Checked the produced release-notes skill against our own rules, which had never been done | 1 serious, 3 minor | yes | The skill our tool wrote fails our own check. The cause was one word letting the writer check its own work. The writing skill now requires a fresh, independent checker. |
+| 16 | Two full rounds over all nine files, nothing edited while the checks ran | 5 problems, then 2, then 0 | none left | Only one file kept failing, the one describing what our own script does. It is now generated from the script instead of written by hand. |
 
 ## Conclusions
 
@@ -105,6 +109,32 @@ Problems are counted per skill in the order: writing-skills, auditing-skills, wr
    maximum on our traps, but its real effect was elsewhere: three runs without it produced three
    differently shaped documents, and three runs with it produced the same shape three times. Our
    scoring could not see that, because we had built it to test judgment about what to leave out.
+10. **Our rules work on other people's writing. Our scoring does not.** Pointed at seven skills from
+    a well-known open collection, the rules found real problems: a setup step that skips any project
+    type not on a list, without saying so; a rule that stops a reviewer raising a valid objection; a
+    link that goes nowhere. But we also had a limit saying more than five problems on one file
+    means the checker is being too harsh, and every single check broke it. That limit was measuring
+    how much a document looks like ours, not how good it is. We only found that out by pointing it
+    at work we did not write.
+11. **We were the worst judges of our own files.** Five rule files are loaded on every run and none
+    had ever been checked as a target, only used as the yardstick. Checking them found problems in
+    all five, including the file that says never to write a closed list writing two of them in its
+    own opening paragraph. Nothing was checking the thing every check depends on.
+12. **A tool that lets the writer mark their own work will produce work that fails.** Our writing
+    skill offered a choice: check the result against the rules, or have another agent check it. The
+    agent took the first option, found three problems, fixed them, and missed four more that an
+    independent checker found. The tool did as it was told and what it was told was wrong.
+13. **Writing down what a program does will go stale, and nothing will fail when it does.** One file
+    described what our own checking script covers. It was wrong four separate times in two days.
+    Every version read well and passed every rule we have. Each was caught only because someone read
+    the script and compared. It is now printed by the script itself, so there is no second copy to
+    drift.
+14. **The worst failure in this project was ours, and we caught it by chance.** Partway through,
+    six test results were written by hand and then written up as though they were measurements, and
+    a rule was changed on the strength of them. The giveaway was that all six files were exactly the
+    same size, which independent runs cannot be. The rule change is reverted, the fake results are
+    deleted, and the incident is recorded in the method rather than tidied away, because a project
+    about evidence that hides a fabrication is worth nothing.
 
 ## Limits of the evidence
 
@@ -126,11 +156,26 @@ not us. It costs less than it might, because the marks are checkable against quo
 anyone can confirm the deciding one by eye, but it is a real fault and the fix for next time is
 that a run file carries a meaningless label and the mapping is kept where the scorer cannot see it.
 
-We have made three mistakes in the test material itself: a real problem missing from one answer
-key, a wrong statement in another, and the broken blind above. Every one was caught by a worker
-disagreeing with our own materials, never by us checking them. Writing a fair test is harder
-than it looks, and the results here should be read as evidence from tests that needed correcting
-three times, because that is what they are.
+We have made mistakes in the test material itself, and they are worth listing because they bound
+what everything above is worth. A real problem missing from one answer key. A wrong statement in
+another. The broken blind above. Four findings against another author's skills that were void,
+because we copied seven of their fourteen files and the links between them broke, and the check we
+then ran to measure that damage was too narrow to find three of the four. And one set of results
+written by hand and presented as measurements.
+
+Every one of those was caught by a worker disagreeing with our own materials, never by us checking
+them ourselves. That is the single most reliable finding in the project and it cuts against us:
+whatever these tests show, we were not the ones who noticed when they were wrong.
+
+The checks on our own files are also weaker than the numbers suggest. Two runs of the same check
+agree on whether a file is fit for use, every time we have measured it, but they differ by up to
+three rows on minor calls, and on one occasion two checkers read the same sentence and reached
+opposite conclusions. Read a single check as a strong signal about fitness and a weak one about
+anything below that.
+
+Nothing here has been tested by anyone outside this project. The rules have been pointed at one
+other person's work, once. That is one collection, one author, and one worker model, and the fixture
+was built by the same person whose rules were being tested.
 
 ## Where the detail lives
 
