@@ -44,9 +44,11 @@ A direct instruction from the person wins over anything here.
    including when a second attempt is allowed. Then say in the report what did not run, rather than
    re-deriving the mechanical limits by hand without saying you have done so. A report that hides
    an unrun check is worse than one that admits a gap.
-2. Read the target in full, including every reference file it names.
-3. Work through each rule. Mark it pass, fail, warn, or not applicable. A rule whose condition is
-   not met is not applicable, which is not the same as a pass.
+2. Read the target in full, including every reference file it names, because a rule the target
+   satisfies in a file you did not open reads as a failure.
+3. Work through each rule. Mark it pass, fail, warn, or not applicable, so the reader can tell a
+   rule that held from one that never applied. A rule whose condition is not met is not applicable,
+   which is not the same as a pass.
 4. Apply the calibration below before writing anything down, so first impressions do not harden
    into findings.
 5. Report.
@@ -110,7 +112,9 @@ not changed, and name the report you compared against.
 
 State the lint result first. Every fail and warn carries evidence, meaning the line or section it
 came from. Then give counts by severity, then the three fixes to make first. Keep the table's
-wording fixed, so two runs over the same target can be compared without editing either.
+wording fixed, so two runs over the same target can be compared without editing either. Do not
+report findings as prose ranked by severity instead of this table: that was the earlier form, and
+two runs of it could not be compared without rewriting one of them.
 
 Mark every fail and warn a defect or a difference, and count them separately. A defect is one where
 you can name what an agent would do wrong: an unlisted project type gets no setup, a real finding is
@@ -124,5 +128,7 @@ there is one. A blocking difference does not hold the target back, and it is wor
 signal about the rule rather than the target: a rule that fires at blocking severity on something
 nobody can name a consequence for is reaching past what it can judge.
 
-Any blocking failure means the target needs work before use. Advisory items are listed once and
-never block.
+A blocking defect means the target needs work before use. Advisory items are listed once and never
+block. This is narrower than the same sentence in `../../shared/steering-rules.md`, which speaks of
+any blocking failure: that file has no defect and difference marking, so it cannot draw the
+distinction and this file does.

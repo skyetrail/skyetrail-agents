@@ -50,10 +50,8 @@ again: record that it could not be run and say what you saw.
 
 ## In this repository
 
-`npm run lint` runs from the repository root. A lint failure writes nothing and lists every problem
-with its file.
-
-Ask the command what it covers rather than reading it here:
+`npm run lint` runs from the repository root. Ask the command what it covers rather than reading it
+here:
 
 ```
 npm run lint -- --explain
