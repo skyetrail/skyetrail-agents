@@ -4,7 +4,20 @@ Rules that apply only when the agent will not see the conversation the author ha
 Read this file with `steering-rules.md` when the **hand-off** condition is met, and not otherwise.
 
 Severity and reporting work exactly as in `steering-rules.md`. Any blocking failure means the
-document needs work before use.
+document needs work before use. Where you cannot tell from the document whether a rule here is met,
+mark it warn and say what you could not determine, rather than guessing either way.
+
+The rule most often misread is the one about detail and summary. It is about what crosses back to
+the caller, not about how much the agent may write.
+
+Bad, because the caller now holds everything the agent read:
+
+> Report your findings.
+
+Good, because the detail stays where it was produced and the caller gets what it needs to act:
+
+> Write every finding to `findings.md`. Return the count by severity, the three most serious with
+> one line each, and the path to that file. Do not paste the file into your reply.
 
 ## Outcome
 
@@ -53,7 +66,7 @@ return, which is why every rule here is hand-off only.
 | The facts the prompt asserts are established before dispatch, and each carries its origin. | Important |
 | Any determination a script could make deterministically is made by a script, not by a dispatched agent or read by hand. | Important |
 | Facts that fill a template are written as a fixed set of named fields to a file, rather than as prose the caller has to parse. | Important |
-| The model or effort level is named explicitly, rather than left to inherit from the calling session. | Important |
+| The model or effort level is named explicitly, rather than left to inherit from the calling session, so two runs of the same prompt stay comparable. | Important |
 | The status values the agent may return are enumerated, and the caller's obligation for each one is stated. | Blocking |
 | Each status declares whether it affects only the agent reporting it or stops the whole run. | Important |
 | The caller checks that the report is usable, and does not re-run the checks the agent already proved. | Important |

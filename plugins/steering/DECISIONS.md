@@ -381,3 +381,28 @@ on the day, and rewriting it now would destroy the evidence. Its audit stands be
 
 Worth keeping: three of the four findings are minor, and the produced skill passed more than thirty
 rules. The loop nearly closed. It failed on the one step where we let the writer mark their own work.
+
+## Our conditions have no case for a reference file, 2026-08-01
+
+Auditing the four rule files as targets produced one finding in all four at once: none of them
+states that the agent must not modify anything, what the default outcome is, or what evidence a
+finding must carry. Those come only from the skill that loads them.
+
+The same finding in every file is the signature of a condition set wrongly, not four independent
+defects, and that is what it was. I told each auditor that **advisory** was met. Advisory means the
+work reviews or investigates and changes nothing. A rules table is not work. It is reference
+material that work consumes, so rules about how the work behaves land on it as category errors.
+
+Not all of it was wrong. Advisory also carries the calibration rules, about giving examples of what
+counts and what does not, and those apply perfectly well to a reference file: `handoff-rules.md` had
+none and that was a real finding, now fixed. So the condition is half right, which is why it was not
+obvious.
+
+The gap is in the conditions themselves. They assume the document being judged is an instruction to
+do work. There is no condition for a document that is consulted while doing work, where the rules
+about calibration apply and the rules about conduct do not.
+
+Not fixed here. Adding a condition changes every rule's applicability and needs its own round rather
+than being bolted on at the end of a long day. Recorded because the next person to audit a reference
+file will hit it, and because the shape is worth knowing: a finding that appears in every target at
+once is usually about the harness, not the targets.

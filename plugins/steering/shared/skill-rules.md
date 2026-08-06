@@ -42,8 +42,8 @@ insistent is closer to right than one that reads as neutral.
 | The skill does not document a constraint that a script or a regex could enforce instead. | Important |
 
 Read each paragraph and ask what an agent does differently for having read it. Where the answer is
-nothing, it is a finding. Four shapes account for every instance found so far, and naming the
-category alone missed all four.
+nothing, it is a finding. These shapes are the ones seen so far, not the whole list; the test above
+decides a shape they do not cover.
 
 - A paragraph about how this document came to be edited: which wording replaced which, what an
   earlier round of review showed, why a section was moved. An approach to the work itself that was

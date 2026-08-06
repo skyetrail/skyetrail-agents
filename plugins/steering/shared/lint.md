@@ -1,9 +1,12 @@
 # Skills lint
 
-The mechanical gate for skills. The linter checks that the frontmatter carries no YAML hazards,
-the name format and length and that the name matches its directory, the description length, the
-body line count, and that every reference resolves, in markdown links and in backticked relative
-paths alike. Judgment stays with the rules files; these limits belong to the script.
+Settles the mechanical limits for a target once, so a report can cite a lint result instead of
+re-deriving those limits by hand and no finding re-argues them.
+
+The linter checks that the frontmatter carries no YAML hazards, the name format and length and that
+the name matches its directory, the description length, the body line count, and that every
+reference resolves, in markdown links and in backticked relative paths alike. Judgment stays with
+the rules files; these limits belong to the script.
 
 ## Finding the command
 
@@ -47,3 +50,7 @@ again: record that it could not be run and say what you saw.
 `npm run lint` runs from the repository root. The same checks run in the pre-commit hook and in
 CI, so a violation cannot merge. A lint failure writes nothing and lists every problem with its
 file.
+
+It walks each plugin's `skills/` directory and nothing else, so a target under `shared/` or under a
+plugin's `tests/` is never opened by it. Auditing one of those is the third case above, and the
+report says so rather than recording a pass.
