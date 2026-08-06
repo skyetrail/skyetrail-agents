@@ -1,8 +1,14 @@
 # Steering rules
 
-Rules for anything written to shape an agent's behaviour. That includes a skill body, a prompt
-template, a command, a hand-off brief, and a one-off request. Hand-off is one of the conditions
+Rules for anything written to shape an agent's behaviour. If a person wrote it so that an agent
+would act a particular way, it is in scope. A skill body, a prompt template, a command, a hand-off
+brief, and a one-off request are examples, not the whole list. Hand-off is one of the conditions
 below, not the subject of this file.
+
+Out of scope: anything an agent reads as material rather than as instruction. Source code under
+review, a document being summarised, a transcript, a dataset, and a report an agent produced are
+examples of that, not the whole list. The test is who the text is addressed to. These rules judge
+what tells an agent how to work, never what an agent works on.
 
 Each entry has a severity and a condition. Report counts by severity. Any blocking failure means
 the document needs work before use. Advisory items are mentioned once and never block.
@@ -49,7 +55,7 @@ Some entries are about position, so check where a section appears, not only whet
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
-| Nothing refers to something the agent cannot resolve, such as a prior conversation, an earlier decision, or a file named only by nickname. | Blocking | always |
+| Nothing refers to something the agent cannot resolve, meaning anything it cannot read or reach from the document alone. A prior conversation, an earlier decision, and a file named only by nickname are examples, not the whole list. | Blocking | always |
 | Every fact the agent needs is either written out or pointed at by a path it can read. | Blocking | always |
 | Approaches already tried and found not to work are stated. | Important | always |
 | Context sits above the method, so it is read before a plan is formed. | Advisory | always |
@@ -78,9 +84,9 @@ Good, because a reader can decide a case the list does not cover:
 > system interprets. SQL, shell commands, file paths, and markup returned to a browser are
 > examples, not the whole list.
 
-This is measured, not a preference. In an outcome test, the first wording made a reviewer that
-had already found a reflected injection file it as out of scope, because markup was not one of
-the four kinds listed. The second wording recovered it in every run.
+A reviewer given the first wording, having already found a reflected injection, filed it out of
+scope because markup was not one of the kinds named. Nothing about the list was wrong; it was
+closed.
 
 **A trailing "or any other X" satisfies this rule.** A list that ends by generalising to the
 category is closed; a list that just stops is not.
@@ -133,19 +139,17 @@ category is hard to recognise.
 A label says which bucket a finding belongs in. The shape says what the agent is looking at on
 the screen, so it can recognise the case without already knowing it is there.
 
-Bad, and measured as ineffective:
+Bad, because it names the bucket and leaves the reader to spot the case:
 
 > Report any secret written to a log.
 
-Good, and measured as effective on the first run:
+Good, because it says what the code looks like where the problem lives:
 
 > Check what every log and error call passes. Passing a whole request, session, user, or config
 > object is a finding, because the fields inside it are not visible at the call site.
 
-The first wording named the category and the finding stayed missed three times out of three. The
-second described what the code looks like where the problem lives, and the finding appeared three
-times out of three. Reach for this after a run shows a miss, not before: a shape written from
-imagination is a guess, and it costs the same context as a measured one.
+Reach for this after a run shows a miss, not before. A shape written from imagination is a guess,
+and it costs the same context as one taken from an observed failure.
 
 ## Composition
 
