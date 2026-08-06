@@ -69,5 +69,6 @@ Where a target is none of these, say so and name the checks that did not reach i
 reporting either a pass or a total gap.
 
 CI runs on any change under `plugins/**`, so a broken reference anywhere above cannot merge. The
-pre-commit hook is narrower: its file trigger matches component files and the manifests, not
-`shared/`, so a commit touching only a shared file runs no hook locally and is caught by CI alone.
+pre-commit hook is narrower: its file trigger matches components, a plugin's README, and the
+manifests, but no reference surface. A commit touching only a reference surface runs no hook
+locally and is caught by CI alone.

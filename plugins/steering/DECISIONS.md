@@ -406,3 +406,44 @@ Not fixed here. Adding a condition changes every rule's applicability and needs 
 than being bolted on at the end of a long day. Recorded because the next person to audit a reference
 file will hit it, and because the shape is worth knowing: a finding that appears in every target at
 once is usually about the harness, not the targets.
+
+## A file that describes tooling needs a different check, 2026-08-01
+
+`shared/lint.md` has now been wrong four times in two days, and the shape of the error changed each
+time. Two false claims about what the lint covers. Then, correcting those, a list of three coverage
+tiers that omitted commands, agents, and `SUMMARY.md`. Then, correcting that, a sentence saying the
+pre-commit hook misses `shared/` when it also misses `SUMMARY.md`, which the same file had just
+placed in the same tier two paragraphs above.
+
+Every version was well-formed. Every version passed a rules audit on structure. Each was caught only
+because an auditor read `generate-readmes.mjs` and the hook regex and compared them to the prose.
+
+The lesson is about a class of document, not about this one. A file whose content is claims about
+what a script does can satisfy every rule we have and still be false, and the failure is invisible
+to anyone who has not read the source. Worse, a fix creates a fresh opportunity for the same error,
+because each rewrite is a new set of claims.
+
+Two practices came out of it, both now in the file or the method:
+
+State the coverage by what makes a file a member of a tier, not by listing paths. A list of paths
+goes stale silently when the script grows a case. The fourth error was naming one member of a tier
+where the tier itself was meant.
+
+Audit such a file against the source, not against the rules. When one of these is a target, the
+instruction should say so explicitly, as the last two rounds did.
+
+## Only a defect blocks, 2026-08-01
+
+An audit marked a finding Blocking and a difference at once, and pointed out that our rules
+collide: any blocking failure means the target needs work, and a difference is one where nobody can
+name what goes wrong. We never said which wins.
+
+Settled: only a defect blocks. Severity says how much a problem matters, defect or difference says
+whether there is one, and a rule firing at blocking severity on something with no nameable
+consequence is reaching past what it can judge. The finding that raised it is a good example: our
+reproducibility rule asks that two runs return the same result, and judgment work cannot give that.
+Our own baseline measured the gap honestly at up to three rows on minor calls, with blocking-level
+calls stable. The part that decides anything is reproducible; the rule asked for more.
+
+Left as is rather than narrowing the rule, because the precedence fix resolves the case and
+narrowing is a rule change that deserves its own round.

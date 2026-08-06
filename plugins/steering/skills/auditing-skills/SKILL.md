@@ -119,5 +119,10 @@ and you cannot say what goes wrong, only that we would have written it otherwise
 read alike at the same severity, and nobody can tell a document that will misbehave from one that is
 merely unfamiliar.
 
+Only a defect blocks. Severity says how much a problem matters; defect or difference says whether
+there is one. A blocking difference does not hold the target back, and it is worth reading as a
+signal about the rule rather than the target: a rule that fires at blocking severity on something
+nobody can name a consequence for is reaching past what it can judge.
+
 Any blocking failure means the target needs work before use. Advisory items are listed once and
 never block.
