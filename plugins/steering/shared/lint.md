@@ -3,10 +3,10 @@
 Settles the mechanical limits for a target once, so a report can cite a lint result instead of
 re-deriving those limits by hand and no finding re-argues them.
 
-The linter checks that the frontmatter carries no YAML hazards, the name format and length and that
-the name matches its directory, the description length, the body line count, and that every
-reference resolves, in markdown links and in backticked relative paths alike. Judgment stays with
-the rules files; these limits belong to the script.
+A lint checks what a script can decide on its own, such as whether a file parses, whether it is
+within a stated limit, and whether the things it points at exist. Judgment stays with the rules
+files; these limits belong to the script. Which of them a given repository's lint actually performs
+is that repository's business, not this file's, so establish it rather than assuming.
 
 ## Finding the command
 
@@ -36,10 +36,13 @@ not run and why. Do not run a command whose reach you cannot bound in order to a
 gap.
 
 **The command runs, exits clean, and never opened your target.** This is the one that looks like a
-pass and is not. Before recording a clean result, establish what the command actually reads: the
-paths it walks, and whether your target is under one of them. Where it is not, report a coverage
-gap and say which check did not run. A lint that reports every file up to date while never opening
-the file you are auditing is worse than no lint, because it produces a pass nobody questions.
+pass and is not. Before recording a clean result, establish what the command actually reads and
+whether your target is under it. Where the repository offers a way to ask the command itself, use
+that; otherwise read the script. Do not take a description of coverage from a document, including
+this one, since prose about what a script does goes stale without anything failing. Where the target
+is not covered, report a coverage gap and say which check did not run. A lint that reports every
+file up to date while never opening the file you are auditing is worse than no lint, because it
+produces a pass nobody questions.
 
 Where a run fails without settling which of these applies, such as a timeout or an error naming no
 cause, run it once more only after something has changed. Where nothing has changed, do not run it
@@ -50,25 +53,11 @@ again: record that it could not be run and say what you saw.
 `npm run lint` runs from the repository root. A lint failure writes nothing and lists every problem
 with its file.
 
-What it opens differs by check, so say which check did not run rather than that the lint did not
-run. Which checks a file gets follows from what kind of file it is.
+Ask the command what it covers rather than reading it here:
 
-- **A component**, meaning a file the plugin manifest lists as something an agent loads by name.
-  `skills/*/SKILL.md`, `commands/*.md`, and `agents/*.md` are the components today. These get
-  everything: frontmatter hazards, description length, body line count, and reference resolution.
-  Only a skill also has its name checked against its directory, because only a skill is named by
-  its directory.
-- **A reference surface**, meaning a file that loads alongside a component rather than being one.
-  A top-level `.md` under `shared/` and a plugin's `SUMMARY.md` are reference surfaces today. These
-  get reference resolution only. The frontmatter and length checks read a component's frontmatter,
-  and these files have none.
-- **Excluded**, meaning anything under a plugin's `tests/`. Not opened at all, by design, since
-  those are records that may cite paths from earlier rounds.
+```
+npm run lint -- --explain
+```
 
-Where a target is none of these, say so and name the checks that did not reach it, rather than
-reporting either a pass or a total gap.
-
-CI runs on any change under `plugins/**`, so a broken reference anywhere above cannot merge. The
-pre-commit hook is narrower: its file trigger matches components, a plugin's README, and the
-manifests, but no reference surface. A commit touching only a reference surface runs no hook
-locally and is caught by CI alone.
+That prints which kinds of file get which checks, from the same data the run itself uses, so it
+cannot disagree with what the lint does. A description written out here could, and did, four times.
