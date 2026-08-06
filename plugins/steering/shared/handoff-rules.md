@@ -3,11 +3,6 @@
 Rules that apply only when the agent will not see the conversation the author has been having.
 Read this file with `steering-rules.md` when the **hand-off** condition is met, and not otherwise.
 
-These sat in `steering-rules.md` until an external audit round showed the cost. Twenty of them
-never apply to a plain skill, which is the most common thing audited, and every auditor read all
-twenty to rule all twenty out. Moving them cuts about a third of the rule text for that case
-without losing a rule.
-
 Severity and reporting work exactly as in `steering-rules.md`. Any blocking failure means the
 document needs work before use.
 

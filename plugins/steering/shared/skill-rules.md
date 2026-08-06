@@ -3,11 +3,11 @@
 Rules for a SKILL.md. The rules in `steering-rules.md` also apply to a skill, with the condition
 **reused** met and **hand-off** not met, so read that file too.
 
-Every entry here applies whenever the thing being audited is a SKILL.md.
+Every entry here applies whenever the thing being audited is a SKILL.md, and not otherwise.
 
-Mechanical limits are the lint script's job, not judgment work. The script checks that the
-frontmatter parses, the name format and length, the description length, the body line count, and
-that every reference resolves. Confirm the lint record rather than re-deriving those by hand.
+Mechanical limits are the lint script's job, not judgment work. `lint.md` says what the script
+checks. Confirm the lint record rather than re-deriving those checks by hand, and do not restate
+them here: a second copy of that list drifts from the first and then two files disagree.
 
 ## Discovery
 
@@ -40,6 +40,27 @@ insistent is closer to right than one that reads as neutral.
 | One term is used for one thing throughout. | Important |
 | Time-sensitive material is absent, or confined to a section for old patterns. | Important |
 | The skill does not document a constraint that a script or a regex could enforce instead. | Important |
+
+Read each paragraph and ask what an agent does differently for having read it. Where the answer is
+nothing, it is a finding. Four shapes account for every instance found so far, and naming the
+category alone missed all four.
+
+- A paragraph about how the document came to be: what was tried, what an earlier round showed, why a
+  rule was moved.
+- A statement of how sure the authors are, such as a rule being unverified or a test not yet run.
+  Severity already carries how much a rule matters, and a paragraph nudging a severity is a worse
+  instrument than the severity field.
+- A count of anything, especially of things in another file. The number gives an agent nothing and
+  goes wrong the moment someone adds one.
+- A restatement of a list that lives in another file. The copy drifts, and then two files an agent
+  loads together disagree.
+
+These do not count. An explanation of why a constraint exists, where the rule requiring it says the
+reason must be given. A worked example of a rule being met and broken. A line saying what the
+document does not cover. Each of those changes what an agent does with the next paragraph.
+
+Provenance, doubt, and history belong where the authors read them, not in a file loaded on every
+run.
 
 ## Loading
 

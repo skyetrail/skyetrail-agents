@@ -17,20 +17,30 @@ this order.
 3. Nothing recorded and no `npm run lint`. Use the `repo-setup` skill to establish the command and
    record it, rather than guessing from what the repository appears to contain.
 
-## When it cannot be run
+## When it does not settle the target
 
-Two cases, and they are not the same.
+Three cases, and they are not the same. In all three, say what happened and continue with the
+judgment rules; never re-derive the mechanical limits by hand and present the result as a lint
+result.
 
-Where no lint command exists for this repository, say so in the report and continue with the
-judgment rules. Do not re-derive the mechanical limits by hand and present the result as a lint
-result. Where a person is present, tell them the repository needs a lint command, because every
-skill that leans on this file is working without its mechanical gate until it has one.
+**No lint command exists for this repository.** Say so. Where a person is present, tell them the
+repository needs one, because every skill that leans on this file is working without its mechanical
+gate until it has one.
 
-Where a command exists but you cannot run it from where you are, which is the usual case for an
-agent scoped to a subdirectory of a repository whose lint runs from the root, report the command
-you could not run and why, then continue with the judgment rules. That is a gap in coverage rather
-than a clean pass, and the report should read that way. Do not run a command whose reach you
-cannot bound in order to avoid reporting the gap.
+**A command exists but you cannot run it from where you are**, which is the usual case for an agent
+scoped to a subdirectory of a repository whose lint runs from the root. Report the command you could
+not run and why. Do not run a command whose reach you cannot bound in order to avoid reporting the
+gap.
+
+**The command runs, exits clean, and never opened your target.** This is the one that looks like a
+pass and is not. Before recording a clean result, establish what the command actually reads: the
+paths it walks, and whether your target is under one of them. Where it is not, report a coverage
+gap and say which check did not run. A lint that reports every file up to date while never opening
+the file you are auditing is worse than no lint, because it produces a pass nobody questions.
+
+Where a run fails without settling which of these applies, such as a timeout or an error naming no
+cause, run it once more only after something has changed. Where nothing has changed, do not run it
+again: record that it could not be run and say what you saw.
 
 ## In this repository
 
