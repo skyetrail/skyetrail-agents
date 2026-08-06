@@ -47,10 +47,19 @@ again: record that it could not be run and say what you saw.
 
 ## In this repository
 
-`npm run lint` runs from the repository root. The same checks run in the pre-commit hook and in
-CI, so a violation cannot merge. A lint failure writes nothing and lists every problem with its
-file.
+`npm run lint` runs from the repository root. A lint failure writes nothing and lists every problem
+with its file.
 
-It walks each plugin's `skills/` directory and nothing else, so a target under `shared/` or under a
-plugin's `tests/` is never opened by it. Auditing one of those is the third case above, and the
-report says so rather than recording a pass.
+What it opens differs by check, so say which check did not run rather than that the lint did not
+run.
+
+- A `SKILL.md` under a plugin's `skills/` gets everything: frontmatter hazards, name format and
+  directory match, description length, body line count, and reference resolution.
+- A top-level `.md` under a plugin's `shared/` gets reference resolution only. The frontmatter and
+  length checks never run there, because those are scoped to component files.
+- Anything under a plugin's `tests/` is not opened at all, by design, since those are records that
+  may cite paths from earlier rounds.
+
+CI runs on any change under `plugins/**`, so a broken reference anywhere above cannot merge. The
+pre-commit hook is narrower: its file trigger matches component files and the manifests, not
+`shared/`, so a commit touching only a shared file runs no hook locally and is caught by CI alone.

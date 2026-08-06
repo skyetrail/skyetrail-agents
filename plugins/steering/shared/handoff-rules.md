@@ -1,9 +1,9 @@
 # Hand-off rules
 
 Rules that apply only when the agent will not see the conversation the author has been having.
-Read this file with `steering-rules.md` when the **hand-off** condition is met, and not otherwise.
+Read this file with `./steering-rules.md` when the **hand-off** condition is met, and not otherwise.
 
-Severity and reporting work exactly as in `steering-rules.md`. Any blocking failure means the
+Severity and reporting work exactly as in `./steering-rules.md`. Any blocking failure means the
 document needs work before use. Where you cannot tell from the document whether a rule here is met,
 mark it warn and say what you could not determine, rather than guessing either way.
 

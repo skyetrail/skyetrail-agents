@@ -1,11 +1,11 @@
 # Skill rules
 
-Rules for a SKILL.md. The rules in `steering-rules.md` also apply to a skill, with the condition
+Rules for a SKILL.md. The rules in `./steering-rules.md` also apply to a skill, with the condition
 **reused** met and **hand-off** not met, so read that file too.
 
 Every entry here applies whenever the thing being audited is a SKILL.md, and not otherwise.
 
-Mechanical limits are the lint script's job, not judgment work. `lint.md` says what the script
+Mechanical limits are the lint script's job, not judgment work. `./lint.md` says what the script
 checks. Confirm the lint record rather than re-deriving those checks by hand, and do not restate
 them here: a second copy of that list drifts from the first and then two files disagree.
 

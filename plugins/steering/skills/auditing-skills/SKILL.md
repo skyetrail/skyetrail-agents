@@ -40,7 +40,7 @@ A direct instruction from the person wins over anything here.
 
 1. Run the lint command named in `../../shared/lint.md` over the target and record its result,
    so the mechanical limits are settled once and never re-argued in the findings. Where it cannot
-   be run, or runs without reaching the target, follow what `lint.md` says about that case,
+   be run, or runs without reaching the target, follow what `../../shared/lint.md` says about that case,
    including when a second attempt is allowed. Then say in the report what did not run, rather than
    re-deriving the mechanical limits by hand without saying you have done so. A report that hides
    an unrun check is worse than one that admits a gap.

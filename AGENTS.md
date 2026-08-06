@@ -58,12 +58,13 @@ this repository is the house style.
 Established by the `repo-setup` skill. Re-run it rather than editing this block by hand.
 
 - **Lint command:** `npm run lint`, run from the repository root. Confirmed by running it. It runs
-  `eng/generate-readmes.mjs --check`, which checks frontmatter for YAML hazards, the name format and
-  that a name matches its directory, description length, body line count, and that every reference
-  resolves, and it checks that the generated README files are current. `npm run check` is the same
-  command under a second name. It walks only `plugins/<plugin>/skills/` for the plugins listed in
-  `marketplace.json`, so it does not reach anything under a plugin's `tests/` directory. An agent
-  auditing a file outside that path should report a coverage gap rather than a clean pass.
+  `eng/generate-readmes.mjs --check` and also checks that the generated README files are current.
+  `npm run check` is the same command under a second name. What it opens differs by check, for the
+  plugins listed in `marketplace.json`: a `SKILL.md` under a plugin's `skills/` gets frontmatter
+  hazards, name format and directory match, description length, body line count, and reference
+  resolution; a top-level `.md` under a plugin's `shared/` gets reference resolution only; anything
+  under a plugin's `tests/` is not opened. An agent auditing a file should say which check did not
+  reach it rather than reporting either a clean pass or a total gap.
 
 Unresolved: none.
 <!-- END: repo-setup -->
