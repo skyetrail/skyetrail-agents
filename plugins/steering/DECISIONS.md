@@ -354,3 +354,30 @@ Both violated a rule we already had, that content which would not change what an
 absent. Our own rules file broke a rule from our own rules file, in two places, and neither audit
 caught it. Worth sitting with: the audits check targets against the rules, and nothing checks the
 rule files themselves the same way.
+
+## The loop did not close, and why, 2026-08-01
+
+The definitional test of this plugin is whether a skill written by `writing-skills` passes
+`auditing-skills`. We had never run it. The release-notes skill our tool produced in the skills
+bench sat in the repository for a day, scored on a trap bench, never audited.
+
+Audited, it fails: one blocking finding, two important, one advisory. It needs work before use.
+
+The cause is precise. Step 7 read "audit against the rule files, or by using `auditing-skills`".
+That "or" let the author audit its own draft, and the producing agent took it. Its own report says
+the self-audit caught three real gaps, which it fixed. An independent auditor then found four more,
+including the blocking one.
+
+So the tool worked as instructed and the instruction was wrong. The author of a document is the
+worst reader of it, because they know what each line was meant to say and read the intent rather
+than the text. Our own method already said this about baselines, and step 7 did not say it about
+audits.
+
+Step 7 now requires a fresh agent, with self-audit allowed only where no subagent exists and only if
+the record says the audit was not independent.
+
+The produced skill is left as it is. It is a bench artifact and a record of what the tool produced
+on the day, and rewriting it now would destroy the evidence. Its audit stands beside it.
+
+Worth keeping: three of the four findings are minor, and the produced skill passed more than thirty
+rules. The loop nearly closed. It failed on the one step where we let the writer mark their own work.

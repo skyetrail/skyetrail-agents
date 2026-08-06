@@ -47,9 +47,12 @@ Run these in order. Step 1 before any writing, because it decides what the skill
 6. **Baseline again.** Same task, fresh subagent, skill loaded. Compare against step 1, and
    record the comparison and the failures the skill addresses in the plugin's
    `tests/baselines/<skill-name>.md`.
-7. **Audit.** Run the lint command named in `../../shared/lint.md` for the mechanical limits, then
-   audit against `../../shared/skill-rules.md` and `../../shared/steering-rules.md`, or by using
-   `auditing-skills`.
+7. **Audit, and not by yourself.** Run the lint command named in `../../shared/lint.md` for the
+   mechanical limits, then dispatch a fresh agent to audit the draft using `auditing-skills`. Do
+   not audit your own draft. You know what every line was meant to say, so you read the intent
+   rather than the text, and you will pass wording a reader coming to it cold would not. Where no
+   subagent is available, audit it yourself against `../../shared/skill-rules.md` and
+   `../../shared/steering-rules.md`, and say in the record that the audit was not independent.
 
 ## The baseline is the gate
 
