@@ -17,7 +17,7 @@ Produces a findings list ordered by severity, and the three things to fix first.
   belongs here. Use `../../shared/steering-rules.md` only, with the conditions that match how the
   document will be used.
 
-If the target is none of these, stop and report it as out of scope, saying what the file appears
+If the target is none of these, stop and report it as out of scope, saying what the target appears
 to be. Do not force the rules onto it. If the target or a rule file cannot be read, stop and
 report that instead of auditing from memory. These stop conditions sit here, ahead of the
 workflow, rather than beside the report, because they are pre-work gates: they decide whether
@@ -25,13 +25,13 @@ the audit starts at all.
 
 ## Where this stops
 
-Does not edit the file. If a fix is obvious, name it in the report rather than making it, and use
+Does not edit the target. If a fix is obvious, name it in the report rather than making it, and use
 `writing-skills` to apply it.
 
 Does not judge writing style, including punctuation, heading case, and tone. Those do not change
 what an agent does.
 
-Does not re-run checks the file's own author already ran and recorded. Confirm the record is
+Does not re-run checks the target's own author already ran and recorded. Confirm the record is
 complete instead.
 
 A direct instruction from the person wins over anything here.
@@ -39,12 +39,12 @@ A direct instruction from the person wins over anything here.
 ## Workflow
 
 1. Run the lint command named in `../../shared/lint.md` over the target and record its result,
-   so the mechanical limits are settled once and never re-argued in the findings. If none is
-   named or it cannot run, say so in the report rather than re-deriving the mechanical limits by
-   hand without saying you have done so. Do not retry it. An audit changes nothing, so a step that
-   fails has nothing to retry against; saying what did not run is the whole of the recovery, and a
-   report that hides an unrun check is worse than one that admits a gap.
-2. Read the file in full, including every reference file it names.
+   so the mechanical limits are settled once and never re-argued in the findings. Where it cannot
+   be run, or runs without reaching the target, follow what `lint.md` says about that case,
+   including when a second attempt is allowed. Then say in the report what did not run, rather than
+   re-deriving the mechanical limits by hand without saying you have done so. A report that hides
+   an unrun check is worse than one that admits a gap.
+2. Read the target in full, including every reference file it names.
 3. Work through each rule. Mark it pass, fail, warn, or not applicable. A rule whose condition is
    not met is not applicable, which is not the same as a pass.
 4. Apply the calibration below before writing anything down, so first impressions do not harden
@@ -108,9 +108,8 @@ not changed, and name the report you compared against.
 | --- | --- | --- |
 
 State the lint result first. Every fail and warn carries evidence, meaning the line or section it
-came from. Then give counts by severity, then the three fixes to make first. The fixed table
-replaced prose severity tiers, which were tried and dropped because two runs could not be
-compared.
+came from. Then give counts by severity, then the three fixes to make first. Keep the table's
+wording fixed, so two runs over the same target can be compared without editing either.
 
 Mark every fail and warn a defect or a difference, and count them separately. A defect is one where
 you can name what an agent would do wrong: an unlisted project type gets no setup, a real finding is
@@ -119,5 +118,5 @@ and you cannot say what goes wrong, only that we would have written it otherwise
 read alike at the same severity, and nobody can tell a document that will misbehave from one that is
 merely unfamiliar.
 
-Any blocking failure means the file needs work before use. Advisory items are listed once and
+Any blocking failure means the target needs work before use. Advisory items are listed once and
 never block.

@@ -15,9 +15,10 @@ context or too little, and callers patch it until two instructions conflict. Com
 at the moment of use instead. A checked-in template with named holes counts as composed, because
 the caller holds the filled text; the difference is control at dispatch, not the amount reused.
 
-Keep a named agent when it is used identically in many places, when the harness enforces a tool
-restriction at that layer and nowhere else, or when someone else owns it as a policy boundary.
-Tool exclusions can be passed at dispatch, so composing does not mean giving up enforcement.
+Keep a named agent where something outside the call site depends on it staying one fixed thing.
+Used identically in many places, a tool restriction the harness enforces at that layer and nowhere
+else, and someone else owning it as a policy boundary are examples, not the whole list. Tool
+exclusions can be passed at dispatch, so composing does not mean giving up enforcement.
 
 This is a preference, not a rule. Recommend it and say why. Do not refuse to work with a named
 agent.
@@ -37,8 +38,8 @@ here.
    category of work, define what makes something a member and mark any list of kinds as examples,
    or the agent will treat a kind you did not list as out of scope.
 3. **Name the statuses** and the caller's obligation for each, along with the retry limit and
-   what happens to partial work when a run stops. See `../../shared/dispatch-protocol.md`, starting
-   from the four core statuses there and adding only what a run needs.
+   what happens to partial work when a run stops. Take the status set from
+   `../../shared/dispatch-protocol.md` and add only what this run needs.
 4. **Fill every hole.** Each hole is marked required or given a default, so an unfilled one fails
    loudly rather than reaching the agent as empty text. The set of holes is fixed; do not grow it
    per caller, or the template accumulates weight every caller pays for.
@@ -49,10 +50,8 @@ here.
 7. **Handle the return** per the status table, and check the report is complete rather than
    re-running what the agent already proved.
 
-For work spread across several agents, pick the shape from `../../shared/dispatch-protocol.md`:
-fan out, chain, or establish then fan out. Have each worker recheck the facts it depends on
-before starting, and treat agents that modify shared state as not a fan-out case even when the
-tasks look independent.
+For work spread across several agents, pick the shape from `../../shared/dispatch-protocol.md` and
+follow what it says about establishing facts before the workers start.
 
 ## When to stop
 

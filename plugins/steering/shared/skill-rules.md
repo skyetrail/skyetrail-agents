@@ -45,8 +45,9 @@ Read each paragraph and ask what an agent does differently for having read it. W
 nothing, it is a finding. Four shapes account for every instance found so far, and naming the
 category alone missed all four.
 
-- A paragraph about how the document came to be: what was tried, what an earlier round showed, why a
-  rule was moved.
+- A paragraph about how this document came to be edited: which wording replaced which, what an
+  earlier round of review showed, why a section was moved. An approach to the work itself that was
+  tried and failed is a different thing and belongs, because stating it stops an agent repeating it.
 - A statement of how sure the authors are, such as a rule being unverified or a test not yet run.
   Severity already carries how much a rule matters, and a paragraph nudging a severity is a worse
   instrument than the severity field.
