@@ -1,13 +1,17 @@
 # Dispatch protocol
 
-The caller's side of dispatching an agent. `./steering-rules.md` covers the agent's side, meaning
-what the prompt says and what the agent returns. This covers what the caller does with it.
+The caller's side of dispatching an agent. `./steering-rules.md` covers what the prompt says.
+`./handoff-rules.md` covers what the agent returns, including the report's sections. This file
+covers what the caller does with both.
+
+The skills `writing-agents` and `auditing-skills` apply this file. It states no workflow of its own,
+so it meets the **catalogue** condition in `./steering-rules.md`.
 
 ## Contents
 
 - One principle
 - Two terms
-- Seven invariants
+- Invariants
 - Statuses
 - Three shapes
 - Establishing facts
@@ -34,25 +38,29 @@ establishes before dispatch. Filling a template writes field values into holes. 
 correspond, but they differ. Fields exist before any template. A template need not use every
 field.
 
-## Seven invariants
+## Invariants
 
 1. The caller establishes the facts the prompt asserts before dispatch. Each fact carries its
    origin. Neither a script nor an agent is needed for what the caller already knows.
 2. The prompt enumerates the status values the agent may return. It states the caller's
    obligation for each one. A status with no defined caller action is decoration.
-3. Where the detail goes and what returns to the caller are both named.
-4. The retry limit is stated, along with what must change before a retry. Re-dispatching the same
-   prompt to the same model is not a retry.
+3. The detail goes to a named file. A capped summary returns to the caller. The prompt names both.
+   A prompt saying only "report your findings" fails this, because it names neither.
+4. The retry limit is stated, along with what must change before a retry. The default is two
+   attempts per agent. Re-dispatching the same prompt to the same model is not a retry.
 5. The prompt states who proves what. The agent proves its own work in its report, with the
    commands and their output. The caller checks that the report is complete. The caller does not
-   re-run the checks. Because the caller does not re-run them, the prompt forbids three things. The
-   agent must not weaken a check. It must not edit a test. It must not narrow a command to make it
-   pass. Nothing else stands behind that proof.
+   re-run the checks. Because the caller does not re-run them, the prompt forbids any change that
+   makes a check pass without doing the work the check tests. Weakening a check, editing a test,
+   narrowing a command, deleting a failing test, stubbing the code under test, and adding a skip
+   marker are examples, not the whole list. Nothing else stands behind that proof.
 6. The prompt states what happens to partial work when a run stops. By default, keep it. Name its
    location in the report. Leave the decision to a person. Do not revert automatically, because
    partial work that passes its own gates is often worth keeping.
 7. An agent that dispatches work collects the result before its own turn ends. A dispatched task
    with no collected result is unfinished work, not a hand-off.
+8. The prompt names the model and the effort level. Left to inherit from the calling session, two
+   runs of one prompt stop being comparable.
 
 ## Statuses
 
@@ -62,20 +70,26 @@ they do not exist unless someone writes them down.
 Standardise this core. These four describe the agent's relationship to its instruction rather
 than anything about the domain, so every template uses them with the same meaning.
 
-| Status | Means |
-| --- | --- |
-| DONE | The work is finished and its gates pass. |
-| DONE_WITH_CONCERNS | The work is finished and the agent has doubts worth reading. |
-| BLOCKED | The agent cannot finish. |
-| NEEDS_CONTEXT | The instruction was insufficient. This is the caller's failure, not the agent's. |
+| Status | Means | The caller must |
+| --- | --- | --- |
+| DONE | The work is finished and its gates pass. | Check the report is complete. Do not re-run the checks the agent proved. |
+| DONE_WITH_CONCERNS | The work is finished and the agent has doubts worth reading. | Read every concern. Decide each one before using the result. |
+| BLOCKED | The agent cannot finish. | Fix the named cause, or report the block upward. Do not re-send the same prompt. |
+| NEEDS_CONTEXT | The instruction was insufficient. This is the caller's failure, not the agent's. | Supply what was missing. Then re-dispatch. Fix the template too, so the next call carries it. |
 
 A check that did not run is not a concern. If a required step was skipped or deferred, the status
 is BLOCKED, or NEEDS_CONTEXT when the cause is something the caller failed to supply.
 
 Every status declares whether it affects only the agent reporting it or stops the whole run. The
-four above affect one agent. A status added for a particular run may not. Sometimes an agent finds a fact whose origin no longer matches. That agent has proved every prompt
+four above affect one agent. A status added for a particular run may not.
+
+Sometimes an agent finds a fact whose origin no longer matches. That agent has proved every prompt
 in the run wrong, not only its own. A reader takes a single failure to affect one task. So state
 the wider reach where it applies.
+
+Returning BLOCKED or NEEDS_CONTEXT costs the agent nothing. Say so in the prompt. An agent that
+reads a stop as a mark against it will guess rather than stop, and a guess is harder to catch than
+a stop.
 
 Additions are allowed and are declared in the template rather than invented per call. A
 template's status set is fixed and documented, so two dispatch types can share a caller and their

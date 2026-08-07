@@ -53,12 +53,25 @@ belong in the block.
 5. **Write the block.** Replace everything between the markers. Keep the rest of `AGENTS.md`
    untouched. Where `AGENTS.md` does not exist, create it with the block. Where it exists without
    the block, append the block and change nothing else. Never rewrite the whole file.
-6. **Check your own work before you report.** Read `AGENTS.md` again and confirm four things. It
-   holds exactly one opening marker and one closing marker. The content outside the markers is
-   unchanged. You saw every command recorded inside the markers work. No placeholder text from the
-   template survives in what you wrote. Fix anything that does not hold before you report. Do not
-   weaken this check to finish. Do not skip it. Do not report a check you did not run. An
-   unverified block is worse than no block, because everything downstream trusts it.
+6. **Check your own work before you report.** Run these commands. Do not read the file and judge by
+   eye, because a changed line outside the markers is exactly what an eye skips.
+
+   ```
+   grep -c 'BEGIN: repo-setup' AGENTS.md      # must print 1
+   grep -c 'END: repo-setup' AGENTS.md        # must print 1
+   grep -n '<command>\|<what it covers\|<anything a person' AGENTS.md   # must print nothing
+   git diff -- AGENTS.md                      # every changed line sits between the markers
+   ```
+
+   Where the repository does not use git, copy `AGENTS.md` before step 5 and `diff` against the
+   copy instead. Then confirm the one thing no command settles: you saw every command recorded
+   inside the markers work, in this run.
+
+   Fix anything that does not hold before you report. Where you cannot fix it, undo your write.
+   Delete `AGENTS.md` where you created it. Remove only your own block where the file already
+   existed. Then report `BLOCKED` with what failed. Do not weaken this check to finish. Do not skip
+   it. Do not report a check you did not run. An unverified block is worse than no block, because
+   everything downstream trusts it.
 
 ## The block
 
@@ -75,6 +88,11 @@ Established by the `repo-setup` skill. Re-run it rather than editing this block 
 Unresolved: <anything a person still has to decide, or "none">
 <!-- END: repo-setup -->
 ```
+
+## Statuses
+
+Report `DONE` where the block is written and every check in step 6 holds. Report `NEEDS_DECISION`
+or `BLOCKED` as below. These three are the whole set. Do not invent a fourth.
 
 ## When to stop
 

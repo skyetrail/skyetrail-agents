@@ -4,6 +4,10 @@ This file settles the mechanical limits for a target once. A report can then cit
 result. The report does not need to work out the limits by hand again. A finding does not need
 to argue the limits again.
 
+Reading a lint script or its configuration to establish what it covers changes nothing. Do not edit
+the target, the lint script, or its configuration to make a check reach further. Recording a
+confirmed command through `repo-setup` is the one change this file asks for.
+
 A lint is a script. It checks things it can decide on its own. For example, it can check
 whether a file parses and whether a file stays within a stated limit. It can also check whether
 the things a file points at exist. Judgment stays with the rules files. These limits belong to
@@ -17,8 +21,8 @@ order.
 
 1. The `repo-setup` block in the repository's `AGENTS.md` file records the command a person
    confirmed. If it exists, use it.
-2. `npm run lint` is the default. Try it before anything else. In this plugin's own repository,
-   `npm run lint` is the answer. It runs from the repository root. It is fixed.
+2. `npm run lint` is the default. Try it where step 1 finds no recorded command. A recorded
+   command always wins, because a person confirmed it.
 3. This repository has no recorded command and no `npm run lint`. Use the `repo-setup` skill to
    establish the command. Then record it. Do not guess the command from what the repository
    seems to contain.
@@ -52,10 +56,14 @@ that names no cause is another example. Run the command one more time, but only 
 changes. If nothing changes, do not run it again. Instead, record that the command could not
 run. Say what you saw.
 
-## In this repository
+## In the repository this plugin is developed in
 
-`npm run lint` runs from the repository root. Ask the command what it covers. Do not look here
-for that description. Run this command:
+This section describes `skyetrail-agents` and nothing else. It does not describe the repository you
+are working in, unless you are working in that one. Where they differ, use **Finding the command**
+above and ignore this section.
+
+`npm run lint` runs from the repository root. It is fixed. Ask the command what it covers. Do not
+look here for that description. Run this command:
 
 ```
 npm run lint -- --explain

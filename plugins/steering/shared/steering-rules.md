@@ -11,15 +11,20 @@ A report an agent produced. The test is who the text addresses. These rules judg
 agent how to work. They never judge what an agent works on.
 
 Each entry carries a severity and a condition. Report counts by severity. Any blocking failure means
-the document needs work before use. Mention an Advisory item once. It never blocks.
+the document needs work before use. An Important failure does not stop use. The author fixes it
+before the document changes again. Mention an Advisory item once. It never blocks.
+
+The default outcome for every rule here is pass. Escalate only where you can name what an agent
+would do wrong because of the failure. This is the default for any audit that reads this file,
+whichever skill runs it.
 
 A rule about the position or wording of a section applies only where that section exists. Where the
 section is missing, the missing section is the finding. The rules that depend on it are then not
 applicable.
 
 Where the **hand-off** condition is met, read `./handoff-rules.md` as well. Every rule conditioned
-on hand-off lives there, and none of them lives here. So a document that is not a hand-off never
-reads them.
+on hand-off lives there, and none of them lives here. So an agent auditing a document that is not a
+hand-off never reads them.
 
 ## Contents
 
@@ -41,6 +46,16 @@ reads them.
 - **changes something**, the work modifies files or state
 - **advisory**, the work reviews or investigates and changes nothing
 - **reused**, the instruction is a skill or template rather than a one-off
+- **catalogue**, the document states rules or facts for another document to apply, and describes no
+  work of its own
+
+Where **catalogue** is met, the Method, Finish, and Failure sections do not apply. Mark those rules
+not applicable. A catalogue describes no work. So it has no method to constrain, no finish to check,
+and no failure to handle. Applying those rules to a catalogue produces findings that name no
+consequence, which wastes an auditor's attention on every run.
+
+A catalogue names the documents that apply it. A reader who needs the procedure can then find it.
+Without that line, the procedure looks missing rather than delegated.
 
 The section order below is the order these sections should appear in the document being written.
 Some entries are about position, so check where a section appears, not only whether it appears.
@@ -166,16 +181,24 @@ These rules govern every sentence rather than one section. Check them wherever y
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
-| A sentence that instructs names its actor, and that actor can choose to act. | Important | always |
+| An instructing sentence is an imperative to the reader, or it names an actor that can choose to act. | Important | always |
 | A sentence that states a property keeps the property's owner as its subject, and gains no actor. | Blocking | always |
 | Nothing that cannot choose to act takes an action verb. | Important | always |
 
 The test for an actor is whether the thing can choose. An agent, a caller, a person, and a script
 can choose. A rule, a review, a file, and a document cannot. These are examples, not the whole list.
 
+A bare imperative passes the first rule. It addresses the reader, so its actor is the reader, and it
+needs no other name. Most instructions in this plugin take that form.
+
+> Read that file too.
+
+The first rule bites where a sentence instructs and its subject is neither the reader nor a named
+actor who can choose.
+
 Two kinds of sentence take two kinds of subject. Mixing them is the common fault.
 
-A sentence that instructs:
+A sentence that instructs and names its actor:
 
 > The caller checks that the report is complete.
 
@@ -196,6 +219,13 @@ Good, because it names what a reader meets:
 > different things.
 
 Forcing the active voice without naming a permitted actor is how a writer promotes the nearest
-noun. Three rewrites in this project moved the subject to the wrong actor: from the review to the
-agent, from all readers to people, and from the document's own use to the auditor's use. Each one
-changed what the sentence demanded.
+noun. Five rewrites in this project moved the subject to the wrong actor.
+
+- From the review to the agent.
+- From all readers to people.
+- From the document's own use to the auditor's use.
+- From a skill nobody finds to a reader who cannot find it.
+- From a property to an order.
+
+Each one changed what the sentence demanded. A style pass is when they happen, because the writer
+counts words then rather than reading meaning.

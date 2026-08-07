@@ -40,21 +40,25 @@ has to say.
    measurement. Record what it did. Record where it went wrong. Record the reasoning it gave, in
    its own words. Where the subagent reaches for an installed skill anyway, record that too. This
    means an existing skill already covers this ground.
-2. **Write the description.** This is the trigger and the most common point of failure. State the
-   capability in the words someone looking for it would use. Then state the conditions that
-   should trigger it. Then state the file types and casual phrasings people actually type. Do not
-   summarise the workflow. A summary gives the agent something to follow instead of the body.
-3. **Write the body.** Open with what the skill produces. Cover the workflow next. Then say what
-   the skill does not cover. Say which skill takes over. Do not add a section that restates the
-   description. The description loads before the body, so a repeat spends context twice.
+2. **Write the description.** This is the trigger and the most common point of failure. Write it
+   against every rule in the Discovery table of `../../shared/skill-rules.md`. Open that file and
+   work down the table. Summarising the workflow is the usual mistake, because a summary gives the
+   agent something to follow instead of the body.
+3. **Write the body.** Order it: what the skill produces, then the workflow, then the boundary.
+   Write it against every rule in the Boundary and Content tables of
+   `../../shared/skill-rules.md`. Open that file and work down both tables. Do not add a section
+   that restates the description. The description loads before the body, so a repeat spends
+   context twice.
 4. **Address only the failures from step 1.** Do not address anything the model already gets
    right. For each failure, describe the shape it takes in the work. Do not describe the label it
    falls under. This lets the agent recognise the case without already knowing it is there.
 5. **Move detail into reference files.** The body is an overview. `../../shared/skill-rules.md`
    sets how you must arrange references.
 6. **Baseline again.** Run the baseline again. Use the same task and a fresh subagent. Load the
-   skill this time. Compare the result against step 1. Record the comparison in the plugin's
-   `tests/baselines/<skill-name>.md`. Record the failures the skill addresses there too.
+   skill this time. Compare the result against step 1. Record the comparison in
+   `tests/baselines/<skill-name>.md`, under the plugin directory that holds the skill you are
+   writing. That is the directory the Evidence rule in `../../shared/skill-rules.md` reads. Record
+   the failures the skill addresses there too.
 7. **Audit, and not by yourself.** Run the lint command named in `../../shared/lint.md`. This
    settles the mechanical limits. Then dispatch a fresh agent to audit the draft. Use
    `auditing-skills` for this. Do not audit your own draft. You know what you meant each line to

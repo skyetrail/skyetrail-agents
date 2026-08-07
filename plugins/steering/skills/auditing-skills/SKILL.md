@@ -1,6 +1,6 @@
 ---
 name: auditing-skills
-description: Audits a skill or an agent prompt against the house rules and reports what to fix, marking each finding blocking, important, or advisory. Use this whenever someone asks to review, check, audit, lint, or sanity-check a skill, a SKILL.md, or a prompt written for a subagent, when they want to know why a skill is not triggering or not being followed, or when a skill is about to ship.
+description: Audits any document written to steer an agent against the house rules, and reports what to fix, marking each finding blocking, important, or advisory. Use this whenever someone asks to review, check, audit, lint, or sanity-check a skill, a SKILL.md, a slash command, a prompt written for a subagent, a hand-off brief, a runbook, or an AGENTS.md or CLAUDE.md instruction file, when they want to know why a skill is not triggering or not being followed, why a subagent came back with nothing useful, or when a skill is about to ship.
 ---
 
 # Auditing skills
@@ -79,11 +79,10 @@ These are not findings.
 - A sibling skill named by its name, such as `writing-skills`. A skill name is how this plugin
   resolves a skill. So a skill name is a working reference, not an unresolvable nickname.
 
-The default outcome is pass. Escalate only when you can say what an agent would do wrong because
-of it. Fail means the rule is broken and you can point at where. Warn means you cannot tell from
-what you can read whether the rule is broken. The rule's severity carries how much the break
-matters, not the choice between warn and fail. Where unsure, mark it warn. Give one line of
-reason.
+`../../shared/steering-rules.md` states the default outcome. Fail means the rule is broken and you
+can point at where. Warn means you cannot tell from what you can read whether the rule is broken.
+The rule's severity carries how much the break matters, not the choice between warn and fail. Where
+unsure, mark it warn. Give one line of reason.
 
 Count one finding per root cause. A missing section is one finding even when several rules depend
 on it. List the dependent rules under that finding, not as findings of their own. A rule about
@@ -109,8 +108,8 @@ the same. Name the report you compared against.
 
 ## Report
 
-| Rule | Result | Evidence |
-| --- | --- | --- |
+| Rule | Result | Defect or difference | Evidence |
+| --- | --- | --- | --- |
 
 State the lint result first. Every fail and warn carries evidence. Evidence is the line or
 section it came from. Then give counts by severity. Then give the three fixes to make first.

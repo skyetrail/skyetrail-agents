@@ -3,9 +3,14 @@
 These rules apply only when the agent will not see the conversation the author had.
 Read this file with `./steering-rules.md` when the **hand-off** condition is met. Do not read it otherwise.
 
-Severity and reporting work exactly as in `./steering-rules.md`. Any blocking failure means the
-document needs work before use. Sometimes you cannot tell from the document whether a rule here is met.
-If so, mark the rule warn. State what you could not determine. Do not guess either way.
+Severity, the default outcome, and reporting work exactly as in `./steering-rules.md`. Any blocking
+failure means the document needs work before use. Sometimes you cannot tell from the document
+whether a rule here is met. If so, mark the rule warn. State what you could not determine. Do not
+guess either way.
+
+The skills `auditing-skills` and `writing-agents` apply these rules. This file states no workflow of
+its own, so it meets the **catalogue** condition in `./steering-rules.md`. The stop conditions and
+the evidence each finding carries live in those two skills.
 
 Readers misread the rule about detail and summary most often. It is about what crosses back to
 the caller, not about how much the agent may write.
@@ -70,4 +75,4 @@ return. That is why every rule here applies only at hand-off.
 | The status values the agent may return are enumerated. The caller's obligation for each one is stated. | Blocking |
 | Each status declares whether it affects only the agent reporting it or stops the whole run. | Important |
 | The caller checks that the report is usable. The caller does not re-run the checks the agent already proved. | Important |
-| Where a predefined named agent is dispatched, the instruction is checked for context the call does not need. | Advisory |
+| Where a predefined named agent is dispatched, the instruction carries no context that call does not need. | Advisory |

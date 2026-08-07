@@ -5,6 +5,10 @@ when the condition **reused** is met and the condition **hand-off** is not met. 
 
 Every entry here applies when the audited thing is a SKILL.md, and not otherwise.
 
+The skills `writing-skills` and `auditing-skills` apply these rules. This file states no workflow of
+its own, so it meets the **catalogue** condition in `./steering-rules.md`. The stop conditions, the
+default outcome, and the evidence each finding carries all live in those two skills.
+
 Mechanical limits are the lint script's job, not judgment work. `./lint.md` says what the script
 checks. Confirm the lint record rather than re-deriving those checks by hand. Do not restate them
 here. A second copy of that list drifts from the first. An agent then loads two files that say
@@ -57,9 +61,10 @@ decides a shape they do not cover.
 - A restatement of a list that lives in another file. The copy drifts. An agent then loads two
   files that say different things.
 
-These do not count. An explanation of why a constraint exists, if the rule requiring it says to
-give the reason. A worked example of a rule being met and broken. A line saying what the document
-does not cover. Each of those changes what an agent does with the next paragraph.
+These do not count, because each one changes what an agent does with the next paragraph. That test
+decides a case the three examples below do not cover. They are examples, not the whole list. An
+explanation of why a constraint exists, where the rule requiring it says to give the reason. A
+worked example of a rule being met and broken. A line saying what the document does not cover.
 
 Provenance, doubt, and history belong where the authors read them, not in a file loaded on every
 run.
@@ -68,7 +73,6 @@ run.
 
 | Rule | Severity |
 | --- | --- |
-| The SKILL.md body is 500 lines or fewer. | Blocking |
 | Every reference is one hop from the SKILL.md that names it. | Blocking |
 | Detail sits in reference files rather than the front file. | Important |
 | A reference file longer than 100 lines opens with a contents list. | Advisory |
@@ -79,7 +83,7 @@ run.
 
 | Rule | Severity |
 | --- | --- |
-| The skill went through a baseline comparison, with and without it loaded. The plugin's `tests/baselines/` directory holds the observed failures it addresses, one file per skill, linked from nothing. | Blocking |
+| The skill went through a baseline comparison, with and without it loaded. The plugin's `tests/baselines/` directory holds the observed failures it addresses, one file per skill, and no SKILL.md links to it. | Blocking |
 
 This rule applies only to a skill this plugin maintains. A skill read from elsewhere has no
 `tests/baselines/` here, and never will. So the rule cannot tell a good one from a bad one. If the

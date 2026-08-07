@@ -1,6 +1,6 @@
 ---
 name: writing-agents
-description: Writes the prompt for an agent that will not see the current conversation, along with the caller side that dispatches it and handles what comes back. Use this whenever someone mentions handing work to a subagent, dispatching or spawning agents, writing a prompt or a template for an agent, running work in parallel across several agents, or turning a predefined named agent into something composed at the point of dispatch. Use it even when the word agent is not used, if work is being handed to something that starts with no context.
+description: Writes the prompt for an agent that will not see the current conversation, along with the caller side that dispatches it and handles what comes back, producing an agents/*.md definition or a prompt template. Use this whenever someone mentions handing work to a subagent, dispatching or spawning agents, writing a prompt or a template for an agent, running work in parallel across several agents, or turning a predefined named agent into something composed at the point of dispatch. Use it also when a subagent came back with nothing useful, returned a summary instead of the work, ignored half its instruction, or ran out of context. Use it even when the word agent is not used, if work is being handed to something that starts with no context.
 ---
 
 # Writing agents
@@ -76,13 +76,11 @@ keep-or-discard call to the person.
 Read the definition. Split it into what stays the same and what varies by call. The invariant part
 becomes the template body. The varying part becomes named holes.
 
-From `../../shared/dispatch-protocol.md`, add four things. Add the status set, with each status's
-scope of effect and the caller's obligation for it. Add the retry limit. Add the partial-work
-handling. Add where the detail goes, against what returns to the caller.
+Then run workflow steps 3 to 7 above without changes. A converted agent is a composed prompt once
+you reach that point, so nothing further about it is special.
 
 Keep the set of fields the callers establish fixed and documented, the same way you keep the set of
-holes. Then audit the filled prompt against `../../shared/steering-rules.md` and
-`../../shared/handoff-rules.md`.
+holes.
 
 ## References
 
