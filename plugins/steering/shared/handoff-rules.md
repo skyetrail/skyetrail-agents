@@ -69,9 +69,9 @@ return. That is why every rule here applies only at hand-off.
 | Rule | Severity |
 | --- | --- |
 | The facts the prompt asserts are established before dispatch, and each carries its origin. | Important |
-| Any determination a script could make deterministically is made by a script, not by a dispatched agent or read by hand. | Important |
+| A script makes every determination that runs deterministically. Nothing else settles one. | Important |
 | Facts that fill a template are written as a fixed set of named fields to a file. They are not prose the caller has to parse. | Important |
-| The model or effort level is named explicitly, rather than left to inherit from the calling session. This keeps two runs of the same prompt comparable. | Important |
+| The model and the effort level are both named explicitly, rather than left to inherit from the calling session. Naming one and inheriting the other still leaves two runs incomparable. | Important |
 | The status values the agent may return are enumerated. The caller's obligation for each one is stated. | Blocking |
 | Each status declares whether it affects only the agent reporting it or stops the whole run. | Important |
 | The caller checks that the report is usable. The caller does not re-run the checks the agent already proved. | Important |

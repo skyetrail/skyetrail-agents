@@ -6,8 +6,8 @@ when the condition **reused** is met and the condition **hand-off** is not met. 
 Every entry here applies when the audited thing is a SKILL.md, and not otherwise.
 
 The skills `writing-skills` and `auditing-skills` apply these rules. This file supplies criteria and
-defines no task of its own. So every procedural property an audit needs lives in those two skills
-rather than here. The stop conditions and the evidence each finding carries are two examples, not
+defines no task of its own. Where a procedural property an audit needs is missing here, look in
+those two skills. The stop conditions and the evidence each finding carries are two examples, not
 the whole list.
 
 Mechanical limits are the lint script's job, not judgment work. `./lint.md` says what the script
@@ -62,10 +62,11 @@ decides a shape they do not cover.
 - A restatement of a list that lives in another file. The copy drifts. An agent then loads two
   files that say different things.
 
-These do not count, because each one changes what an agent does with the next paragraph. That test
-decides a case the three examples below do not cover. They are examples, not the whole list. An
-explanation of why a constraint exists, where the rule requiring it says to give the reason. A
-worked example of a rule being met and broken. A line saying what the document does not cover.
+Three kinds of content do not count as findings, because each one changes what an agent does with
+the next paragraph. That test decides a case the three below do not cover. They are examples, not
+the whole list. An explanation of why a constraint exists, where the rule requiring it says to give
+the reason. A worked example of a rule being met and broken. A line saying what the document does
+not cover.
 
 Provenance, doubt, and history belong where the authors read them, not in a file loaded on every
 run.

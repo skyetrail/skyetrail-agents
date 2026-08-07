@@ -19,11 +19,11 @@ another for each condition the target meets.
   subagent and a hand-off brief are two examples, not the whole list.
 - Anything else written to shape what an agent does. A command, a runbook, and a one-off request
   are examples, not the whole list. Where a person wrote it to steer an agent, it belongs here,
-  and `../../shared/steering-rules.md` alone covers it.
+  and it needs no extra file for what it is. It still takes a file for each condition it meets.
 
 Decide the conditions from what the target holds, not from how you are using it. Route by
-condition rather than by what you would call the document, because the same document answers to
-more than one name.
+condition rather than by what you would call the document, because more than one name fits the
+same document.
 
 Where the target is none of these, stop. Report it as out of scope. Say what the target appears
 to be. Do not force the rules onto it. Where you cannot read the target or a rule file, stop.
@@ -109,9 +109,15 @@ line is unclear. That is worth more than either verdict.
 
 ## Re-auditing a target
 
-Where the caller supplies a prior report for the same target, report the differences. Confirm or
-retire each prior finding. Then list only what is new. Do not re-derive rows whose inputs stay
-the same. Name the report you compared against.
+Where the caller supplies a prior report for the same target, report the differences. Mark each
+prior finding confirmed, retired, or changed. Confirmed means it is still there as written. Retired
+means it is gone. Changed means it is still there in a different form, which is what a fix that
+moved a fault rather than removing it produces. Then list only what is new. Do not re-derive rows
+whose inputs stay the same. Name the report you compared against.
+
+A re-audit table carries one more column than a first audit. Put the prior status before Result.
+Without the third mark, a half-fixed finding fits neither confirmed nor retired, and two rounds of
+this audit invented the word rather than reporting the gap.
 
 ## Report
 

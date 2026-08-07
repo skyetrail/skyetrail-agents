@@ -160,11 +160,15 @@ function explainCoverage() {
       : "";
     lines.push(`  - ${where}${extra}`);
   }
-  lines.push("", "Reference surfaces get reference resolution, plus an advisory contents-list");
-  lines.push(`check on any file over ${CONTENTS_REQUIRED_LINES} lines. They carry no frontmatter,`);
-  lines.push("so the frontmatter and description checks do not apply.");
-  lines.push("An advisory finding prints and never stops the run.");
+  lines.push("", "Reference surfaces get reference resolution. They carry no frontmatter, so the");
+  lines.push("frontmatter and description checks do not apply.");
   for (const surface of REFERENCE_SURFACES) lines.push(`  - ${surface.describe}`);
+  lines.push(
+    "",
+    `Any .md over ${CONTENTS_REQUIRED_LINES} lines gets an advisory contents-list check,`,
+    "whether it is a reference surface or a file some component links to. An",
+    "advisory finding prints once and never stops the run.",
+  );
   lines.push("", `Not opened at all: ${EXCLUDED}.`);
   lines.push("");
   lines.push("A target that is none of the above was not checked by this command. Say which");
@@ -221,9 +225,30 @@ function lintComponent(file, content, dirName) {
   }
 
   lintReferences(file, content);
+  for (const ref of referencedMarkdown(file, content)) {
+    lintContentsList(ref, read(ref));
+  }
 }
 
 // Reference checks shared by component files and plugin reference files.
+// Every .md a file points at, resolved and existing. The contents-list check
+// runs over these as well as over shared/, because skill-rules.md governs a
+// SKILL.md's reference files, and in another repository those need not sit in
+// shared/ at all.
+function referencedMarkdown(file, content) {
+  const out = new Set();
+  const add = (target) => {
+    const clean = target.split("#")[0].trim();
+    if (!clean || !clean.endsWith(".md")) return;
+    if (/^(https?:\/\/|mailto:)/.test(clean)) return;
+    const resolved = path.normalize(path.join(path.dirname(file), clean));
+    if (exists(resolved)) out.add(resolved);
+  };
+  for (const link of content.matchAll(/\[([^\]]*)\]\(([^)]+)\)/g)) add(link[2]);
+  for (const tick of content.matchAll(/`(\.{1,2}\/[^`\n]+\.md)`/g)) add(tick[1]);
+  return [...out];
+}
+
 // A long reference file opens with a contents list, so a reader can see what is
 // in it before loading the whole thing.
 function lintContentsList(file, content) {
@@ -515,7 +540,10 @@ function main() {
   // Advisory findings are printed and never stop the run, because the rule
   // files give Advisory that meaning. A lint that failed the build on one would
   // be promoting its severity by implementation.
-  for (const w of lintAdvisories) console.warn(`lint (advisory): ${w}`);
+  // One file reaches this check by more than one route: as a reference surface,
+  // and again for each component that links it. The finding is about the file,
+  // so report it once.
+  for (const w of [...new Set(lintAdvisories)]) console.warn(`lint (advisory): ${w}`);
 
   if (lintProblems.length) {
     for (const p of lintProblems) console.error(`lint: ${p}`);

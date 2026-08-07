@@ -30,9 +30,10 @@ order.
 
 ## When it does not settle the target
 
-There are three cases. They are not the same. In all three cases, say what happened. Then
-continue with the judgment rules. Do not work out the mechanical limits by hand again. Do not
-present that result as a lint result.
+A lint fails to settle your target in more than one way. Three come up most, and they are not the
+same. Others exist, so read these three as examples rather than as the whole list. In every case,
+say what happened. Then continue with the judgment rules. Do not work out the mechanical limits by
+hand again. Do not present that result as a lint result.
 
 **No lint command exists for this repository.** Say so. If a person is present, tell them the
 repository needs one. Until the repository has one, every skill that leans on this file works
@@ -57,19 +58,6 @@ that names no cause is another example. Run the command one more time, but only 
 changes. If nothing changes, do not run it again. Instead, record that the command could not
 run. Say what you saw.
 
-## In the repository this plugin is developed in
-
-This section describes `skyetrail-agents` and nothing else. It does not describe the repository you
-are working in, unless you are working in that one. Where they differ, use **Finding the command**
-above and ignore this section.
-
-`npm run lint` runs from the repository root. It is fixed. Ask the command what it covers. Do not
-look here for that description. Run this command:
-
-```
-npm run lint -- --explain
-```
-
-This command prints which kinds of file get which checks. It uses the same data as the lint run
-itself. So the command cannot disagree with what the lint does. A description written out in
-this file could disagree with the lint. That happened four times.
+Some lints describe themselves, often behind a flag such as `--explain`. A self-description built
+from the same data as the run cannot disagree with the run. Prefer it over any prose, including
+prose in this file. The repository's own `AGENTS.md` block records whether its lint offers one.

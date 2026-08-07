@@ -71,13 +71,17 @@ belong in the block.
    exists to compare against. Then confirm the one thing no command settles: you saw every command
    recorded inside the markers work, in this run.
 
-   Delete `AGENTS.md.repo-setup-backup` once every check holds, and before you report. A leftover
-   backup file reads as an unfinished run.
-8. **Put the file back where a check fails and you cannot fix it.** Copy
-   `AGENTS.md.repo-setup-backup` over `AGENTS.md`. Delete `AGENTS.md` instead where you created it
-   in step 6. Never delete a block you did not write in this run. On a re-run the block already
-   there is an answer somebody confirmed, and deleting it leaves the repository with no lint
-   command at all. Then report `BLOCKED` and say which check failed.
+   Fix anything that does not hold, then run these checks again. Most failures here are one edit
+   away. Go to step 8 only where you cannot fix it.
+
+   Delete `AGENTS.md.repo-setup-backup` where step 5 made one, once every check holds and before
+   you report. A leftover backup file reads as an unfinished run. Where step 5 made no backup,
+   there is nothing to delete, and a failed delete is not a failed check.
+8. **Put the file back where a check fails and you cannot fix it.** Where step 5 made a backup, copy
+   it over `AGENTS.md`, then delete the backup. Where you created `AGENTS.md` in step 6, delete
+   `AGENTS.md` itself. Never delete a block you did not write in this run. On a re-run the block
+   already there is an answer somebody confirmed, and deleting it leaves the repository with no
+   lint command at all. Then report `BLOCKED` and say which check failed.
 
    Do not weaken these checks to finish. Do not skip them. Do not report a check you did not run.
    An unverified block is worse than no block, because everything downstream trusts it.

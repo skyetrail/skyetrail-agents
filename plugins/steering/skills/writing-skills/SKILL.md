@@ -44,9 +44,9 @@ has to say.
    against every rule in the Discovery table of `../../shared/skill-rules.md`. Open that file and
    work down the table. Summarising the workflow is the usual mistake, because a summary gives the
    agent something to follow instead of the body.
-3. **Write the body.** Order the sections the way `../../shared/steering-rules.md` orders its own:
-   what the skill produces, then its scope, then the method, then the finish, then the failures.
-   Write it against every rule in that file, and against the Boundary and Content tables of
+3. **Write the body.** Order the sections the way `../../shared/steering-rules.md` orders its own.
+   That file lists them in order, and a second copy of the list here would drift from it. Write the
+   body against every rule in that file, and against the Boundary and Content tables of
    `../../shared/skill-rules.md`. Open both and work down them. Do not add a section that restates
    the description. The description loads before the body, so a repeat spends context twice.
 4. **Address only the failures from step 1.** Do not address anything the model already gets
@@ -57,8 +57,9 @@ has to say.
 6. **Baseline again.** Run the baseline again. Use the same task and a fresh subagent. Load the
    skill this time. Compare the result against step 1. Record the comparison in
    `tests/baselines/<skill-name>.md`, under the plugin directory that holds the skill you are
-   writing. That is the directory the Evidence rule in `../../shared/skill-rules.md` reads. Record
-   the failures the skill addresses there too.
+   writing. The Evidence rule in `../../shared/skill-rules.md` names that directory. Where the skill
+   sits in no plugin, put the record under the skill's own directory and say in it where it went.
+   Record the failures the skill addresses there too.
 7. **Audit, and not by yourself.** Run the lint command named in `../../shared/lint.md`. This
    settles the mechanical limits. Then dispatch a fresh agent to audit the draft. Use
    `auditing-skills` for this. Do not audit your own draft. You know what you meant each line to

@@ -68,10 +68,18 @@ did and that nothing an agent needs was lost. Step 6 said "the plugin's `tests/b
 saying which plugin, and now names the directory by its relationship to the skill being written.
 
 **The re-audit fixes.** Step 3 gained an ordering line, "produces, then workflow, then boundary",
-which contradicted the section order in `steering-rules.md`, where scope sits above method. It now
-defers to that file's order rather than restating one. Step 3 also named only two tables of
-`skill-rules.md`, so the rules requiring a failure section, a finish check, and a partial-work
-statement went unnamed; it now names `steering-rules.md` as well.
+which contradicted the section order in `steering-rules.md`, where scope sits above method. Step 3
+also named only two tables of `skill-rules.md`, so the rules requiring a failure section, a finish
+check, and a partial-work statement went unnamed. It now names `steering-rules.md` as well.
+
+The first version of this paragraph said step 3 "now defers to that file's order rather than
+restating one". That was untrue when written. The replacement still restated the order, and the
+restatement had already dropped Context, Calibration, and Composition, so an agent writing an
+advisory skill would ship it with no calibration section. A later audit found the fault and found
+this record certifying it fixed. Step 3 now carries a pointer and no copy.
+
+Recorded rather than quietly corrected. A record that certifies an unmade fix is worse than a
+missing one. A missing record leaves a reader to check. This one told a reader not to.
 
 Handled under the small-change clause each time: no change altered what the skill claims to
 produce, only how it says to produce it. The baseline was not repeated.

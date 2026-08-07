@@ -10,6 +10,10 @@ the whole list. Source code under review. A document an agent summarises. A tran
 A report an agent produced. The test is who the text addresses. These rules judge what tells an
 agent how to work. They never judge what an agent works on.
 
+The skills `writing-skills`, `auditing-skills`, and `writing-agents` apply this file. It supplies
+criteria and defines no task of its own. Where a procedural property an audit needs is missing
+here, look in the skill that runs the audit.
+
 Each entry carries a severity and a condition. Report counts by severity. Any blocking failure means
 the document needs work before use. An Important failure does not stop use. The author fixes it
 before the document changes again. Mention an Advisory item once. It never blocks.
@@ -53,6 +57,11 @@ You decide every condition from what the document holds. Treat the document's ow
 conditions it meets as a claim to check, not as a fact to accept. Otherwise an author switches off
 a rule by writing one sentence about the document.
 
+Every condition is about the document in front of you, not about anything that document describes.
+A file of rules for writing hand-off prompts is not itself a hand-off, because the agent reading it
+sits in the conversation its author is having. Two audits of one such file called this opposite ways
+and returned different counts, so settle it this way and record which way you went.
+
 To decide **describes work**, look for the outcome. Where the document names something a reader
 finishes, the condition holds. Where it supplies criteria and another document defines the task
 that applies them, it does not.
@@ -62,9 +71,13 @@ An instruction about how to read the criteria does not make a task. A rule catal
 task defined elsewhere. Test for the outcome, not for the presence of an imperative, because every
 catalogue here holds imperatives of that kind.
 
-Where **describes work** fails, the Method, Finish, and Failure rules below do not apply. Those
-three sections cover how a task runs, when it finishes, and what happens when it fails. Where a
-document defines no task, none of the three has anything to test.
+Where **describes work** fails, so do **advisory** and **changes something**. Both of those are
+defined against the work, and a document that defines no task holds none to review or to modify.
+Mark all three not applicable together.
+
+Read the Applies-when column for what drops out, one row at a time. No section drops out whole.
+Some rows in Method, Finish, and Failure carry **describes work**, and the rest carry a condition
+of their own.
 
 The section order below is the order these sections should appear in the document being written.
 Some entries are about position, so check where a section appears, not only whether it appears.
@@ -73,8 +86,8 @@ Some entries are about position, so check where a section appears, not only whet
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
-| The finished outcome is stated, not just a topic or an area of work. | Blocking | always |
-| The outcome statement sits at the top, before context and method. | Advisory | always |
+| The finished outcome is stated, not just a topic or an area of work. | Blocking | describes work |
+| The outcome statement sits at the top, before context and method. | Advisory | describes work |
 
 ## Context
 
