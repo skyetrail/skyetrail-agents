@@ -37,7 +37,7 @@ field.
 ## Seven invariants
 
 1. The caller establishes the facts the prompt asserts before dispatch. Each fact carries its
-   origin. Use neither a script nor an agent for what the caller already knows.
+   origin. Neither a script nor an agent is needed for what the caller already knows.
 2. The prompt enumerates the status values the agent may return. It states the caller's
    obligation for each one. A status with no defined caller action is decoration.
 3. Where the detail goes and what returns to the caller are both named.

@@ -62,7 +62,7 @@ lists below do not name. Both lists are examples, not the whole set.
 
 These are findings.
 
-- A description so vague that a reader cannot find the skill.
+- A description so vague that an agent looking for the skill does not find it.
 - A body so long that it consumes context the rest of the work needs.
 - A rule that contradicts another rule, in the same file or in a file it links to.
 - No stated limit on what the skill covers.

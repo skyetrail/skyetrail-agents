@@ -135,7 +135,7 @@ category is hard to recognise.
 | Examples of what counts are given. | Blocking | advisory |
 | Examples of what does not count are given. | Blocking | advisory |
 | The default outcome is stated, so the agent must justify escalating rather than justify approving. | Blocking | advisory |
-| Where a run showed a miss, the instruction describes the shape that miss takes in the code. It does not name only the label. | Important | advisory |
+| Where a run showed a miss, the instruction describes the shape that miss takes in the code. It does not describe the label. | Important | advisory |
 
 A label says which bucket a finding belongs in. The shape says what the agent is looking at on
 the screen, so it can recognise the case without already knowing it is there.
