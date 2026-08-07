@@ -76,7 +76,6 @@ run.
 | --- | --- |
 | Every reference is one hop from the SKILL.md that names it. | Blocking |
 | Detail sits in reference files rather than the front file. | Important |
-| A reference file longer than 100 lines opens with a contents list. | Advisory |
 | Material used to test the skill is not reachable from it. So it never loads with it. | Important |
 | No reference file instructs the reader to ignore or skip part of itself. Content that one caller must skip is a separate file. | Important |
 
@@ -84,7 +83,7 @@ run.
 
 | Rule | Severity |
 | --- | --- |
-| The skill went through a baseline comparison, with and without it loaded. The plugin's `tests/baselines/` directory holds the observed failures it addresses, one file per skill, and no SKILL.md links to it. | Blocking |
+| The skill went through a baseline comparison, with and without it loaded. The plugin's `tests/baselines/` directory holds the observed failures it addresses, one file per skill. Nothing an agent loads at run time links to that directory. | Blocking |
 
 This rule applies only to a skill this plugin maintains. A skill read from elsewhere has no
 `tests/baselines/` here, and never will. So the rule cannot tell a good one from a bad one. If the

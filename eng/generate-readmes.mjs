@@ -103,8 +103,13 @@ function packageRepository() {
 const MAX_NAME = 64; // Agent Skills frontmatter name limit
 const MAX_DESCRIPTION = 1024; // Agent Skills frontmatter description limit
 const MAX_BODY_LINES = 500; // recommended SKILL.md body length
+// A reference file past this length opens with a contents list. Counting lines
+// by hand is what skill-rules.md forbids, so the count belongs here.
+const CONTENTS_REQUIRED_LINES = 100;
+const CONTENTS_RE = /^#{2,3}\s+Contents\s*$/m;
 const NAME_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const lintProblems = [];
+const lintAdvisories = [];
 
 // What this lint covers, as data. The run below reads it to decide what to
 // open, and `--explain` prints it, so what we check and what we say we check
@@ -155,8 +160,10 @@ function explainCoverage() {
       : "";
     lines.push(`  - ${where}${extra}`);
   }
-  lines.push("", "Reference surfaces get reference resolution only. They carry no frontmatter,");
-  lines.push("so the frontmatter and length checks do not apply.");
+  lines.push("", "Reference surfaces get reference resolution, plus an advisory contents-list");
+  lines.push(`check on any file over ${CONTENTS_REQUIRED_LINES} lines. They carry no frontmatter,`);
+  lines.push("so the frontmatter and description checks do not apply.");
+  lines.push("An advisory finding prints and never stops the run.");
   for (const surface of REFERENCE_SURFACES) lines.push(`  - ${surface.describe}`);
   lines.push("", `Not opened at all: ${EXCLUDED}.`);
   lines.push("");
@@ -217,6 +224,18 @@ function lintComponent(file, content, dirName) {
 }
 
 // Reference checks shared by component files and plugin reference files.
+// A long reference file opens with a contents list, so a reader can see what is
+// in it before loading the whole thing.
+function lintContentsList(file, content) {
+  const lines = content.split("\n").length;
+  if (lines <= CONTENTS_REQUIRED_LINES) return;
+  if (!CONTENTS_RE.test(content)) {
+    lintAdvisories.push(
+      `${path.relative(ROOT, file)}: is ${lines} lines and has no "## Contents" heading; a reference file over ${CONTENTS_REQUIRED_LINES} lines opens with a contents list`,
+    );
+  }
+}
+
 function lintReferences(file, content) {
   for (const link of content.matchAll(/\[([^\]]*)\]\(([^)]+)\)/g)) {
     const target = link[2].split("#")[0].trim();
@@ -424,7 +443,11 @@ function main() {
     // name them. REFERENCE_SURFACES is the same list `--explain` prints, so the
     // two cannot disagree.
     for (const surface of REFERENCE_SURFACES) {
-      for (const file of surface.find(pluginDir)) lintReferences(file, read(file));
+      for (const file of surface.find(pluginDir)) {
+        const content = read(file);
+        lintReferences(file, content);
+        lintContentsList(file, content);
+      }
     }
 
     // A plugin's SUMMARY.md is also included verbatim in its generated README.
@@ -488,6 +511,11 @@ function main() {
   readme = replaceBetween(readme, "<!-- BEGIN: plugins -->", "<!-- END: plugins -->", pluginsTable);
   readme = replaceBetween(readme, "<!-- BEGIN: skills -->", "<!-- END: skills -->", skillsTable);
   outputs.push({ file: readmePath, content: readme });
+
+  // Advisory findings are printed and never stop the run, because the rule
+  // files give Advisory that meaning. A lint that failed the build on one would
+  // be promoting its severity by implementation.
+  for (const w of lintAdvisories) console.warn(`lint (advisory): ${w}`);
 
   if (lintProblems.length) {
     for (const p of lintProblems) console.error(`lint: ${p}`);

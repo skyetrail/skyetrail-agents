@@ -44,11 +44,11 @@ has to say.
    against every rule in the Discovery table of `../../shared/skill-rules.md`. Open that file and
    work down the table. Summarising the workflow is the usual mistake, because a summary gives the
    agent something to follow instead of the body.
-3. **Write the body.** Order it: what the skill produces, then the workflow, then the boundary.
-   Write it against every rule in the Boundary and Content tables of
-   `../../shared/skill-rules.md`. Open that file and work down both tables. Do not add a section
-   that restates the description. The description loads before the body, so a repeat spends
-   context twice.
+3. **Write the body.** Order the sections the way `../../shared/steering-rules.md` orders its own:
+   what the skill produces, then its scope, then the method, then the finish, then the failures.
+   Write it against every rule in that file, and against the Boundary and Content tables of
+   `../../shared/skill-rules.md`. Open both and work down them. Do not add a section that restates
+   the description. The description loads before the body, so a repeat spends context twice.
 4. **Address only the failures from step 1.** Do not address anything the model already gets
    right. For each failure, describe the shape it takes in the work. Do not describe the label it
    falls under. This lets the agent recognise the case without already knowing it is there.

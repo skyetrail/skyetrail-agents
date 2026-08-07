@@ -4,9 +4,10 @@ This file settles the mechanical limits for a target once. A report can then cit
 result. The report does not need to work out the limits by hand again. A finding does not need
 to argue the limits again.
 
-Reading a lint script or its configuration to establish what it covers changes nothing. Do not edit
-the target, the lint script, or its configuration to make a check reach further. Recording a
-confirmed command through `repo-setup` is the one change this file asks for.
+Reading a lint script or its configuration to establish what it covers changes nothing. Change
+nothing at all to make a check reach further or to make it pass. The target, the lint script, its
+configuration, an ignore file, a CI definition, and a fixture are examples, not the whole list.
+Recording a confirmed command through `repo-setup` is the one change this file asks for.
 
 A lint is a script. It checks things it can decide on its own. For example, it can check
 whether a file parses and whether a file stays within a stated limit. It can also check whether

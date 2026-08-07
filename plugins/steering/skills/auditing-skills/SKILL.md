@@ -5,18 +5,25 @@ description: Audits any document written to steer an agent against the house rul
 
 # Auditing skills
 
-This audit produces a findings list, in order of severity, and the three things to fix first.
-This audit changes nothing.
+This audit produces a findings table, ordered by severity, and the three things to fix first. The
+Report section below fixes that table's columns. This audit changes nothing.
 
 ## Which rules apply
 
-- A SKILL.md. Use `../../shared/skill-rules.md` and `../../shared/steering-rules.md`.
-- A prompt written for a subagent. Use `../../shared/steering-rules.md` and
-  `../../shared/handoff-rules.md`.
-- Anything else written to shape what an agent does. A command, a hand-off brief, a runbook, and
-  a one-off request are examples, not the whole list. Where a person wrote it to steer an agent,
-  it belongs here. Use `../../shared/steering-rules.md` only. Apply the conditions that match the
-  document's own use, not your use of it.
+Use `../../shared/steering-rules.md` for every target. Then add a file for what the target is, and
+another for each condition the target meets.
+
+- A SKILL.md. Add `../../shared/skill-rules.md`.
+- A target meeting the **hand-off** condition, meaning the agent reading it will not see the
+  conversation its author had. Add `../../shared/handoff-rules.md`. A prompt written for a
+  subagent and a hand-off brief are two examples, not the whole list.
+- Anything else written to shape what an agent does. A command, a runbook, and a one-off request
+  are examples, not the whole list. Where a person wrote it to steer an agent, it belongs here,
+  and `../../shared/steering-rules.md` alone covers it.
+
+Decide the conditions from what the target holds, not from how you are using it. Route by
+condition rather than by what you would call the document, because the same document answers to
+more than one name.
 
 Where the target is none of these, stop. Report it as out of scope. Say what the target appears
 to be. Do not force the rules onto it. Where you cannot read the target or a rule file, stop.
@@ -108,8 +115,8 @@ the same. Name the report you compared against.
 
 ## Report
 
-| Rule | Result | Defect or difference | Evidence |
-| --- | --- | --- | --- |
+| Rule | Severity | Result | Defect or difference | Evidence |
+| --- | --- | --- | --- | --- |
 
 State the lint result first. Every fail and warn carries evidence. Evidence is the line or
 section it came from. Then give counts by severity. Then give the three fixes to make first.

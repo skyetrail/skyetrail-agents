@@ -50,3 +50,28 @@ it was forgotten.
 Later the same day, three further audit findings were fixed without repeating the baseline: the
 artifact-check list was opened with a membership test and a fallback, and two passages restating
 `skill-rules.md` were replaced with pointers, one of which had already drifted from its source.
+
+## Steps 2, 3, and 6 changed, 2026-08-07, baseline not repeated
+
+Three rounds of change, none of them recorded here at the time. An audit found the gap, which is
+the second time this file has been brought up to date by an auditor rather than by the person
+editing the skill. The note above already says the rule requiring this record sits in the file that
+gets edited. That is still the reason.
+
+**The Simplified Technical English rewrite.** Every step was re-sentenced. An independent
+equivalence check against the pre-rewrite baseline found no change to what any step demands.
+
+**The audit fixes.** Step 2 and step 3 restated the Discovery, Boundary, and Content tables of
+`skill-rules.md`, and step 2 had already lost "error text" and the third-person rule from its copy.
+Both now point at the tables. A re-audit confirmed the pointers reach more rules than the copies
+did and that nothing an agent needs was lost. Step 6 said "the plugin's `tests/baselines/`" without
+saying which plugin, and now names the directory by its relationship to the skill being written.
+
+**The re-audit fixes.** Step 3 gained an ordering line, "produces, then workflow, then boundary",
+which contradicted the section order in `steering-rules.md`, where scope sits above method. It now
+defers to that file's order rather than restating one. Step 3 also named only two tables of
+`skill-rules.md`, so the rules requiring a failure section, a finish check, and a partial-work
+statement went unnamed; it now names `steering-rules.md` as well.
+
+Handled under the small-change clause each time: no change altered what the skill claims to
+produce, only how it says to produce it. The baseline was not repeated.

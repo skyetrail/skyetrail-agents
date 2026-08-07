@@ -76,8 +76,9 @@ keep-or-discard call to the person.
 Read the definition. Split it into what stays the same and what varies by call. The invariant part
 becomes the template body. The varying part becomes named holes.
 
-Then run workflow steps 3 to 7 above without changes. A converted agent is a composed prompt once
-you reach that point, so nothing further about it is special.
+Then run workflow steps 2 to 7 above without changes. A converted agent is a composed prompt once
+you reach that point, so nothing further about it is special. Step 2 is where the body meets the
+rule files, and a converted body has never been through it.
 
 Keep the set of fields the callers establish fixed and documented, the same way you keep the set of
 holes.
