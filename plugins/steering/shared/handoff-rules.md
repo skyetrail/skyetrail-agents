@@ -7,7 +7,7 @@ Severity and reporting work exactly as in `./steering-rules.md`. Any blocking fa
 document needs work before use. Sometimes you cannot tell from the document whether a rule here is met.
 If so, mark the rule warn. State what you could not determine. Do not guess either way.
 
-People misread the rule about detail and summary most often. It is about what crosses back to
+Readers misread the rule about detail and summary most often. It is about what crosses back to
 the caller, not about how much the agent may write.
 
 Bad, because the caller now holds everything the agent read:
