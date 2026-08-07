@@ -113,3 +113,34 @@ the four passages above, run them, and check whether the predicted failure appea
 appear in three runs, drop the exemption and apply the rule.
 
 An exemption we assert but never test is a preference wearing the clothes of a finding.
+
+## A fifth risk, found by the bench and not predicted
+
+Pete read the STE prompt and found a scope change I missed.
+
+The current prompt says "This review does not change any file." The subject is the review. The
+claim is about the task.
+
+My rewrite said "You do not change any file." The subject is the agent. A reader can take that as a
+rule for the whole session, not for this task.
+
+That matters in a real hand-off. An agent may run this review inside a larger job that does change
+files. The rewrite tells it not to.
+
+**The rule that caused it.** STE says use the active voice and name the actor. That pushed a
+description with a non-human subject into a command with the agent as subject. The scope widened
+from the task to the agent.
+
+**Why the equivalence check missed it.** The checker compared what each version demands of a
+reviewer inside this task. Inside the task, the two versions agree. The difference appears outside
+the task, which is where the checker was not looking.
+
+**The fix.** Keep the subject as the review: "This review changes no file." Active voice, simple
+tense, scope unchanged.
+
+**The general rule.** Where a sentence describes the task rather than instructing the agent, keep
+the task as the subject. Do not let the active-voice rule move the subject to the agent, because
+that changes what the sentence is about.
+
+This is the only one of the five risks that the bench actually produced. The other four remain
+untested or withdrawn.

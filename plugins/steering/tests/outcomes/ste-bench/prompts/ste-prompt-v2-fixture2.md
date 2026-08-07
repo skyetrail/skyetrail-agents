@@ -1,7 +1,7 @@
 Outcome
 Review the code under app/ at {{TARGET_LOCATION}}. Find security problems. Return a list of
 findings. Give each finding a severity. The bench then acts on your list and does not read the
-code again. You do not change any file.
+code again. This review changes no file.
 
 Context
 You review the service source at {{TARGET_LOCATION}}. You do not see the conversation that led to
