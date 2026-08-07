@@ -29,18 +29,27 @@ For example, in a host that uses slash commands:
 ## The goal
 
 A skill is a short instruction file an AI agent reads before doing a job, so the job comes out
-the same way every time. This plugin holds three of them: one for writing new skills, one for
-checking a skill or an agent instruction against our written rules, and one for handing work to
-a second agent that starts with no memory of the conversation.
+the same way every time. This plugin holds four of them: one for writing new skills, one for
+checking a skill or an agent instruction against our written rules, one for handing work to a
+second agent that starts with no memory of the conversation, and one for working out the basic
+facts about a repository.
 
-These three are tools, and the goal is what they produce. When an agent uses them, the new
-skills and the hand-off instructions that come out should be the best they can be on current
-Anthropic models. Everything below serves that aim in two steps. First, make the tools
-themselves sound: the rules they apply come from real failures we observed, and every output is
-checked against those rules before it ships. Second, prove the outputs are better in use, by
-running them and scoring the work they lead to. Both steps are now done: rounds 1 to 6 below
-made the tools sound, and rounds 7 to 12 ran what they produce against seeded tasks and scored
-the results.
+These are tools, and the goal is what they produce. When an agent uses them, the new skills and
+the hand-off instructions that come out should be the best they can be on current Anthropic
+models. Everything below serves that aim in two steps. First, make the tools themselves sound:
+the rules they apply come from real failures we observed, and every output is checked against
+those rules before it ships. Second, prove the outputs are better in use, by running them and
+scoring the work they lead to. Rounds 1 to 6 below made the tools sound. Rounds 7 to 12 ran what
+they produce against seeded tasks and scored the results. Rounds 13 to 16 checked the rules
+against work we did not write, then checked our own files until nothing was left to find.
+
+There is a third step, and it was missing until late. A model writes these files and a person
+maintains them. The model in use writes prose that is hard for a person to read, so every file
+this project produces inherits that fault, and a file nobody can maintain decays whatever it does
+on the day it ships. Readability is therefore half the goal, not a finish applied at the end. The
+next round tests a controlled English standard from aerospace, ASD-STE100, as the fix. The design
+and the predictions are in `tests/outcomes/ste-bench/DESIGN.md`, including four of its rules that
+we expect to make agent steering worse and will test separately.
 
 ## What we did
 

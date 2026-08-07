@@ -106,3 +106,26 @@ raised it.
 
 So: keep the raw runs, not just the summary. Check that independent runs actually differ. And treat
 a result that matches your prediction as the one most in need of a second look.
+
+## Readability
+
+**18. A model writes the steering and a person maintains it, so write for the person.** These are
+the only two readers, and they fail differently. An agent misreads a closed list. A person gives up
+on a paragraph that takes three passes to parse, and then the file stops being maintained.
+
+The second failure is slower and worse, because nothing reports it. A skill with a defect gets
+caught by an audit. A skill nobody wants to open gets quietly worked around.
+
+Judge this the way you would judge any other property: ask the person who has to read it. Where they
+say the prose is hard, that is the finding, and no amount of the file passing its rules changes it.
+
+**19. Take a controlled language from outside rather than inventing house style.** A published
+standard was written by people with no stake in your project, for a problem older than it, and it
+comes with rules specific enough to check. A house style invented alongside the work tends to
+describe what its author already writes.
+
+Test it like anything else, and expect parts of it to hurt. A standard written for maintenance
+manuals is not written for agent steering, and the two want different things in at least one place:
+maintenance manuals want short sentences, and a category definition is naturally long. Name the
+rules you expect to hurt before you run, then test those separately rather than granting yourself a
+blanket exemption.
