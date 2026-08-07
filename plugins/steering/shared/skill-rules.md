@@ -7,7 +7,8 @@ Every entry here applies when the audited thing is a SKILL.md, and not otherwise
 
 Mechanical limits are the lint script's job, not judgment work. `./lint.md` says what the script
 checks. Confirm the lint record rather than re-deriving those checks by hand. Do not restate them
-here. A second copy of that list drifts from the first. Then the two files disagree.
+here. A second copy of that list drifts from the first. An agent then loads two files that say
+different things.
 
 ## Discovery
 
@@ -53,8 +54,8 @@ decides a shape they do not cover.
   instrument than the severity field.
 - A count of anything, especially of things in another file. The number gives an agent nothing and
   goes wrong the moment someone adds one.
-- A restatement of a list that lives in another file. The copy drifts, and then two files an agent
-  loads together disagree.
+- A restatement of a list that lives in another file. The copy drifts. An agent then loads two
+  files that say different things.
 
 These do not count. An explanation of why a constraint exists, if the rule requiring it says to
 give the reason. A worked example of a rule being met and broken. A line saying what the document

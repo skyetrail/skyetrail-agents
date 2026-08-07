@@ -32,6 +32,7 @@ reads them.
 - Failure
 - Calibration
 - Composition
+- Voice
 
 **Conditions.** Use these and nothing else.
 
@@ -158,3 +159,43 @@ and it costs the same context as one taken from an observed failure.
 | Every named hole in a template is marked required, or carries a default. An unfilled hole then fails loudly instead of reaching the agent as empty text. | Important | reused |
 | The set of fields established for a template is fixed. It does not gather a payload most callers never use. | Advisory | reused |
 | What happens to partial work when a run stops is stated. | Important | changes something |
+
+## Voice
+
+These rules govern every sentence rather than one section. Check them wherever you check the rest.
+
+| Rule | Severity | Applies when |
+| --- | --- | --- |
+| A sentence that instructs names its actor, and that actor can choose to act. | Important | always |
+| A sentence that states a property keeps the property's owner as its subject, and gains no actor. | Blocking | always |
+| Nothing that cannot choose to act takes an action verb. | Important | always |
+
+The test for an actor is whether the thing can choose. An agent, a caller, a person, and a script
+can choose. A rule, a review, a file, and a document cannot. These are examples, not the whole list.
+
+Two kinds of sentence take two kinds of subject. Mixing them is the common fault.
+
+A sentence that instructs:
+
+> The caller checks that the report is complete.
+
+A sentence that states a property, which an auditor tests:
+
+> The description states the capability.
+
+Do not rewrite the second as "State the capability." That turns a property into an order, and the
+auditor then reports on its own writing instead of the target's.
+
+Bad, because a file cannot disagree with anything:
+
+> A second copy of that list drifts from the first. Then the two files disagree.
+
+Good, because it names what a reader meets:
+
+> A second copy of that list drifts from the first. An agent then loads two files that say
+> different things.
+
+Forcing the active voice without naming a permitted actor is how a writer promotes the nearest
+noun. Three rewrites in this project moved the subject to the wrong actor: from the review to the
+agent, from all readers to people, and from the document's own use to the auditor's use. Each one
+changed what the sentence demanded.

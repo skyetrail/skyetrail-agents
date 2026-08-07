@@ -129,3 +129,16 @@ manuals is not written for agent steering, and the two want different things in 
 maintenance manuals want short sentences, and a category definition is naturally long. Name the
 rules you expect to hurt before you run, then test those separately rather than granting yourself a
 blanket exemption.
+
+**20. Name who may act, not just that an actor exists.** A style rule that says "use the active
+voice, name the actor" is safe in a domain with one actor. Where several could act, a writer
+promotes the nearest noun instead, and the sentence changes what it demands.
+
+Declare the cast. Then say which sentences take an actor and which keep their subject. A sentence
+that tells someone to do something takes an actor. A sentence that states a property of a document
+does not, because forcing one turns a criterion into an order.
+
+This came from three defects in one rewrite, each a subject moved to the wrong actor: from the
+review to the agent, from all readers to people, and from the document's own use to the auditor's
+use. It also blocks a failure that has nothing to do with instructions, where a writer gives an
+abstraction a verb it cannot perform.
