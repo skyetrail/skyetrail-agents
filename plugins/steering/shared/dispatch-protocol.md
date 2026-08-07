@@ -1,7 +1,16 @@
 # Dispatch protocol
 
-The caller's side of dispatching an agent. `steering-rules.md` covers the agent's side, meaning
+The caller's side of dispatching an agent. `./steering-rules.md` covers the agent's side, meaning
 what the prompt says and what the agent returns. This covers what the caller does with it.
+
+## Contents
+
+- One principle
+- Two terms
+- Seven invariants
+- Statuses
+- Three shapes
+- Establishing facts
 
 ## One principle
 
@@ -35,7 +44,9 @@ need not use every field.
 4. The retry limit is stated, along with what must change before a retry. Re-dispatching the same
    prompt to the same model is not a retry.
 5. Who proves what is stated. The agent proves its own work in its report, with the commands and
-   their output. The caller checks the report is complete and does not re-run the checks.
+   their output. The caller checks the report is complete and does not re-run the checks. Because
+   the caller does not re-run them, the prompt forbids the agent weakening a check, editing a test,
+   or narrowing a command to make it pass. Nothing else stands behind that proof.
 6. What happens to partial work when a run stops is stated. The default is to keep it, name its
    location in the report, and leave the decision to a person. Do not revert automatically, since
    partial work that passes its own gates is often worth keeping.
@@ -84,6 +95,10 @@ convention rather than written down, they are not a protocol.
   dispatched until those facts are established and validated.
 
 Agents that modify shared state are not a fan-out case even when the tasks look independent.
+
+These three cover the dependency patterns seen so far, not every pattern there is. Where work fits
+none of them, or where a fact a shape depends on cannot be established, stop and report what is
+missing rather than forcing the work into the nearest shape.
 
 ## Establishing facts
 

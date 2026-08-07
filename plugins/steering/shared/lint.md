@@ -1,9 +1,12 @@
 # Skills lint
 
-The mechanical gate for skills. The linter checks that the frontmatter carries no YAML hazards,
-the name format and length and that the name matches its directory, the description length, the
-body line count, and that every reference resolves, in markdown links and in backticked relative
-paths alike. Judgment stays with the rules files; these limits belong to the script.
+Settles the mechanical limits for a target once, so a report can cite a lint result instead of
+re-deriving those limits by hand and no finding re-argues them.
+
+A lint checks what a script can decide on its own, such as whether a file parses, whether it is
+within a stated limit, and whether the things it points at exist. Judgment stays with the rules
+files; these limits belong to the script. Which of them a given repository's lint actually performs
+is that repository's business, not this file's, so establish it rather than assuming.
 
 ## Finding the command
 
@@ -17,23 +20,42 @@ this order.
 3. Nothing recorded and no `npm run lint`. Use the `repo-setup` skill to establish the command and
    record it, rather than guessing from what the repository appears to contain.
 
-## When it cannot be run
+## When it does not settle the target
 
-Two cases, and they are not the same.
+Three cases, and they are not the same. In all three, say what happened and continue with the
+judgment rules; never re-derive the mechanical limits by hand and present the result as a lint
+result.
 
-Where no lint command exists for this repository, say so in the report and continue with the
-judgment rules. Do not re-derive the mechanical limits by hand and present the result as a lint
-result. Where a person is present, tell them the repository needs a lint command, because every
-skill that leans on this file is working without its mechanical gate until it has one.
+**No lint command exists for this repository.** Say so. Where a person is present, tell them the
+repository needs one, because every skill that leans on this file is working without its mechanical
+gate until it has one.
 
-Where a command exists but you cannot run it from where you are, which is the usual case for an
-agent scoped to a subdirectory of a repository whose lint runs from the root, report the command
-you could not run and why, then continue with the judgment rules. That is a gap in coverage rather
-than a clean pass, and the report should read that way. Do not run a command whose reach you
-cannot bound in order to avoid reporting the gap.
+**A command exists but you cannot run it from where you are**, which is the usual case for an agent
+scoped to a subdirectory of a repository whose lint runs from the root. Report the command you could
+not run and why. Do not run a command whose reach you cannot bound in order to avoid reporting the
+gap.
+
+**The command runs, exits clean, and never opened your target.** This is the one that looks like a
+pass and is not. Before recording a clean result, establish what the command actually reads and
+whether your target is under it. Where the repository offers a way to ask the command itself, use
+that; otherwise read the script. Do not take a description of coverage from a document, including
+this one, since prose about what a script does goes stale without anything failing. Where the target
+is not covered, report a coverage gap and say which check did not run. A lint that reports every
+file up to date while never opening the file you are auditing is worse than no lint, because it
+produces a pass nobody questions.
+
+Where a run fails without settling which of these applies, such as a timeout or an error naming no
+cause, run it once more only after something has changed. Where nothing has changed, do not run it
+again: record that it could not be run and say what you saw.
 
 ## In this repository
 
-`npm run lint` runs from the repository root. The same checks run in the pre-commit hook and in
-CI, so a violation cannot merge. A lint failure writes nothing and lists every problem with its
-file.
+`npm run lint` runs from the repository root. Ask the command what it covers rather than reading it
+here:
+
+```
+npm run lint -- --explain
+```
+
+That prints which kinds of file get which checks, from the same data the run itself uses, so it
+cannot disagree with what the lint does. A description written out here could, and did, four times.

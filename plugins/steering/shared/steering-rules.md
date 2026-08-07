@@ -1,8 +1,14 @@
 # Steering rules
 
-Rules for anything written to shape an agent's behaviour. That includes a skill body, a prompt
-template, a command, a hand-off brief, and a one-off request. Hand-off is one of the conditions
+Rules for anything written to shape an agent's behaviour. If a person wrote it so that an agent
+would act a particular way, it is in scope. A skill body, a prompt template, a command, a hand-off
+brief, and a one-off request are examples, not the whole list. Hand-off is one of the conditions
 below, not the subject of this file.
+
+Out of scope: anything an agent reads as material rather than as instruction. Source code under
+review, a document being summarised, a transcript, a dataset, and a report an agent produced are
+examples of that, not the whole list. The test is who the text is addressed to. These rules judge
+what tells an agent how to work, never what an agent works on.
 
 Each entry has a severity and a condition. Report counts by severity. Any blocking failure means
 the document needs work before use. Advisory items are mentioned once and never block.
@@ -10,6 +16,10 @@ the document needs work before use. Advisory items are mentioned once and never 
 A rule about the position or wording of a section applies only when that section exists. When the
 section is missing, the missing section is the finding, and the rules that depend on it are not
 applicable.
+
+Where the **hand-off** condition is met, read `./handoff-rules.md` as well. Every rule conditioned on
+hand-off lives there and none of them lives here, so a document that is not a hand-off never reads
+them.
 
 ## Contents
 
@@ -20,7 +30,6 @@ applicable.
 - Method
 - Finish
 - Failure
-- Return
 - Calibration
 - Composition
 
@@ -41,16 +50,14 @@ Some entries are about position, so check where a section appears, not only whet
 | --- | --- | --- |
 | The finished outcome is stated, not just a topic or an area of work. | Blocking | always |
 | The outcome statement sits at the top, before context and method. | Advisory | always |
-| The outcome is stated in terms the agent can check without asking the author. | Important | hand-off |
 
 ## Context
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
-| Nothing refers to something the agent cannot resolve, such as a prior conversation, an earlier decision, or a file named only by nickname. | Blocking | always |
+| Nothing refers to something the agent cannot resolve, meaning anything it cannot read or reach from the document alone. A prior conversation, an earlier decision, and a file named only by nickname are examples, not the whole list. | Blocking | always |
 | Every fact the agent needs is either written out or pointed at by a path it can read. | Blocking | always |
 | Approaches already tried and found not to work are stated. | Important | always |
-| Local conventions the agent could not infer are stated. | Important | hand-off |
 | Context sits above the method, so it is read before a plan is formed. | Advisory | always |
 
 ## Scope
@@ -77,9 +84,19 @@ Good, because a reader can decide a case the list does not cover:
 > system interprets. SQL, shell commands, file paths, and markup returned to a browser are
 > examples, not the whole list.
 
-This is measured, not a preference. In an outcome test, the first wording made a reviewer that
-had already found a reflected injection file it as out of scope, because markup was not one of
-the four kinds listed. The second wording recovered it in every run.
+A reviewer given the first wording, having already found a reflected injection, filed it out of
+scope because markup was not one of the kinds named. Nothing about the list was wrong; it was
+closed.
+
+**A trailing "or any other X" satisfies this rule.** A list that ends by generalising to the
+category is closed; a list that just stops is not.
+
+> Closed: shell commands, file paths, or any other place unchecked input reaches an interpreter.
+>
+> Not closed: shell commands, file paths, or templates.
+
+Naming what makes something a member is still the stronger form, and the one to write where the
+category is hard to recognise.
 
 ## Method
 
@@ -89,16 +106,13 @@ the four kinds listed. The second wording recovered it in every run.
 | The order is fixed where sequence affects correctness, and left open where it does not. | Blocking | always |
 | How the work is done is constrained only where a specific way is required for correctness or safety, and each such constraint says why. Everything else is left to the agent. | Important | always |
 | Any check that must run before work starts is named as the first step. | Important | always |
-| A checklist the agent can copy and tick off is included. | Advisory | reused |
 
 ## Finish
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
 | A check the agent can run itself is named, and its result settles whether the work is done. | Blocking | changes something |
-| The exact commands are named. | Important | hand-off |
 | The instruction says the agent runs the check itself before reporting. | Important | always |
-| The instruction says the evidence goes in the report, so nobody re-runs the check. | Important | hand-off |
 | The finish criteria are specific enough that two runs would return the same result. | Blocking | advisory |
 | The instruction says what evidence each finding must carry. | Important | advisory |
 | The finish check sits late in the document, near where the agent will decide whether to stop. | Advisory | always |
@@ -110,24 +124,8 @@ the four kinds listed. The second wording recovered it in every run.
 | Conditions that should stop the work are stated. | Blocking | always |
 | A retry limit is named, and something must change before a retry rather than only the attempt count. | Important | always |
 | Weakening the check or editing the test to make it pass is forbidden. | Blocking | changes something |
-| A named status exists for reporting that the instruction itself was insufficient. | Important | hand-off |
-| Stopping is stated to carry no penalty. | Important | hand-off |
 | What to do when the input is missing, is not what was expected, or cannot be assessed is stated, with a status for each. | Blocking | advisory |
 | The stop conditions sit directly after the finish check. | Advisory | always |
-
-## Return
-
-A report matters where results cross a context boundary. Inside a conversation, the artifact is
-the return, so every rule here binds hand-off documents.
-
-| Rule | Severity | Applies when |
-| --- | --- | --- |
-| The sections of the report are named. | Blocking | hand-off |
-| The wording is fixed enough that results from two runs can be compared without editing. | Important | hand-off |
-| The detail goes to a named file, and only a capped summary returns to the caller. | Important | hand-off |
-| Failures are inlined in the summary rather than only written to the file. | Important | hand-off |
-| A section asks the agent to list anything it did that was not asked for. | Important | hand-off |
-| The report format sits at the end of the document. | Advisory | hand-off |
 
 ## Calibration
 
@@ -141,32 +139,22 @@ the return, so every rule here binds hand-off documents.
 A label says which bucket a finding belongs in. The shape says what the agent is looking at on
 the screen, so it can recognise the case without already knowing it is there.
 
-Bad, and measured as ineffective:
+Bad, because it names the bucket and leaves the reader to spot the case:
 
 > Report any secret written to a log.
 
-Good, and measured as effective on the first run:
+Good, because it says what the code looks like where the problem lives:
 
 > Check what every log and error call passes. Passing a whole request, session, user, or config
 > object is a finding, because the fields inside it are not visible at the call site.
 
-The first wording named the category and the finding stayed missed three times out of three. The
-second described what the code looks like where the problem lives, and the finding appeared three
-times out of three. Reach for this after a run shows a miss, not before: a shape written from
-imagination is a guess, and it costs the same context as a measured one.
+Reach for this after a run shows a miss, not before. A shape written from imagination is a guess,
+and it costs the same context as one taken from an observed failure.
 
 ## Composition
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
-| The facts the prompt asserts are established before dispatch, and each carries its origin. | Important | hand-off |
-| Any determination a script could make deterministically is made by a script, not by a dispatched agent or read by hand. | Important | hand-off |
-| Facts that fill a template are written as a fixed set of named fields to a file, rather than as prose the caller has to parse. | Important | hand-off |
 | Every named hole in a template is marked required or given a default, so an unfilled hole fails loudly rather than reaching the agent as empty text. | Important | reused |
 | The set of fields established for a template is fixed, so it does not accumulate a payload most callers do not use. | Advisory | reused |
-| The model or effort level is named explicitly, rather than left to inherit from the calling session. | Important | hand-off |
-| The status values the agent may return are enumerated, and the caller's obligation for each one is stated. | Blocking | hand-off |
-| Each status declares whether it affects only the agent reporting it or stops the whole run. | Important | hand-off |
-| The caller checks that the report is usable, and does not re-run the checks the agent already proved. | Important | hand-off |
 | What happens to partial work when a run stops is stated. | Important | changes something |
-| Where a predefined named agent is dispatched, the instruction has been checked for context the call does not need. | Advisory | hand-off |

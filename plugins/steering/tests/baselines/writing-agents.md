@@ -45,3 +45,10 @@ advisory warning that predates this change, which is that the stop conditions do
 after the finish check, because the section on converting a named agent sits between them. It
 confirmed that no coverage was lost and that nothing in the file still reads as if "field" and
 "hole" are two things.
+
+**Retired, 2026-08-01.** That advisory no longer holds. Commit `45351c7` moved "When to stop" so it
+follows the workflow directly, with "Converting a named agent" after it rather than between. A
+later audit checked the current file, found the section order changed, and retired the finding
+rather than repeating it from this record. Worth noting how it surfaced: the audit caught that this
+record was stale, not the other way round. A baseline record is a snapshot of one day and goes out
+of date silently as the file moves on.

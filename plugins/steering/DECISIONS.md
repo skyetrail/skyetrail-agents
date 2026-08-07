@@ -280,3 +280,170 @@ Third method error in this project, after the missing tenth problem in the secon
 and the wrong T7 wording in this key. Every one was found by a worker disagreeing with the harness,
 never by the harness checking itself. Whatever else the benches have shown, they have shown that
 consistently.
+
+## Cutting by evidence, 2026-08-01
+
+Pete asked whether the skills are bloated. They are not: ours run 72 to 104 body lines against a
+500-line limit. The load is in the rules they pull in, which was 75 rules and 374 lines on every
+audit, with the skill itself the smallest part.
+
+Changes, each tied to a record rather than to taste.
+
+- **The third-person description rule is gone.** A real description breaking it routed correctly
+  twelve times out of twelve across three runs, tying a rewrite that satisfied it. Ten external
+  audits raised it on nearly every file and never named a consequence, and two auditors returned
+  opposite verdicts on one sentence. See `tests/outcomes/trigger-test/`.
+- **Stating the capability drops from blocking to important.** Same test. A description that fails
+  it did the job without an error, so it cannot block.
+- **The copyable-checklist rule is gone.** It fired in about five audits, always as the absence of
+  tick-box syntax, and never named a consequence.
+- **The contents-list rule drops to advisory.** Four audits, no consequence named.
+- **The baseline-evidence rule is conditioned on a skill we maintain.** It produced an automatic
+  blocking failure on all seven external files. Every auditor spotted the problem unprompted.
+- **Twenty hand-off rules moved to `handoff-rules.md`.** They never apply to a plain skill and every
+  auditor read all twenty to rule all twenty out.
+
+Two rules were kept that looked like candidates. Naming the successor skill discriminated, passing
+on `brainstorming` and failing elsewhere. Saying a direct instruction from the person wins fired on
+every external file, which reads like a house convention, but the consequence is nameable: one
+skill's gate says it applies to every project regardless of simplicity, and an agent following that
+would refuse a direct instruction to skip it.
+
+**What this actually bought, stated honestly.** Rules evaluated for a plain skill audit fell from
+75 to 53, a 29 percent cut in what an auditor has to reason about and decide is not applicable.
+Lines loaded went from 374 to 381, which is no change. The rule text I removed was replaced almost
+one for one by operative text that earns its place: the contradiction case, the defect-versus-
+difference split, and the catch-all clarification.
+
+So this was a reasoning-load win, not a context win, and I should not describe it as trimming. My
+first attempt made it worse, adding 30 lines of evidence citations into the files an auditor loads
+every time, which is the exact failure our own loading rule names. The citations moved here and the
+rule files kept one-line pointers.
+
+The remaining bulk is the two worked examples in Scope and Calibration. Both were measured as
+effective on the benches, so cutting them would undo a proven gain to save about thirty lines.
+
+## Author notes do not belong in files agents load, 2026-08-01
+
+Pete caught two of these in one read.
+
+The first was a paragraph in `skill-rules.md` saying two description rules were unverified, that ten
+audits had fired them without naming a consequence, and that a routing test would settle it. All
+true, and useless to a runtime agent. It cannot run the test, cannot decide the question, and gains
+no instruction from knowing we are unsure. It reads as a diary entry in a file loaded on every audit.
+
+The mechanism for "this rule matters less" already exists and it is severity. Advisory means
+mentioned once and never blocks. Writing prose to express doubt bypasses the mechanism the agent
+already knows how to act on.
+
+Worth noting the note was not inert: an auditor read it and marked its finding a warn rather than a
+fail. It changed behaviour, and still it was wrong to be there, because a paragraph nudging a
+severity is a worse instrument than the severity field.
+
+The rules themselves stay at the severities they were restored to. Changing a severity now would be
+changing rules on an argument, which is the thing the fabricated test already got wrong once. The
+provenance lives here, where authors read it, and the routing test remains designed and not run.
+
+The second was `steering-rules.md` telling the reader that twenty rules live in `handoff-rules.md`.
+Never count things across files. The number gives the agent nothing, and it becomes wrong the moment
+someone adds a rule, so it is a maintenance liability that buys no behaviour. It now says every rule
+conditioned on hand-off lives there and none lives here, which is the fact that matters and cannot
+go stale.
+
+Both violated a rule we already had, that content which would not change what an agent does is
+absent. Our own rules file broke a rule from our own rules file, in two places, and neither audit
+caught it. Worth sitting with: the audits check targets against the rules, and nothing checks the
+rule files themselves the same way.
+
+## The loop did not close, and why, 2026-08-01
+
+The definitional test of this plugin is whether a skill written by `writing-skills` passes
+`auditing-skills`. We had never run it. The release-notes skill our tool produced in the skills
+bench sat in the repository for a day, scored on a trap bench, never audited.
+
+Audited, it fails: one blocking finding, two important, one advisory. It needs work before use.
+
+The cause is precise. Step 7 read "audit against the rule files, or by using `auditing-skills`".
+That "or" let the author audit its own draft, and the producing agent took it. Its own report says
+the self-audit caught three real gaps, which it fixed. An independent auditor then found four more,
+including the blocking one.
+
+So the tool worked as instructed and the instruction was wrong. The author of a document is the
+worst reader of it, because they know what each line was meant to say and read the intent rather
+than the text. Our own method already said this about baselines, and step 7 did not say it about
+audits.
+
+Step 7 now requires a fresh agent, with self-audit allowed only where no subagent exists and only if
+the record says the audit was not independent.
+
+The produced skill is left as it is. It is a bench artifact and a record of what the tool produced
+on the day, and rewriting it now would destroy the evidence. Its audit stands beside it.
+
+Worth keeping: three of the four findings are minor, and the produced skill passed more than thirty
+rules. The loop nearly closed. It failed on the one step where we let the writer mark their own work.
+
+## Our conditions have no case for a reference file, 2026-08-01
+
+Auditing the four rule files as targets produced one finding in all four at once: none of them
+states that the agent must not modify anything, what the default outcome is, or what evidence a
+finding must carry. Those come only from the skill that loads them.
+
+The same finding in every file is the signature of a condition set wrongly, not four independent
+defects, and that is what it was. I told each auditor that **advisory** was met. Advisory means the
+work reviews or investigates and changes nothing. A rules table is not work. It is reference
+material that work consumes, so rules about how the work behaves land on it as category errors.
+
+Not all of it was wrong. Advisory also carries the calibration rules, about giving examples of what
+counts and what does not, and those apply perfectly well to a reference file: `handoff-rules.md` had
+none and that was a real finding, now fixed. So the condition is half right, which is why it was not
+obvious.
+
+The gap is in the conditions themselves. They assume the document being judged is an instruction to
+do work. There is no condition for a document that is consulted while doing work, where the rules
+about calibration apply and the rules about conduct do not.
+
+Not fixed here. Adding a condition changes every rule's applicability and needs its own round rather
+than being bolted on at the end of a long day. Recorded because the next person to audit a reference
+file will hit it, and because the shape is worth knowing: a finding that appears in every target at
+once is usually about the harness, not the targets.
+
+## A file that describes tooling needs a different check, 2026-08-01
+
+`shared/lint.md` has now been wrong four times in two days, and the shape of the error changed each
+time. Two false claims about what the lint covers. Then, correcting those, a list of three coverage
+tiers that omitted commands, agents, and `SUMMARY.md`. Then, correcting that, a sentence saying the
+pre-commit hook misses `shared/` when it also misses `SUMMARY.md`, which the same file had just
+placed in the same tier two paragraphs above.
+
+Every version was well-formed. Every version passed a rules audit on structure. Each was caught only
+because an auditor read `generate-readmes.mjs` and the hook regex and compared them to the prose.
+
+The lesson is about a class of document, not about this one. A file whose content is claims about
+what a script does can satisfy every rule we have and still be false, and the failure is invisible
+to anyone who has not read the source. Worse, a fix creates a fresh opportunity for the same error,
+because each rewrite is a new set of claims.
+
+Two practices came out of it, both now in the file or the method:
+
+State the coverage by what makes a file a member of a tier, not by listing paths. A list of paths
+goes stale silently when the script grows a case. The fourth error was naming one member of a tier
+where the tier itself was meant.
+
+Audit such a file against the source, not against the rules. When one of these is a target, the
+instruction should say so explicitly, as the last two rounds did.
+
+## Only a defect blocks, 2026-08-01
+
+An audit marked a finding Blocking and a difference at once, and pointed out that our rules
+collide: any blocking failure means the target needs work, and a difference is one where nobody can
+name what goes wrong. We never said which wins.
+
+Settled: only a defect blocks. Severity says how much a problem matters, defect or difference says
+whether there is one, and a rule firing at blocking severity on something with no nameable
+consequence is reaching past what it can judge. The finding that raised it is a good example: our
+reproducibility rule asks that two runs return the same result, and judgment work cannot give that.
+Our own baseline measured the gap honestly at up to three rows on minor calls, with blocking-level
+calls stable. The part that decides anything is reproducible; the rule asked for more.
+
+Left as is rather than narrowing the rule, because the precedence fix resolves the case and
+narrowing is a rule change that deserves its own round.

@@ -10,13 +10,14 @@ Produces a findings list ordered by severity, and the three things to fix first.
 ## Which rules apply
 
 - A SKILL.md. Use `../../shared/skill-rules.md` and `../../shared/steering-rules.md`.
-- A prompt written for a subagent. Use `../../shared/steering-rules.md` only.
+- A prompt written for a subagent. Use `../../shared/steering-rules.md` and
+  `../../shared/handoff-rules.md`.
 - Anything else written to shape what an agent does. A command, a hand-off brief, a runbook, and a
   one-off request are examples, not the whole list. If a person wrote it to steer an agent, it
   belongs here. Use `../../shared/steering-rules.md` only, with the conditions that match how the
   document will be used.
 
-If the target is none of these, stop and report it as out of scope, saying what the file appears
+If the target is none of these, stop and report it as out of scope, saying what the target appears
 to be. Do not force the rules onto it. If the target or a rule file cannot be read, stop and
 report that instead of auditing from memory. These stop conditions sit here, ahead of the
 workflow, rather than beside the report, because they are pre-work gates: they decide whether
@@ -24,13 +25,13 @@ the audit starts at all.
 
 ## Where this stops
 
-Does not edit the file. If a fix is obvious, name it in the report rather than making it, and use
+Does not edit the target. If a fix is obvious, name it in the report rather than making it, and use
 `writing-skills` to apply it.
 
 Does not judge writing style, including punctuation, heading case, and tone. Those do not change
 what an agent does.
 
-Does not re-run checks the file's own author already ran and recorded. Confirm the record is
+Does not re-run checks the target's own author already ran and recorded. Confirm the record is
 complete instead.
 
 A direct instruction from the person wins over anything here.
@@ -38,19 +39,24 @@ A direct instruction from the person wins over anything here.
 ## Workflow
 
 1. Run the lint command named in `../../shared/lint.md` over the target and record its result,
-   so the mechanical limits are settled once and never re-argued in the findings. If none is
-   named or it cannot run, say so in the report rather than re-deriving the mechanical limits by
-   hand without saying you have done so.
-2. Read the file in full, including every reference file it names.
-3. Work through each rule. Mark it pass, fail, warn, or not applicable. A rule whose condition is
-   not met is not applicable, which is not the same as a pass.
+   so the mechanical limits are settled once and never re-argued in the findings. Where it cannot
+   be run, or runs without reaching the target, follow what `../../shared/lint.md` says about that case,
+   including when a second attempt is allowed. Then say in the report what did not run, rather than
+   re-deriving the mechanical limits by hand without saying you have done so. A report that hides
+   an unrun check is worse than one that admits a gap.
+2. Read the target in full, including every reference file it names, because a rule the target
+   satisfies in a file you did not open reads as a failure.
+3. Work through each rule. Mark it pass, fail, warn, or not applicable, so the reader can tell a
+   rule that held from one that never applied. A rule whose condition is not met is not applicable,
+   which is not the same as a pass.
 4. Apply the calibration below before writing anything down, so first impressions do not harden
    into findings.
 5. Report.
 
 ## Calibration
 
-A finding is something that would change what an agent does.
+A finding is something that would change what an agent does. That test decides any case the two
+lists below do not name; both are examples, not the whole set.
 
 These are findings.
 
@@ -88,6 +94,11 @@ reconcile them: a finding both report is a finding, a finding only one reports b
 carrying both readings, and severity is the higher of the two. One audit is enough for ordinary
 work.
 
+Where the two audits pass and fail the same rule on the same text, that is not a one-reporter
+finding and does not become a warn. Report it as a finding against that text, at the higher
+severity, giving both readings. Two readers who disagreed about what a line says have shown the
+line is unclear, which is worth more than either verdict.
+
 ## Re-auditing a target
 
 When the caller supplies a prior report for the same target, report the differences: confirm or
@@ -100,9 +111,24 @@ not changed, and name the report you compared against.
 | --- | --- | --- |
 
 State the lint result first. Every fail and warn carries evidence, meaning the line or section it
-came from. Then give counts by severity, then the three fixes to make first. The fixed table
-replaced prose severity tiers, which were tried and dropped because two runs could not be
-compared.
+came from. Then give counts by severity, then the three fixes to make first. Keep the table's
+wording fixed, so two runs over the same target can be compared without editing either. Do not
+report findings as prose ranked by severity instead of this table: that was the earlier form, and
+two runs of it could not be compared without rewriting one of them.
 
-Any blocking failure means the file needs work before use. Advisory items are listed once and
-never block.
+Mark every fail and warn a defect or a difference, and count them separately. A defect is one where
+you can name what an agent would do wrong: an unlisted project type gets no setup, a real finding is
+filed out of scope, a credential reaches a log. A difference is where the target works another way
+and you cannot say what goes wrong, only that we would have written it otherwise. Unmarked, the two
+read alike at the same severity, and nobody can tell a document that will misbehave from one that is
+merely unfamiliar.
+
+Only a defect blocks. Severity says how much a problem matters; defect or difference says whether
+there is one. A blocking difference does not hold the target back, and it is worth reading as a
+signal about the rule rather than the target: a rule that fires at blocking severity on something
+nobody can name a consequence for is reaching past what it can judge.
+
+A blocking defect means the target needs work before use. Advisory items are listed once and never
+block. This is narrower than the same sentence in `../../shared/steering-rules.md`, which speaks of
+any blocking failure: that file has no defect and difference marking, so it cannot draw the
+distinction and this file does.

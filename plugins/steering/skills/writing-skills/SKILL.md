@@ -16,6 +16,11 @@ Produces a SKILL.md, any reference files it needs, and evidence that it changes 
   `writing-agents`.
 - A constraint a script or a regex could enforce. Automate it. Do not document it.
 
+These are the common cases, not the whole list. The question behind them is what has to hold the
+guidance: the conversation, a file the agent loads when a condition arises, a prompt sent to a fresh
+context, or a script. Where a request fits none of them, say which of those four it is closest to
+and why, and ask before writing anything. Do not force it into the nearest bullet.
+
 ## Where this stops
 
 Does not audit a skill without changing it, which is `auditing-skills`. Does not write prompts
@@ -42,14 +47,17 @@ Run these in order. Step 1 before any writing, because it decides what the skill
 4. **Address only the failures from step 1.** Nothing the model already gets right. For each
    failure, describe the shape it takes in the work, not the label it falls under, so the agent
    can recognise the case without already knowing it is there.
-5. **Move detail into reference files.** The body is an overview. Every reference is one hop from
-   the SKILL.md and named from it.
+5. **Move detail into reference files.** The body is an overview. `../../shared/skill-rules.md`
+   sets how references must be arranged.
 6. **Baseline again.** Same task, fresh subagent, skill loaded. Compare against step 1, and
    record the comparison and the failures the skill addresses in the plugin's
    `tests/baselines/<skill-name>.md`.
-7. **Audit.** Run the lint command named in `../../shared/lint.md` for the mechanical limits, then
-   audit against `../../shared/skill-rules.md` and `../../shared/steering-rules.md`, or by using
-   `auditing-skills`.
+7. **Audit, and not by yourself.** Run the lint command named in `../../shared/lint.md` for the
+   mechanical limits, then dispatch a fresh agent to audit the draft using `auditing-skills`. Do
+   not audit your own draft. You know what every line was meant to say, so you read the intent
+   rather than the text, and you will pass wording a reader coming to it cold would not. Where no
+   subagent is available, audit it yourself against `../../shared/skill-rules.md` and
+   `../../shared/steering-rules.md`, and say in the record that the audit was not independent.
 
 ## The baseline is the gate
 
@@ -71,6 +79,5 @@ it.
 
 ## Rules
 
-- `../../shared/skill-rules.md` for a SKILL.md.
-- `../../shared/steering-rules.md` for anything written to steer an agent. These apply to a skill
-  body too, with the condition **reused** met.
+- `../../shared/skill-rules.md` for a SKILL.md. It states which other rule files apply to a skill
+  and under which conditions.
