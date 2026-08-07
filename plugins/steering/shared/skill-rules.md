@@ -5,9 +5,10 @@ when the condition **reused** is met and the condition **hand-off** is not met. 
 
 Every entry here applies when the audited thing is a SKILL.md, and not otherwise.
 
-The skills `writing-skills` and `auditing-skills` apply these rules. This file states no workflow of
-its own, so it meets the **catalogue** condition in `./steering-rules.md`. The stop conditions, the
-default outcome, and the evidence each finding carries all live in those two skills.
+The skills `writing-skills` and `auditing-skills` apply these rules. This file supplies criteria and
+defines no task of its own. So every procedural property an audit needs lives in those two skills
+rather than here. The stop conditions and the evidence each finding carries are two examples, not
+the whole list.
 
 Mechanical limits are the lint script's job, not judgment work. `./lint.md` says what the script
 checks. Confirm the lint record rather than re-deriving those checks by hand. Do not restate them

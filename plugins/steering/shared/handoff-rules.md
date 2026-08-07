@@ -8,9 +8,9 @@ failure means the document needs work before use. Sometimes you cannot tell from
 whether a rule here is met. If so, mark the rule warn. State what you could not determine. Do not
 guess either way.
 
-The skills `auditing-skills` and `writing-agents` apply these rules. This file states no workflow of
-its own, so it meets the **catalogue** condition in `./steering-rules.md`. The stop conditions and
-the evidence each finding carries live in those two skills.
+The skills `auditing-skills` and `writing-agents` apply these rules. This file supplies criteria and
+defines no task of its own. So every procedural property an audit needs lives in the skill that runs
+it. The stop conditions are one example, not the whole list.
 
 Readers misread the rule about detail and summary most often. It is about what crosses back to
 the caller, not about how much the agent may write.

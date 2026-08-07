@@ -4,8 +4,8 @@ The caller's side of dispatching an agent. `./steering-rules.md` covers what the
 `./handoff-rules.md` covers what the agent returns, including the report's sections. This file
 covers what the caller does with both.
 
-The skills `writing-agents` and `auditing-skills` apply this file. It states no workflow of its own,
-so it meets the **catalogue** condition in `./steering-rules.md`.
+The skill `writing-agents` applies this file. This file supplies criteria and defines no task of its
+own.
 
 ## Contents
 

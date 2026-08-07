@@ -50,28 +50,37 @@ belong in the block.
    the lint command. Where you find no candidate at all, do not invent one. Tell the person the
    repository needs a lint command. Tell them that skills relying on one cannot run their
    mechanical checks until it has one.
-5. **Write the block.** Replace everything between the markers. Keep the rest of `AGENTS.md`
+5. **Copy the file before you write to it.** Where `AGENTS.md` exists, copy it to
+   `AGENTS.md.repo-setup-backup`. Step 7 compares against that copy and step 8 restores it. Do not
+   use `git diff` for either job. It cannot separate your change from one somebody made and did not
+   commit, and it prints nothing at all for a file git does not track yet.
+6. **Write the block.** Replace everything between the markers. Keep the rest of `AGENTS.md`
    untouched. Where `AGENTS.md` does not exist, create it with the block. Where it exists without
    the block, append the block and change nothing else. Never rewrite the whole file.
-6. **Check your own work before you report.** Run these commands. Do not read the file and judge by
+7. **Check your own work before you report.** Run these commands. Do not read the file and judge by
    eye, because a changed line outside the markers is exactly what an eye skips.
 
    ```
-   grep -c 'BEGIN: repo-setup' AGENTS.md      # must print 1
-   grep -c 'END: repo-setup' AGENTS.md        # must print 1
+   grep -c 'BEGIN: repo-setup' AGENTS.md    # must print 1
+   grep -c 'END: repo-setup' AGENTS.md      # must print 1
    grep -n '<command>\|<what it covers\|<anything a person' AGENTS.md   # must print nothing
-   git diff -- AGENTS.md                      # every changed line sits between the markers
+   diff AGENTS.md.repo-setup-backup AGENTS.md   # every changed line sits between the markers
    ```
 
-   Where the repository does not use git, copy `AGENTS.md` before step 5 and `diff` against the
-   copy instead. Then confirm the one thing no command settles: you saw every command recorded
-   inside the markers work, in this run.
+   Skip the last command where you created `AGENTS.md` in step 6, because no earlier version
+   exists to compare against. Then confirm the one thing no command settles: you saw every command
+   recorded inside the markers work, in this run.
 
-   Fix anything that does not hold before you report. Where you cannot fix it, undo your write.
-   Delete `AGENTS.md` where you created it. Remove only your own block where the file already
-   existed. Then report `BLOCKED` with what failed. Do not weaken this check to finish. Do not skip
-   it. Do not report a check you did not run. An unverified block is worse than no block, because
-   everything downstream trusts it.
+   Delete `AGENTS.md.repo-setup-backup` once every check holds, and before you report. A leftover
+   backup file reads as an unfinished run.
+8. **Put the file back where a check fails and you cannot fix it.** Copy
+   `AGENTS.md.repo-setup-backup` over `AGENTS.md`. Delete `AGENTS.md` instead where you created it
+   in step 6. Never delete a block you did not write in this run. On a re-run the block already
+   there is an answer somebody confirmed, and deleting it leaves the repository with no lint
+   command at all. Then report `BLOCKED` and say which check failed.
+
+   Do not weaken these checks to finish. Do not skip them. Do not report a check you did not run.
+   An unverified block is worse than no block, because everything downstream trusts it.
 
 ## The block
 
@@ -91,7 +100,7 @@ Unresolved: <anything a person still has to decide, or "none">
 
 ## Statuses
 
-Report `DONE` where the block is written and every check in step 6 holds. Report `NEEDS_DECISION`
+Report `DONE` where the block is written and every check in step 7 holds. Report `NEEDS_DECISION`
 or `BLOCKED` as below. These three are the whole set. Do not invent a fourth.
 
 ## When to stop
@@ -119,7 +128,8 @@ which one it was.
 This skill establishes and records facts. It does not fix what it finds. It reports a missing lint
 command, a lint command that fails, or a broken configuration. It does not repair them. It does not
 choose between candidates for the person. It edits no file other than `AGENTS.md`, and inside that
-file it edits only its own block.
+file it edits only its own block. It also writes and then removes `AGENTS.md.repo-setup-backup`,
+which exists only between step 5 and the end of the run.
 
 No skill takes over where this one stops. Both stop conditions hand back to a person, because both
 are decisions about how this repository is meant to work, and nothing here can settle them.

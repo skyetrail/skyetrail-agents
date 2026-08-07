@@ -14,9 +14,9 @@ Each entry carries a severity and a condition. Report counts by severity. Any bl
 the document needs work before use. An Important failure does not stop use. The author fixes it
 before the document changes again. Mention an Advisory item once. It never blocks.
 
-The default outcome for every rule here is pass. Escalate only where you can name what an agent
-would do wrong because of the failure. This is the default for any audit that reads this file,
-whichever skill runs it.
+The default outcome for every rule here is pass. Record a fail only where you can point at the text
+that breaks the rule. This default holds for any audit that reads this file, whichever skill runs
+it. The skill running the audit says how to mark and count what you record.
 
 A rule about the position or wording of a section applies only where that section exists. Where the
 section is missing, the missing section is the finding. The rules that depend on it are then not
@@ -46,16 +46,25 @@ hand-off never reads them.
 - **changes something**, the work modifies files or state
 - **advisory**, the work reviews or investigates and changes nothing
 - **reused**, the instruction is a skill or template rather than a one-off
-- **catalogue**, the document states rules or facts for another document to apply, and describes no
-  work of its own
+- **describes work**, the document defines a task with a finished outcome of its own, rather than
+  supplying criteria that a task defined in another document applies
 
-Where **catalogue** is met, the Method, Finish, and Failure sections do not apply. Mark those rules
-not applicable. A catalogue describes no work. So it has no method to constrain, no finish to check,
-and no failure to handle. Applying those rules to a catalogue produces findings that name no
-consequence, which wastes an auditor's attention on every run.
+You decide every condition from what the document holds. Treat the document's own claim about which
+conditions it meets as a claim to check, not as a fact to accept. Otherwise an author switches off
+a rule by writing one sentence about the document.
 
-A catalogue names the documents that apply it. A reader who needs the procedure can then find it.
-Without that line, the procedure looks missing rather than delegated.
+To decide **describes work**, look for the outcome. Where the document names something a reader
+finishes, the condition holds. Where it supplies criteria and another document defines the task
+that applies them, it does not.
+
+An instruction about how to read the criteria does not make a task. A rule catalogue often says
+"read this file first" or "mark the rule warn where you cannot tell". Those sentences belong to a
+task defined elsewhere. Test for the outcome, not for the presence of an imperative, because every
+catalogue here holds imperatives of that kind.
+
+Where **describes work** fails, the Method, Finish, and Failure rules below do not apply. Those
+three sections cover how a task runs, when it finishes, and what happens when it fails. Where a
+document defines no task, none of the three has anything to test.
 
 The section order below is the order these sections should appear in the document being written.
 Some entries are about position, so check where a section appears, not only whether it appears.
@@ -74,6 +83,7 @@ Some entries are about position, so check where a section appears, not only whet
 | Nothing refers to something the agent cannot resolve, meaning anything it cannot read or reach from the document alone. A prior conversation, an earlier decision, and a file named only by nickname are examples, not the whole list. | Blocking | always |
 | Every fact the agent needs is either written out or pointed at by a path it can read. | Blocking | always |
 | Approaches already tried and found not to work are stated. | Important | always |
+| A document that only states criteria names at least one document that applies them. | Important | always |
 | Context sits above the method, so it is read before a plan is formed. | Advisory | always |
 
 ## Scope
@@ -118,30 +128,30 @@ category is hard to recognise.
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
-| One default approach is given rather than a menu of options. | Important | always |
-| The order is fixed where sequence affects correctness, and left open where it does not. | Blocking | always |
-| The instruction constrains how the work is done only where correctness or safety needs a specific way. Each such constraint says why. The instruction leaves everything else to the agent. | Important | always |
-| Any check that must run before work starts is named as the first step. | Important | always |
+| One default approach is given rather than a menu of options. | Important | describes work |
+| The order is fixed where sequence affects correctness, and left open where it does not. | Blocking | describes work |
+| The instruction constrains how the work is done only where correctness or safety needs a specific way. Each such constraint says why. The instruction leaves everything else to the agent. | Important | describes work |
+| Any check that must run before work starts is named as the first step. | Important | describes work |
 
 ## Finish
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
 | A check the agent can run itself is named, and its result settles whether the work is done. | Blocking | changes something |
-| The instruction says the agent runs the check itself before reporting. | Important | always |
+| The instruction says the agent runs the check itself before reporting. | Important | describes work |
 | The finish criteria are specific enough that two runs would return the same result. | Blocking | advisory |
 | The instruction says what evidence each finding must carry. | Important | advisory |
-| The finish check sits late in the document, near where the agent will decide whether to stop. | Advisory | always |
+| The finish check sits late in the document, near where the agent will decide whether to stop. | Advisory | describes work |
 
 ## Failure
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
-| Conditions that should stop the work are stated. | Blocking | always |
-| A retry limit is named, and something must change before a retry rather than only the attempt count. | Important | always |
+| Conditions that should stop the work are stated. | Blocking | describes work |
+| A retry limit is named, and something must change before a retry rather than only the attempt count. | Important | describes work |
 | Weakening the check or editing the test to make it pass is forbidden. | Blocking | changes something |
 | The instruction says what to do where the input is missing, is not what it expected, or cannot be assessed. It gives a status for each case. | Blocking | advisory |
-| The stop conditions sit directly after the finish check. | Advisory | always |
+| The stop conditions sit directly after the finish check. | Advisory | describes work |
 
 ## Calibration
 
