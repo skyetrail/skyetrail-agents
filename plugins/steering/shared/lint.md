@@ -1,61 +1,66 @@
 # Skills lint
 
-Settles the mechanical limits for a target once, so a report can cite a lint result instead of
-re-deriving those limits by hand and no finding re-argues them.
+This file settles the mechanical limits for a target once. A report can then cite the lint
+result. The report does not need to work out the limits by hand again. A finding does not need
+to argue the limits again.
 
-A lint checks what a script can decide on its own, such as whether a file parses, whether it is
-within a stated limit, and whether the things it points at exist. Judgment stays with the rules
-files; these limits belong to the script. Which of them a given repository's lint actually performs
-is that repository's business, not this file's, so establish it rather than assuming.
+A lint is a script. It checks things it can decide on its own. For example, it can check
+whether a file parses and whether a file stays within a stated limit. It can also check whether
+the things a file points at exist. Judgment stays with the rules files. These limits belong to
+the script. Each repository decides which checks its own lint performs. This is the repository's
+business, not this file's business. Establish what those checks are. Do not assume them.
 
 ## Finding the command
 
-The lint command belongs to the repository being worked in, not to this plugin. Look for it in
-this order.
+The lint command belongs to the current repository, not to this plugin. Look for it in this
+order.
 
-1. The `repo-setup` block in the repository's `AGENTS.md`, which records the command a person
-   confirmed. Where it exists, it is the answer.
-2. `npm run lint`, the default worth trying before anything else. In this plugin's own repository
-   it is the answer, it runs from the repository root, and it is fixed.
-3. Nothing recorded and no `npm run lint`. Use the `repo-setup` skill to establish the command and
-   record it, rather than guessing from what the repository appears to contain.
+1. The `repo-setup` block in the repository's `AGENTS.md` file records the command a person
+   confirmed. If it exists, use it.
+2. `npm run lint` is the default. Try it before anything else. In this plugin's own repository,
+   `npm run lint` is the answer. It runs from the repository root. It is fixed.
+3. This repository has no recorded command and no `npm run lint`. Use the `repo-setup` skill to
+   establish the command. Then record it. Do not guess the command from what the repository
+   seems to contain.
 
 ## When it does not settle the target
 
-Three cases, and they are not the same. In all three, say what happened and continue with the
-judgment rules; never re-derive the mechanical limits by hand and present the result as a lint
-result.
+There are three cases. They are not the same. In all three cases, say what happened. Then
+continue with the judgment rules. Do not work out the mechanical limits by hand again. Do not
+present that result as a lint result.
 
-**No lint command exists for this repository.** Say so. Where a person is present, tell them the
-repository needs one, because every skill that leans on this file is working without its mechanical
-gate until it has one.
+**No lint command exists for this repository.** Say so. If a person is present, tell them the
+repository needs one. Until the repository has one, every skill that leans on this file works
+without a mechanical gate.
 
-**A command exists but you cannot run it from where you are**, which is the usual case for an agent
-scoped to a subdirectory of a repository whose lint runs from the root. Report the command you could
-not run and why. Do not run a command whose reach you cannot bound in order to avoid reporting the
-gap.
+**A command exists but you cannot run it from where you are.** This is the usual case for an
+agent that works in one subdirectory of a repository. The repository's lint runs from the root.
+Report the command you could not run. Say why. Do not run a command whose reach you cannot
+bound. Do not run it to avoid reporting the gap.
 
-**The command runs, exits clean, and never opened your target.** This is the one that looks like a
-pass and is not. Before recording a clean result, establish what the command actually reads and
-whether your target is under it. Where the repository offers a way to ask the command itself, use
-that; otherwise read the script. Do not take a description of coverage from a document, including
-this one, since prose about what a script does goes stale without anything failing. Where the target
-is not covered, report a coverage gap and say which check did not run. A lint that reports every
-file up to date while never opening the file you are auditing is worse than no lint, because it
-produces a pass nobody questions.
+**The command runs, exits clean, and never opens your target.** This case looks like a pass. It
+is not a pass. Establish what the command reads. Do this before you record a clean result. Also
+establish whether the command's reach covers your target. If the repository offers a way to ask
+the command, use it. If not, read the script. Do not take a description of coverage from any
+document, even this one. Prose about what a script does can go stale. Nothing fails when this
+happens. If the command does not cover the target, report a coverage gap. Say which check did
+not run. A lint can report every file up to date. It can do this while it never opens the file
+you audit. This kind of lint is worse than no lint. It makes a pass that nobody questions.
 
-Where a run fails without settling which of these applies, such as a timeout or an error naming no
-cause, run it once more only after something has changed. Where nothing has changed, do not run it
-again: record that it could not be run and say what you saw.
+Sometimes a run fails without settling which case applies. A timeout is one example. An error
+that names no cause is another example. Run the command one more time, but only after something
+changes. If nothing changes, do not run it again. Instead, record that the command could not
+run. Say what you saw.
 
 ## In this repository
 
-`npm run lint` runs from the repository root. Ask the command what it covers rather than reading it
-here:
+`npm run lint` runs from the repository root. Ask the command what it covers. Do not look here
+for that description. Run this command:
 
 ```
 npm run lint -- --explain
 ```
 
-That prints which kinds of file get which checks, from the same data the run itself uses, so it
-cannot disagree with what the lint does. A description written out here could, and did, four times.
+This command prints which kinds of file get which checks. It uses the same data as the lint run
+itself. So the command cannot disagree with what the lint does. A description written out in
+this file could disagree with the lint. That happened four times.

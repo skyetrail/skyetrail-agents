@@ -14,41 +14,42 @@ what the prompt says and what the agent returns. This covers what the caller doe
 
 ## One principle
 
-Any determination that can be made deterministically is made by a script, and an agent is
-dispatched only for what needs an assessment. A script returns the same shape every run, can be
-versioned and reviewed, emits provenance without being asked, and gives the caller an exit code
-to gate on.
+A script makes any determination that runs deterministically. Dispatch an agent only for what
+needs an assessment. A script returns the same shape every run. You can version it and review it.
+It emits provenance without being asked. It gives the caller an exit code to gate on.
 
-That covers at least: which facts hold before dispatch, whether the established facts have a
-value in every required field, whether every hole in a prompt was filled, and whether a returned
-report contains each command it was told to run along with that command's result.
+That covers at least four things, not the whole list. Which facts hold before dispatch. Whether
+the established facts carry a value in every required field. Whether the caller filled every hole
+in a prompt. Whether a returned report holds each command the prompt named, with that command's
+result.
 
-One caution. An agent that cannot find something says so, while a script often returns an empty
-result, which reads as nothing to do. State what an empty result means and whether it is
-expected.
+One caution. An agent that cannot find something says so. A script instead returns an empty
+result, which reads as nothing to do. State what an empty result means. State whether you expect
+it.
 
 ## Two terms
 
 A hole is a named blank in a prompt template. A field is a named fact in the record the caller
 establishes before dispatch. Filling a template writes field values into holes. The two
-correspond, and they are not the same thing: fields exist before any template, and a template
-need not use every field.
+correspond, but they differ. Fields exist before any template. A template need not use every
+field.
 
 ## Seven invariants
 
-1. The facts the prompt asserts are established before dispatch, and each carries its origin.
-   Neither a script nor an agent is needed for what the caller already knows.
-2. The status values the agent may return are enumerated, and the caller's obligation for each
-   one is stated. A status with no defined caller action is decoration.
+1. The caller establishes the facts the prompt asserts before dispatch. Each fact carries its
+   origin. Use neither a script nor an agent for what the caller already knows.
+2. The prompt enumerates the status values the agent may return. It states the caller's
+   obligation for each one. A status with no defined caller action is decoration.
 3. Where the detail goes and what returns to the caller are both named.
 4. The retry limit is stated, along with what must change before a retry. Re-dispatching the same
    prompt to the same model is not a retry.
-5. Who proves what is stated. The agent proves its own work in its report, with the commands and
-   their output. The caller checks the report is complete and does not re-run the checks. Because
-   the caller does not re-run them, the prompt forbids the agent weakening a check, editing a test,
-   or narrowing a command to make it pass. Nothing else stands behind that proof.
-6. What happens to partial work when a run stops is stated. The default is to keep it, name its
-   location in the report, and leave the decision to a person. Do not revert automatically, since
+5. The prompt states who proves what. The agent proves its own work in its report, with the
+   commands and their output. The caller checks that the report is complete. The caller does not
+   re-run the checks. Because the caller does not re-run them, the prompt forbids three things. The
+   agent must not weaken a check. It must not edit a test. It must not narrow a command to make it
+   pass. Nothing else stands behind that proof.
+6. The prompt states what happens to partial work when a run stops. By default, keep it. Name its
+   location in the report. Leave the decision to a person. Do not revert automatically, because
    partial work that passes its own gates is often worth keeping.
 7. An agent that dispatches work collects the result before its own turn ends. A dispatched task
    with no collected result is unfinished work, not a hand-off.
@@ -72,10 +73,9 @@ A check that did not run is not a concern. If a required step was skipped or def
 is BLOCKED, or NEEDS_CONTEXT when the cause is something the caller failed to supply.
 
 Every status declares whether it affects only the agent reporting it or stops the whole run. The
-four above affect one agent. A status added for a particular run may not. An agent that finds a
-fact whose origin no longer matches has proved every prompt in the run wrong, not just its own,
-and the default reading of a single failure is that it affects one task, so the wider reach has
-to be stated.
+four above affect one agent. A status added for a particular run may not. Sometimes an agent finds a fact whose origin no longer matches. That agent has proved every prompt
+in the run wrong, not only its own. A reader takes a single failure to affect one task. So state
+the wider reach where it applies.
 
 Additions are allowed and are declared in the template rather than invented per call. A
 template's status set is fixed and documented, so two dispatch types can share a caller and their
@@ -96,9 +96,8 @@ convention rather than written down, they are not a protocol.
 
 Agents that modify shared state are not a fan-out case even when the tasks look independent.
 
-These three cover the dependency patterns seen so far, not every pattern there is. Where work fits
-none of them, or where a fact a shape depends on cannot be established, stop and report what is
-missing rather than forcing the work into the nearest shape.
+These three cover the dependency patterns seen so far, not every pattern there is. Stop and report what is missing where work fits none of them. Do the same where you cannot
+establish a fact a shape depends on. Do not force the work into the nearest shape.
 
 ## Establishing facts
 
@@ -110,7 +109,6 @@ Where a fact matters enough to be worth the cost, have the script determine it a
 agent's claim against it. This is for the few facts that would invalidate the run, not for all of
 them.
 
-Facts established before the first worker are still being used by the last one. Close that gap
-deliberately, either by asserting that the facts are ones no worker can affect, or by having each
-worker recheck the facts it depends on before starting. A script makes that recheck cheap enough
+Facts established before the first worker are still being used by the last one. Close that gap deliberately. Either assert that no worker can affect those facts, or have each
+worker recheck the facts it depends on before it starts. A script makes that recheck cheap enough
 to be the default.

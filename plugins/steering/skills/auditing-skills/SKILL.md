@@ -15,8 +15,8 @@ This audit changes nothing.
   `../../shared/handoff-rules.md`.
 - Anything else written to shape what an agent does. A command, a hand-off brief, a runbook, and
   a one-off request are examples, not the whole list. Where a person wrote it to steer an agent,
-  it belongs here. Use `../../shared/steering-rules.md` only. Apply the conditions that match how
-  you will use the document.
+  it belongs here. Use `../../shared/steering-rules.md` only. Apply the conditions that match the
+  document's own use, not your use of it.
 
 Where the target is none of these, stop. Report it as out of scope. Say what the target appears
 to be. Do not force the rules onto it. Where you cannot read the target or a rule file, stop.
