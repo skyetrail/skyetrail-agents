@@ -14,9 +14,11 @@ Use `../../shared/steering-rules.md` for every target. Then add a file for what 
 another for each condition the target meets.
 
 - A SKILL.md. Add `../../shared/skill-rules.md`.
-- A target meeting the **hand-off** condition, meaning the agent reading it will not see the
-  conversation its author had. Add `../../shared/handoff-rules.md`. A prompt written for a
-  subagent and a hand-off brief are two examples, not the whole list.
+- A target meeting the **hand-off** condition, meaning the agent reading the target itself will not
+  see the conversation its author had. Add `../../shared/handoff-rules.md`. A prompt written for a
+  subagent and a hand-off brief are two examples, not the whole list. A file of rules for writing
+  hand-off prompts does not meet it, because you read that file inside this conversation.
+  `../../shared/steering-rules.md` states the test and why two earlier audits split on it.
 - Anything else written to shape what an agent does. A command, a runbook, and a one-off request
   are examples, not the whole list. Where a person wrote it to steer an agent, it belongs here,
   and it needs no extra file for what it is. It still takes a file for each condition it meets.
@@ -25,9 +27,9 @@ Decide the conditions from what the target holds, not from how you are using it.
 condition rather than by what you would call the document, because more than one name fits the
 same document.
 
-Where the target is none of these, stop. Report it as out of scope. Say what the target appears
-to be. Do not force the rules onto it. Where you cannot read the target or a rule file, stop.
-Report that instead of auditing from memory. These stop conditions sit here, ahead of the
+Where the target is none of these, stop and report `OUT_OF_SCOPE`. Say what the target appears to
+be. Do not force the rules onto it. Where you cannot read the target or a rule file, stop and
+report `BLOCKED`. Name the file you could not read. Do not audit from memory instead. These stop conditions sit here, ahead of the
 workflow, not beside the report. They are pre-work gates. They decide whether the audit starts at
 all.
 
@@ -115,7 +117,12 @@ means it is gone. Changed means it is still there in a different form, which is 
 moved a fault rather than removing it produces. Then list only what is new. Do not re-derive rows
 whose inputs stay the same. Name the report you compared against.
 
-A re-audit table carries one more column than a first audit. Put the prior status before Result.
+A re-audit table carries one more column than a first audit. Head it **Since last audit** and put it
+before Result. It holds confirmed, retired, or changed, and nothing else. Do not head it status,
+which names the values this skill returns to a caller. A retired row carries only that mark, and
+leaves Result, Defect or difference, and Evidence empty, because a retired finding has no current
+result to give. The new-findings table gains no such column, because every row in it is new.
+
 Without the third mark, a half-fixed finding fits neither confirmed nor retired, and two rounds of
 this audit invented the word rather than reporting the gap.
 

@@ -60,4 +60,5 @@ run. Say what you saw.
 
 Some lints describe themselves, often behind a flag such as `--explain`. A self-description built
 from the same data as the run cannot disagree with the run. Prefer it over any prose, including
-prose in this file. The repository's own `AGENTS.md` block records whether its lint offers one.
+prose in this file. Where the repository has a `repo-setup` block in `AGENTS.md`, that block records
+whether its lint offers one. Where it has no such block, try the flag and see.

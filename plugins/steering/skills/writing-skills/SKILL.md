@@ -58,8 +58,9 @@ has to say.
    skill this time. Compare the result against step 1. Record the comparison in
    `tests/baselines/<skill-name>.md`, under the plugin directory that holds the skill you are
    writing. The Evidence rule in `../../shared/skill-rules.md` names that directory. Where the skill
-   sits in no plugin, put the record under the skill's own directory and say in it where it went.
-   Record the failures the skill addresses there too.
+   sits in no plugin, put the record under the skill's own directory. Name that location inside the
+   record itself, never in the SKILL.md, which must not link to it. Record the failures the skill
+   addresses there too.
 7. **Audit, and not by yourself.** Run the lint command named in `../../shared/lint.md`. This
    settles the mechanical limits. Then dispatch a fresh agent to audit the draft. Use
    `auditing-skills` for this. Do not audit your own draft. You know what you meant each line to
@@ -81,6 +82,10 @@ keep-or-discard call to the person.
 For a small change to a skill that already has a recorded baseline, run step 7 alone. Say in the
 record that you did not repeat the baseline. A change to what the skill claims to do runs the
 full loop.
+
+Three consecutive small changes is the limit. The fourth runs the full loop whatever its size.
+Small changes accumulate into a large one, and no single change is the one that crossed the line,
+so without a count nothing ever triggers the loop. This skill reached five before an audit noticed.
 
 Where subagents are not available, run the task yourself against the skill. Say plainly in the
 skill's own record that this is weaker evidence. You wrote the skill, and you also use it.

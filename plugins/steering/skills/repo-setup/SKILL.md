@@ -88,7 +88,7 @@ belong in the block.
 
 ## The block
 
-Write it exactly like this, markers included.
+Write it like this, markers included.
 
 ```
 <!-- BEGIN: repo-setup -->
@@ -96,16 +96,32 @@ Write it exactly like this, markers included.
 
 Established by the `repo-setup` skill. Re-run it rather than editing this block by hand.
 
-- **Lint command:** `<command>` — <what it covers, and how it was confirmed>
+- **Lint command:** `<command>` — <how it was confirmed>
+- **What the lint covers:** <how to ask the command, or what reading the script showed>
 
 Unresolved: <anything a person still has to decide, or "none">
 <!-- END: repo-setup -->
 ```
 
+A block may hold more than this. Where the block already carries a fact this run did not establish,
+keep that fact and write it back unchanged. A re-run replaces what it confirms and preserves the
+rest.
+
+That rule matters more than it looks. Every check in step 7 passes on a block that is missing a
+bullet, because those checks read the markers, the placeholders, and what sits outside them. None of
+them counts the facts. So a re-run that quietly drops one loses work that nobody sees go.
+
 ## Statuses
 
-Report `DONE` where the block is written and every check in step 7 holds. Report `NEEDS_DECISION`
-or `BLOCKED` as below. These three are the whole set. Do not invent a fourth.
+| Status | Means | The caller must |
+| --- | --- | --- |
+| `DONE` | The block is written and every check in step 7 holds. | Use the recorded facts. Do not re-establish them. |
+| `NEEDS_DECISION` | A real choice remains and no person was there to decide it. | Put the candidates to a person. Never pick one on their behalf. |
+| `BLOCKED` | A check failed and no edit fixed it, or `AGENTS.md` could not be written. | Read the named cause. Fix it, then run this skill again. |
+| `NEEDS_CONTEXT` | The instruction that dispatched this run left out something it needed. | Supply what was missing. This is the caller's failure, not the agent's. |
+
+Add a status only where a run needs one these four do not cover. Declare the addition here rather
+than inventing it per call.
 
 ## When to stop
 
@@ -115,7 +131,9 @@ an agent working from a dispatched prompt with no conversation. Stop, and report
 moving. A guessed lint command is worse than none, because every later skill trusts it.
 
 Where you cannot write `AGENTS.md`, stop and report `BLOCKED` with the reason. Put the block you
-would have written into your report, so the work is not lost.
+would have written into your report, so the work is not lost. Delete
+`AGENTS.md.repo-setup-backup` first where step 5 made one. This exit skips steps 7 and 8, so
+nothing else removes it.
 
 Stopping for either reason carries no penalty. Both are correct outcomes.
 

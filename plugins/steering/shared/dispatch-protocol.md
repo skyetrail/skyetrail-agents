@@ -1,9 +1,13 @@
 # Dispatch protocol
 
 The caller's side of dispatching an agent. `./steering-rules.md` covers what the prompt says.
-`./handoff-rules.md` covers everything that applies because the agent will not see this
+`./handoff-rules.md` covers everything that applies because the dispatched agent will not see this
 conversation. That includes the report's sections and the caller's side of composing the prompt.
 This file covers what the caller does with both.
+
+Read `./handoff-rules.md` when you compose a prompt. Do not read it when you audit this file. The
+prompts this file governs are hand-offs. This file is not one, because you are reading it inside
+the conversation its author is having.
 
 The skill `writing-agents` applies this file. This file supplies criteria and defines no task of its
 own.

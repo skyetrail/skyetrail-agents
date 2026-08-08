@@ -47,11 +47,13 @@ hand-off never reads them.
 
 - **always**
 - **hand-off**, the agent will not see the conversation the author has been having
-- **changes something**, the work modifies files or state
-- **advisory**, the work reviews or investigates and changes nothing
+- **changes something**, the work this document steers modifies files or state, whether the document
+  carries out that work itself or a caller applies it
+- **advisory**, the work this document steers reviews or investigates and changes nothing, on the
+  same reading
 - **reused**, the instruction is a skill or template rather than a one-off
-- **describes work**, the document defines a task with a finished outcome of its own, rather than
-  supplying criteria that a task defined in another document applies
+- **describes work**, a reader carries this document out, rather than holding it against another
+  document to judge that one
 
 You decide every condition from what the document holds. Treat the document's own claim about which
 conditions it meets as a claim to check, not as a fact to accept. Otherwise an author switches off
@@ -62,22 +64,20 @@ A file of rules for writing hand-off prompts is not itself a hand-off, because t
 sits in the conversation its author is having. Two audits of one such file called this opposite ways
 and returned different counts, so settle it this way and record which way you went.
 
-To decide **describes work**, look for the outcome. Where the document names something a reader
-finishes, the condition holds. Where it supplies criteria and another document defines the task
-that applies them, it does not.
+To decide **describes work**, ask what a reader does with the document. Where a reader carries it
+out, the condition holds. Where a reader holds it against another document and judges that one, it
+does not. Decide this from the document's part in the work, and never from whether it states an
+outcome, because one of the rules below tests exactly that. A test that reads the same property as
+the rule it gates leaves the rule unable to fail.
 
-An instruction about how to read the criteria does not make a task. A rule catalogue often says
-"read this file first" or "mark the rule warn where you cannot tell". Those sentences belong to a
-task defined elsewhere. Test for the outcome, not for the presence of an imperative, because every
-catalogue here holds imperatives of that kind.
+An instruction about how to read the criteria does not make a document into work a reader carries
+out. A rule catalogue often says "read this file first" or "mark the rule warn where you cannot
+tell". Those sentences belong to a task defined elsewhere.
 
-Where **describes work** fails, so do **advisory** and **changes something**. Both of those are
-defined against the work, and a document that defines no task holds none to review or to modify.
-Mark all three not applicable together.
+**advisory** and **changes something** are about the work the document steers, so they can hold for
+a criteria file. A file of audit rules steers an audit, and an audit reviews and changes nothing.
 
-Read the Applies-when column for what drops out, one row at a time. No section drops out whole.
-Some rows in Method, Finish, and Failure carry **describes work**, and the rest carry a condition
-of their own.
+Read the Applies-when column, one row at a time.
 
 The section order below is the order these sections should appear in the document being written.
 Some entries are about position, so check where a section appears, not only whether it appears.

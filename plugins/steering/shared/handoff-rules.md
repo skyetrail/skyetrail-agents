@@ -9,8 +9,8 @@ whether a rule here is met. If so, mark the rule warn. State what you could not 
 guess either way.
 
 The skills `auditing-skills` and `writing-agents` apply these rules. This file supplies criteria and
-defines no task of its own. So every procedural property an audit needs lives in the skill that runs
-it. The stop conditions are one example, not the whole list.
+defines no task of its own. Where a procedural property an audit needs is missing here, look in the
+skill that runs the audit. The stop conditions are one example, not the whole list.
 
 Readers misread the rule about detail and summary most often. It is about what crosses back to
 the caller, not about how much the agent may write.
@@ -69,10 +69,10 @@ return. That is why every rule here applies only at hand-off.
 | Rule | Severity |
 | --- | --- |
 | The facts the prompt asserts are established before dispatch, and each carries its origin. | Important |
-| A script makes every determination that runs deterministically. Nothing else settles one. | Important |
+| A script makes every determination that needs no judgement. Nothing else settles one. | Important |
 | Facts that fill a template are written as a fixed set of named fields to a file. They are not prose the caller has to parse. | Important |
 | The model and the effort level are both named explicitly, rather than left to inherit from the calling session. Naming one and inheriting the other still leaves two runs incomparable. | Important |
 | The status values the agent may return are enumerated. The caller's obligation for each one is stated. | Blocking |
 | Each status declares whether it affects only the agent reporting it or stops the whole run. | Important |
-| The caller checks that the report is usable. The caller does not re-run the checks the agent already proved. | Important |
+| The caller checks that the report is complete. The caller does not re-run the checks the agent already proved. | Important |
 | Where a predefined named agent is dispatched, the instruction carries no context that call does not need. | Advisory |

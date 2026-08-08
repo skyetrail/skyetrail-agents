@@ -83,3 +83,14 @@ missing one. A missing record leaves a reader to check. This one told a reader n
 
 Handled under the small-change clause each time: no change altered what the skill claims to
 produce, only how it says to produce it. The baseline was not repeated.
+
+## Baseline owed, 2026-08-07
+
+Five consecutive changes have now landed under the small-change clause, so no baseline has run
+against the current steps. An audit found this, not the person making the changes.
+
+The clause had no limit until today. It now caps consecutive small changes at three, and the skill
+that carries the clause is the first thing to breach it.
+
+The debt is real and is not paid by this note. Steps 2, 3, 4, 6, and 7 have all changed since the
+last full loop. The next change to this skill runs the whole loop, whatever its size.

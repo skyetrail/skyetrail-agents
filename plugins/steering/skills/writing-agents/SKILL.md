@@ -44,9 +44,12 @@ over anything here.
 3. **Name the statuses** and the caller's obligation for each. Name the retry limit. Say what
    happens to partial work when a run stops. Take the status set from
    `../../shared/dispatch-protocol.md` and add only what this run needs.
-4. **Fill every hole.** Mark each hole required, or give it a default. An unfilled hole then fails
-   loudly instead of reaching the agent as empty text. Keep the set of holes fixed. Do not grow it
-   per caller, because every caller pays for the weight the template gathers.
+4. **Fill every hole.** Mark each hole required, or give it a default. Have a script check that
+   every required hole holds a value before dispatch. Step 1 and `../../shared/dispatch-protocol.md`
+   both put a determination needing no judgement in a script, and an unfilled hole is one. An
+   unfilled hole then fails loudly instead of reaching the agent as empty text. Keep the set of
+   holes fixed. Do not grow it per caller, because every caller pays for the weight the template
+   gathers.
 5. **Audit the filled prompt** against `../../shared/steering-rules.md` and
    `../../shared/handoff-rules.md`. Do this before you send anything.
 6. **Dispatch.** Name the model explicitly. Do not let it inherit from this session, because two
@@ -59,8 +62,9 @@ Follow what that file says about establishing facts before the workers start.
 
 ## When to stop
 
-Stop and say what is missing where you cannot establish a fact, where a required hole has no
-value, or where you cannot read a rule file. Do not dispatch anyway.
+Stop and say what is missing wherever the prompt would assert something you cannot supply. An
+unestablished fact, a required hole with no value, and an unreadable rule file are examples, not
+the whole list. Do not dispatch anyway.
 
 Retry a dispatch only after something has changed, and at most twice per agent. An unchanged retry
 repeats the failure. After the limit, report instead.
@@ -76,9 +80,10 @@ keep-or-discard call to the person.
 Read the definition. Split it into what stays the same and what varies by call. The invariant part
 becomes the template body. The varying part becomes named holes.
 
-Then run workflow steps 2 to 7 above without changes. A converted agent is a composed prompt once
-you reach that point, so nothing further about it is special. Step 2 is where the body meets the
-rule files, and a converted body has never been through it.
+Then run the whole workflow above, starting at step 1. A converted agent is a composed prompt once
+you reach that point, so nothing further about it is special. Reading a definition is not the same
+as establishing the facts it asserts, and the definition has never been through the rule files
+either.
 
 Keep the set of fields the callers establish fixed and documented, the same way you keep the set of
 holes.

@@ -62,11 +62,10 @@ decides a shape they do not cover.
 - A restatement of a list that lives in another file. The copy drifts. An agent then loads two
   files that say different things.
 
-Three kinds of content do not count as findings, because each one changes what an agent does with
-the next paragraph. That test decides a case the three below do not cover. They are examples, not
-the whole list. An explanation of why a constraint exists, where the rule requiring it says to give
-the reason. A worked example of a rule being met and broken. A line saying what the document does
-not cover.
+Content does not count as a finding where it changes what an agent does with the next paragraph.
+That test decides a case the examples below do not cover. They are examples, not the whole list. An
+explanation of why a constraint exists, where the rule requiring it says to give the reason. A
+worked example of a rule being met and broken. A line saying what the document does not cover.
 
 Provenance, doubt, and history belong where the authors read them, not in a file loaded on every
 run.
