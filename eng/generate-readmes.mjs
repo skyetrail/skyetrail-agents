@@ -16,6 +16,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { measure, CAP_INSTRUCTION, CAP_DESCRIPTION } from "./measure-sentences.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECK = process.argv.includes("--check");
@@ -225,8 +226,10 @@ function lintComponent(file, content, dirName) {
   }
 
   lintReferences(file, content);
+  lintSentenceCaps(file);
   for (const ref of referencedMarkdown(file, content)) {
     lintContentsList(ref, read(ref));
+    lintSentenceCaps(ref);
   }
 }
 
@@ -247,6 +250,26 @@ function referencedMarkdown(file, content) {
   for (const link of content.matchAll(/\[([^\]]*)\]\(([^)]+)\)/g)) add(link[2]);
   for (const tick of content.matchAll(/`(\.{1,2}\/[^`\n]+\.md)`/g)) add(tick[1]);
   return [...out];
+}
+
+// Sentence length against the caps in shared/ste.md. Advisory, because that
+// file names one case where a long sentence is correct: a membership test that
+// loses its meaning when split. One line per file, not per sentence.
+function lintSentenceCaps(file) {
+  let m;
+  try {
+    m = measure(file);
+  } catch {
+    return; // unreadable here is reported by whatever opened it
+  }
+  const over = (arr, cap) => arr.filter((n) => n > cap);
+  const rules = over(m.rules, CAP_INSTRUCTION);
+  const prose = over(m.prose, CAP_DESCRIPTION);
+  if (!rules.length && !prose.length) return;
+  const parts = [];
+  if (rules.length) parts.push(`${rules.length} rule cell(s) over ${CAP_INSTRUCTION} words, longest ${Math.max(...rules)}`);
+  if (prose.length) parts.push(`${prose.length} prose sentence(s) over ${CAP_DESCRIPTION} words, longest ${Math.max(...prose)}`);
+  lintAdvisories.push(`${path.relative(ROOT, file)}: ${parts.join("; ")}`);
 }
 
 // A long reference file opens with a contents list, so a reader can see what is
@@ -472,6 +495,7 @@ function main() {
         const content = read(file);
         lintReferences(file, content);
         lintContentsList(file, content);
+        lintSentenceCaps(file);
       }
     }
 

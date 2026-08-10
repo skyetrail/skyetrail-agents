@@ -128,9 +128,17 @@ function report(rows) {
   }
 }
 
-const files = process.argv.slice(2);
-if (!files.length) {
-  console.error("give it some files");
-  process.exit(1);
+// The lint imports these to report an over-cap sentence as an advisory. The
+// caps live here rather than in a rule file, because a rule file stating a
+// limit a script already checks is a second copy, and a second copy drifts.
+export { measure, CAP_INSTRUCTION, CAP_DESCRIPTION };
+
+// Run it directly for the full table. The lint calls measure() instead.
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const files = process.argv.slice(2);
+  if (!files.length) {
+    console.error("give it some files");
+    process.exit(1);
+  }
+  report(files.map(measure));
 }
-report(files.map(measure));
