@@ -1,76 +1,92 @@
 ---
 name: writing-agents
-description: Writes the prompt for an agent that will not see the current conversation, along with the caller side that dispatches it and handles what comes back. Use this whenever someone mentions handing work to a subagent, dispatching or spawning agents, writing a prompt or a template for an agent, running work in parallel across several agents, or turning a predefined named agent into something composed at the point of dispatch. Use it even when the word agent is not used, if work is being handed to something that starts with no context.
+description: Writes the prompt for an agent that will not see the current conversation, along with the caller side that dispatches it and handles what comes back, producing an agents/*.md definition or a prompt template. Use this whenever someone mentions handing work to a subagent, dispatching or spawning agents, writing a prompt or a template for an agent, running work in parallel across several agents, or turning a predefined named agent into something composed at the point of dispatch. Use it also when a subagent came back with nothing useful, returned a summary instead of the work, ignored half its instruction, or ran out of context. Use it even when the word agent is not used, if work is being handed to something that starts with no context.
 ---
 
 # Writing agents
 
-Produces the prompt that constitutes an agent for one call, and the caller side that dispatches it
-and acts on what returns.
+This skill produces two things. It produces the prompt that makes an agent for one call. It also
+produces the caller side, which dispatches that prompt and acts on what returns.
 
 ## Compose at dispatch
 
-A named agent carries one fixed instruction set to every call site, so each call gets too much
-context or too little, and callers patch it until two instructions conflict. Compose the prompt
-at the moment of use instead. A checked-in template with named holes counts as composed, because
-the caller holds the filled text; the difference is control at dispatch, not the amount reused.
+A named agent carries one fixed instruction set to every call site. So each call gets too much
+context or too little. Callers then patch it until two instructions conflict.
+
+Compose the prompt at the moment of use instead. A checked-in template with named holes counts as
+composed, because the caller holds the filled text. The difference is control at dispatch, not the
+amount you reuse.
 
 Keep a named agent where something outside the call site depends on it staying one fixed thing.
-Used identically in many places, a tool restriction the harness enforces at that layer and nowhere
-else, and someone else owning it as a policy boundary are examples, not the whole list. Tool
-exclusions can be passed at dispatch, so composing does not mean giving up enforcement.
+Three examples, not the whole list. Many places use it identically. The harness enforces a tool
+restriction at that layer and nowhere else. Someone else owns it as a policy boundary.
+
+You can pass tool exclusions at dispatch. So composing does not give up enforcement.
 
 This is a preference, not a rule. Recommend it and say why. Do not refuse to work with a named
 agent.
 
 ## Where this stops
 
-Does not write skills, which is `writing-skills`. Does not audit an existing prompt without
-changing it, which is `auditing-skills`. A direct instruction from the person wins over anything
-here.
+This skill does not write skills. `writing-skills` does that. This skill does not audit an existing
+prompt without changing it. `auditing-skills` does that. A direct instruction from the person wins
+over anything here.
 
 ## Workflow
 
-1. **Establish the facts.** A script for anything determinable, an agent only for what needs an
-   assessment, neither for what you already know. Each fact carries where it came from.
+1. **Establish the facts.** Use a script for anything a script can determine. Use an agent only for
+   what needs an assessment. Use neither for what you already know. Record where each fact came
+   from.
 2. **Write the prompt** against `../../shared/steering-rules.md` and
    `../../shared/handoff-rules.md`, with the condition **hand-off** met. Where the prompt names a
-   category of work, define what makes something a member and mark any list of kinds as examples,
-   or the agent will treat a kind you did not list as out of scope.
-3. **Name the statuses** and the caller's obligation for each, along with the retry limit and
-   what happens to partial work when a run stops. Take the status set from
+   category of work, define what makes something a member. Mark any list of kinds as examples.
+   Otherwise the agent treats a kind you did not list as out of scope.
+3. **Name the statuses** and the caller's obligation for each. Name the retry limit. Say what
+   happens to partial work when a run stops. Take the status set from
    `../../shared/dispatch-protocol.md` and add only what this run needs.
-4. **Fill every hole.** Each hole is marked required or given a default, so an unfilled one fails
-   loudly rather than reaching the agent as empty text. The set of holes is fixed; do not grow it
-   per caller, or the template accumulates weight every caller pays for.
+4. **Fill every hole.** Mark each hole required, or give it a default. Have a script check that
+   every required hole holds a value before dispatch. Step 1 and `../../shared/dispatch-protocol.md`
+   both put a determination needing no judgement in a script, and an unfilled hole is one. An
+   unfilled hole then fails loudly instead of reaching the agent as empty text. Keep the set of
+   holes fixed. Do not grow it per caller, because every caller pays for the weight the template
+   gathers.
 5. **Audit the filled prompt** against `../../shared/steering-rules.md` and
-   `../../shared/handoff-rules.md` before anything is sent.
-6. **Dispatch**, naming the model explicitly rather than letting it inherit from this session,
-   so two runs of the same template stay comparable.
-7. **Handle the return** per the status table, and check the report is complete rather than
-   re-running what the agent already proved.
+   `../../shared/handoff-rules.md`. Do this before you send anything.
+6. **Dispatch.** Name the model explicitly. Do not let it inherit from this session, because two
+   runs of the same template must stay comparable.
+7. **Handle the return** per the status table. Check that the report is complete. Do not re-run
+   what the agent already proved.
 
-For work spread across several agents, pick the shape from `../../shared/dispatch-protocol.md` and
-follow what it says about establishing facts before the workers start.
+For work spread across several agents, pick the shape from `../../shared/dispatch-protocol.md`.
+Follow what that file says about establishing facts before the workers start.
 
 ## When to stop
 
-If a fact cannot be established, a required hole has no value, or a rule file cannot be read,
-stop and say what is missing rather than dispatching anyway. Retry a dispatch only after
-something has changed, and at most twice per agent, since an unchanged retry repeats the
-failure; then report instead. Do not weaken a check, loosen a rule, or fill a hole with a
-placeholder to force a pass; fix the input or stop. When you stop, keep the established facts
-and any draft prompt, say where they sit, and leave the keep-or-discard call to the person.
+Stop and say what is missing wherever the prompt would assert something you cannot supply. An
+unestablished fact, a required hole with no value, and an unreadable rule file are examples, not
+the whole list. Do not dispatch anyway.
+
+Retry a dispatch only after something has changed, and at most twice per agent. An unchanged retry
+repeats the failure. After the limit, report instead.
+
+Do not weaken a check. Do not loosen a rule. Do not fill a hole with a placeholder to force a pass.
+Fix the input, or stop.
+
+When you stop, keep the established facts and any draft prompt. Say where they sit. Leave the
+keep-or-discard call to the person.
 
 ## Converting a named agent
 
-Read the definition and split it into what is invariant and what varies by call. The invariant
-part becomes the template body. The varying part becomes named holes. From
-`../../shared/dispatch-protocol.md`, add the status set with each status's scope of effect and the
-caller's obligation for each, the retry limit, the partial-work handling, and where the detail
-goes versus what returns to the caller. The set of fields the callers establish is fixed and
-documented, the same way the set of holes is. Then audit the filled prompt against
-`../../shared/steering-rules.md` and `../../shared/handoff-rules.md`.
+Read the definition. Split it into what stays the same and what varies by call. The invariant part
+becomes the template body. The varying part becomes named holes.
+
+Then run the whole workflow above, starting at step 1. A converted agent is a composed prompt once
+you reach that point, so nothing further about it is special. Reading a definition is not the same
+as establishing the facts it asserts, and the definition has never been through the rule files
+either.
+
+Keep the set of fields the callers establish fixed and documented, the same way you keep the set of
+holes.
 
 ## References
 

@@ -1,25 +1,34 @@
 # Steering rules
 
-Rules for anything written to shape an agent's behaviour. If a person wrote it so that an agent
-would act a particular way, it is in scope. A skill body, a prompt template, a command, a hand-off
-brief, and a one-off request are examples, not the whole list. Hand-off is one of the conditions
-below, not the subject of this file.
+These rules cover anything written to shape an agent's behaviour. A document is in scope where a
+person wrote it so that an agent would act a particular way. A skill body, a prompt template, a
+command, a hand-off brief, and a one-off request are examples, not the whole list. Hand-off is one
+of the conditions below. It is not the subject of this file.
 
-Out of scope: anything an agent reads as material rather than as instruction. Source code under
-review, a document being summarised, a transcript, a dataset, and a report an agent produced are
-examples of that, not the whole list. The test is who the text is addressed to. These rules judge
-what tells an agent how to work, never what an agent works on.
+Out of scope: anything an agent reads as material rather than as instruction. Five examples, not
+the whole list. Source code under review. A document an agent summarises. A transcript. A dataset.
+A report an agent produced. The test is who the text addresses. These rules judge what tells an
+agent how to work. They never judge what an agent works on.
 
-Each entry has a severity and a condition. Report counts by severity. Any blocking failure means
-the document needs work before use. Advisory items are mentioned once and never block.
+The skills `writing-skills`, `auditing-skills`, and `writing-agents` apply this file. It supplies
+criteria and defines no task of its own. Where a procedural property an audit needs is missing
+here, look in the skill that runs the audit.
 
-A rule about the position or wording of a section applies only when that section exists. When the
-section is missing, the missing section is the finding, and the rules that depend on it are not
+Each entry carries a severity and a condition. Report counts by severity. Any blocking failure means
+the document needs work before use. An Important failure does not stop use. The author fixes it
+before the document changes again. Mention an Advisory item once. It never blocks.
+
+The default outcome for every rule here is pass. Record a fail only where you can point at the text
+that breaks the rule. This default holds for any audit that reads this file, whichever skill runs
+it. The skill running the audit says how to mark and count what you record.
+
+A rule about the position or wording of a section applies only where that section exists. Where the
+section is missing, the missing section is the finding. The rules that depend on it are then not
 applicable.
 
-Where the **hand-off** condition is met, read `./handoff-rules.md` as well. Every rule conditioned on
-hand-off lives there and none of them lives here, so a document that is not a hand-off never reads
-them.
+Where the **hand-off** condition is met, read `./handoff-rules.md` as well. Every rule conditioned
+on hand-off lives there, and none of them lives here. So an agent auditing a document that is not a
+hand-off never reads them.
 
 ## Contents
 
@@ -32,14 +41,43 @@ them.
 - Failure
 - Calibration
 - Composition
+- Voice
 
 **Conditions.** Use these and nothing else.
 
 - **always**
 - **hand-off**, the agent will not see the conversation the author has been having
-- **changes something**, the work modifies files or state
-- **advisory**, the work reviews or investigates and changes nothing
+- **changes something**, the work this document steers modifies files or state, whether the document
+  carries out that work itself or a caller applies it
+- **advisory**, the work this document steers reviews or investigates and changes nothing, on the
+  same reading
 - **reused**, the instruction is a skill or template rather than a one-off
+- **describes work**, a reader carries this document out, rather than holding it against another
+  document to judge that one
+
+You decide every condition from what the document holds. Treat the document's own claim about which
+conditions it meets as a claim to check, not as a fact to accept. Otherwise an author switches off
+a rule by writing one sentence about the document.
+
+Every condition is about the document in front of you, not about anything that document describes.
+A file of rules for writing hand-off prompts is not itself a hand-off, because the agent reading it
+sits in the conversation its author is having. Two audits of one such file called this opposite ways
+and returned different counts, so settle it this way and record which way you went.
+
+To decide **describes work**, ask what a reader does with the document. Where a reader carries it
+out, the condition holds. Where a reader holds it against another document and judges that one, it
+does not. Decide this from the document's part in the work, and never from whether it states an
+outcome, because one of the rules below tests exactly that. A test that reads the same property as
+the rule it gates leaves the rule unable to fail.
+
+An instruction about how to read the criteria does not make a document into work a reader carries
+out. A rule catalogue often says "read this file first" or "mark the rule warn where you cannot
+tell". Those sentences belong to a task defined elsewhere.
+
+**advisory** and **changes something** are about the work the document steers, so they can hold for
+a criteria file. A file of audit rules steers an audit, and an audit reviews and changes nothing.
+
+Read the Applies-when column, one row at a time.
 
 The section order below is the order these sections should appear in the document being written.
 Some entries are about position, so check where a section appears, not only whether it appears.
@@ -48,8 +86,8 @@ Some entries are about position, so check where a section appears, not only whet
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
-| The finished outcome is stated, not just a topic or an area of work. | Blocking | always |
-| The outcome statement sits at the top, before context and method. | Advisory | always |
+| The finished outcome is stated, not just a topic or an area of work. | Blocking | describes work |
+| The outcome statement sits at the top, before context and method. | Advisory | describes work |
 
 ## Context
 
@@ -58,6 +96,7 @@ Some entries are about position, so check where a section appears, not only whet
 | Nothing refers to something the agent cannot resolve, meaning anything it cannot read or reach from the document alone. A prior conversation, an earlier decision, and a file named only by nickname are examples, not the whole list. | Blocking | always |
 | Every fact the agent needs is either written out or pointed at by a path it can read. | Blocking | always |
 | Approaches already tried and found not to work are stated. | Important | always |
+| A document that only states criteria names at least one document that applies them. | Important | always |
 | Context sits above the method, so it is read before a plan is formed. | Advisory | always |
 
 ## Scope
@@ -66,13 +105,13 @@ Some entries are about position, so check where a section appears, not only whet
 | --- | --- | --- |
 | What is in scope is named. | Blocking | always |
 | What is out of scope is named explicitly, rather than left implied by what is in scope. | Blocking | always |
-| Where a category of work is named, it is defined by what makes something a member, and any list of kinds is marked as examples rather than left to read as the whole set. | Blocking | always |
+| Where a category of work is named, a membership test defines it. Any list of kinds carries a marker saying they are examples, not the whole set. | Blocking | always |
 | The instruction says to stop and report on reaching a scope limit, rather than work around it. | Blocking | always |
 | The scope statement sits above the method. | Advisory | always |
-| The instruction states that the agent must not modify anything, and says what to do instead when a fix looks obvious. | Blocking | advisory |
+| The instruction states that the agent must not modify anything. It also says what to do where a fix looks obvious. | Blocking | advisory |
 
-A list of kinds tells the reader that a kind not on the list is out of scope, and the reader is
-right to read it that way. Write the test for membership, then give examples.
+A list of kinds tells the reader that a kind not on the list is out of scope. The reader is right
+to read it that way. Write the test for membership first. Then give examples.
 
 Bad, because it reads as the whole set:
 
@@ -84,12 +123,12 @@ Good, because a reader can decide a case the list does not cover:
 > system interprets. SQL, shell commands, file paths, and markup returned to a browser are
 > examples, not the whole list.
 
-A reviewer given the first wording, having already found a reflected injection, filed it out of
-scope because markup was not one of the kinds named. Nothing about the list was wrong; it was
-closed.
+One reviewer read the first wording. It had already found a reflected injection. It filed that
+finding out of scope, because the wording did not name markup. Nothing about the list was wrong.
+The list was closed.
 
 **A trailing "or any other X" satisfies this rule.** A list that ends by generalising to the
-category is closed; a list that just stops is not.
+category is closed. A list that just stops is not.
 
 > Closed: shell commands, file paths, or any other place unchecked input reaches an interpreter.
 >
@@ -102,30 +141,30 @@ category is hard to recognise.
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
-| One default approach is given rather than a menu of options. | Important | always |
-| The order is fixed where sequence affects correctness, and left open where it does not. | Blocking | always |
-| How the work is done is constrained only where a specific way is required for correctness or safety, and each such constraint says why. Everything else is left to the agent. | Important | always |
-| Any check that must run before work starts is named as the first step. | Important | always |
+| One default approach is given rather than a menu of options. | Important | describes work |
+| The order is fixed where sequence affects correctness, and left open where it does not. | Blocking | describes work |
+| The instruction constrains how the work is done only where correctness or safety needs a specific way. Each such constraint says why. The instruction leaves everything else to the agent. | Important | describes work |
+| Any check that must run before work starts is named as the first step. | Important | describes work |
 
 ## Finish
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
 | A check the agent can run itself is named, and its result settles whether the work is done. | Blocking | changes something |
-| The instruction says the agent runs the check itself before reporting. | Important | always |
+| The instruction says the agent runs the check itself before reporting. | Important | describes work |
 | The finish criteria are specific enough that two runs would return the same result. | Blocking | advisory |
 | The instruction says what evidence each finding must carry. | Important | advisory |
-| The finish check sits late in the document, near where the agent will decide whether to stop. | Advisory | always |
+| The finish check sits late in the document, near where the agent will decide whether to stop. | Advisory | describes work |
 
 ## Failure
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
-| Conditions that should stop the work are stated. | Blocking | always |
-| A retry limit is named, and something must change before a retry rather than only the attempt count. | Important | always |
+| Conditions that should stop the work are stated. | Blocking | describes work |
+| A retry limit is named, and something must change before a retry rather than only the attempt count. | Important | describes work |
 | Weakening the check or editing the test to make it pass is forbidden. | Blocking | changes something |
-| What to do when the input is missing, is not what was expected, or cannot be assessed is stated, with a status for each. | Blocking | advisory |
-| The stop conditions sit directly after the finish check. | Advisory | always |
+| The instruction says what to do where the input is missing, is not what it expected, or cannot be assessed. It gives a status for each case. | Blocking | advisory |
+| The stop conditions sit directly after the finish check. | Advisory | describes work |
 
 ## Calibration
 
@@ -134,7 +173,7 @@ category is hard to recognise.
 | Examples of what counts are given. | Blocking | advisory |
 | Examples of what does not count are given. | Blocking | advisory |
 | The default outcome is stated, so the agent must justify escalating rather than justify approving. | Blocking | advisory |
-| Where a run showed something being missed, the instruction describes the shape it takes in the code, not the label it falls under. | Important | advisory |
+| Where a run showed a miss, the instruction describes the shape that miss takes in the code. It does not describe the label. | Important | advisory |
 
 A label says which bucket a finding belongs in. The shape says what the agent is looking at on
 the screen, so it can recognise the case without already knowing it is there.
@@ -155,6 +194,61 @@ and it costs the same context as one taken from an observed failure.
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
-| Every named hole in a template is marked required or given a default, so an unfilled hole fails loudly rather than reaching the agent as empty text. | Important | reused |
-| The set of fields established for a template is fixed, so it does not accumulate a payload most callers do not use. | Advisory | reused |
+| Every named hole in a template is marked required, or carries a default. An unfilled hole then fails loudly instead of reaching the agent as empty text. | Important | reused |
+| The set of fields established for a template is fixed. It does not gather a payload most callers never use. | Advisory | reused |
 | What happens to partial work when a run stops is stated. | Important | changes something |
+
+## Voice
+
+These rules govern every sentence rather than one section. Check them wherever you check the rest.
+
+| Rule | Severity | Applies when |
+| --- | --- | --- |
+| An instructing sentence is an imperative to the reader, or it names an actor that can choose to act. | Important | always |
+| A sentence that states a property keeps the property's owner as its subject, and gains no actor. | Blocking | always |
+| Nothing that cannot choose to act takes an action verb. | Important | always |
+
+The test for an actor is whether the thing can choose. An agent, a caller, a person, and a script
+can choose. A rule, a review, a file, and a document cannot. These are examples, not the whole list.
+
+A bare imperative passes the first rule. It addresses the reader, so its actor is the reader, and it
+needs no other name. Most instructions in this plugin take that form.
+
+> Read that file too.
+
+The first rule bites where a sentence instructs and its subject is neither the reader nor a named
+actor who can choose.
+
+Two kinds of sentence take two kinds of subject. Mixing them is the common fault.
+
+A sentence that instructs and names its actor:
+
+> The caller checks that the report is complete.
+
+A sentence that states a property, which an auditor tests:
+
+> The description states the capability.
+
+Do not rewrite the second as "State the capability." That turns a property into an order, and the
+auditor then reports on its own writing instead of the target's.
+
+Bad, because a file cannot disagree with anything:
+
+> A second copy of that list drifts from the first. Then the two files disagree.
+
+Good, because it names what a reader meets:
+
+> A second copy of that list drifts from the first. An agent then loads two files that say
+> different things.
+
+Forcing the active voice without naming a permitted actor is how a writer promotes the nearest
+noun. Five rewrites in this project moved the subject to the wrong actor.
+
+- From the review to the agent.
+- From all readers to people.
+- From the document's own use to the auditor's use.
+- From a skill nobody finds to a reader who cannot find it.
+- From a property to an order.
+
+Each one changed what the sentence demanded. A style pass is when they happen, because the writer
+counts words then rather than reading meaning.

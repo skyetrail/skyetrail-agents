@@ -129,3 +129,46 @@ manuals is not written for agent steering, and the two want different things in 
 maintenance manuals want short sentences, and a category definition is naturally long. Name the
 rules you expect to hurt before you run, then test those separately rather than granting yourself a
 blanket exemption.
+
+**20. Name who may act, not just that an actor exists.** A style rule that says "use the active
+voice, name the actor" is safe in a domain with one actor. Where several could act, a writer
+promotes the nearest noun instead, and the sentence changes what it demands.
+
+Declare the cast. Then say which sentences take an actor and which keep their subject. A sentence
+that tells someone to do something takes an actor. A sentence that states a property of a document
+does not, because forcing one turns a criterion into an order.
+
+This came from three defects in one rewrite, each a subject moved to the wrong actor: from the
+review to the agent, from all readers to people, and from the document's own use to the auditor's
+use. It also blocks a failure that has nothing to do with instructions, where a writer gives an
+abstraction a verb it cannot perform.
+
+**21. Gate a style rewrite on equivalence, and read the sentence splits first.** Nine files moved
+to Simplified Technical English in one branch. An independent checker compared each file to its
+pre-rewrite baseline. Three had changed what they demanded. All three came from splitting one
+sentence into two, which is the operation the style asks for most often.
+
+A split forces the second half to carry a subject and a verb it did not have. Whatever fills those
+slots is new content, written while the author counts words rather than reads meaning. Three things
+move at that point:
+
+- Negation scope. "X, not Y" becomes "X. It does not Y." The new verb decides how wide the negation
+  reaches.
+- Modal force. A trailing clause that stated a property needs a main verb once it stands alone, and
+  the imperative is the shortest one available.
+- Actor identity. A passive clause needs a subject, and the nearest noun takes the slot.
+
+One of the three broke a rule the same branch had just added. Writing a rule does not stop the
+author from breaking it in the next edit, which is the argument for the gate rather than for care.
+
+Fix the drift rather than keeping the better version. One of the three changes was an improvement,
+and it still had to go, because a rule change riding inside a style branch destroys the baseline
+for the next comparison. Propose it separately.
+
+**22. A count in a heading is a closed list with a number on it.** This plugin's rules say a count
+goes stale the moment someone adds one. A heading reading "Seven invariants" then sat above the
+list for sixteen rounds. Adding an eighth invariant is what surfaced it.
+
+A count is safe where the set is closed by definition, such as "Two terms" above a pair of
+definitions. It is unsafe wherever the set can grow. Check headings for this, because a heading is
+read as a label rather than as a claim, and it escapes the review that the body gets.

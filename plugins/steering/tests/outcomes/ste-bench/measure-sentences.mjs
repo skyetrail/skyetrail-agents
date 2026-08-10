@@ -36,7 +36,11 @@ function splitSentences(block) {
 
 function measure(file) {
   const raw = fs.readFileSync(file, "utf8");
-  const lines = clean(raw).split("\n");
+  // Frontmatter is not prose. A description is capped at 1024 characters by the
+  // Agent Skills spec, not at 25 words by STE, so counting it against the prose
+  // cap reports a long description as an over-cap sentence.
+  const body = raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "");
+  const lines = clean(body).split("\n");
 
   // A list item and a paragraph are separate units. Joining them and splitting
   // on full stops turns a bullet list, which has none, into one long sentence.
