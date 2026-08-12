@@ -41,18 +41,26 @@ The run kept it.
 
 Design for that, or the gate is decoration. A stop condition that competes with a deliverable loses.
 
-### A pointer costs a weak executor more than a copy does
+### A pointer to a missing file dead-ends (this section's conclusion was wrong)
 
 The rewrite's central change moved the artifact test out of the skill body and into a reference
 file. The classification still worked in the run, but only because a second copy of the skill was on
 disk with the four bullets still inline. Reading the pointer dead-ended.
 
-> The inline version executed. The pointer version did not.
+**The conclusion drawn here was wrong, and round two disproved it.** This section originally read "a
+pointer costs a weak executor more than a copy does", and treated the run as evidence against
+progressive disclosure.
 
-This is direct evidence against a rule this project enforced all week: replace a restatement with a
-pointer. That rule was written against drift, which is real. It was never tested against a weaker
-executor, and the executor is where it fails. A restatement drifts. A pointer that a weak executor
-does not follow never arrives at all.
+It was not. The pointer aimed at `shared/authoring.md`, which no commit has ever held. A pointer to
+a missing file fails for any model at any size. That says nothing about pointers.
+
+Round two created the file. Both Sonnet runs opened it. A valid one-hop pointer resolves, and
+progressive disclosure holds, which is what Anthropic's own authoring guidance requires. What round
+two did find is narrower and stands: a pointer whose payload is a block to copy resolves every time,
+and a pointer to a section whose payload is a procedure to perform resolves to nothing.
+
+The real evidence in this round is the forward reference below, which is a defect inside one file
+rather than anything about reference files.
 
 ### A forward reference breaks the step that carries it
 
