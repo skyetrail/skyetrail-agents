@@ -167,17 +167,17 @@ them.
    the description already states. Compare the two sentence by sentence. Cut such a section. The
    description loads before the body, so the agent pays for the same words twice.
 
-   Put no authoring history in the body. A failure met doing the work the skill steers belongs,
-   because the reader meets that same work. A failure met writing the skill does not, because the
-   reader has never seen an earlier draft. Test a sentence about a past failure by asking whether
-   the reader can reach what it names. One run mirrored the section headed "What has already
-   failed" into its artifact. That artifact opened with "A prior version of a prompt like this one
-   treated ...", which the receiving agent could not resolve.
+   Put no authoring history in the body, or in any file the skill loads. A failure met doing the
+   work the skill steers belongs, because the reader meets that same work. A failure met writing
+   the skill does not, because the reader has never seen an earlier draft. Test a sentence about a
+   past failure by asking whether the reader can reach what it names. One run mirrored the section
+   headed "What has already failed" into its artifact. That artifact opened with "A prior version
+   of a prompt like this one treated ...", which the receiving agent could not resolve.
 
-   Give a default for every value the body leaves to the reader's own setup. A window in days, a
-   severity scale, and a naming convention are examples, not the whole list. Write the value, then
-   say the reader may set another. A pointer to the team's own window is dead where the team has
-   none. A default the reader may replace is not an invented fact.
+   Give a default for every value the body or a reference file leaves to the reader's own setup. A
+   window in days, a severity scale, and a naming convention are examples, not the whole list.
+   Write the value, then say the reader may set another. A pointer to the team's own window is dead
+   where the team has none. A default the reader may replace is not an invented fact.
 
 7. **Address the numbered misses, and nothing else.** Read the `## Objective` heading in the record
    again first. Take each numbered miss. Describe the shape it takes in the work, not the label it
