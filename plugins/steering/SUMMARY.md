@@ -1,192 +1,122 @@
-## The goal
+## Contents
 
-A skill is a short instruction file an AI agent reads before doing a job, so the job comes out
-the same way every time. This plugin holds four of them: one for writing new skills, one for
-checking a skill or an agent instruction against our written rules, one for handing work to a
-second agent that starts with no memory of the conversation, and one for working out the basic
-facts about a repository.
+- [What this plugin is](#what-this-plugin-is)
+- [The skills](#the-skills)
+- [The rule files](#the-rule-files)
+- [How it was built](#how-it-was-built)
+- [What the evidence shows](#what-the-evidence-shows)
+- [What the evidence does not show](#what-the-evidence-does-not-show)
+- [Where the detail lives](#where-the-detail-lives)
 
-These are tools, and the goal is what they produce. When an agent uses them, the new skills and
-the hand-off instructions that come out should be the best they can be on current Anthropic
-models. Everything below serves that aim in two steps. First, make the tools themselves sound:
-the rules they apply come from real failures we observed, and every output is checked against
-those rules before it ships. Second, prove the outputs are better in use, by running them and
-scoring the work they lead to. Rounds 1 to 6 below made the tools sound. Rounds 7 to 12 ran what
-they produce against seeded tasks and scored the results. Rounds 13 to 16 checked the rules
-against work we did not write, then checked our own files until nothing was left to find.
+## What this plugin is
 
-There is a third step, and it was missing until late. A model writes these files and a person
-maintains them. The model in use writes prose that is hard for a person to read, so every file
-this project produces inherits that fault, and a file nobody can maintain decays whatever it does
-on the day it ships. Readability is therefore half the goal, not a finish applied at the end. The
-next round tests a controlled English standard from aerospace, ASD-STE100, as the fix. The design
-and the predictions are in `tests/outcomes/ste-bench/DESIGN.md`, including four of its rules that
-we expect to make agent steering worse and will test separately.
+Steering is anything a person writes to shape what an agent does. A skill, a subagent prompt, a
+rules file and a hand-off brief are examples, not the whole set.
 
-## What we did
+This plugin ships skills that write steering, a skill that checks it, and the rule files they
+apply. Everything in it came from getting something wrong first. A practice with no recorded
+failure behind it is a preference, so this plugin carries none.
 
-We drafted the three skills and two shared rule files, then put them through repeated rounds of
-testing. After each round we fixed only what the tests showed was broken, then tested again.
-When the skills were stable we moved them into this plugin, and we moved every check a script
-can do, such as file format and length limits, into a lint command that runs before any change
-can merge. The judgment work stays in the rules; the mechanical work belongs to the script.
+[METHOD.md](./METHOD.md) holds the method, and that method transfers without these rules.
+[OUTCOMES.md](./OUTCOMES.md) holds the results. This page describes the skills and points at both.
 
-## How we tested
+## The skills
 
-Four kinds of test, all recorded, each run by a fresh agent with no memory of earlier runs.
+A skill is a short instruction file an agent reads before it starts a job. Each one below states
+the artifact it produces before it states any step.
 
-1. **Comparison runs.** Give an agent a realistic task without the skill and write down every
-   mistake. Give a fresh agent the same task with the skill. If the two runs come out the same,
-   the skill does nothing and should be deleted. Each skill had to earn its place this way.
-2. **Rule checks.** An agent reads a skill and scores it against our written rules, one row per
-   rule, pass or fail, with evidence for every problem. We set a limit going in: more than five
-   problems reported on one file means the checker itself is judging too harshly, and that gets
-   fixed first.
-3. **Trigger tests.** An agent picks which skill fits each of nineteen sample requests, three
-   repeats per request, against two versions of the descriptions. This showed whether the right
-   skill gets chosen from its description alone.
-4. **A change of manager.** Most rounds used the mid-size model (Sonnet) for the work. The
-   final round put the larger model (Opus) in charge, with Sonnet doing the worker jobs,
-   because that is how the plugin will actually be used. Nothing in those prompts mentioned the
-   new behaviours we were checking for; the point was whether the model finds and follows them
-   on its own.
+| Skill | What it produces |
+| --- | --- |
+| `writing-skills` | A SKILL.md, its reference files, and a record measuring what the skill changed. |
+| `writing-agents` | A prompt for an agent that will not see this conversation, and the caller side that dispatches it. |
+| `auditing-skills` | A findings table ordered by severity, and the three things to fix first. It changes nothing. |
+| `repo-setup` | A verified record of a repository's basic facts, written into `AGENTS.md` between fixed markers. |
 
-## Results by round
+The record is as much the product as the file is. A draft carrying no record is not a skill, and
+nobody installs one.
 
-Problems are counted per skill in the order: writing-skills, auditing-skills, writing-agents.
-"Serious" means severe enough that our rules say the file needs work before use.
+`repo-setup` is safe to run again. A second run replaces its block rather than adding another one.
 
-| Round | What ran | Problems found | Serious ones | What we changed after |
-| --- | --- | --- | --- | --- |
-| 1 | First rule checks on all three skills | 9, 9, 16 | in all three | The checker over-reported: one missing section was counted as up to four separate problems. We made it count one problem per root cause, and narrowed rules that were reaching beyond their purpose. |
-| 1 | Comparison runs and trigger tests | see below | none | The unaided agent already formats skill files correctly, so we kept no formatting lessons. Shorter descriptions triggered as well or better (39 of 39 right, against 38 of 39), so the descriptions were shortened. |
-| 2 | Rule checks after the fixes | 2, 2, 3 | one or two each | Small fixes: a missing stop instruction, a missing rule against loosening a check to force a pass. |
-| 3 | Checks to confirm those fixes held | not rerun, 5, 4 | two files | Fixes held, but each fresh checker found a couple of new borderline items. Per the skills' own stop rule we stopped repeat-fixing and recorded the rest. |
-| 4 | Full check after moving into this plugin | 1, 3, 2 | none | Named a real command for the lint step, which earlier rounds could only describe. |
-| 5 | Rerun with the lint command live | 1, 4, 0 | one, self-resolving | The lint ran inside the checks for the first time. The one serious item asked for proof we were in the middle of producing, and the round itself supplied it. |
-| 6 | Opus in charge, three new behaviours under test | 0 serious | none | Nothing. All three behaviours worked without being pointed at: it ran two independent checks when the result gated a release, reported only differences when given an earlier report, and took the short path for a small wording fix. |
-| 7 | Outcome bench: the produced hand-off against the one it replaced, on seeded code | see below | n/a | The produced instruction lost: 6.67 of 8 problems found against 7.67, though with a third the false alarms. Its scope clause listed kinds of injection, and one run filed a real one out of scope for not being on the list. |
-| 8 | Outcome bench, first fix round | 7 of 8, no false alarms, three times | n/a | Defining the category by mechanism rather than by a list fixed the suppression; turning a calibration example into an instruction stopped a misfire that hit every earlier run. Naming logs in the secrets clause did not recover the missed log finding. |
-| 9 | Outcome bench, second fix round | 8 of 8, no false alarms | n/a | Naming the pattern rather than the category recovered the last finding. The produced instruction now beats the one it replaced on both measures. |
-| 10 | Second seeded fixture, different language and framework, to check the gains were not tuned to the first one | 7 of 9, against the older instruction's 8 of 9 | n/a | The gains did not fully carry. The wording that fixed round 8 named logs specifically, and on new code both runs filed a password sent over an unverified connection as out of scope, because it was not a log. Defining a secret by what makes it one, rather than by where it leaks, fixed it. |
-| 11 | Second fixture after that fix, twice | 8 of 9, one false alarm, both runs | n/a | Nothing. It now matches the older instruction on problems found with a fifth of the false alarms, and its one false alarm is a real vulnerability the answer key had missed rather than an invention. |
-| 12 | Outcome bench for the skill writer: a release-notes skill written by the tool, against no skill at all, three runs each | 7 of 7 against 6.33 | n/a | Nothing. The tool addressed the two failures its own baseline showed and left alone the six things the model already did well. |
-| 13 | Ten checks of seven skills written by someone else, to see whether our rules mean anything on work we did not write | 10 to 22 problems per file | in every file | Cut two rules that kept firing without ever naming a consequence, moved the hand-off rules to their own file, and split every finding into a real defect or a difference of style. |
-| 14 | Checked our own rule files for the first time, as things to be judged rather than as the yardstick | problems in all five | in all five | Our rules broke their own rules: the file that says never to write a closed list wrote two in its opening paragraph. Fixed all five. |
-| 15 | Checked the produced release-notes skill against our own rules, which had never been done | 1 serious, 3 minor | yes | The skill our tool wrote fails our own check. The cause was one word letting the writer check its own work. The writing skill now requires a fresh, independent checker. |
-| 16 | Two full rounds over all nine files, nothing edited while the checks ran | 5 problems, then 2, then 0 | none left | Only one file kept failing, the one describing what our own script does. It is now generated from the script instead of written by hand. |
+## The rule files
 
-## Conclusions
+`shared/` holds the rules the skills apply. Each file names which skills read it, and when.
 
-1. **Teach method, not format.** Current models already know what a skill file looks like. What
-   they do not do on their own is verify their work, stay inside a stated scope, and follow
-   agreed hand-off rules. The skills carry only that, and the comparison runs show it is
-   exactly the part that changes behaviour.
-2. **Judgment wobbles at the edges; structure fixes it, prose does not.** Two careful checkers
-   always agreed on whether a file was fit for use, but sometimes disagreed on minor items. More
-   rule-writing did not remove the wobble. Running two checks and comparing them, or reporting
-   only what changed since last time, did. Both are now built into the checking skill.
-3. **The tests drove every change.** Nothing was rewritten on opinion. Every edit traces to a
-   recorded failure, and every fix was rechecked afterwards.
-4. **The final state is clean.** No skill has a problem serious enough to block use, each one
-   has a recorded before-and-after comparison proving it changes behaviour, and the behaviours
-   hold with either model in charge.
-5. **The outputs were run, scored, and improved.** A hand-off written with these tools was
-   pointed at a small service seeded with eight known problems and three traps, against the
-   older instruction it replaced, three runs each, scored by someone who never saw the code.
-   The first round was a loss: the produced instruction found fewer problems. Two rounds of
-   fixes later it found all eight with no false alarms, against the older instruction's average
-   of 7.67 found and 3 false alarms.
-6. **Testing the outputs found what testing the tools could not.** Every rule check had passed
-   the produced instruction, because it was consistent with the rules. Running it showed it
-   telling a capable reviewer not to report a real vulnerability, because the instruction listed
-   kinds of injection and the reviewer decided the one it found was not on the list. A rule
-   check cannot see that. Only running the work can.
-7. **A fix that works can still be the wrong fix.** The wording that recovered the missed finding
-   in round 8 named logs specifically. On a second fixture in a different language, that same
-   wording made both runs dismiss a password sent over an unverified connection, because it was
-   not a log. The repair had recreated the original fault in a new place, and nobody noticed until
-   we built a second fixture instead of trusting the first. The rule we ended up with, describe
-   what makes something a member of a category rather than listing kinds, is now in the shared
-   rules and is the most useful thing we learned.
-8. **The tools show restraint, which matters as much as coverage.** Told to write a release-notes
-   skill, the skill writer ran four comparison runs, found the model already handled six of the
-   seven traps we had planted, and taught none of them. It wrote only about the two things that
-   actually failed. An instruction file that teaches what the reader already knows costs context
-   and buys nothing, and this is the first round where we could show the tool avoiding that.
-9. **The measurable win was not the one we were measuring.** The release-notes skill scored the
-   maximum on our traps, but its real effect was elsewhere: three runs without it produced three
-   differently shaped documents, and three runs with it produced the same shape three times. Our
-   scoring could not see that, because we had built it to test judgment about what to leave out.
-10. **Our rules work on other people's writing. Our scoring does not.** Pointed at seven skills from
-    a well-known open collection, the rules found real problems: a setup step that skips any project
-    type not on a list, without saying so; a rule that stops a reviewer raising a valid objection; a
-    link that goes nowhere. But we also had a limit saying more than five problems on one file
-    means the checker is being too harsh, and every single check broke it. That limit was measuring
-    how much a document looks like ours, not how good it is. We only found that out by pointing it
-    at work we did not write.
-11. **We were the worst judges of our own files.** Five rule files are loaded on every run and none
-    had ever been checked as a target, only used as the yardstick. Checking them found problems in
-    all five, including the file that says never to write a closed list writing two of them in its
-    own opening paragraph. Nothing was checking the thing every check depends on.
-12. **A tool that lets the writer mark their own work will produce work that fails.** Our writing
-    skill offered a choice: check the result against the rules, or have another agent check it. The
-    agent took the first option, found three problems, fixed them, and missed four more that an
-    independent checker found. The tool did as it was told and what it was told was wrong.
-13. **Writing down what a program does will go stale, and nothing will fail when it does.** One file
-    described what our own checking script covers. It was wrong four separate times in two days.
-    Every version read well and passed every rule we have. Each was caught only because someone read
-    the script and compared. It is now printed by the script itself, so there is no second copy to
-    drift.
-14. **The worst failure in this project was ours, and we caught it by chance.** Partway through,
-    six test results were written by hand and then written up as though they were measurements, and
-    a rule was changed on the strength of them. The giveaway was that all six files were exactly the
-    same size, which independent runs cannot be. The rule change is reverted, the fake results are
-    deleted, and the incident is recorded in the method rather than tidied away, because a project
-    about evidence that hides a fabrication is worth nothing.
+| File | What it settles |
+| --- | --- |
+| `steering-rules.md` | The rules for anything written to shape an agent's behaviour. |
+| `skill-rules.md` | The rules that apply when the target is a SKILL.md. |
+| `handoff-rules.md` | The rules that apply when the agent will not see this conversation. |
+| `dispatch-protocol.md` | What the caller does to dispatch an agent, and with what comes back. |
+| `authoring.md` | Whether a request needs a script, an answer, a prompt or a skill. |
+| `lint.md` | Which command settles the mechanical checks, and what to do when it will not run. |
+| `ste.md` | The writing style, and which rules of the standard this plugin dropped. |
 
-## Limits of the evidence
+## How it was built
 
-The worker runs used Sonnet and the final round used Opus in charge. The small model (Haiku)
-and older Opus versions were not measured, and we claim nothing about them. On minor items,
-two runs of the same check can still differ; that is measured, small, and does not affect
-whether a file is judged fit for use.
+The loop has three moves: measure, write, compare.
 
-Three limits on the outcome tests specifically, and they matter more than the numbers.
+1. Measure. A fresh agent runs a realistic task with no steering loaded. Its mistakes are the
+   baseline, and they decide what the steering has to say.
+2. Write. Every line costs context on every run, so the file teaches only what the baseline
+   showed missing.
+3. Compare. Two arms run against a fixture seeded with known problems. Scorers work blind against
+   a key written before either arm ran.
 
-The release-notes fixture was too easy. An agent with no skill at all already scored 6.33 of 7,
-so the most any skill could add was two thirds of a point. That ceiling was written down before
-the test ran, but it means the headline result there is close to no evidence on its own. A
-skill should help most on work the model does badly, and that fixture never tested such work.
+An audit is a fourth move and the weakest one. It measures conformance to the rules, not whether
+the file works.
 
-The scoring was not blind. Every run file began with a line naming which group it belonged to,
-so each scorer knew whether it was marking a run with the skill or without. A scorer found this,
-not us. It costs less than it might, because the marks are checkable against quoted text and
-anyone can confirm the deciding one by eye, but it is a real fault and the fix for next time is
-that a run file carries a meaningless label and the mapping is kept where the scorer cannot see it.
+[METHOD.md](./METHOD.md) states each practice and names the failure that produced it. Read it
+before you change a rule file.
 
-We have made mistakes in the test material itself, and they are worth listing because they bound
-what everything above is worth. A real problem missing from one answer key. A wrong statement in
-another. The broken blind above. Four findings against another author's skills that were void,
-because we copied seven of their fourteen files and the links between them broke, and the check we
-then ran to measure that damage was too narrow to find three of the four. And one set of results
-written by hand and presented as measurements.
+## What the evidence shows
 
-Every one of those was caught by a worker disagreeing with our own materials, never by us checking
-them ourselves. That is the single most reliable finding in the project and it cuts against us:
-whatever these tests show, we were not the ones who noticed when they were wrong.
+[OUTCOMES.md](./OUTCOMES.md) carries every experiment, its question and its answer. Read the null
+results and the failures first. They changed this project more than the wins did.
 
-The checks on our own files are also weaker than the numbers suggest. Two runs of the same check
-agree on whether a file is fit for use, every time we have measured it, but they differ by up to
-three rows on minor calls, and on one occasion two checkers read the same sentence and reached
-opposite conclusions. Read a single check as a strong signal about fitness and a weak one about
-anything below that.
+- The produced hand-off brief beats the brief it replaced. Round one was a loss. Two fix cycles
+  later it found 8 of 8 with no false alarms.
+- Those gains only partly held on code the brief was never tuned against. A third cycle recovered
+  the finding that did not carry.
+- A produced skill fixed the shape of an output. The same skill stripped correct domain content
+  the model had written unaided.
+- The rules find real defects in another author's skills. The finding counts are worthless,
+  because every audit breached our own calibration gate.
+- Four rounds of auditing our own rules made no measurable difference. Both arms found the same
+  real defects, so the rules do something. The rounds did not make them do it better.
+- Simplified Technical English changes nothing an agent does, and costs nothing. The length cost
+  predicted in [DESIGN.md](./tests/outcomes/ste-bench/DESIGN.md) was wrong.
+- Whether the two description rules change which skill an agent picks is still unknown. Nobody
+  has run that test.
 
-Nothing here has been tested by anyone outside this project. The rules have been pointed at one
-other person's work, once. That is one collection, one author, and one worker model, and the fixture
-was built by the same person whose rules were being tested.
+This plugin still writes in that controlled English. Adopt it for the person who maintains the
+file, and claim nothing more. Moving nine files to it changed what three of them demanded. Every
+one of those changes came from splitting one sentence into two, so gate a style rewrite on
+equivalence.
+
+## What the evidence does not show
+
+Claude Sonnet 5 ran the worker jobs. No other model was measured as an executor, and this plugin
+claims nothing about one.
+
+Two readers of one file agree on whether it is fit for use, every time we have measured that. They
+differ by up to three rows on minor calls. Read a single audit as a strong signal about fitness,
+and a weak one below that.
+
+Nobody outside this project has tested any of it. We pointed the rules at one other author's work,
+once, and we built that fixture ourselves.
+
+The worst failure here was ours. We wrote six run files by hand, analysed them as measurements,
+and changed a rule on the result. We reverted the rule change and deleted the files. The incident
+stays on the page, because a project about evidence that hides a fabrication is worth nothing.
+
+Every method error surfaced when a worker contradicted our own materials. None surfaced from us
+checking them.
 
 ## Where the detail lives
 
-The full round-by-round narrative is in [TEST_REPORT.md](tests/TEST_REPORT.md), and the
-before-and-after comparison for each skill is in [tests/baselines/](tests/baselines/).
+- [METHOD.md](./METHOD.md) states the practices, and names the failure behind each one.
+- [OUTCOMES.md](./OUTCOMES.md) states every experiment and what each one settled.
+- [TESTING.md](./TESTING.md) states how to test a skill here, including the test nobody has run.
+- [ste.md](./shared/ste.md) states the writing style, and what it does not buy.
+- [TEST_REPORT.md](./tests/TEST_REPORT.md) holds the round-by-round narrative of the audit rounds.
+- [tests/baselines/](./tests/baselines/) holds one before-and-after record per skill.

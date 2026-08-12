@@ -80,7 +80,7 @@ for a status set and a retry limit that file did not carry. Those were real, and
 measured here.
 
 It says nothing about whether skills written with these rules are better. That needs the baseline
-loop. `repo-setup` has never had one.
+loop, and no baseline has run against any skill since 2026-08-01.
 
 ## What it does say
 
@@ -92,5 +92,20 @@ damage the rounds themselves caused. Rounds two, three and four created 67 new f
 retiring 144, and most of the new ones came from the previous round's fixes.
 
 The next lever is not another round. It is the baseline loop, which measures whether a skill changes
-what an agent does, and which has not run since 2026-07-31 for any skill and has never run for
-`repo-setup`.
+what an agent does, and which has not run against any skill since 2026-08-01. Four skills changed on
+this branch and none of them was measured afterwards.
+
+## A correction, recorded rather than quietly fixed
+
+The first version of this page said twice that `repo-setup` had never had a baseline, and called
+that a live failure of this plugin's own Blocking Evidence rule. Both statements were false.
+`tests/baselines/repo-setup.md` records three no-skill runs, a skill-loaded run, and a re-run
+written up in `tests/outcomes/setup-bench/RERUN.md`. It landed on 2026-08-01.
+
+The claim came from grepping for the heading "Without the skill", which the other three baselines
+use and this one does not. It uses "Step 1, no skill loaded". A string that did not match was read
+as a fact that did not exist, and no one opened the file.
+
+That claim reached this page, a pull request description, and a commit message on `main` before an
+independent check caught it. The rule it broke is one this project already holds: check a claim
+against the source, never against a pattern that resembles the source.

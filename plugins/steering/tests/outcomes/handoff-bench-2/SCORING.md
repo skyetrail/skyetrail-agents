@@ -15,3 +15,11 @@ What this bench answers that bench one could not:
 
 Bench one saturated at eight of eight, so it can no longer show improvement. This one has nine
 problems and four decoys.
+
+## Where the arms' prompts live
+
+Arm "new" is `prompts/new-prompt.md` in this directory, the cycle 3 wording.
+
+Arm "old" ran the same comparison prompt as bench one. This directory used to hold a byte-identical
+copy at `prompts/old-prompt.md`; that copy was deleted as a duplicate. The text is
+`../handoff-bench/prompts/old-prompt.md`.

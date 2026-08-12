@@ -27,9 +27,12 @@ operative text for deciding what counts, says "code or config" in both. Dismisse
 
 ## What happened next
 
-Version 2 fixes all three. The four runs already dispatched against version 1 become a pilot and are
-not scored. They are kept because they show the rewrite ran and produced reports, not because they
-measure anything.
+Version 2 fixes all three. The four runs already dispatched against version 1 became a pilot and were
+never scored. They showed that the rewrite ran and produced reports, not that they measured
+anything, so they were deleted in the cleanup recorded in `../../README.md`.
+
+Version 1 itself stays, at `prompts/ste-prompt.md` and `prompts/ste-prompt-fixture2.md`. A diff
+against version 2 is what makes the three verdicts in the table above checkable.
 
 ## Why this check exists
 

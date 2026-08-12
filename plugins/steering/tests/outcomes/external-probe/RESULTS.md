@@ -38,6 +38,16 @@ none of them names a consequence.
 The gate is unusable on work we did not write. It never fired during six internal rounds because our
 own files were written to the rules that score them.
 
+High counts do not mean the auditor fires on everything it can. In
+`finishing-a-development-branch` run B it marked the retry-limit rule not applicable rather than
+failing it, on the grounds that every failure path in the file is a hard stop and there is no retry
+behaviour to bound. It also passed the template-hole rule after checking that the procedure resolves
+both holes that matter. So the counts come from the rules that fired, not from an auditor unable to
+return a pass.
+
+Count how often a rule fires per audit, not per file. A rule that fires in one of two audits of a
+file has not fired on that file, and reporting it that way counts the same evidence twice.
+
 ## Measure 2: agreement between independent audits
 
 Three pairs.

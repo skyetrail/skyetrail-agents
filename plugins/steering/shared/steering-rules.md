@@ -47,10 +47,10 @@ hand-off never reads them.
 
 - **always**
 - **hand-off**, the agent will not see the conversation the author has been having
-- **changes something**, the work this document steers modifies files or state, whether the document
-  carries out that work itself or a caller applies it
-- **advisory**, the work this document steers reviews or investigates and changes nothing, on the
-  same reading
+- **changes something**, the work this document steers writes a file or any other state that
+  outlives the run, whether the document carries out that work itself or a caller applies it. A
+  file the work writes to hold its own findings counts.
+- **advisory**, the work this document steers examines material, judges it, and edits none of it
 - **reused**, the instruction is a skill or template rather than a one-off
 - **describes work**, a reader carries this document out, rather than holding it against another
   document to judge that one
@@ -75,9 +75,33 @@ out. A rule catalogue often says "read this file first" or "mark the rule warn w
 tell". Those sentences belong to a task defined elsewhere.
 
 **advisory** and **changes something** are about the work the document steers, so they can hold for
-a criteria file. A file of audit rules steers an audit, and an audit reviews and changes nothing.
+a criteria file. A file of audit rules steers an audit. Where that audit reads its target and
+answers in the conversation, **advisory** holds and **changes something** does not. Where the same
+audit writes its findings to a file, both hold.
 
-Read the Applies-when column, one row at a time.
+The two are not opposites. Both hold together for any work that judges material and writes its
+findings down. Decide each one by its own test below. Record both answers. A false answer for one
+is never a true answer for the other.
+
+To decide **changes something**, list what the work writes: a file, a record, a setting, or anything
+else still there after the run ends. These are examples, not the whole list. Where that list is
+empty, the condition does not hold. Where the list holds anything at all, the condition holds. A
+findings file, a report, and a log the work writes each go on that list, the same as a source file
+the work edits.
+
+To decide **advisory**, name the material the work examines, then name what the work produces. Where
+the product is a judgement about that material, and the work edits none of that material, the
+condition holds. Where the work edits that material, the condition does not hold. Where the work
+examines no material and instead produces something new, the condition does not hold either.
+
+A prompt that tells an agent to review a pull request and write its findings to a file meets both
+conditions. The findings file is a write, so **changes something** holds. The agent edits none of
+the code it reads, so **advisory** holds. One agent read the two as exclusive, marked **changes
+something** false, and skipped the Blocking rule against weakening a check. The security review
+prompt it produced carries no such sentence.
+
+Read the Applies-when column, one row at a time. A row applies where its own condition holds. What
+the other conditions say does not change that.
 
 The section order below is the order these sections should appear in the document being written.
 Some entries are about position, so check where a section appears, not only whether it appears.
@@ -99,6 +123,9 @@ Some entries are about position, so check where a section appears, not only whet
 | A document that only states criteria names at least one document that applies them. | Important | always |
 | Context sits above the method, so it is read before a plan is formed. | Advisory | always |
 
+The lint script resolves whether a path exists. Read that half from the lint record. Judge the other
+half: whether the fact the agent needs is there at all.
+
 ## Scope
 
 | Rule | Severity | Applies when |
@@ -108,7 +135,7 @@ Some entries are about position, so check where a section appears, not only whet
 | Where a category of work is named, a membership test defines it. Any list of kinds carries a marker saying they are examples, not the whole set. | Blocking | always |
 | The instruction says to stop and report on reaching a scope limit, rather than work around it. | Blocking | always |
 | The scope statement sits above the method. | Advisory | always |
-| The instruction states that the agent must not modify anything. It also says what to do where a fix looks obvious. | Blocking | advisory |
+| The instruction states that the agent must not modify anything. Any file it is told to write its findings to is the one exception. It also says what to do where a fix looks obvious. | Blocking | advisory |
 
 A list of kinds tells the reader that a kind not on the list is out of scope. The reader is right
 to read it that way. Write the test for membership first. Then give examples.
@@ -145,16 +172,47 @@ category is hard to recognise.
 | The order is fixed where sequence affects correctness, and left open where it does not. | Blocking | describes work |
 | The instruction constrains how the work is done only where correctness or safety needs a specific way. Each such constraint says why. The instruction leaves everything else to the agent. | Important | describes work |
 | Any check that must run before work starts is named as the first step. | Important | describes work |
+| Where the work branches, the instruction names the decision point and the branch each answer leads to. | Important | describes work |
+| Where an input renders as an image, the instruction tells the agent to view the rendered image. | Important | describes work |
+| Batch or destructive work produces a plan file the agent checks before it executes anything. | Important | changes something |
 
 ## Finish
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
 | A check the agent can run itself is named, and its result settles whether the work is done. | Blocking | changes something |
+| No run that passes the named check leaves the outcome unreached. | Blocking | changes something |
 | The instruction says the agent runs the check itself before reporting. | Important | describes work |
 | The finish criteria are specific enough that two runs would return the same result. | Blocking | advisory |
 | The instruction says what evidence each finding must carry. | Important | advisory |
 | The finish check sits late in the document, near where the agent will decide whether to stop. | Advisory | describes work |
+
+Test the named check like this. Describe one run that passes the check and stops short of the
+outcome. Where you can describe such a run, record a fail. Where you cannot, the check holds. The
+rule that two runs return the same result asks a different question. A check that passes on
+incomplete work passes the same way in both runs.
+
+A check the agent can run itself is not always a script. A question the agent answers by reading
+what it produced is one too. Where the work is a judgement, no script settles it, and the
+scriptable property left is a count of the parts the work produced. The work can be incomplete at
+every part, so that count is a proxy. Write the check against the outcome the document states, and
+not against a count of what the work produced.
+
+Bad, because an agent that reads nothing outside the diff passes it:
+
+> Before you write the report, list every file the diff touched. Confirm your findings file holds
+> an entry for each one. A file missing from that list means the review is not finished.
+
+Good, because the run that stops short is the run that fails it:
+
+> Where the diff touches a shared library, an auth path, or a config, read the other callers.
+> Name each one, and what you concluded about it. An unnamed caller means the review is not
+> finished.
+
+One agent applied the first check. It filed an entry for every changed file, found nothing, and
+missed a change that weakened a shared authentication helper. The check passed. A reader takes the
+finish check as the definition of done. The next reader of that check learns that reading outside
+the diff is no part of finishing.
 
 ## Failure
 
@@ -197,6 +255,7 @@ and it costs the same context as one taken from an observed failure.
 | Every named hole in a template is marked required, or carries a default. An unfilled hole then fails loudly instead of reaching the agent as empty text. | Important | reused |
 | The set of fields established for a template is fixed. It does not gather a payload most callers never use. | Advisory | reused |
 | What happens to partial work when a run stops is stated. | Important | changes something |
+| Where the output format matters, the instruction supplies a template and says how strictly to follow it. | Important | describes work |
 
 ## Voice
 

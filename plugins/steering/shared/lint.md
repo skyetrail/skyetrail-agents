@@ -15,7 +15,21 @@ the things a file points at exist. Judgment stays with the rules files. These li
 the script. Each repository decides which checks its own lint performs. This is the repository's
 business, not this file's business. Establish what those checks are. Do not assume them.
 
-## Finding the command
+## Which command
+
+The target decides which command settles the mechanical checks.
+
+A SKILL.md goes to `npm run audit -- <path>`, run from the root of this plugin's repository. That
+command takes the path, so the target need not sit in that repository. It reports every mechanical
+check by name. Ask it what it checks with `npm run audit -- --explain`.
+
+Anything else goes to the target repository's own lint. Find that command below. Use it for a
+prompt, a hand-off brief, a command, a runbook, and an instruction file. These are examples, not
+the whole list.
+
+Everything below about a command that will not run applies to both.
+
+## Finding the lint command
 
 The lint command belongs to the current repository, not to this plugin. Look for it in this
 order.
