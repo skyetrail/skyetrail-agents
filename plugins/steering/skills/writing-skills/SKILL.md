@@ -28,7 +28,8 @@ outcome they want, not the artifact that carries it.
 
 ## What has already failed
 
-These approaches were tried on this work and did not hold.
+These approaches were tried on this work and did not hold. They are a record for you, the author.
+Put none of them in the skill you write.
 
 - **A gate that only says stop.** A run met an error at the evidence step, recorded it, then wrote
   the description, the body and the reference split, and delivered a finished SKILL.md. That
@@ -74,7 +75,7 @@ writing-skills
 [ ] 3  Baseline dispatched with no skill loaded; output saved
 [ ] 4  Misses numbered; each one quoted from that output
 [ ] 5  Description written against the Discovery table
-[ ] 6  Body written against the section order and the rule tables; every condition settled by its own test
+[ ] 6  Body written against the section order and the rule tables; every condition settled by its own test; no authoring history; a default for every deferred value
 [ ] 7  Every numbered miss addressed, and nothing else
 [ ] 8  Nothing correct from the step 3 output dropped
 [ ] 9  Detail moved into reference files
@@ -165,6 +166,18 @@ them.
    A section restates the description where every sentence in it states a capability or a trigger
    the description already states. Compare the two sentence by sentence. Cut such a section. The
    description loads before the body, so the agent pays for the same words twice.
+
+   Put no authoring history in the body. A failure met doing the work the skill steers belongs,
+   because the reader meets that same work. A failure met writing the skill does not, because the
+   reader has never seen an earlier draft. Test a sentence about a past failure by asking whether
+   the reader can reach what it names. One run mirrored the section headed "What has already
+   failed" into its artifact. That artifact opened with "A prior version of a prompt like this one
+   treated ...", which the receiving agent could not resolve.
+
+   Give a default for every value the body leaves to the reader's own setup. A window in days, a
+   severity scale, and a naming convention are examples, not the whole list. Write the value, then
+   say the reader may set another. A pointer to the team's own window is dead where the team has
+   none. A default the reader may replace is not an invented fact.
 
 7. **Address the numbered misses, and nothing else.** Read the `## Objective` heading in the record
    again first. Take each numbered miss. Describe the shape it takes in the work, not the label it

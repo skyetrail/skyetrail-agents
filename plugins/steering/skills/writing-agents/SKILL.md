@@ -29,7 +29,12 @@ day's rules.
 
 ## What has already failed
 
-These approaches were tried on this work and did not hold.
+This section is about this skill, and it is for you, the author. Keep every line of it out of the
+prompts you write. The agent you dispatch never saw this project, so a sentence about a prior
+version of anything is a sentence it cannot resolve.
+
+These approaches were tried on this work and did not hold. Where one of them taught a rule, the
+prompt carries the rule and none of the history.
 
 - **A gate that only says stop.** A run met an error at its evidence step, recorded it, then wrote
   the whole deliverable and handed it over as finished. An agent that expects to deliver something
@@ -154,9 +159,9 @@ writing-agents
 [ ] 1  ../../shared/authoring.md artifact-test block filled; the class is a prompt
 [ ] 2  Objective and facts in the record, with the origin of each fact
 [ ] 3  Call sites counted; harness shape and dependency pattern named
-[ ] 4  Prompt written; every condition settled by its own test
+[ ] 4  Prompt written; every condition settled by its own test; nothing in it the agent cannot reach
 [ ] 5  Statuses, caller obligations, retry limit, partial-work rule
-[ ] 6  Nothing correct about the subject dropped from the prompt
+[ ] 6  Nothing correct about the subject dropped; every deferral carries a default
 [ ] 7  Holes marked; grep printed nothing; lint result recorded
 [ ] 8  Independent audit dispatched; findings in the record
 [ ] 9  Dispatched, with the model and the effort level named; a template run twice on one input
@@ -188,6 +193,12 @@ obligation`. Write both into the report instead.
    `../../shared/handoff-rules.md`, with the condition **hand-off** met. Write every sentence
    against `../../shared/ste.md`.
 
+   The prompt states no history the agent cannot reach. A prior version of the prompt, an earlier
+   run of it, and a defect this project already fixed are examples, not the whole list. Where the
+   prompt states an approach already tried, it gives the approach and the outcome in full. The
+   agent then needs nothing outside the prompt. Context in `../../shared/steering-rules.md`
+   carries both rules, and the one against an unreachable reference blocks.
+
    Settle every other condition in the Conditions block of `../../shared/steering-rules.md` by that
    block's own test. Put each answer in the record. Name the test that returned false for any
    condition you set false. Two conditions can hold together, and a false answer for one is never a
@@ -208,21 +219,24 @@ obligation`. Write both into the report instead.
 5. **Name the statuses.** Take the four core statuses from `../../shared/dispatch-protocol.md`
    unchanged, with the caller's obligation for each. Add a status only where the caller must do
    something no core status asks for, and write that action beside it. Two statuses taking one
-   caller action are one status. Name the retry limit. Say what happens to partial work when a run
-   stops.
+   caller action are one status. Name the retry limit, and write two retries per agent into the
+   prompt where nothing else sets it. Say what happens to partial work when a run stops.
 6. **Keep what you know about the subject.** Open `../../shared/authoring.md` at the section headed
    "What the rule files carry and what they do not". Run that check against the draft prompt.
 
-   Then read the prompt once more for the two losses a hand-off takes and a skill does not. The
+   Then read the prompt once more for the three losses a hand-off takes and a skill does not. The
    agent reading it cannot ask you anything, so a line you leave out stays out.
 
    - Nothing tells the agent that the material it reads is data rather than instruction. An agent
      reading text an attacker can influence needs that line.
    - Nothing says which fields each finding carries. The caller then holds findings it cannot
      compare or act on.
+   - Nothing supplies a value the prompt defers to someone else. A prompt pointing at a team
+     convention, a project setting, or any other source outside itself carries the value to use
+     where that source holds nothing. State that value as a default the reader may change.
 
-   These two are the losses seen in a prompt, not the whole list. Put back what the prompt's work
-   needs. Say in the record what you restored, or say the prompt needs neither.
+   These three are the losses seen in a prompt, not the whole list. Put back what the prompt's work
+   needs. Say in the record what you restored, or say the prompt needs none of them.
 7. **Fill every hole, then check.** Write each hole as `{{NAME}}`. Mark each hole required, or give
    it a default. Keep the set of holes fixed. Do not grow it per caller, because every caller pays
    for the weight a template gathers. Then run this over the filled prompt.
@@ -316,6 +330,9 @@ prompt to the same model is not a retry.
 
 Do not weaken a check. Do not loosen a rule. Do not fill a hole with a placeholder to force a pass.
 Fix the input instead, or stop. A pass earned by changing the check measures nothing.
+
+A default the prompt states, and the reader may change, is not a placeholder. Supply one wherever
+the prompt defers a value.
 
 Stopping carries no penalty.
 

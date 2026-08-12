@@ -181,10 +181,38 @@ category is hard to recognise.
 | Rule | Severity | Applies when |
 | --- | --- | --- |
 | A check the agent can run itself is named, and its result settles whether the work is done. | Blocking | changes something |
+| No run that passes the named check leaves the outcome unreached. | Blocking | changes something |
 | The instruction says the agent runs the check itself before reporting. | Important | describes work |
 | The finish criteria are specific enough that two runs would return the same result. | Blocking | advisory |
 | The instruction says what evidence each finding must carry. | Important | advisory |
 | The finish check sits late in the document, near where the agent will decide whether to stop. | Advisory | describes work |
+
+Test the named check like this. Describe one run that passes the check and stops short of the
+outcome. Where you can describe such a run, record a fail. Where you cannot, the check holds. The
+rule that two runs return the same result asks a different question. A check that passes on
+incomplete work passes the same way in both runs.
+
+A check the agent can run itself is not always a script. A question the agent answers by reading
+what it produced is one too. Where the work is a judgement, no script settles it, and the
+scriptable property left is a count of the parts the work produced. The work can be incomplete at
+every part, so that count is a proxy. Write the check against the outcome the document states, and
+not against a count of what the work produced.
+
+Bad, because an agent that reads nothing outside the diff passes it:
+
+> Before you write the report, list every file the diff touched. Confirm your findings file holds
+> an entry for each one. A file missing from that list means the review is not finished.
+
+Good, because the run that stops short is the run that fails it:
+
+> Where the diff touches a shared library, an auth path, or a config, read the other callers.
+> Name each one, and what you concluded about it. An unnamed caller means the review is not
+> finished.
+
+One agent applied the first check. It filed an entry for every changed file, found nothing, and
+missed a change that weakened a shared authentication helper. The check passed. A reader takes the
+finish check as the definition of done. The next reader of that check learns that reading outside
+the diff is no part of finishing.
 
 ## Failure
 
