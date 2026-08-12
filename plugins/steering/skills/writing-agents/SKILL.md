@@ -170,7 +170,8 @@ above, so answer both.
 ## Workflow
 
 Copy this checklist into your reply before you start. Tick each line as you finish it. Return the
-block with the work. A line you cannot tick stays unticked and carries one line saying why.
+block with the work. A line you cannot tick stays unticked and carries one line saying why. That
+line is a check that did not pass. It is not a check you explained.
 
 ```text
 writing-agents
@@ -378,7 +379,13 @@ Three results settle whether the prompt may be dispatched.
 
 - The grep in step 7 printed nothing, and the lint reported no problem.
 - The audit in step 8 came back from another agent and carries no blocking defect.
-- Every checklist line is ticked, or carries its one line saying why not.
+- Checklist lines 1 to 8 are all ticked. Lines 9 and 10 are ticked, or they read `caller
+  obligation` because nobody dispatches in this session.
+
+An unticked line among 1 to 8 fails the third result, whatever the line beside it says. The reason
+is what you report. It is not what you pass the gate with. A failed step 5 reaches this gate as an
+unticked line 5. A disclosed gap in the finish check then stops the dispatch, the same as a missing
+one.
 
 Run the grep and the audit yourself before you report anything. Do not hand a draft to the person
 with a request to check it.

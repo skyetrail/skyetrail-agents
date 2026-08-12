@@ -106,11 +106,11 @@ the other conditions say does not change that.
 The section order below is the order these sections should appear in the document being written.
 Some entries are about position, so check where a section appears, not only whether it appears.
 
-**This file and `./handoff-rules.md` describe a failing example and never write one out.** Each
-section in both shows the wording that passes. A failing example written as an instruction is a
-template, and a run that needs that section copies it. One run lifted a failing Finish example near
-verbatim, and its own record named the passing one as its model. Where an example must show the
-fault, the label sits inside the quoted line, so no copy leaves it behind.
+**This file and `./handoff-rules.md` write out no failing example a reader could use as an
+instruction.** Each section in both shows the wording that passes. A failing example written as an
+instruction is a template, and a run that needs that section copies it. One run lifted a failing
+Finish example near verbatim, and its own record named the passing one as its model. Where a short
+phrase must show the fault, the label sits inside the quoted line, so no copy leaves it behind.
 
 ## Outcome
 
@@ -185,35 +185,69 @@ category is hard to recognise.
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
-| A check the agent can run itself is named, and its result settles whether the work is done. | Blocking | changes something |
-| No run that passes the named check leaves the outcome unreached. | Blocking | changes something |
-| The instruction says the agent runs the check itself before reporting. | Important | describes work |
+| The document names a check the agent runs itself, and the work ends where that check passes. | Blocking | describes work |
+| A count of the parts the work produced does not settle that check. | Blocking | describes work |
+| What the check covers comes from the material, and not from what the agent decides, writes, or opens. | Blocking | advisory |
+| What settles the check is a value another reader confirms against the material. An entry, a verdict, and a count settle nothing. | Blocking | advisory |
+| The document states that a pass means the agent covered what the check names. No sentence in it says a pass makes the result correct, the finding set whole, or the material clean. | Blocking | advisory |
 | The finish criteria are specific enough that two runs would return the same result. | Blocking | advisory |
 | The instruction says what evidence each finding must carry. | Important | advisory |
+| The instruction says the agent runs the check itself before reporting. | Important | describes work |
+| The document names the state the work writes, and what the agent reads to see that state. | Important | changes something |
 | The finish check sits late in the document, near where the agent will decide whether to stop. | Advisory | describes work |
 
-Test the named check like this. Describe one run that passes the check and stops short of the
-outcome. Where you can describe such a run, record a fail. Where you cannot, the check holds. The
-rule that two runs return the same result asks a different question. A check that passes on
-incomplete work passes the same way in both runs.
+Two questions sit in a finish check, and one check answers only one of them. Is the work finished?
+Is the work right? A check the agent runs answers the first. For advisory work the agent runs no
+check that settles the second. So the rows conditioned on **advisory** ask for a check on what the
+agent covered, and for a sentence saying what a pass leaves open.
 
-A check the agent can run itself is not always a script. A question the agent answers by reading
-what it produced is one too. Where the work is a judgement, no script settles it, and the
-scriptable property left is a count of the parts the work produced. The work can be incomplete at
-every part, so that count is a proxy. Write the check against the outcome the document states, and
-not against a count of what the work produced.
+An earlier version of this section asked for a check whose result settles whether the work is done.
+For advisory work no such check exists. An author asked for a thing that does not exist supplies the
+nearest thing that does. That thing is a count of the parts the work produced. Three runs wrote that
+shape, and the count came out whole while the review was empty.
 
-The failing shape is a check written against that count. In a code review it reads as one entry
-per changed file, with the file list as the measure of done. Every entry can be empty of the thing
-the review was for, and the count still comes out complete.
+**The count row is conditioned on describes work, so it holds for work that edits material too.** A
+prompt to migrate every call site can measure itself by one report line per call site. Each line can
+carry no edit, and the tally still comes out whole. The trap is the tally, and not the kind of work
+under it.
 
-Good, because the run that stops short is the run that fails it:
+**These rows are properties of the text, and not a test the author runs.** An earlier fix asked the
+author to describe a run that passes the check and stops short. A run applied that test, described
+such a run, and kept the check. The test still helps an author who writes a check, and it settles no
+row here. An auditor settles every row above without the author's agreement.
+
+**A property of the material holds before the agent acts, so no later choice moves it.** Where the
+coverage comes from the agent's own findings, a run that finds nothing passes with an empty list.
+One run took a passing example and moved its coverage onto the agent's findings that way. What the
+agent opens and what the agent writes are two more choices of that kind, and not the whole set.
+
+**A person holding the material looks at the value the check names and sees whether it is right.** A
+caller's name, a file and a line, and a quoted line are such values. An entry is not one, and a
+count of entries is not one, because neither says anything about the material. A verdict is not one,
+because confirming a verdict means doing the judgement again. A conclusion beside the value is
+welcome, and the value is the part that bites.
+
+**A stated gap is not a fix.** One row asks the document to say what a pass leaves open. That row is
+not a place to record that the check misses the outcome. One run described a run that passes its own
+check and misses the vulnerability. It kept the check, and wrote that the gap was disclosed rather
+than hidden. Judge every row above on the text it names, because a sentence about a weakness leaves
+the weakness where it is.
+
+**A count of the records written answers the row about written state.** It answers no other row
+here. A write that landed and a judgement that finished are two facts, and one never stands for the
+other.
+
+A check the agent runs itself is not always a script. A question the agent answers by reading the
+material is one too.
+
+Good, because the material fixes what it covers, and a run that opens no file fails it:
 
 > Where the diff touches a shared library, an auth path, or a config, read the other callers.
 > Name each one, and what you concluded about it. An unnamed caller means the review is not
-> finished.
+> finished. A pass here means you read every caller. It says nothing about whether the change is
+> safe.
 
-One agent finished on that count. It filed an entry for every changed file, found nothing, and
+One agent finished on a count instead. It filed an entry for every changed file, found nothing, and
 missed a change that weakened a shared authentication helper. The check passed. A reader takes the
 finish check as the definition of done. The next reader of that check learns that reading outside
 the diff is no part of finishing.
