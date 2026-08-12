@@ -79,7 +79,7 @@ writing-skills
 [ ] 8  Nothing correct from the step 3 output dropped
 [ ] 9  Detail moved into reference files
 [ ] 10 Baseline dispatched with the skill loaded; table filled
-[ ] 11 Lint run; result in the record
+[ ] 11 `npm run audit` run; result in the record
 [ ] 12 Independent audit dispatched; findings in the record
 ```
 
@@ -202,10 +202,11 @@ them.
 
     Where you cannot dispatch, follow the branch in step 3. It applies here word for word.
 
-11. **Lint.** Run the lint command named in `../../shared/lint.md`. This settles the mechanical
-    limits once, so no later finding argues them again. Put the result in the record. Where the
-    lint cannot run, or runs without reaching your file, follow what that file says and record what
-    did not run.
+11. **Check the mechanics.** Run `npm run audit -- <path>` over the draft, from the root of this
+    plugin's repository. The command takes the path, so the draft need not sit in that repository.
+    This settles every mechanical check once, so no later finding argues them again. Put the result
+    in the record. Where the command cannot run, or runs without reaching your file, follow what
+    `../../shared/lint.md` says and record what did not run.
 
 12. **Audit, and not by yourself.** Dispatch a fresh agent to audit the draft, using
     `auditing-skills`. Read the `## Objective` heading in the record again first. Where the draft
@@ -218,8 +219,8 @@ them.
 
 ## The gate
 
-Run the lint and the audit yourself before you report anything. Do not hand a draft to the person
-with a request to check it.
+Run the command and the audit yourself before you report anything. Do not hand a draft to the
+person with a request to check it.
 
 Read the step 10 table one row at a time.
 
@@ -233,8 +234,8 @@ introduced that one, so put it and the run's own reasoning into the skill. Then 
 again.
 
 The loop settles at the round of steps 7 to 10 that adds no new number and leaves every miss
-addressed. The work is done when the loop settles, the lint result sits in the record, and the
-audit carries no blocking finding.
+addressed. The work is done when the loop settles, the command's result sits in the record, and
+the audit carries no blocking finding.
 
 ## When to stop
 
@@ -263,5 +264,6 @@ keep-or-discard call to the person. Revert nothing on your own.
 - `../../shared/authoring.md` for the artifact test. Read it before anything else.
 - `../../shared/skill-rules.md` for a SKILL.md. It names which other rule files apply and when.
 - `../../shared/steering-rules.md` for the conditions, the section order, and the scope rules.
-- `../../shared/lint.md` for the lint command.
+- `../../shared/lint.md` for which command settles the mechanical checks, and for what to do where
+  it does not run.
 - `../../shared/ste.md` for every sentence you write.

@@ -2,10 +2,10 @@
 #
 # It regenerates the repository README and each plugin README from the plugin
 # manifests and the skill, command, and agent frontmatter, so the generated
-# files always match the source, and it lints every skill on the way: YAML
-# hazards, name format, description length, body line count, and reference
-# resolution. A lint problem fails the commit. If the hook changes a file, the
-# commit stops so you can review and stage the result, then commit again.
+# files always match the source, and it lints every skill on the way. Ask the
+# script which checks it makes: `npm run lint -- --explain`. A lint problem
+# fails the commit. If the hook changes a file, the commit stops so you can
+# review and stage the result, then commit again.
 #
 # Install once per clone:
 #   pip install pre-commit   # or: brew install pre-commit
@@ -21,4 +21,4 @@ repos:
         language: system
         pass_filenames: false
         files: >-
-          (^plugins/.*/(plugin\.json|skills/.*/SKILL\.md|commands/.*\.md|agents/.*\.md)$|^plugins/[^/]+/README\.md$|^marketplace\.json$|^\.claude-plugin/marketplace\.json$|^eng/generate-readmes\.mjs$|^README\.md$)
+          (^plugins/.*/(plugin\.json|skills/.*/SKILL\.md|commands/.*\.md|agents/.*\.md)$|^plugins/[^/]+/README\.md$|^marketplace\.json$|^\.claude-plugin/marketplace\.json$|^eng/.*\.mjs$|^README\.md$)

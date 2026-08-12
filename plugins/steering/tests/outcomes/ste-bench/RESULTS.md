@@ -56,7 +56,10 @@ target is readable to attesting that the reader read it, raised the bar on what 
 out-of-scope section, and dropped a strictness marker. The first of those could have changed how
 much of a fixture a run covers, and so could have moved the score.
 
-Four runs against that version are kept as a labelled pilot and are not scored.
+Four runs against that version were labelled a pilot and never scored. They have since been deleted;
+see `EQUIVALENCE.md` and `../../README.md`. The rejected prompt itself stays at
+`prompts/ste-prompt.md` and `prompts/ste-prompt-fixture2.md`, which is what keeps the gate's verdict
+checkable.
 
 Without this gate the experiment would have compared a clearer prompt against a longer one and
 reported the difference as a style effect. The rewrite was mine and I believed it was faithful.

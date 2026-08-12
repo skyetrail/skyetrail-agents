@@ -17,13 +17,25 @@ node path/to/script.mjs
 Use the Node standard library only, so the scripts run on any modern Node with no
 install.
 
-The repository has one script today:
+The repository has four scripts today:
+- `eng/skill-checks.mjs` — every mechanical check this repository makes against a
+  skill, held as data. It is a library. Nothing runs it directly. Both scripts
+  below take their checks and their message text from it, so a check cannot say
+  one thing in the build and another in an audit. Add a check here, not in a
+  caller.
 - `eng/generate-readmes.mjs` — builds the generated README files and the manifest
-  mirrors, and lints every skill on the way: YAML hazards in frontmatter, name
-  format and directory match, description length, body line count, and reference
-  resolution. A lint problem stops the build before anything is written. Run it
-  with `npm run build`, `npm run check` to verify the committed files are
-  current, or `npm run lint` for the same check under its lint name.
+  mirrors, and runs the subset of the checks that guards this repository. A fail
+  stops the build before anything is written. Run it with `npm run build`,
+  `npm run check` to verify the committed files are current, or `npm run lint`
+  for the same check under its lint name.
+- `eng/audit-skill.mjs` — runs every check against one skill, at any path on
+  disk. Run it with `npm run audit -- <path>`.
+- `eng/measure-sentences.mjs` — reports sentence length against the caps in
+  `plugins/steering/shared/ste.md`. It is both a library and a command.
+
+Neither command describes its own checks in prose. Ask it: `npm run lint --
+--explain` and `npm run audit -- --explain` both print from the same lists the
+run uses.
 
 ## Generated files
 
@@ -60,11 +72,16 @@ Established by the `repo-setup` skill. Re-run it rather than editing this block 
 - **Lint command:** `npm run lint`, run from the repository root. Confirmed by running it. It runs
   `eng/generate-readmes.mjs --check` and also checks that the generated README files are current.
   `npm run check` is the same command under a second name.
-- **What the lint covers:** ask it, with `npm run lint -- --explain`. It prints which kinds of file
-  get which checks, from the same data the run uses. Do not rely on a description written anywhere
-  else, including here: the one that used to sit in this block was wrong four times in two days.
-  An agent auditing a file should run that command and say which check did not reach its target,
-  rather than reporting either a clean pass or a total gap.
+- **Skill audit command:** `npm run audit -- <path>`, run from the repository root. Confirmed by
+  running it. It runs `eng/audit-skill.mjs` over one skill directory or one SKILL.md, at any path
+  on disk, and reports every mechanical check by name. The lint runs a subset of the same checks
+  and covers only files inside this repository.
+- **What each command covers:** ask it, with `npm run lint -- --explain` or
+  `npm run audit -- --explain`. Each prints which checks it makes, from the same list the run uses.
+  Do not rely on a description written anywhere else, including here: the one that used to sit in
+  this block was wrong four times in two days. An agent auditing a file should run that command and
+  say which check did not reach its target, rather than reporting either a clean pass or a total
+  gap.
 
 Unresolved: none.
 <!-- END: repo-setup -->

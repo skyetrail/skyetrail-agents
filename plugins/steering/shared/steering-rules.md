@@ -123,6 +123,9 @@ Some entries are about position, so check where a section appears, not only whet
 | A document that only states criteria names at least one document that applies them. | Important | always |
 | Context sits above the method, so it is read before a plan is formed. | Advisory | always |
 
+The lint script resolves whether a path exists. Read that half from the lint record. Judge the other
+half: whether the fact the agent needs is there at all.
+
 ## Scope
 
 | Rule | Severity | Applies when |
@@ -169,6 +172,9 @@ category is hard to recognise.
 | The order is fixed where sequence affects correctness, and left open where it does not. | Blocking | describes work |
 | The instruction constrains how the work is done only where correctness or safety needs a specific way. Each such constraint says why. The instruction leaves everything else to the agent. | Important | describes work |
 | Any check that must run before work starts is named as the first step. | Important | describes work |
+| Where the work branches, the instruction names the decision point and the branch each answer leads to. | Important | describes work |
+| Where an input renders as an image, the instruction tells the agent to view the rendered image. | Important | describes work |
+| Batch or destructive work produces a plan file the agent checks before it executes anything. | Important | changes something |
 
 ## Finish
 
@@ -221,6 +227,7 @@ and it costs the same context as one taken from an observed failure.
 | Every named hole in a template is marked required, or carries a default. An unfilled hole then fails loudly instead of reaching the agent as empty text. | Important | reused |
 | The set of fields established for a template is fixed. It does not gather a payload most callers never use. | Advisory | reused |
 | What happens to partial work when a run stops is stated. | Important | changes something |
+| Where the output format matters, the instruction supplies a template and says how strictly to follow it. | Important | describes work |
 
 ## Voice
 

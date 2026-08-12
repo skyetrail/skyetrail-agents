@@ -23,7 +23,10 @@ skyetrail-agents/
 │           └── <skill-name>/
 │               └── SKILL.md  # one skill
 ├── eng/
-│   └── generate-readmes.mjs  # builds the generated files and lints the skills
+│   ├── skill-checks.mjs      # every mechanical check, held as data
+│   ├── generate-readmes.mjs  # builds the generated files and lints the skills
+│   ├── audit-skill.mjs       # runs every check against one skill, at any path
+│   └── measure-sentences.mjs # sentence length against the writing-style caps
 ├── .github/workflows/        # checks that the generated files are current
 ├── README.md                 # the repo catalog, partly generated
 └── LICENSE
@@ -94,10 +97,26 @@ generated files or sections by hand.
 npm run build
 ```
 
-The build also lints every skill: YAML hazards in the frontmatter, name format
-and directory match, description length, body line count, and reference
-resolution. A lint problem stops the build and fails the pull request, with each
-problem listed by file. `npm run lint` runs the same checks on their own.
+The build also lints every skill. A lint problem stops the build and fails the
+pull request, with each problem listed by file. `npm run lint` runs the same
+checks on their own, and `npm run lint -- --explain` prints which checks each
+kind of file gets.
+
+## Check one skill
+
+To run every mechanical check against a single skill, including the ones on
+bundled scripts and evaluation records:
+
+```sh
+npm run audit -- plugins/steering/skills/writing-skills
+```
+
+The path may be anywhere on disk, so the skill need not sit in this repository.
+`npm run audit -- --explain` prints the whole set of checks.
+
+Both commands read the same list, in `eng/skill-checks.mjs`. Add a check there,
+not in a caller, and do not describe a check in prose that a command can print
+itself.
 
 The scripts in this repository are plain Node-executable JavaScript (`.mjs`), so
 they need only Node and no install. See [AGENTS.md](AGENTS.md) for the

@@ -3,6 +3,7 @@
 //
 //   npm run build            write the generated files
 //   npm run check            report drift and exit non-zero
+//   npm run lint -- --explain   print which checks each kind of file gets
 //
 // The script reads marketplace.json at the repository root, walks each plugin,
 // and rewrites the generated content. The repository README keeps its
@@ -16,7 +17,17 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { measure, CAP_INSTRUCTION, CAP_DESCRIPTION } from "./measure-sentences.mjs";
+import {
+  CONTENTS_REQUIRED_LINES,
+  MAX_BODY_LINES,
+  MAX_DESCRIPTION,
+  NAME_RE,
+  check,
+  fileContext,
+  parseFrontmatter,
+  referencedMarkdown,
+  runChecks,
+} from "./skill-checks.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECK = process.argv.includes("--check");
@@ -31,40 +42,6 @@ function read(file) {
 
 function exists(file) {
   return fs.existsSync(file);
-}
-
-// Parse a small YAML frontmatter block. It handles single-line scalar values
-// and one level of nested mapping, which is enough for the skill metadata block
-// (for example metadata.version). Values may be wrapped in straight quotes.
-function parseFrontmatter(content) {
-  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (!match) return {};
-  const stripQuotes = (v) =>
-    (v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))
-      ? v.slice(1, -1)
-      : v;
-  const out = {};
-  let parent = null;
-  for (const line of match[1].split(/\r?\n/)) {
-    if (!line.trim()) continue;
-    const idx = line.indexOf(":");
-    if (idx === -1) continue;
-    const indented = /^\s/.test(line);
-    const key = line.slice(0, idx).trim();
-    if (!key) continue;
-    const value = stripQuotes(line.slice(idx + 1).trim());
-    if (indented && parent) {
-      if (typeof out[parent] !== "object") out[parent] = {};
-      out[parent][key] = value;
-    } else if (value === "") {
-      out[key] = "";
-      parent = key;
-    } else {
-      out[key] = value;
-      parent = null;
-    }
-  }
-  return out;
 }
 
 // Make a string safe to place inside a Markdown table cell.
@@ -101,14 +78,33 @@ function packageRepository() {
 // file, so the limits are enforced here and a violation stops the build before
 // any generated file is written. Judgment rules stay in the skills' rule files;
 // this checks only what a script can decide.
-const MAX_NAME = 64; // Agent Skills frontmatter name limit
-const MAX_DESCRIPTION = 1024; // Agent Skills frontmatter description limit
-const MAX_BODY_LINES = 500; // recommended SKILL.md body length
-// A reference file past this length opens with a contents list. Counting lines
-// by hand is what skill-rules.md forbids, so the count belongs here.
-const CONTENTS_REQUIRED_LINES = 100;
-const CONTENTS_RE = /^#{2,3}\s+Contents\s*$/m;
-const NAME_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+//
+// The checks themselves live in eng/skill-checks.mjs, which holds every
+// mechanical check this repository makes. This build runs the subset that
+// guards the repository. `npm run audit` runs the whole set against one skill.
+// The lists below name that subset, in the order the findings print.
+const COMPONENT_CHECKS = [
+  "lint-frontmatter-present",
+  "lint-yaml-colon-space",
+  "lint-yaml-hash",
+  "lint-name-present",
+  "lint-name-length",
+  "lint-name-format",
+  "lint-name-matches-directory",
+  "lint-description-present",
+  "lint-description-length",
+  "lint-body-length",
+  "lint-reference-resolves",
+  "lint-link-text-matches-filename",
+  "lint-sentence-caps",
+];
+const REFERENCED_CHECKS = ["lint-contents-list", "lint-sentence-caps"];
+const SURFACE_CHECKS = [
+  "lint-reference-resolves",
+  "lint-link-text-matches-filename",
+  "lint-contents-list",
+  "lint-sentence-caps",
+];
 const lintProblems = [];
 const lintAdvisories = [];
 
@@ -146,30 +142,50 @@ const REFERENCE_SURFACES = [
 
 const EXCLUDED = "anything under a plugin's tests/, which are records that may cite paths from earlier rounds";
 
+// Prints the check lists above, one entry per check, so what this command says
+// it checks and what it runs cannot drift apart. Do not describe a check here
+// in prose. Add it to a list and let it print itself.
 function explainCoverage() {
   const lines = [
     "What `npm run lint` opens, and which checks each kind of file gets.",
     "",
-    "Components get every check: frontmatter hazards, name format and length,",
-    `description length (limit ${MAX_DESCRIPTION}), body line count (limit ${MAX_BODY_LINES}),`,
-    "and reference resolution.",
+    "This command guards the repository, so it runs a subset of the checks.",
+    "`npm run audit -- <path>` runs every mechanical check against one skill,",
+    "including the ones on bundled scripts and evaluation records, and",
+    "`npm run audit -- --explain` prints that whole set.",
+    "",
+    `Limits held here: description ${MAX_DESCRIPTION} characters, body ${MAX_BODY_LINES} lines,`,
+    `contents list over ${CONTENTS_REQUIRED_LINES} lines.`,
+    "",
   ];
+  const listChecks = (ids) => {
+    const seen = [...new Set(ids)].map((id) => check(id));
+    const width = Math.max(...seen.map((c) => c.id.length));
+    for (const c of seen) {
+      const mark = c.severity === "advisory" ? "advisory" : "fail    ";
+      lines.push(`    ${c.id.padEnd(width)}  ${mark}  ${c.requires}`);
+    }
+  };
+
+  lines.push("A component carries frontmatter. It gets:");
+  listChecks(COMPONENT_CHECKS);
+  lines.push("", "  A component is:");
   for (const kind of COMPONENT_KINDS) {
     const where = kind.perDirectory ? `${kind.dir}/*/SKILL.md` : `${kind.dir}/*.md`;
-    const extra = kind.perDirectory
-      ? ", and its name must match its directory"
-      : "";
-    lines.push(`  - ${where}${extra}`);
+    lines.push(`  - ${where}`);
   }
-  lines.push("", "Reference surfaces get reference resolution. They carry no frontmatter, so the");
-  lines.push("frontmatter and description checks do not apply.");
+
+  lines.push("", "Every .md a component links to gets:");
+  listChecks(REFERENCED_CHECKS);
+
+  lines.push("", "A reference surface carries no frontmatter, so the frontmatter and");
+  lines.push("description checks do not reach it. It gets:");
+  listChecks(SURFACE_CHECKS);
+  lines.push("", "  A reference surface is:");
   for (const surface of REFERENCE_SURFACES) lines.push(`  - ${surface.describe}`);
-  lines.push(
-    "",
-    `Any .md over ${CONTENTS_REQUIRED_LINES} lines gets an advisory contents-list check,`,
-    "whether it is a reference surface or a file some component links to. An",
-    "advisory finding prints once and never stops the run.",
-  );
+
+  lines.push("", "An advisory finding prints once and never stops the run. A fail stops the");
+  lines.push("build before anything is written.");
   lines.push("", `Not opened at all: ${EXCLUDED}.`);
   lines.push("");
   lines.push("A target that is none of the above was not checked by this command. Say which");
@@ -181,130 +197,36 @@ function lintProblem(file, msg) {
   lintProblems.push(`${path.relative(ROOT, file)}: ${msg}`);
 }
 
+// Record what one check found. A fail stops the build; an advisory prints and
+// does not, because the rule files give Advisory that meaning.
+function record(file, results) {
+  for (const result of results) {
+    for (const msg of result.messages) {
+      const line = `${path.relative(ROOT, file)}: ${msg}`;
+      if (result.severity === "advisory") lintAdvisories.push(line);
+      else lintProblems.push(line);
+    }
+  }
+}
+
 // Checks one component markdown file. dirName is the skill directory name for
 // directory-based skills, or null for flat command and agent files.
 function lintComponent(file, content, dirName) {
-  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (!match) {
-    lintProblem(file, "no frontmatter block");
+  const ctx = fileContext(file, content, { dirName });
+  if (ctx.frontmatter === null) {
+    record(file, runChecks(["lint-frontmatter-present"], ctx));
     return;
   }
-
-  // YAML hazards the tolerant parser here would hide: an unquoted value with
-  // ": " fails to parse in real YAML, and an unquoted "#" silently truncates
-  // the value as a comment.
-  for (const line of match[1].split(/\r?\n/)) {
-    if (/^\s/.test(line)) continue;
-    const m = line.match(/^([A-Za-z0-9_-]+):\s+(.*)$/);
-    if (!m) continue;
-    const [, key, value] = m;
-    if (value.startsWith('"') || value.startsWith("'")) continue;
-    if (value.includes(": ")) lintProblem(file, `unquoted ": " in ${key} breaks YAML; quote the value`);
-    if (value.includes(" #")) lintProblem(file, `unquoted "#" in ${key} starts a YAML comment; quote the value`);
-  }
-
-  const fm = parseFrontmatter(content);
-  const name = typeof fm.name === "string" ? fm.name : "";
-  const description = typeof fm.description === "string" ? fm.description : "";
-
-  if (!name) lintProblem(file, "frontmatter has no name");
-  else {
-    if (name.length > MAX_NAME) lintProblem(file, `name is ${name.length} characters; the limit is ${MAX_NAME}`);
-    if (!NAME_RE.test(name)) lintProblem(file, "name must be lowercase letters, numbers, and single hyphens");
-    if (dirName && name !== dirName) lintProblem(file, `name "${name}" does not match directory "${dirName}"`);
-  }
-
-  if (!description) lintProblem(file, "frontmatter has no description");
-  else if (description.length > MAX_DESCRIPTION) {
-    lintProblem(file, `description is ${description.length} characters; the limit is ${MAX_DESCRIPTION}`);
-  }
-
-  const body = content.slice(match[0].length);
-  const bodyLines = body.trim() ? body.replace(/^\n+/, "").replace(/\n+$/, "").split("\n").length : 0;
-  if (bodyLines > MAX_BODY_LINES) {
-    lintProblem(file, `body is ${bodyLines} lines; the limit is ${MAX_BODY_LINES}`);
-  }
-
-  lintReferences(file, content);
-  lintSentenceCaps(file);
+  record(file, runChecks(COMPONENT_CHECKS, ctx));
   for (const ref of referencedMarkdown(file, content)) {
-    lintContentsList(ref, read(ref));
-    lintSentenceCaps(ref);
+    record(ref, runChecks(REFERENCED_CHECKS, fileContext(ref, read(ref))));
   }
 }
 
-// Reference checks shared by component files and plugin reference files.
-// Every .md a file points at, resolved and existing. The contents-list check
-// runs over these as well as over shared/, because skill-rules.md governs a
-// SKILL.md's reference files, and in another repository those need not sit in
-// shared/ at all.
-function referencedMarkdown(file, content) {
-  const out = new Set();
-  const add = (target) => {
-    const clean = target.split("#")[0].trim();
-    if (!clean || !clean.endsWith(".md")) return;
-    if (/^(https?:\/\/|mailto:)/.test(clean)) return;
-    const resolved = path.normalize(path.join(path.dirname(file), clean));
-    if (exists(resolved)) out.add(resolved);
-  };
-  for (const link of content.matchAll(/\[([^\]]*)\]\(([^)]+)\)/g)) add(link[2]);
-  for (const tick of content.matchAll(/`(\.{1,2}\/[^`\n]+\.md)`/g)) add(tick[1]);
-  return [...out];
-}
-
-// Sentence length against the caps in shared/ste.md. Advisory, because that
-// file names one case where a long sentence is correct: a membership test that
-// loses its meaning when split. One line per file, not per sentence.
-function lintSentenceCaps(file) {
-  let m;
-  try {
-    m = measure(file);
-  } catch {
-    return; // unreadable here is reported by whatever opened it
-  }
-  const over = (arr, cap) => arr.filter((n) => n > cap);
-  const rules = over(m.rules, CAP_INSTRUCTION);
-  const prose = over(m.prose, CAP_DESCRIPTION);
-  if (!rules.length && !prose.length) return;
-  const parts = [];
-  if (rules.length) parts.push(`${rules.length} rule cell(s) over ${CAP_INSTRUCTION} words, longest ${Math.max(...rules)}`);
-  if (prose.length) parts.push(`${prose.length} prose sentence(s) over ${CAP_DESCRIPTION} words, longest ${Math.max(...prose)}`);
-  lintAdvisories.push(`${path.relative(ROOT, file)}: ${parts.join("; ")}`);
-}
-
-// A long reference file opens with a contents list, so a reader can see what is
-// in it before loading the whole thing.
-function lintContentsList(file, content) {
-  const lines = content.split("\n").length;
-  if (lines <= CONTENTS_REQUIRED_LINES) return;
-  if (!CONTENTS_RE.test(content)) {
-    lintAdvisories.push(
-      `${path.relative(ROOT, file)}: is ${lines} lines and has no "## Contents" heading; a reference file over ${CONTENTS_REQUIRED_LINES} lines opens with a contents list`,
-    );
-  }
-}
-
-function lintReferences(file, content) {
-  for (const link of content.matchAll(/\[([^\]]*)\]\(([^)]+)\)/g)) {
-    const target = link[2].split("#")[0].trim();
-    if (!target || /^(https?:\/\/|mailto:)/.test(target)) continue;
-    if (!exists(path.normalize(path.join(path.dirname(file), target)))) {
-      lintProblem(file, `reference does not resolve: ${link[2]}`);
-    }
-    // When the link text reads as a filename, it must be the filename it
-    // links to, so the reader is never sent somewhere the text does not say.
-    const text = link[1].replace(/`/g, "").trim();
-    if (/\.md$/i.test(text) && text !== path.basename(target)) {
-      lintProblem(file, `link text "${text}" does not match the target filename "${path.basename(target)}"`);
-    }
-  }
-
-  // Relative paths in backticks are how these skills name their references.
-  for (const tick of content.matchAll(/`(\.{1,2}\/[^`\n]+\.md)`/g)) {
-    if (!exists(path.normalize(path.join(path.dirname(file), tick[1])))) {
-      lintProblem(file, `reference does not resolve: ${tick[1]}`);
-    }
-  }
+// A reference surface carries no frontmatter, so it gets the file-level checks
+// only: references, contents list and sentence caps.
+function lintReferenceSurface(file, content) {
+  record(file, runChecks(SURFACE_CHECKS, fileContext(file, content)));
 }
 
 function table(headers, rows) {
@@ -492,10 +414,7 @@ function main() {
     // two cannot disagree.
     for (const surface of REFERENCE_SURFACES) {
       for (const file of surface.find(pluginDir)) {
-        const content = read(file);
-        lintReferences(file, content);
-        lintContentsList(file, content);
-        lintSentenceCaps(file);
+        lintReferenceSurface(file, read(file));
       }
     }
 

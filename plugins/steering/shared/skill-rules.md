@@ -10,15 +10,27 @@ defines no task of its own. Where a procedural property an audit needs is missin
 those two skills. The stop conditions and the evidence each finding carries are two examples, not
 the whole list.
 
-Mechanical limits are the lint script's job, not judgment work. `./lint.md` says what the script
-checks. Confirm the lint record rather than re-deriving those checks by hand. Do not restate them
-here. A second copy of that list drifts from the first. An agent then loads two files that say
-different things.
+A mechanical check is a script's job, not judgment work. `./lint.md` names the command that settles
+those checks, and says what to do where the command does not run. Ask the command itself what it
+checks. Confirm its record rather than re-deriving a check by hand. Do not restate the checks here.
+A second copy of that list drifts from the first. An agent then loads two files that say different
+things.
+
+## Contents
+
+- Discovery
+- Boundary
+- Content
+- Loading
+- Code
+- Evidence
 
 ## Discovery
 
 | Rule | Severity |
 | --- | --- |
+| The name reads as a gerund or a clear noun phrase. | Important |
+| The name follows the same pattern as the other skills in its collection. | Important |
 | The description states the capability, in the words someone looking for it would use. | Blocking |
 | The description states the conditions that should trigger it. | Blocking |
 | The description includes the file types, error text, and casual phrasings people actually type. | Important |
@@ -27,6 +39,9 @@ different things.
 
 Skills undertrigger more often than they overtrigger. So a description that reads as slightly
 insistent is closer to right than one that reads as neutral.
+
+The command settles one narrow case of the first rule: a name built only from generic words. It
+cannot tell whether a name reads as a clear noun phrase. So read the rule as well as its record.
 
 ## Boundary
 
@@ -46,6 +61,9 @@ insistent is closer to right than one that reads as neutral.
 | The skill uses one term for one thing throughout. | Important |
 | Time-sensitive material is absent, or it appears only in a section for old patterns. | Important |
 | The skill does not document a constraint that a script or a regex could enforce instead. | Important |
+| Every example carries real input and real output, rather than a placeholder. | Important |
+| Each step in a workflow names one action the reader can carry out without guessing. | Important |
+| A workflow whose steps a reader could lose track of carries a checklist. | Advisory |
 
 Read each paragraph. Ask what an agent does differently after reading it. If the answer is
 nothing, it is a finding. These shapes are the ones seen so far, not the whole list. The test above
@@ -78,13 +96,44 @@ run.
 | Detail sits in reference files rather than the front file. | Important |
 | Material used to test the skill is not reachable from it. So it never loads with it. | Important |
 | No reference file instructs the reader to ignore or skip part of itself. Content that one caller must skip is a separate file. | Important |
+| Every bundled file's name says what the file holds. | Important |
+| Directories group files by domain, so a run loads only the domain it needs. | Important |
+
+A line cap on the front file is the command's proxy for the detail rule. A front file under the cap
+can still carry the detail, so read the rule as well as its record.
+
+## Code
+
+These rules apply only where the skill bundles a script. Where the skill bundles none, mark every
+rule in this section not applicable.
+
+| Rule | Severity |
+| --- | --- |
+| A bundled script handles the errors it can meet, rather than leaving them to the agent. | Important |
+| The skill states how to run each bundled script and what the script returns. | Important |
+| The skill says, for each bundled script, whether to run it or read it as reference. | Important |
+| A validation script's error names the problem and the values that would pass. | Important |
+| Every constant in a bundled script carries the reason for its value. | Advisory |
+| The skill names every dependency that no bundled script imports. | Important |
+| Every package the skill lists is available on the runtime the skill targets. | Important |
+| Every MCP tool the skill names carries its server prefix, in the form `Server:tool`. | Important |
+
+The command reads what a bundled script imports and checks each import against the SKILL.md. The
+dependency rule covers what that check cannot see. A command line tool, a service, and a font are
+examples, not the whole list.
+
+The Claude API runtime has no network access and installs nothing at run time. A package named but
+absent there fails when the script runs, not when the skill loads.
 
 ## Evidence
 
 | Rule | Severity |
 | --- | --- |
 | The skill went through a baseline comparison, with and without it loaded. The plugin's `tests/baselines/` directory holds the observed failures it addresses, one file per skill. Nothing an agent loads at run time links to that directory. | Blocking |
+| The recorded runs of the skill include real tasks, not only synthetic scenarios. | Important |
+| The skill's evaluation scenarios came before its long-form content. | Advisory |
+| The skill's evidence names feedback from a second person, and the change that feedback caused. | Advisory |
 
-This rule applies only to a skill this plugin maintains. A skill read from elsewhere has no
-`tests/baselines/` here, and never will. So the rule cannot tell a good one from a bad one. If the
-target is not ours, mark it not applicable. Say its own evidence is not available to check.
+These rules apply only to a skill this plugin maintains. A skill read from elsewhere has no
+`tests/baselines/` here, and never will. So these rules cannot tell a good one from a bad one. If
+the target is not ours, mark them not applicable. Say its own evidence is not available to check.
