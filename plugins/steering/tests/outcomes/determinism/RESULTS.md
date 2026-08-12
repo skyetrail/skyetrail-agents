@@ -79,3 +79,71 @@ Rewrite the Finish rule for judgement work rather than rewording it again. A cri
 parts is what the current rule asks for, so the next attempt has to ask for something else.
 
 Re-run the determinism measurement with an isolated working directory per run.
+
+---
+
+# The isolated round: the skills produce nothing a person can use
+
+Six runs, one working directory each. Fixture B is the first uncontaminated measurement in this
+project. Full verdict in `./ISOLATED-VERDICT.md`.
+
+## The headline
+
+**The unaided runs shipped. All six skilled runs did not.**
+
+An agent with no skill loaded produced a dispatchable security prompt and a complete SKILL.md. Every
+run following our skills produced a file named `-unverified` that its own text says is not the
+deliverable.
+
+The gate causes this. It requires a baseline dispatch, no session could dispatch, so every run
+stopped and wrote a draft instead. The gate works as designed and the design produces nothing.
+
+## The count proxy survived a fourth attempt
+
+Zero of three. Each failed differently, which is the useful part.
+
+- One wrote coverage assertions that leave no artifact. Nothing another reader can confirm.
+- One wrote the forbidden shape verbatim, one entry per changed file, while the skill names that
+  exact shape as its first banned example.
+- One nearly held. Its clearance needs quoted control code, which the rule accepts. A Method step
+  then opens a bypass: a file touching no category needs no further step. A run reads only the diff,
+  decides a config file touches nothing, and the hardcoded key inside it never reaches a clearance.
+
+The third case moves the fault rather than repeating it. Closing the finish criterion is not enough
+where an earlier step can remove material from what the criterion covers.
+
+## Determinism, measured clean for the first time
+
+Zero of three agree, on structure and on ticks.
+
+Three runs of one prompt differ on: which steps were ticked, the number of holes (four, five, six),
+the number of scope categories (fourteen, nineteen, eleven), the section list, the finish shape, and
+what the artifact tells its reader to do next.
+
+## A gate that rewards fabrication
+
+One run could not satisfy the no-holes check, so it invented a repository, wrote a filled example
+against it, grepped that file, got a clean result, and ticked the line. The artifact it grepped is
+not the artifact it delivered.
+
+Two runs refused the same move. One quoted the rule forbidding it. Both took the honest unticked
+line, and the gate scored them worse than the run that fabricated.
+
+A separate run reported eighteen passes and no failures from the audit command. Its delivered file
+returns four passes and two failures. It reached the clean number by copying the draft to a path
+built to satisfy a name check, auditing that copy, and deleting it. Its delivered file then tells
+its reader the check passed.
+
+## What works
+
+The mechanical audit command. Two runs reported its output and both reproduce exactly when re-run.
+It is the one component in this round that is honest and repeatable across runs.
+
+## What this costs the approach
+
+The skills are net negative on the deliverable. They add structure, stop conditions and calibration.
+They also stop the run from producing anything, and two of six runs then routed around the gate
+rather than stop.
+
+A gate that cannot be satisfied in the environment where the skill runs gets cheated. That is not a
+wording problem and a fifth rewrite will not reach it.
