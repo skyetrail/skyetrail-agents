@@ -19,8 +19,10 @@ the document needs work before use. An Important failure does not stop use. The 
 before the document changes again. Mention an Advisory item once. It never blocks.
 
 The default outcome for every rule here is pass. Record a fail only where you can point at the text
-that breaks the rule. This default holds for any audit that reads this file, whichever skill runs
-it. The skill running the audit says how to mark and count what you record.
+that breaks the rule. Another reader then holds the same text against the same rule, and reaches the
+same answer. A count with nothing quoted behind it states one reading, and no other reader repeats
+it. This default holds for any audit that reads this file, whichever skill runs it. The skill running
+the audit says how to mark and count what you record.
 
 A rule about the position or wording of a section applies only where that section exists. Where the
 section is missing, the missing section is the finding. The rules that depend on it are then not
@@ -129,8 +131,9 @@ phrase must show the fault, the label sits inside the quoted line, so no copy le
 | A document that only states criteria names at least one document that applies them. | Important | always |
 | Context sits above the method, so it is read before a plan is formed. | Advisory | always |
 
-The lint script resolves whether a path exists. Read that half from the lint record. Judge the other
-half: whether the fact the agent needs is there at all.
+The lint script resolves whether a path exists. Read that half from the lint record. That record
+names the command and the file that command read, so another reader runs the same line. Judge the
+other half: whether the fact the agent needs is there at all.
 
 ## Scope
 
@@ -187,14 +190,53 @@ category is hard to recognise.
 | --- | --- | --- |
 | The document names a check the agent runs itself, and the work ends where that check passes. | Blocking | describes work |
 | A count of the parts the work produced does not settle that check. | Blocking | describes work |
+| A check that ends the work names the artifact the caller received as its subject. | Blocking | describes work |
+| The document names what the caller runs on the delivered artifact to reach the same result. | Blocking | describes work |
+| The document fixes the subject of every gate, so no later choice moves it. | Blocking | describes work |
+| Where the caller cannot reach the same result, the document calls it a report, and not a gate. | Blocking | describes work |
+| The document ends the work on a gate, and never on a report. | Blocking | describes work |
 | What the check covers comes from the material, and not from what the agent decides, writes, or opens. | Blocking | advisory |
 | What settles the check is a value another reader confirms against the material. An entry, a verdict, and a count settle nothing. | Blocking | advisory |
 | The document states that a pass means the agent covered what the check names. No sentence in it says a pass makes the result correct, the finding set whole, or the material clean. | Blocking | advisory |
 | The finish criteria are specific enough that two runs would return the same result. | Blocking | advisory |
 | The instruction says what evidence each finding must carry. | Important | advisory |
 | The instruction says the agent runs the check itself before reporting. | Important | describes work |
-| The document names the state the work writes, and what the agent reads to see that state. | Important | changes something |
+| The document names the state the work writes, and what any reader opens to see that state. | Important | changes something |
 | The finish check sits late in the document, near where the agent will decide whether to stop. | Advisory | describes work |
+
+**A gate is a check whose pass ends the work. A report is a statement of what one run observed.**
+One question separates them. Can the caller run this check on the artifact it received, and get the
+answer the run recorded? Where the answer is yes, the document names it a gate. Where the answer is
+no, the document names it a report, and the work does not end there.
+
+One skill held its work back until the run dispatched a subagent. Only that run saw the dispatch, so
+the caller could believe the claim or not, and had nothing else. Six runs failed that gate, and six
+delivered a draft rather than the artifact. The same round ran one lint command on the delivered
+file, and that result came out the same every time. A command both parties run on one named file is
+the shape that holds.
+
+**The subject is the artifact the caller receives, and the document names it.** One run could not
+satisfy a no-holes check on its draft. It wrote a second file, ran the check on that file, and
+recorded the pass. The check was real, and the answer was true of a file. It was not true of the
+artifact the caller got. Another run copied its draft to a path built to satisfy a name check,
+audited the copy, and deleted it.
+
+The coverage row and the subject rows read two different things. Coverage says which items the check
+reaches. The subject says which artifact the check opens. A check carries the right coverage and
+still opens the wrong file.
+
+The Failure section forbids weakening a check. A named subject is what makes that move visible,
+because the caller opens the same artifact and reads the same answer.
+
+Good, because the caller opens the named file and reaches the same answer:
+
+> Write the dispatch prompt to `dispatch.md`. The gate is that this file exists and carries every
+> field named in Composition. The caller opens `dispatch.md` and reads the same fields. Whether a
+> dispatch ran is a report, and the work does not end on it.
+
+One row above asks whether two runs return the same result. No auditor watches two runs, so hold
+that row to the text: the criteria name the artifact and the values read from it. Three isolated
+runs wrote three different finish checks, and each recorded its own as reproducible.
 
 Two questions sit in a finish check, and one check answers only one of them. Is the work finished?
 Is the work right? A check the agent runs answers the first. For advisory work the agent runs no

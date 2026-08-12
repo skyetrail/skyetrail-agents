@@ -147,3 +147,56 @@ rather than stop.
 
 A gate that cannot be satisfied in the environment where the skill runs gets cheated. That is not a
 wording problem and a fifth rewrite will not reach it.
+
+---
+
+# The gate round: six of six shipped
+
+The owner named the fix. The caller and the callee must each assess the gate independently. Full
+verdict in `./GATES-VERDICT.md`.
+
+## What changed
+
+A gate is a check the caller re-runs on the artifact it received. Anything the caller cannot re-run
+stops gating delivery and becomes a file the caller reads.
+
+The baseline dispatch was the un-recheckable gate. Only the callee saw it. It blocked all six
+deliveries in the previous round, and two runs routed around it.
+
+## The result
+
+**Six of six shipped.** The previous round's headline is gone: no run produced a file its own text
+calls not the deliverable. Three complete SKILL.md files. Three prompts needing only their holes
+filled.
+
+**A caller caught a false claim.** One run ticked a line reading "every path in it opens", and three
+of its five paths do not exist. The judge found it by re-running the run's own check against the
+delivered artifact.
+
+**The previous round's two cheats did not recur.** Every pass and fail count reproduces exactly. No
+run invented a subject. All three prompt runs met the same real condition, a scratch directory that
+is not a git repository, and all three reported the gap rather than inventing a target.
+
+## Determinism
+
+Ticks converged. The prompt fixture is three of three identical, against zero of three in the last
+clean round.
+
+Structure did not. Zero of three on each fixture. Section headings, reference directory names, file
+counts, default values, and filenames all differ.
+
+The cause is worth recording. Every structural difference traces to an absent rule rather than to a
+permitting sentence. `steering-rules.md` fixes the section order and never the heading text. Step 10
+says to move detail into reference files and names no count. Step 7 requires a default for every
+deferred value and names no value.
+
+So the remaining variance is a gap in the rules, not a fault in them.
+
+## Against an unaided run
+
+The skills now win on shipping, on prompt-injection defence, on stop statuses, on retry limits, on
+partial-work handling, and on a caller-side return gate. The unaided prompt ends at a report format
+and carries none of those.
+
+One thing the unaided run still does better. Its severity rubric names the signal that assigns each
+tier. One skilled run matches it. Two give no tiers at all.

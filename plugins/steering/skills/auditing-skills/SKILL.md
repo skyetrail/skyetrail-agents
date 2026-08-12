@@ -47,8 +47,10 @@ the fix. Use `writing-skills` to apply it.
 This audit does not judge writing style. This includes punctuation, heading case, and tone.
 Those do not change what an agent does.
 
-This audit does not re-run checks that the target's own author already ran and recorded. Confirm
-the record is complete instead.
+This audit runs the command in step 1 on the target, whether or not the author recorded a result.
+One command costs little, and two parties running it on one file is the check that holds. This
+audit repeats none of the author's reading, searching, or judgement. Confirm the record is complete
+instead.
 
 A direct instruction from the person overrides this audit.
 
