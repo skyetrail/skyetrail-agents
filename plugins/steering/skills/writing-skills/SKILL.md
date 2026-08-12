@@ -1,96 +1,267 @@
 ---
 name: writing-skills
-description: Writes a new Agent Skill or fixes an existing one, producing a SKILL.md and its reference files. Use this whenever someone mentions writing, creating, drafting, or improving a skill or a SKILL.md, and also when they ask how to get an agent to do something the same way every time, say a skill is not triggering, or say a skill is being ignored. Use it even when the word skill is not used, if the request is about capturing a repeatable way of working.
+description: Writes a new Agent Skill or fixes an existing one, producing a SKILL.md, its reference files, and a record of what the skill changed. Use this whenever someone mentions writing, creating, drafting, or improving a skill, a SKILL.md, or a skill description, and also when they ask how to make an agent do something the same way every time, say a skill is not triggering, is not loading, or is being ignored, or say an agent forgets its instructions partway through a task. Use it when someone wants a runbook, a checklist, or a prompt they keep retyping turned into something reusable. Use it even when the word skill never appears, if the request is about capturing a repeatable way of working.
 ---
 
 # Writing skills
 
-This skill produces a SKILL.md, any reference files it needs, and evidence that it changes
-behaviour.
+This skill produces a SKILL.md, its reference files, and a record measuring what the skill
+changed. The record is as much the product as the file is. A draft carrying no record is not a
+skill, and nobody installs one.
 
-## First check a skill is the right artifact
+## Read the artifact test first
 
-- A one-off in this conversation. Say it directly. Do not write anything.
-- Guidance should apply whenever a condition arises. You cannot say in advance when the condition
-  will happen. The agent doing the work already has the conversation. A skill.
-- A separable piece of work you want done in a fresh context. An agent prompt. Use
-  `writing-agents`.
-- A constraint a script or a regex could enforce. Automate it. Do not document it.
+**Open `../../shared/authoring.md` now, before you plan or write anything.** Fill the artifact-test
+block that file carries. Put the filled block in your reply. It returns one class and the number of
+the deciding test.
 
-These are the common cases, not the whole list. The question behind them is what has to hold the
-guidance. The answer is the conversation, a file the agent loads when a condition arises, a
-prompt sent to a fresh context, or a script. Where a request fits none of them, say which of the
-four it is closest to. Say why. Ask before you write anything. Do not force it into the nearest
-bullet.
+Then route on the class.
 
-## Where this stops
+- The class is a skill. Run the workflow below.
+- The class is anything else. Stop. Name the class and the deciding test. Hand the request to the
+  skill that file names for that class.
+- A line in the block reads `cannot tell`. Stop and ask the person the question that file tells you
+  to ask. Do not write a SKILL.md anyway.
 
-This skill does not audit a skill without changing it. That is the job of `auditing-skills`. This
-skill does not write prompts for subagents. That is the job of `writing-agents`. This skill does
-not judge writing style. A direct instruction from the person overrides this skill.
+Do not settle the class from the request alone. Someone asking you to write a skill is naming the
+outcome they want, not the artifact that carries it.
+
+## What has already failed
+
+These approaches were tried on this work and did not hold.
+
+- **A gate that only says stop.** A run met an error at the evidence step, recorded it, then wrote
+  the description, the body and the reference split, and delivered a finished SKILL.md. That
+  skill's own gate forbade keeping the file. An agent that expects to deliver something delivers
+  it rather than stopping, so step 3 below names what you return in place of a deliverable.
+- **A step pointing forward.** One step said a later step named the directory to write to. The
+  agent read no further and reported the directory missing, while four files sat in it. Every step
+  below is complete where it stands.
+- **A description summarising the workflow.** The agent follows the summary and never opens the
+  body.
+- **A skill tuned on shape alone.** An agent following it cut correct subject content that the
+  same model wrote with no skill loaded. Step 8 below exists for that.
+
+## Scope
+
+In scope: a new SKILL.md, a change to an existing one, the reference files it loads, and the
+record measuring it.
+
+Out of scope, with the owner of each:
+
+- Auditing a skill and changing nothing. `auditing-skills` owns that.
+- Writing a prompt for an agent that will not see this conversation. `writing-agents` owns that.
+- Judging writing style. `../../shared/ste.md` governs the sentences you write here, and no audit
+  grades a target on it.
+- Any other request where the artifact test returns a class other than a skill. The boundary sits
+  in that test. This list names the cases seen most, not the whole set.
+
+A direct instruction from the person wins over anything in this skill.
+
+Where a request runs past this scope, stop and name the document that owns it. Do not stretch this
+skill to cover it.
 
 ## Workflow
 
-Run these steps in order. Do step 1 before you write anything else. Step 1 decides what the skill
-has to say.
+Copy this checklist into your reply before you start. Tick each line as you finish it. Return the
+block with the work. A line you cannot tick stays unticked and carries one line saying why.
 
-1. **Baseline.** Pick a realistic task that the skill should help with. Dispatch a subagent with
-   no skill loaded. Tell the subagent to work from its own knowledge. Tell it not to invoke any
-   installed skill. A skill that covers the task would stand in for the model and spoil the
-   measurement. Record what it did. Record where it went wrong. Record the reasoning it gave, in
-   its own words. Where the subagent reaches for an installed skill anyway, record that too. This
-   means an existing skill already covers this ground.
-2. **Write the description.** This is the trigger and the most common point of failure. Write it
+```text
+writing-skills
+[ ] 0  ../../shared/authoring.md artifact-test block filled; the class is a skill
+[ ] 1  Case decided: new skill, large change, or small change
+[ ] 2  Objective written into the record
+[ ] 3  Baseline dispatched with no skill loaded; output saved
+[ ] 4  Misses numbered; each one quoted from that output
+[ ] 5  Description written against the Discovery table
+[ ] 6  Body written against the section order and the rule tables; every condition settled by its own test
+[ ] 7  Every numbered miss addressed, and nothing else
+[ ] 8  Nothing correct from the step 3 output dropped
+[ ] 9  Detail moved into reference files
+[ ] 10 Baseline dispatched with the skill loaded; table filled
+[ ] 11 Lint run; result in the record
+[ ] 12 Independent audit dispatched; findings in the record
+```
+
+A small change ticks 0, 1, 2, 11 and 12, and marks 3 to 10 not run. Every other case ticks all of
+them.
+
+1. **Decide the case.** The case you land on names which steps you run.
+
+   - No skill exists for this request yet. Run every step.
+   - A skill exists and the change is large. Run every step.
+   - A skill exists and the change is small. Run steps 0, 1, 2, 11 and 12 only.
+
+   A change is small where the description and the sentence saying what the skill produces both
+   stay word for word the same. Every other change is large.
+
+   The record is the file `tests/baselines/<skill-name>.md`, inside the plugin directory holding
+   the skill you write. List that plugin directory to find it. Create the directory where it does
+   not exist. Where the skill sits in no plugin, put the record beside the skill's own directory
+   and name that path inside the record.
+
+   The record carries one line reading `Small changes since the last full loop: <count>`. Raise it
+   by one for a small change. Set it to zero when a run of every step finishes. Three is the cap,
+   and the fourth change runs every step whatever its size. Without the cap, small changes
+   accumulate, and nobody ever meets a change large enough to run the loop.
+
+2. **Anchor the objective.** Write the person's request into the record you located in step 1, word
+   for word, under a heading `## Objective`. Where the record already carries that heading from an
+   earlier loop, replace what sits under it with the current request.
+
+   Nothing a skill loads at run time points at the record, so the SKILL.md never links to it.
+
+3. **Baseline with no skill loaded.** Take the task from what the person asked for. Where they
+   named no task, ask for one. Do not invent one, because a task you chose measures the skill
+   against your own reading of the request.
+
+   Dispatch one subagent on that task, in a fresh context. Tell it to work from its own knowledge
+   and to invoke no installed skill. Where an installed skill covers the task, you measure that
+   skill rather than the model. Name the model and the effort level in the dispatch. Save the whole
+   output under `tests/baselines/<skill-name>-runs/`, beside the record.
+
+   Where the run reaches for an installed skill anyway, read that skill. Where its description
+   names the condition the person described, extend that skill rather than writing a new one, and
+   say which skill. Otherwise record which skill the run reached for. Either way that run is void.
+   Dispatch a replacement with that skill forbidden by name.
+
+   **Where you cannot dispatch.** Copy the error text into the record. Then stop. You hold no
+   deliverable at that point, and text written past this line is not one.
+
+   Do not run the task yourself in place of the subagent. You already hold the request and the
+   misses you expect, so your own run measures your reading rather than the model's.
+
+   Where the person still wants the text, write it to `<skill-name>-unverified.md` beside the
+   record. Never write it into the skill's own directory. Never name it `SKILL.md`. That file is a
+   proposal for a person to run this loop against. It is not a skill. Report the run blocked, quote
+   the dispatch error, and give that path. A file sitting at the install path reads as finished,
+   whatever the report says. `../../shared/authoring.md` states the same rule for every other gate
+   this skill names and you could not run.
+
+4. **Number the misses.** A miss is anything the run produced that a person must correct before
+   using the result. Anything you would only word differently is not a miss.
+
+   Quote the text settling each miss from the run's own output. A miss you cannot quote is not a
+   miss. Number them, and hold those numbers to the end of the loop.
+
+5. **Write the description.** This is the trigger and the most common point of failure. Write it
    against every rule in the Discovery table of `../../shared/skill-rules.md`. Open that file and
-   work down the table. Summarising the workflow is the usual mistake, because a summary gives the
-   agent something to follow instead of the body.
-3. **Write the body.** Order the sections the way `../../shared/steering-rules.md` orders its own.
-   That file lists them in order, and a second copy of the list here would drift from it. Write the
-   body against every rule in that file, and against the Boundary and Content tables of
-   `../../shared/skill-rules.md`. Open both and work down them. Do not add a section that restates
-   the description. The description loads before the body, so a repeat spends context twice.
-4. **Address only the failures from step 1.** Do not address anything the model already gets
-   right. For each failure, describe the shape it takes in the work. Do not describe the label it
-   falls under. This lets the agent recognise the case without already knowing it is there.
-5. **Move detail into reference files.** The body is an overview. `../../shared/skill-rules.md`
-   sets how you must arrange references.
-6. **Baseline again.** Run the baseline again. Use the same task and a fresh subagent. Load the
-   skill this time. Compare the result against step 1. Record the comparison in
-   `tests/baselines/<skill-name>.md`, under the plugin directory that holds the skill you are
-   writing. The Evidence rule in `../../shared/skill-rules.md` names that directory. Where the skill
-   sits in no plugin, put the record under the skill's own directory. Name that location inside the
-   record itself, never in the SKILL.md, which must not link to it. Record the failures the skill
-   addresses there too.
-7. **Audit, and not by yourself.** Run the lint command named in `../../shared/lint.md`. This
-   settles the mechanical limits. Then dispatch a fresh agent to audit the draft. Use
-   `auditing-skills` for this. Do not audit your own draft. You know what you meant each line to
-   say. So you read the intent, not the text. You will pass wording that a reader with no context
-   would not pass. Where no subagent is available, audit the draft yourself. Use
-   `../../shared/skill-rules.md` and `../../shared/steering-rules.md`. Say in the record that the
-   audit was not independent.
+   work down the table.
 
-## The baseline is the gate
+6. **Write the body.** Order the sections the way `../../shared/steering-rules.md` orders its own.
+   Open it and read the section list. A copy of that list here drifts from it, and an agent then
+   reads two lists that differ.
 
-Where behaviour is the same with and without the skill, the skill has no effect. Do not keep it.
-Where the second run fails in a new way, put that failure and the agent's own reasoning into the
-skill. Then run the loop again. Fix a failing baseline or audit by changing the skill. Do not fix
-it by easing the task or loosening the rules. A pass earned that way measures nothing. Where the
-loop does not settle after two more full runs, stop. Report what still fails. Do not run the loop
-again. Keep the draft when you stop. Say in the report that the draft is unverified. Leave the
-keep-or-discard call to the person.
+   Write the body against every rule in that file, and against the Boundary and Content tables of
+   `../../shared/skill-rules.md`. Open both and work down them. Write every sentence against
+   `../../shared/ste.md`.
 
-For a small change to a skill that already has a recorded baseline, run step 7 alone. Say in the
-record that you did not repeat the baseline. A change to what the skill claims to do runs the
-full loop.
+   Settle each condition in the Conditions block of `../../shared/steering-rules.md` by that
+   block's own test. Put every answer in the record. Name the test that returned false for any
+   condition you set false. Two conditions can hold together, and a false answer for one is never a
+   true answer for another. A run that read two of them as exclusive dropped a blocking rule from a
+   security review prompt.
 
-Three consecutive small changes is the limit. The fourth runs the full loop whatever its size.
-Small changes accumulate into a large one, and no single change is the one that crossed the line,
-so without a count nothing ever triggers the loop. This skill reached five before an audit noticed.
+   A section restates the description where every sentence in it states a capability or a trigger
+   the description already states. Compare the two sentence by sentence. Cut such a section. The
+   description loads before the body, so the agent pays for the same words twice.
 
-Where subagents are not available, run the task yourself against the skill. Say plainly in the
-skill's own record that this is weaker evidence. You wrote the skill, and you also use it.
+7. **Address the numbered misses, and nothing else.** Read the `## Objective` heading in the record
+   again first. Take each numbered miss. Describe the shape it takes in the work, not the label it
+   falls under. The Calibration section of `../../shared/steering-rules.md` carries that rule with
+   a worked pair. Leave out anything the run already got right.
+
+8. **Keep what the unaided run got right.** Put the step 3 output beside your draft and read the
+   two against each other. Where the unaided run gave a correct, specific instruction about the
+   subject, that instruction stays in the draft. Move it into whichever section the order puts it
+   in.
+
+   This skill shapes a document. It supplies no subject knowledge, and the model already holds much
+   of it. Then work the section headed "What the rule files carry and what they do not" in
+   `../../shared/authoring.md`. It has you name every instruction in the draft that came from your
+   own knowledge rather than from a rule file. It also lists what one run dropped this way.
+
+   Deferring content to another document counts as dropping it, unless you move it into a
+   reference file and point at where it went.
+
+9. **Move detail into reference files.** Move a passage one step needs and the other steps do not.
+   Keep a passage every step needs. A rule table, a worked example, and a set of cases are the
+   kinds moved most, not the whole list. `../../shared/skill-rules.md` sets how you arrange a
+   reference file.
+
+   Write each pointer as an instruction carrying the path, at the point the reader needs it. A
+   reader skips a bare "see the reference", and then works without the passage entirely. Make the
+   pointer plainer rather than copying the passage back.
+
+10. **Baseline with the skill loaded, and grade it.** Run the same task again, in a fresh context,
+    with the skill loaded, at the model and effort level step 3 named. Save the output beside the
+    first run.
+
+    Fill one row per numbered miss. Each row carries the number, whether the run still shows the
+    miss, and the quoted text settling that call. Put the table in the record.
+
+    Where you cannot dispatch, follow the branch in step 3. It applies here word for word.
+
+11. **Lint.** Run the lint command named in `../../shared/lint.md`. This settles the mechanical
+    limits once, so no later finding argues them again. Put the result in the record. Where the
+    lint cannot run, or runs without reaching your file, follow what that file says and record what
+    did not run.
+
+12. **Audit, and not by yourself.** Dispatch a fresh agent to audit the draft, using
+    `auditing-skills`. Read the `## Objective` heading in the record again first. Where the draft
+    no longer answers those words, say which words it dropped.
+
+    Do not audit your own draft. You know what you meant each line to say, so you read the intent
+    rather than the text. You then pass wording that a reader with no context would not pass.
+
+    Where you cannot dispatch, follow the branch in step 3. Put the audit findings in the record.
+
+## The gate
+
+Run the lint and the audit yourself before you report anything. Do not hand a draft to the person
+with a request to check it.
+
+Read the step 10 table one row at a time.
+
+- The run still shows the miss. The skill does not address it.
+- The run no longer shows the miss. The skill addresses it.
+
+Where the skill addresses no miss at all, it changes nothing. Do not keep it.
+
+Where the run with the skill shows a miss carrying no number, give it the next number. The skill
+introduced that one, so put it and the run's own reasoning into the skill. Then run steps 7 to 10
+again.
+
+The loop settles at the round of steps 7 to 10 that adds no new number and leaves every miss
+addressed. The work is done when the loop settles, the lint result sits in the record, and the
+audit carries no blocking finding.
+
+## When to stop
+
+Stop at any of these, and report what you found.
+
+- The artifact test returns a class other than a skill, or a line reading `cannot tell`.
+- The person named no task and will not name one.
+- You cannot dispatch a subagent, or cannot read a rule file this skill names.
+- Two further rounds of steps 7 to 10 leave a numbered miss showing.
+- Any other point where you would have to assert something you cannot check.
+
+Retry a dispatch at most twice, and only after something changed. Re-sending the same prompt to the
+same model is not a retry.
+
+Do not weaken a gate to make it pass. Do not ease the task, loosen a rule, edit a recorded result,
+or lower the bar for what counts as a miss. Fix the skill instead, or stop. A result earned by
+changing the gate measures nothing.
+
+## What survives a stop
+
+Keep the draft and the record when you stop. Name both paths in your report. Leave the
+keep-or-discard call to the person. Revert nothing on your own.
 
 ## Rules
 
-- Use `../../shared/skill-rules.md` for a SKILL.md. It states which other rule files apply to a
-  skill and under which conditions.
+- `../../shared/authoring.md` for the artifact test. Read it before anything else.
+- `../../shared/skill-rules.md` for a SKILL.md. It names which other rule files apply and when.
+- `../../shared/steering-rules.md` for the conditions, the section order, and the scope rules.
+- `../../shared/lint.md` for the lint command.
+- `../../shared/ste.md` for every sentence you write.

@@ -104,3 +104,84 @@ executor they are now aimed at.
 
 The draft is not installed. It cites a file that does not exist, it lost domain content the model
 supplies unaided, and half the experiment measured a superseded commit.
+
+---
+
+# Round two: three findings closed, one proved resistant
+
+The rewrite ran again with four countermeasures. Four fresh Sonnet 5 runs measured it. Raw runs and
+the comparison sit beside this file, prefixed `ROUND2-`.
+
+## The scoreboard
+
+| Finding from round one | Verdict |
+| --- | --- |
+| The gate skipped and the run shipped anyway | Fixed, with two residues |
+| A forward reference broke its own step | Fixed, and replaced by a backward one |
+| The conditions misclassified a file-writing prompt | Fixed, by memory rather than by test |
+| The skill displaced correct domain content | Still present |
+
+## The finding that matters
+
+`authoring.md` carries a warning that names the exact loss from round one:
+
+> A pre-triage step for a security report.
+
+The same task ran again. The skill-led draft dropped a pre-triage step for a security report. A
+search of it for security, vulnerability, credential, data loss, outage, escalate, incident, and
+critical returns one phrase, "a support escalation path". The unaided run opened with an instruction
+to escalate through the incident channel before continuing triage.
+
+**A warning naming the exact item did not stop the exact loss.** Both runs read the page holding
+that sentence. Both dropped the thing it named.
+
+## What a pointer buys, and what it does not
+
+Round one left one question open: does Sonnet follow a valid one-hop pointer? Both runs opened
+`authoring.md`. So the answer is yes, and progressive disclosure holds.
+
+The useful result is the split underneath it.
+
+> The pointer at the top of the file, whose payload is a block to copy, resolves every time. The
+> pointer to a section further down, whose payload is a procedure to perform, resolves to nothing.
+
+Both runs fetched the block and pasted it. Neither ran the anti-displacement check on the same page,
+which needs no tool and no dispatch. Sonnet fetches what it can paste. It does not fetch what it
+must do.
+
+## What a checklist buys, and what it does not
+
+Both runs copied the checklist and gave a reason per unticked line. The form took.
+
+The ticks are not earned. One run ticked "lint run, result in the record" and annotated the same
+line as a coverage gap rather than a pass. Another ticked "every condition settled by its own test"
+while its own table reads `reused | assumed true, unconfirmed`.
+
+> The checklist records whether a step was reached. It does not record whether the step passed.
+
+## Three new defects the rewrite caused
+
+**A checkable finish criterion that is wrong.** The Finish rule demands a check whose result settles
+whether the work is done. The only mechanically checkable property of a diff is its file list, so
+the produced security prompt defines done as an entry per changed file. Reading outside the diff is
+now outside finishing. A change that weakens a shared authentication helper passes that review.
+
+**The skill's own history leaked into the artifact.** The produced prompt opens with a section
+headed "Known failure to avoid", describing a prior version of a prompt the receiving agent has
+never seen. That breaks the Blocking rule against naming what an agent cannot resolve. The skill
+hardcodes its own failure history, and the run mirrored the structure outward. The skill taught the
+prompt to be about the skill.
+
+**Deferral without a default.** The unaided run gave a seven-day stale-report window and said a team
+may set another. The skill-led run deferred to "the team's own stale-report window" and gave no
+default. Where the team has none, the instruction is dead. At Sonnet, "do not invent" reads as
+"do not supply".
+
+## Status
+
+The three files are not ready. They are better than what they replace on three measured axes and
+worse on one that matters more: the security review they produce misses the vulnerability class it
+exists to find.
+
+The pattern under all three new defects: a rule set selects for what a rule can check. Checkable and
+correct are not the same, and every audit in this repository can only see the first.

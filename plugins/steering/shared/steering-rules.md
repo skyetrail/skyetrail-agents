@@ -47,10 +47,10 @@ hand-off never reads them.
 
 - **always**
 - **hand-off**, the agent will not see the conversation the author has been having
-- **changes something**, the work this document steers modifies files or state, whether the document
-  carries out that work itself or a caller applies it
-- **advisory**, the work this document steers reviews or investigates and changes nothing, on the
-  same reading
+- **changes something**, the work this document steers writes a file or any other state that
+  outlives the run, whether the document carries out that work itself or a caller applies it. A
+  file the work writes to hold its own findings counts.
+- **advisory**, the work this document steers examines material, judges it, and edits none of it
 - **reused**, the instruction is a skill or template rather than a one-off
 - **describes work**, a reader carries this document out, rather than holding it against another
   document to judge that one
@@ -75,9 +75,33 @@ out. A rule catalogue often says "read this file first" or "mark the rule warn w
 tell". Those sentences belong to a task defined elsewhere.
 
 **advisory** and **changes something** are about the work the document steers, so they can hold for
-a criteria file. A file of audit rules steers an audit, and an audit reviews and changes nothing.
+a criteria file. A file of audit rules steers an audit. Where that audit reads its target and
+answers in the conversation, **advisory** holds and **changes something** does not. Where the same
+audit writes its findings to a file, both hold.
 
-Read the Applies-when column, one row at a time.
+The two are not opposites. Both hold together for any work that judges material and writes its
+findings down. Decide each one by its own test below. Record both answers. A false answer for one
+is never a true answer for the other.
+
+To decide **changes something**, list what the work writes: a file, a record, a setting, or anything
+else still there after the run ends. These are examples, not the whole list. Where that list is
+empty, the condition does not hold. Where the list holds anything at all, the condition holds. A
+findings file, a report, and a log the work writes each go on that list, the same as a source file
+the work edits.
+
+To decide **advisory**, name the material the work examines, then name what the work produces. Where
+the product is a judgement about that material, and the work edits none of that material, the
+condition holds. Where the work edits that material, the condition does not hold. Where the work
+examines no material and instead produces something new, the condition does not hold either.
+
+A prompt that tells an agent to review a pull request and write its findings to a file meets both
+conditions. The findings file is a write, so **changes something** holds. The agent edits none of
+the code it reads, so **advisory** holds. One agent read the two as exclusive, marked **changes
+something** false, and skipped the Blocking rule against weakening a check. The security review
+prompt it produced carries no such sentence.
+
+Read the Applies-when column, one row at a time. A row applies where its own condition holds. What
+the other conditions say does not change that.
 
 The section order below is the order these sections should appear in the document being written.
 Some entries are about position, so check where a section appears, not only whether it appears.
@@ -108,7 +132,7 @@ Some entries are about position, so check where a section appears, not only whet
 | Where a category of work is named, a membership test defines it. Any list of kinds carries a marker saying they are examples, not the whole set. | Blocking | always |
 | The instruction says to stop and report on reaching a scope limit, rather than work around it. | Blocking | always |
 | The scope statement sits above the method. | Advisory | always |
-| The instruction states that the agent must not modify anything. It also says what to do where a fix looks obvious. | Blocking | advisory |
+| The instruction states that the agent must not modify anything. Any file it is told to write its findings to is the one exception. It also says what to do where a fix looks obvious. | Blocking | advisory |
 
 A list of kinds tells the reader that a kind not on the list is out of scope. The reader is right
 to read it that way. Write the test for membership first. Then give examples.
