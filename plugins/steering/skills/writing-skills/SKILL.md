@@ -21,7 +21,8 @@ Then route on the class.
 - The class is anything else. Stop. Name the class and the deciding test. Hand the request to the
   skill that file names for that class.
 - A line in the block reads `cannot tell`. Stop and ask the person the question that file tells you
-  to ask. Do not write a SKILL.md anyway.
+  to ask. Do not write a SKILL.md anyway. Where you cannot ask, put that question in your report
+  and stop there.
 
 Do not settle the class from the request alone. Someone asking you to write a skill is naming the
 outcome they want, not the artifact that carries it.
@@ -34,14 +35,14 @@ Put none of them in the skill you write.
 - **A gate that only says stop.** A run met an error at the evidence step, recorded it, then wrote
   the description, the body and the reference split, and delivered a finished SKILL.md. That
   skill's own gate forbade keeping the file. An agent that expects to deliver something delivers
-  it rather than stopping, so step 3 below names what you return in place of a deliverable.
+  it rather than stopping, so step 4 below names what you return in place of a deliverable.
 - **A step pointing forward.** One step said a later step named the directory to write to. The
   agent read no further and reported the directory missing, while four files sat in it. Every step
   below is complete where it stands.
 - **A description summarising the workflow.** The agent follows the summary and never opens the
   body.
 - **A skill tuned on shape alone.** An agent following it cut correct subject content that the
-  same model wrote with no skill loaded. Step 8 below exists for that.
+  same model wrote with no skill loaded. Steps 3, 7 and 9 below exist for that.
 
 ## Scope
 
@@ -72,26 +73,27 @@ writing-skills
 [ ] 0  ../../shared/authoring.md artifact-test block filled; the class is a skill
 [ ] 1  Case decided: new skill, large change, or small change
 [ ] 2  Objective written into the record
-[ ] 3  Baseline dispatched with no skill loaded; output saved
-[ ] 4  Misses numbered; each one quoted from that output
-[ ] 5  Description written against the Discovery table
-[ ] 6  Body written against the section order and the rule tables; every condition settled by its own test; no authoring history; a default for every deferred value
-[ ] 7  Every numbered miss addressed, and nothing else
-[ ] 8  Nothing correct from the step 3 output dropped
-[ ] 9  Detail moved into reference files
-[ ] 10 Baseline dispatched with the skill loaded; table filled
-[ ] 11 `npm run audit` run; result in the record
-[ ] 12 Independent audit dispatched; findings in the record
+[ ] 3  Subject knowledge listed in the record before any section order applied
+[ ] 4  Baseline dispatched with no skill loaded; output saved
+[ ] 5  Misses numbered; each one quoted from that output
+[ ] 6  Description written against the Discovery table
+[ ] 7  Body written against the section order and the rule tables; every condition settled by its own test; draft read against the step 3 list; no authoring history; a default for every deferred value
+[ ] 8  Every numbered miss addressed, and nothing else
+[ ] 9  Nothing correct from the step 4 output dropped
+[ ] 10 Detail moved into reference files
+[ ] 11 Baseline dispatched with the skill loaded; table filled
+[ ] 12 `npm run audit` run; result in the record
+[ ] 13 Independent audit dispatched; findings in the record
 ```
 
-A small change ticks 0, 1, 2, 11 and 12, and marks 3 to 10 not run. Every other case ticks all of
+A small change ticks 0, 1, 2, 12 and 13, and marks 3 to 11 not run. Every other case ticks all of
 them.
 
 1. **Decide the case.** The case you land on names which steps you run.
 
    - No skill exists for this request yet. Run every step.
    - A skill exists and the change is large. Run every step.
-   - A skill exists and the change is small. Run steps 0, 1, 2, 11 and 12 only.
+   - A skill exists and the change is small. Run steps 0, 1, 2, 12 and 13 only.
 
    A change is small where the description and the sentence saying what the skill produces both
    stay word for word the same. Every other change is large.
@@ -112,9 +114,19 @@ them.
 
    Nothing a skill loads at run time points at the record, so the SKILL.md never links to it.
 
-3. **Baseline with no skill loaded.** Take the task from what the person asked for. Where they
+3. **List what you know about the subject.** This skill shapes a document. It supplies no subject
+   knowledge, and the model already holds much of it. Open `../../shared/authoring.md` at the
+   section headed "What the rule files carry and what they do not". Write the list that section
+   asks for into the record, before you apply any section order. That section also names what one
+   run dropped this way.
+
+   This step needs no dispatch. Run it before you dispatch anything. A dispatch that fails does not
+   excuse it.
+
+4. **Baseline with no skill loaded.** Take the task from what the person asked for. Where they
    named no task, ask for one. Do not invent one, because a task you chose measures the skill
-   against your own reading of the request.
+   against your own reading of the request. Where you cannot ask, write one task from the request,
+   and name it in the record and in your report as your own.
 
    Dispatch one subagent on that task, in a fresh context. Tell it to work from its own knowledge
    and to invoke no installed skill. Where an installed skill covers the task, you measure that
@@ -126,30 +138,31 @@ them.
    say which skill. Otherwise record which skill the run reached for. Either way that run is void.
    Dispatch a replacement with that skill forbidden by name.
 
-   **Where you cannot dispatch.** Copy the error text into the record. Then stop. You hold no
-   deliverable at that point, and text written past this line is not one.
+   **Where you cannot dispatch.** Copy the error text into the record. The person always wants the
+   text, so write it. Run steps 3, 6, 7 and 10 first, because those carry the content rules. Then
+   write the text to `<skill-name>-unverified.md` beside the record, and run step 12 over that
+   file. Mark steps 4, 5, 8, 9, 11 and 13 not run.
 
    Do not run the task yourself in place of the subagent. You already hold the request and the
    misses you expect, so your own run measures your reading rather than the model's.
 
-   Where the person still wants the text, write it to `<skill-name>-unverified.md` beside the
-   record. Never write it into the skill's own directory. Never name it `SKILL.md`. That file is a
+   Never write that text into the skill's own directory. Never name it `SKILL.md`. That file is a
    proposal for a person to run this loop against. It is not a skill. Report the run blocked, quote
    the dispatch error, and give that path. A file sitting at the install path reads as finished,
    whatever the report says. `../../shared/authoring.md` states the same rule for every other gate
    this skill names and you could not run.
 
-4. **Number the misses.** A miss is anything the run produced that a person must correct before
+5. **Number the misses.** A miss is anything the run produced that a person must correct before
    using the result. Anything you would only word differently is not a miss.
 
    Quote the text settling each miss from the run's own output. A miss you cannot quote is not a
    miss. Number them, and hold those numbers to the end of the loop.
 
-5. **Write the description.** This is the trigger and the most common point of failure. Write it
+6. **Write the description.** This is the trigger and the most common point of failure. Write it
    against every rule in the Discovery table of `../../shared/skill-rules.md`. Open that file and
    work down the table.
 
-6. **Write the body.** Order the sections the way `../../shared/steering-rules.md` orders its own.
+7. **Write the body.** Order the sections the way `../../shared/steering-rules.md` orders its own.
    Open it and read the section list. A copy of that list here drifts from it, and an agent then
    reads two lists that differ.
 
@@ -179,63 +192,62 @@ them.
    Write the value, then say the reader may set another. A pointer to the team's own window is dead
    where the team has none. A default the reader may replace is not an invented fact.
 
-7. **Address the numbered misses, and nothing else.** Read the `## Objective` heading in the record
+   Read the draft against the subject list step 3 wrote into the record, before you leave this
+   step. Name every instruction in the draft that came from your own knowledge of the subject
+   rather than from a rule file. Where you can name none, you dropped them all. Put them back.
+
+   Deferring content to another document counts as dropping it, unless you move it into a reference
+   file and point at where it went.
+
+8. **Address the numbered misses, and nothing else.** Read the `## Objective` heading in the record
    again first. Take each numbered miss. Describe the shape it takes in the work, not the label it
    falls under. The Calibration section of `../../shared/steering-rules.md` carries that rule with
    a worked pair. Leave out anything the run already got right.
 
-8. **Keep what the unaided run got right.** Put the step 3 output beside your draft and read the
+9. **Keep what the unaided run got right.** Put the step 4 output beside your draft and read the
    two against each other. Where the unaided run gave a correct, specific instruction about the
    subject, that instruction stays in the draft. Move it into whichever section the order puts it
    in.
 
-   This skill shapes a document. It supplies no subject knowledge, and the model already holds much
-   of it. Then work the section headed "What the rule files carry and what they do not" in
-   `../../shared/authoring.md`. It has you name every instruction in the draft that came from your
-   own knowledge rather than from a rule file. It also lists what one run dropped this way.
+10. **Move detail into reference files.** Move a passage one step needs and the other steps do not.
+    Keep a passage every step needs. A rule table, a worked example, and a set of cases are the
+    kinds moved most, not the whole list. `../../shared/skill-rules.md` sets how you arrange a
+    reference file.
 
-   Deferring content to another document counts as dropping it, unless you move it into a
-   reference file and point at where it went.
+    Write each pointer as an instruction carrying the path, at the point the reader needs it. A
+    reader skips a bare "see the reference", and then works without the passage entirely. Make the
+    pointer plainer rather than copying the passage back.
 
-9. **Move detail into reference files.** Move a passage one step needs and the other steps do not.
-   Keep a passage every step needs. A rule table, a worked example, and a set of cases are the
-   kinds moved most, not the whole list. `../../shared/skill-rules.md` sets how you arrange a
-   reference file.
-
-   Write each pointer as an instruction carrying the path, at the point the reader needs it. A
-   reader skips a bare "see the reference", and then works without the passage entirely. Make the
-   pointer plainer rather than copying the passage back.
-
-10. **Baseline with the skill loaded, and grade it.** Run the same task again, in a fresh context,
-    with the skill loaded, at the model and effort level step 3 named. Save the output beside the
+11. **Baseline with the skill loaded, and grade it.** Run the same task again, in a fresh context,
+    with the skill loaded, at the model and effort level step 4 named. Save the output beside the
     first run.
 
     Fill one row per numbered miss. Each row carries the number, whether the run still shows the
     miss, and the quoted text settling that call. Put the table in the record.
 
-    Where you cannot dispatch, follow the branch in step 3. It applies here word for word.
+    Where you cannot dispatch, follow the branch in step 4. It applies here word for word.
 
-11. **Check the mechanics.** Run `npm run audit -- <path>` over the draft, from the root of this
+12. **Check the mechanics.** Run `npm run audit -- <path>` over the draft, from the root of this
     plugin's repository. The command takes the path, so the draft need not sit in that repository.
     This settles every mechanical check once, so no later finding argues them again. Put the result
     in the record. Where the command cannot run, or runs without reaching your file, follow what
     `../../shared/lint.md` says and record what did not run.
 
-12. **Audit, and not by yourself.** Dispatch a fresh agent to audit the draft, using
+13. **Audit, and not by yourself.** Dispatch a fresh agent to audit the draft, using
     `auditing-skills`. Read the `## Objective` heading in the record again first. Where the draft
     no longer answers those words, say which words it dropped.
 
     Do not audit your own draft. You know what you meant each line to say, so you read the intent
     rather than the text. You then pass wording that a reader with no context would not pass.
 
-    Where you cannot dispatch, follow the branch in step 3. Put the audit findings in the record.
+    Where you cannot dispatch, follow the branch in step 4. Put the audit findings in the record.
 
 ## The gate
 
 Run the command and the audit yourself before you report anything. Do not hand a draft to the
 person with a request to check it.
 
-Read the step 10 table one row at a time.
+Read the step 11 table one row at a time.
 
 - The run still shows the miss. The skill does not address it.
 - The run no longer shows the miss. The skill addresses it.
@@ -243,10 +255,10 @@ Read the step 10 table one row at a time.
 Where the skill addresses no miss at all, it changes nothing. Do not keep it.
 
 Where the run with the skill shows a miss carrying no number, give it the next number. The skill
-introduced that one, so put it and the run's own reasoning into the skill. Then run steps 7 to 10
+introduced that one, so put it and the run's own reasoning into the skill. Then run steps 8 to 11
 again.
 
-The loop settles at the round of steps 7 to 10 that adds no new number and leaves every miss
+The loop settles at the round of steps 8 to 11 that adds no new number and leaves every miss
 addressed. The work is done when the loop settles, the command's result sits in the record, and
 the audit carries no blocking finding.
 
@@ -255,9 +267,10 @@ the audit carries no blocking finding.
 Stop at any of these, and report what you found.
 
 - The artifact test returns a class other than a skill, or a line reading `cannot tell`.
-- The person named no task and will not name one.
-- You cannot dispatch a subagent, or cannot read a rule file this skill names.
-- Two further rounds of steps 7 to 10 leave a numbered miss showing.
+- You can ask the person for a task, and they refuse to name one.
+- You cannot dispatch a subagent, or cannot read a rule file this skill names. Where you cannot
+  dispatch, follow the branch in step 4 first.
+- Two further rounds of steps 8 to 11 leave a numbered miss showing.
 - Any other point where you would have to assert something you cannot check.
 
 Retry a dispatch at most twice, and only after something changed. Re-sending the same prompt to the

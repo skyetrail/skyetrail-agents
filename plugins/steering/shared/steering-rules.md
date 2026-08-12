@@ -106,6 +106,12 @@ the other conditions say does not change that.
 The section order below is the order these sections should appear in the document being written.
 Some entries are about position, so check where a section appears, not only whether it appears.
 
+**This file and `./handoff-rules.md` describe a failing example and never write one out.** Each
+section in both shows the wording that passes. A failing example written as an instruction is a
+template, and a run that needs that section copies it. One run lifted a failing Finish example near
+verbatim, and its own record named the passing one as its model. Where an example must show the
+fault, the label sits inside the quoted line, so no copy leaves it behind.
+
 ## Outcome
 
 | Rule | Severity | Applies when |
@@ -140,9 +146,8 @@ half: whether the fact the agent needs is there at all.
 A list of kinds tells the reader that a kind not on the list is out of scope. The reader is right
 to read it that way. Write the test for membership first. Then give examples.
 
-Bad, because it reads as the whole set:
-
-> Review for injection: SQL, command, template, or path.
+The failing shape is a category name and then a bare list of kinds, with no membership test and no
+closing clause. A scope line that names injection and then lists four kinds of it is that shape.
 
 Good, because a reader can decide a case the list does not cover:
 
@@ -150,8 +155,8 @@ Good, because a reader can decide a case the list does not cover:
 > system interprets. SQL, shell commands, file paths, and markup returned to a browser are
 > examples, not the whole list.
 
-One reviewer read the first wording. It had already found a reflected injection. It filed that
-finding out of scope, because the wording did not name markup. Nothing about the list was wrong.
+One reviewer read a scope line of that shape. It had already found a reflected injection. It filed
+that finding out of scope, because the line did not name markup. Nothing about the list was wrong.
 The list was closed.
 
 **A trailing "or any other X" satisfies this rule.** A list that ends by generalising to the
@@ -198,10 +203,9 @@ scriptable property left is a count of the parts the work produced. The work can
 every part, so that count is a proxy. Write the check against the outcome the document states, and
 not against a count of what the work produced.
 
-Bad, because an agent that reads nothing outside the diff passes it:
-
-> Before you write the report, list every file the diff touched. Confirm your findings file holds
-> an entry for each one. A file missing from that list means the review is not finished.
+The failing shape is a check written against that count. In a code review it reads as one entry
+per changed file, with the file list as the measure of done. Every entry can be empty of the thing
+the review was for, and the count still comes out complete.
 
 Good, because the run that stops short is the run that fails it:
 
@@ -209,7 +213,7 @@ Good, because the run that stops short is the run that fails it:
 > Name each one, and what you concluded about it. An unnamed caller means the review is not
 > finished.
 
-One agent applied the first check. It filed an entry for every changed file, found nothing, and
+One agent finished on that count. It filed an entry for every changed file, found nothing, and
 missed a change that weakened a shared authentication helper. The check passed. A reader takes the
 finish check as the definition of done. The next reader of that check learns that reading outside
 the diff is no part of finishing.
@@ -236,9 +240,8 @@ the diff is no part of finishing.
 A label says which bucket a finding belongs in. The shape says what the agent is looking at on
 the screen, so it can recognise the case without already knowing it is there.
 
-Bad, because it names the bucket and leaves the reader to spot the case:
-
-> Report any secret written to a log.
+The failing shape is a bucket name and nothing else. "Secrets in logs" is a bucket name. An agent
+that does not already know which call leaks one still cannot find it.
 
 Good, because it says what the code looks like where the problem lives:
 
@@ -291,13 +294,11 @@ A sentence that states a property, which an auditor tests:
 Do not rewrite the second as "State the capability." That turns a property into an order, and the
 auditor then reports on its own writing instead of the target's.
 
-Bad, because a file cannot disagree with anything:
+A file cannot disagree with anything. These two versions differ only in the second sentence.
 
-> A second copy of that list drifts from the first. Then the two files disagree.
-
-Good, because it names what a reader meets:
-
-> A second copy of that list drifts from the first. An agent then loads two files that say
+> Bad: A second copy of that list drifts from the first. Then the two files disagree.
+>
+> Good: A second copy of that list drifts from the first. An agent then loads two files that say
 > different things.
 
 Forcing the active voice without naming a permitted actor is how a writer promotes the nearest

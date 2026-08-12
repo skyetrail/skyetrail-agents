@@ -15,9 +15,8 @@ skill that runs the audit. The stop conditions are one example, not the whole li
 Readers misread the rule about detail and summary most often. It is about what crosses back to
 the caller, not about how much the agent may write.
 
-Bad, because the caller now holds everything the agent read:
-
-> Report your findings.
+The failing shape is a report instruction naming neither a file nor a cap. A prompt asking only for
+the agent's findings is that shape. The caller then holds everything the agent read.
 
 Good, because the detail stays where it was produced and the caller gets what it needs to act:
 

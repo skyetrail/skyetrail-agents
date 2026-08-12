@@ -21,7 +21,8 @@ Then route on the class.
 - The class is anything else. Stop. Name the class and the deciding test, and name the skill that
   owns that class. `writing-skills` owns a skill for an agent that already holds this conversation.
 - A line in the block reads `cannot tell`. Stop and ask the person the question that file tells you
-  to ask. Do not write a prompt anyway.
+  to ask. Do not write a prompt anyway. Where you cannot ask, put that question in your report and
+  stop there.
 
 Where that path does not resolve, stop and say which path failed. Do not settle the class from
 memory, and do not search the disk for another copy of the test. A copy you find carries some other
@@ -48,6 +49,13 @@ prompt carries the rule and none of the history.
   no line forbidding the agent to weaken a check. Step 4 below settles each condition on its own.
 - **A prompt tuned on shape alone.** An agent following the rule files cut correct subject content
   that the same model wrote with no rule file loaded. Step 6 below exists for that.
+- **A finish check copied out of a rule file's bad example.** A run read a worked pair, named the
+  good half in its own audit, and shipped the bad half near verbatim. The bad half was a usable
+  sentence, so it read as a template. Step 5 below states the test the author runs on the check
+  itself.
+- **An instruction to ask the person, with no branch for a run that cannot ask.** Six runs met two
+  such instructions. None obeyed either. Every instruction in this skill that asks the person now
+  carries a branch for a run that cannot ask.
 
 ## Compose at dispatch
 
@@ -92,6 +100,11 @@ skill to cover it.
 ## Reused, or one call
 
 Count the call sites. Where the person names none, ask. Do not assume.
+
+**Where you cannot ask.** Count one call site, and write `call sites not supplied, counted as one`
+into the record. Then take the one-call-site branch below. Say in your report what a second call
+site changes. The prompt then becomes a template, and someone runs it twice on one input. Name that
+as a caller obligation.
 
 - **Two or more call sites.** The prompt is a template. Run the filled prompt twice on one input,
   at one model and one effort level. Where the two reports differ in what they found, the prompt is
@@ -160,7 +173,7 @@ writing-agents
 [ ] 2  Objective and facts in the record, with the origin of each fact
 [ ] 3  Call sites counted; harness shape and dependency pattern named
 [ ] 4  Prompt written; every condition settled by its own test; nothing in it the agent cannot reach
-[ ] 5  Statuses, caller obligations, retry limit, partial-work rule
+[ ] 5  Finish check: no passing run stops short; statuses and obligations; retry limit; partial work
 [ ] 6  Nothing correct about the subject dropped; every deferral carries a default
 [ ] 7  Holes marked; grep printed nothing; lint result recorded
 [ ] 8  Independent audit dispatched; findings in the record
@@ -179,6 +192,11 @@ obligation`. Write both into the report instead.
    you go on. Write the person's request into the record word for word, under a heading
    `## Objective`. Name that file in your report. The record also holds the facts below and the
    result of every check this workflow names.
+
+   **Where you cannot ask for a path.** A scheduled run and a subagent dispatch are two such cases,
+   not the whole list. Write `no path supplied` into the record. Then make one directory for this
+   work, and put the record and the prompt in it. Name that directory in your report, and say the
+   person chooses the final path.
 
    Then establish each fact the prompt will assert. Use a script for anything a script determines.
    Use an agent only for what needs an assessment. Use neither for what you already know. Record
@@ -216,13 +234,46 @@ obligation`. Write both into the report instead.
    A list ending in "or any other X" is closed and passes. A list that just stops is not. The Scope
    section of `../../shared/steering-rules.md` carries the rule, a worked pair, and what it cost to
    learn.
-5. **Name the statuses.** Take the four core statuses from `../../shared/dispatch-protocol.md`
-   unchanged, with the caller's obligation for each. Add a status only where the caller must do
-   something no core status asks for, and write that action beside it. Two statuses taking one
-   caller action are one status. Name the retry limit, and write two retries per agent into the
-   prompt where nothing else sets it. Say what happens to partial work when a run stops.
+5. **Write the finish check, then name the statuses.** The finish check settles when the agent
+   stops, so write it against the outcome the prompt states. Never write it against a count of the
+   parts the work produced. The work can be incomplete at every part, so that count passes on
+   unfinished work.
+
+   Then test the check you wrote. Describe one run that passes it and stops short of the outcome.
+   Where you can describe such a run, the check fails. Rewrite it and test it again. Where you can
+   describe none, the check holds. Put the run you described, or the line saying you found none,
+   into the record.
+
+   Run that test on every sentence saying when the work is done. The outcome statement, the finish
+   check, and each status reporting success are three such places, not the whole set. A prompt
+   passing the test in one place and failing it in another teaches the failing one, because the
+   agent reads all three. Run the test as well on any check you copied from an example in a rule
+   file. A copied sentence reaches your prompt without the words around it, so only the test
+   catches a failing one.
+
+   Then take the four core statuses from `../../shared/dispatch-protocol.md` unchanged, with the
+   caller's obligation for each. Add a status only where the caller must do something no core
+   status asks for, and write that action beside it. Two statuses taking one caller action are one
+   status. Name the retry limit, and write two retries per agent into the prompt where nothing else
+   sets it. Say what happens to partial work when a run stops.
 6. **Keep what you know about the subject.** Open `../../shared/authoring.md` at the section headed
    "What the rule files carry and what they do not". Run that check against the draft prompt.
+
+   A run performed that check and still shipped a prompt with subject matter missing. So run these
+   two tests as well. Each one names a shape you can see in the draft.
+
+   - **The unit of work is smaller than the outcome needs.** List every sentence telling the agent
+     what to read. Name the unit each one gives: a hunk, a file, a caller, or any other span the
+     agent opens. Then name the unit the outcome needs, and widen any sentence giving a smaller
+     one. One prompt told a reviewer to read the changed hunks. The same model with no rule file
+     loaded told it to open the whole file. A defect can depend on context outside the changed
+     lines. Compare the unit against the finish check from step 5. An agent meeting the smaller
+     unit in both places reads it as the whole work.
+   - **The list of cases is shorter than the one you would write unaided.** Write your own list
+     first, from what you know about the subject, and write it before you read the draft's list.
+     Then compare the two. Put back every case your list holds and the draft does not. One security
+     review prompt dropped eleven vulnerability classes that the same model named with no rule file
+     loaded. XSS, IDOR, and TOCTOU were three of them.
 
    Then read the prompt once more for the three losses a hand-off takes and a skill does not. The
    agent reading it cannot ask you anything, so a line you leave out stays out.
@@ -322,7 +373,8 @@ Stop at any of these, and report what you found.
 - The artifact test returns a class other than a prompt, or a line reading `cannot tell`.
 - A fact the prompt asserts is not established, or a required hole holds no value.
 - You cannot read a rule file this skill names.
-- The person will not name the call sites.
+- The person will not name the call sites. A run with nobody to ask takes the branch in "Reused, or
+  one call" instead.
 - Any other point where the prompt would assert something you cannot supply.
 
 Retry a dispatch at most twice per agent, and only after something changed. Re-sending the same
@@ -349,6 +401,10 @@ A part varies where two call sites you can name would need different text there.
 call sites in the record. Where only one call site exists, treat every part naming a path, a file,
 a repository, a branch, or a person as varying. Ask the person before you treat anything else as
 varying.
+
+**Where you cannot ask.** Treat nothing else as varying. Then name in your report each part you
+left in the template body, so the person can call it varying later. A hole you add unasked reaches
+every call site, and step 7 of the workflow above fixes the set of holes.
 
 The invariant part becomes the template body. The varying part becomes named holes.
 
