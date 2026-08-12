@@ -59,12 +59,12 @@ Nothing was removed from `outcomes/sonnet-exec/`, `outcomes/ste-rewrite/`, `outc
 
 ## Where the removed files still live
 
-Commit `0eeeb2665eac690a5e24062f20e66dad50f3750c`, the commit before the deletion. Every file was
-removed with `git rm`, so all ten are in history and none of the reasoning above is lost. To read
+Commit `b4bc3c5`, the commit before the deletion. Every file was
+removed with `git rm`, so all 103 are in history and none of the reasoning above is lost. To read
 one:
 
 ```
-git show 0eeeb26:plugins/steering/tests/outcomes/external-probe/audits/writing-plans.md
+git show b4bc3c5:plugins/steering/tests/outcomes/external-probe/audits/CORRECTIONS.md
 ```
 
 ## Citations changed by the removal
