@@ -51,8 +51,13 @@ prompt carries the rule and none of the history.
   that the same model wrote with no rule file loaded. Step 6 below exists for that.
 - **A finish check copied out of a rule file's bad example.** A run read a worked pair, named the
   good half in its own audit, and shipped the bad half near verbatim. The bad half was a usable
-  sentence, so it read as a template. Step 5 below states the test the author runs on the check
-  itself.
+  sentence, so it read as a template. Deleting the example did not stop it. Three later runs wrote
+  the same shape with no example in front of them.
+- **A test the author could overrule.** Step 5 asked the author to describe a run that passes the
+  check and misses the outcome. One run described such a run, kept the check, and called the gap
+  disclosed. Another kept the shape and moved its trigger onto what the agent read, so a run that
+  opens no file passed. Step 5 now names the failing shapes and forbids them, and it leaves a
+  failed test two exits: a rewrite, or a stop.
 - **An instruction to ask the person, with no branch for a run that cannot ask.** Six runs met two
   such instructions. None obeyed either. Every instruction in this skill that asks the person now
   carries a branch for a run that cannot ask.
@@ -173,7 +178,7 @@ writing-agents
 [ ] 2  Objective and facts in the record, with the origin of each fact
 [ ] 3  Call sites counted; harness shape and dependency pattern named
 [ ] 4  Prompt written; every condition settled by its own test; nothing in it the agent cannot reach
-[ ] 5  Finish check: no passing run stops short; statuses and obligations; retry limit; partial work
+[ ] 5  Finish check: no forbidden shape; no passing run stops short; no correctness claim; statuses; retries; partial work
 [ ] 6  Nothing correct about the subject dropped; every deferral carries a default
 [ ] 7  Holes marked; grep printed nothing; lint result recorded
 [ ] 8  Independent audit dispatched; findings in the record
@@ -235,21 +240,54 @@ obligation`. Write both into the report instead.
    section of `../../shared/steering-rules.md` carries the rule, a worked pair, and what it cost to
    learn.
 5. **Write the finish check, then name the statuses.** The finish check settles when the agent
-   stops, so write it against the outcome the prompt states. Never write it against a count of the
-   parts the work produced. The work can be incomplete at every part, so that count passes on
-   unfinished work.
+   stops. Write it in the form the Finish section of `../../shared/steering-rules.md` gives for the
+   kind of work this prompt steers.
 
-   Then test the check you wrote. Describe one run that passes it and stops short of the outcome.
-   Where you can describe such a run, the check fails. Rewrite it and test it again. Where you can
-   describe none, the check holds. Put the run you described, or the line saying you found none,
-   into the record.
+   A finish check fails where the agent's own choices decide whether it passes. What the agent
+   writes and what it opens are two such choices, not the whole set. Three shapes of that kind sit
+   in prompts this skill produced. Write none of the three, whatever else the check says, and
+   whatever the test below returns. A check matching one of them is the wrong check, so delete it
+   and write another.
 
-   Run that test on every sentence saying when the work is done. The outcome statement, the finish
-   check, and each status reporting success are three such places, not the whole set. A prompt
-   passing the test in one place and failing it in another teaches the failing one, because the
-   agent reads all three. Run the test as well on any check you copied from an example in a rule
-   file. A copied sentence reaches your prompt without the words around it, so only the test
-   catches a failing one.
+   - **The measure is a tally of the artifact's own parts.** One entry per changed file, one line
+     per ticket, and one paragraph per section are three examples. The work can be empty at every
+     part, and the tally still comes out whole.
+   - **The trigger is something the agent chose.** "Fails: name every file you read" and "fails:
+     list each check you ran" are two examples, labelled inside the quote so a copy carries the
+     label. An agent that opens nothing satisfies either one with nothing to name.
+   - **An empty run passes it.** Take a run that opens no file, finds nothing, and writes nothing.
+     Where that run passes, the check measures nothing.
+
+   Trigger the check on the input instead. The input is the material the prompt names for the agent
+   to read. A property of that material holds or fails before the agent acts, so no later choice
+   moves it.
+
+   Then test the check that survives. Describe one run that passes it and stops short of the
+   outcome. Two things follow that description, and no third.
+
+   - **You described such a run.** Rewrite the check so that run fails it. Then test the new check
+     the same way.
+   - **You described none.** The check holds. Write that line into the record.
+
+   Recording the gap is not a third exit. One run described the failing run, kept its check, and
+   wrote that it disclosed the gap rather than hiding it. The agent reading that prompt still holds
+   the same check, and the caller still gets the same unfinished work. Where three rewrites all
+   fail the test, stop. "When to stop" below covers that case, because the prompt would otherwise
+   assert a finish you cannot supply. Name the outcome and every check you tried.
+
+   Write into the record each check you deleted, the shape or the run that killed it, and the check
+   that survived.
+
+   Read the three shapes and run the test against every sentence saying when the work is done. The
+   outcome statement, the finish check, and each status reporting success are three such places,
+   not the whole set. A prompt passing in one place and failing in another teaches the failing one,
+   because the agent reads all three. Read and test any check you copied from an example in a rule
+   file. A copied sentence reaches your prompt without the words around it.
+
+   A passing check settles that the agent covered the input the method names. It settles nothing
+   about whether the result is right. So no sentence in the prompt says that a passing check makes
+   the result correct, the finding set whole, or the material clean. Write one line beside the
+   statuses saying what the check does not establish.
 
    Then take the four core statuses from `../../shared/dispatch-protocol.md` unchanged, with the
    caller's obligation for each. Add a status only where the caller must do something no core
