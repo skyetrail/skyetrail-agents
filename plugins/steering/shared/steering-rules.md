@@ -19,8 +19,10 @@ the document needs work before use. An Important failure does not stop use. The 
 before the document changes again. Mention an Advisory item once. It never blocks.
 
 The default outcome for every rule here is pass. Record a fail only where you can point at the text
-that breaks the rule. This default holds for any audit that reads this file, whichever skill runs
-it. The skill running the audit says how to mark and count what you record.
+that breaks the rule. Another reader then holds the same text against the same rule, and reaches the
+same answer. A count with nothing quoted behind it states one reading, and no other reader repeats
+it. This default holds for any audit that reads this file, whichever skill runs it. The skill running
+the audit says how to mark and count what you record.
 
 A rule about the position or wording of a section applies only where that section exists. Where the
 section is missing, the missing section is the finding. The rules that depend on it are then not
@@ -106,6 +108,12 @@ the other conditions say does not change that.
 The section order below is the order these sections should appear in the document being written.
 Some entries are about position, so check where a section appears, not only whether it appears.
 
+**This file and `./handoff-rules.md` write out no failing example a reader could use as an
+instruction.** Each section in both shows the wording that passes. A failing example written as an
+instruction is a template, and a run that needs that section copies it. One run lifted a failing
+Finish example near verbatim, and its own record named the passing one as its model. Where a short
+phrase must show the fault, the label sits inside the quoted line, so no copy leaves it behind.
+
 ## Outcome
 
 | Rule | Severity | Applies when |
@@ -123,8 +131,9 @@ Some entries are about position, so check where a section appears, not only whet
 | A document that only states criteria names at least one document that applies them. | Important | always |
 | Context sits above the method, so it is read before a plan is formed. | Advisory | always |
 
-The lint script resolves whether a path exists. Read that half from the lint record. Judge the other
-half: whether the fact the agent needs is there at all.
+The lint script resolves whether a path exists. Read that half from the lint record. That record
+names the command and the file that command read, so another reader runs the same line. Judge the
+other half: whether the fact the agent needs is there at all.
 
 ## Scope
 
@@ -140,9 +149,8 @@ half: whether the fact the agent needs is there at all.
 A list of kinds tells the reader that a kind not on the list is out of scope. The reader is right
 to read it that way. Write the test for membership first. Then give examples.
 
-Bad, because it reads as the whole set:
-
-> Review for injection: SQL, command, template, or path.
+The failing shape is a category name and then a bare list of kinds, with no membership test and no
+closing clause. A scope line that names injection and then lists four kinds of it is that shape.
 
 Good, because a reader can decide a case the list does not cover:
 
@@ -150,8 +158,8 @@ Good, because a reader can decide a case the list does not cover:
 > system interprets. SQL, shell commands, file paths, and markup returned to a browser are
 > examples, not the whole list.
 
-One reviewer read the first wording. It had already found a reflected injection. It filed that
-finding out of scope, because the wording did not name markup. Nothing about the list was wrong.
+One reviewer read a scope line of that shape. It had already found a reflected injection. It filed
+that finding out of scope, because the line did not name markup. Nothing about the list was wrong.
 The list was closed.
 
 **A trailing "or any other X" satisfies this rule.** A list that ends by generalising to the
@@ -180,36 +188,108 @@ category is hard to recognise.
 
 | Rule | Severity | Applies when |
 | --- | --- | --- |
-| A check the agent can run itself is named, and its result settles whether the work is done. | Blocking | changes something |
-| No run that passes the named check leaves the outcome unreached. | Blocking | changes something |
-| The instruction says the agent runs the check itself before reporting. | Important | describes work |
+| The document names a check the agent runs itself, and the work ends where that check passes. | Blocking | describes work |
+| A count of the parts the work produced does not settle that check. | Blocking | describes work |
+| A check that ends the work names the artifact the caller received as its subject. | Blocking | describes work |
+| The document names what the caller runs on the delivered artifact to reach the same result. | Blocking | describes work |
+| The document fixes the subject of every gate, so no later choice moves it. | Blocking | describes work |
+| Where the caller cannot reach the same result, the document calls it a report, and not a gate. | Blocking | describes work |
+| The document ends the work on a gate, and never on a report. | Blocking | describes work |
+| What the check covers comes from the material, and not from what the agent decides, writes, or opens. | Blocking | advisory |
+| What settles the check is a value another reader confirms against the material. An entry, a verdict, and a count settle nothing. | Blocking | advisory |
+| The document states that a pass means the agent covered what the check names. No sentence in it says a pass makes the result correct, the finding set whole, or the material clean. | Blocking | advisory |
 | The finish criteria are specific enough that two runs would return the same result. | Blocking | advisory |
 | The instruction says what evidence each finding must carry. | Important | advisory |
+| The instruction says the agent runs the check itself before reporting. | Important | describes work |
+| The document names the state the work writes, and what any reader opens to see that state. | Important | changes something |
 | The finish check sits late in the document, near where the agent will decide whether to stop. | Advisory | describes work |
 
-Test the named check like this. Describe one run that passes the check and stops short of the
-outcome. Where you can describe such a run, record a fail. Where you cannot, the check holds. The
-rule that two runs return the same result asks a different question. A check that passes on
-incomplete work passes the same way in both runs.
+**A gate is a check whose pass ends the work. A report is a statement of what one run observed.**
+One question separates them. Can the caller run this check on the artifact it received, and get the
+answer the run recorded? Where the answer is yes, the document names it a gate. Where the answer is
+no, the document names it a report, and the work does not end there.
 
-A check the agent can run itself is not always a script. A question the agent answers by reading
-what it produced is one too. Where the work is a judgement, no script settles it, and the
-scriptable property left is a count of the parts the work produced. The work can be incomplete at
-every part, so that count is a proxy. Write the check against the outcome the document states, and
-not against a count of what the work produced.
+One skill held its work back until the run dispatched a subagent. Only that run saw the dispatch, so
+the caller could believe the claim or not, and had nothing else. Six runs failed that gate, and six
+delivered a draft rather than the artifact. The same round ran one lint command on the delivered
+file, and that result came out the same every time. A command both parties run on one named file is
+the shape that holds.
 
-Bad, because an agent that reads nothing outside the diff passes it:
+**The subject is the artifact the caller receives, and the document names it.** One run could not
+satisfy a no-holes check on its draft. It wrote a second file, ran the check on that file, and
+recorded the pass. The check was real, and the answer was true of a file. It was not true of the
+artifact the caller got. Another run copied its draft to a path built to satisfy a name check,
+audited the copy, and deleted it.
 
-> Before you write the report, list every file the diff touched. Confirm your findings file holds
-> an entry for each one. A file missing from that list means the review is not finished.
+The coverage row and the subject rows read two different things. Coverage says which items the check
+reaches. The subject says which artifact the check opens. A check carries the right coverage and
+still opens the wrong file.
 
-Good, because the run that stops short is the run that fails it:
+The Failure section forbids weakening a check. A named subject is what makes that move visible,
+because the caller opens the same artifact and reads the same answer.
+
+Good, because the caller opens the named file and reaches the same answer:
+
+> Write the dispatch prompt to `dispatch.md`. The gate is that this file exists and carries every
+> field named in Composition. The caller opens `dispatch.md` and reads the same fields. Whether a
+> dispatch ran is a report, and the work does not end on it.
+
+One row above asks whether two runs return the same result. No auditor watches two runs, so hold
+that row to the text: the criteria name the artifact and the values read from it. Three isolated
+runs wrote three different finish checks, and each recorded its own as reproducible.
+
+Two questions sit in a finish check, and one check answers only one of them. Is the work finished?
+Is the work right? A check the agent runs answers the first. For advisory work the agent runs no
+check that settles the second. So the rows conditioned on **advisory** ask for a check on what the
+agent covered, and for a sentence saying what a pass leaves open.
+
+An earlier version of this section asked for a check whose result settles whether the work is done.
+For advisory work no such check exists. An author asked for a thing that does not exist supplies the
+nearest thing that does. That thing is a count of the parts the work produced. Three runs wrote that
+shape, and the count came out whole while the review was empty.
+
+**The count row is conditioned on describes work, so it holds for work that edits material too.** A
+prompt to migrate every call site can measure itself by one report line per call site. Each line can
+carry no edit, and the tally still comes out whole. The trap is the tally, and not the kind of work
+under it.
+
+**These rows are properties of the text, and not a test the author runs.** An earlier fix asked the
+author to describe a run that passes the check and stops short. A run applied that test, described
+such a run, and kept the check. The test still helps an author who writes a check, and it settles no
+row here. An auditor settles every row above without the author's agreement.
+
+**A property of the material holds before the agent acts, so no later choice moves it.** Where the
+coverage comes from the agent's own findings, a run that finds nothing passes with an empty list.
+One run took a passing example and moved its coverage onto the agent's findings that way. What the
+agent opens and what the agent writes are two more choices of that kind, and not the whole set.
+
+**A person holding the material looks at the value the check names and sees whether it is right.** A
+caller's name, a file and a line, and a quoted line are such values. An entry is not one, and a
+count of entries is not one, because neither says anything about the material. A verdict is not one,
+because confirming a verdict means doing the judgement again. A conclusion beside the value is
+welcome, and the value is the part that bites.
+
+**A stated gap is not a fix.** One row asks the document to say what a pass leaves open. That row is
+not a place to record that the check misses the outcome. One run described a run that passes its own
+check and misses the vulnerability. It kept the check, and wrote that the gap was disclosed rather
+than hidden. Judge every row above on the text it names, because a sentence about a weakness leaves
+the weakness where it is.
+
+**A count of the records written answers the row about written state.** It answers no other row
+here. A write that landed and a judgement that finished are two facts, and one never stands for the
+other.
+
+A check the agent runs itself is not always a script. A question the agent answers by reading the
+material is one too.
+
+Good, because the material fixes what it covers, and a run that opens no file fails it:
 
 > Where the diff touches a shared library, an auth path, or a config, read the other callers.
 > Name each one, and what you concluded about it. An unnamed caller means the review is not
-> finished.
+> finished. A pass here means you read every caller. It says nothing about whether the change is
+> safe.
 
-One agent applied the first check. It filed an entry for every changed file, found nothing, and
+One agent finished on a count instead. It filed an entry for every changed file, found nothing, and
 missed a change that weakened a shared authentication helper. The check passed. A reader takes the
 finish check as the definition of done. The next reader of that check learns that reading outside
 the diff is no part of finishing.
@@ -236,9 +316,8 @@ the diff is no part of finishing.
 A label says which bucket a finding belongs in. The shape says what the agent is looking at on
 the screen, so it can recognise the case without already knowing it is there.
 
-Bad, because it names the bucket and leaves the reader to spot the case:
-
-> Report any secret written to a log.
+The failing shape is a bucket name and nothing else. "Secrets in logs" is a bucket name. An agent
+that does not already know which call leaks one still cannot find it.
 
 Good, because it says what the code looks like where the problem lives:
 
@@ -291,13 +370,11 @@ A sentence that states a property, which an auditor tests:
 Do not rewrite the second as "State the capability." That turns a property into an order, and the
 auditor then reports on its own writing instead of the target's.
 
-Bad, because a file cannot disagree with anything:
+A file cannot disagree with anything. These two versions differ only in the second sentence.
 
-> A second copy of that list drifts from the first. Then the two files disagree.
-
-Good, because it names what a reader meets:
-
-> A second copy of that list drifts from the first. An agent then loads two files that say
+> Bad: A second copy of that list drifts from the first. Then the two files disagree.
+>
+> Good: A second copy of that list drifts from the first. An agent then loads two files that say
 > different things.
 
 Forcing the active voice without naming a permitted actor is how a writer promotes the nearest
