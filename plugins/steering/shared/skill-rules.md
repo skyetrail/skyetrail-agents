@@ -31,7 +31,7 @@ things.
 | --- | --- |
 | The name reads as a gerund or a clear noun phrase. | Important |
 | The name follows the same pattern as the other skills in its collection. | Important |
-| The description states the capability, in the words someone looking for it would use. | Blocking |
+| The description states the capability, in the words someone looking for it would use. | Important |
 | The description states the conditions that should trigger it. | Blocking |
 | The description includes the file types, error text, and casual phrasings people actually type. | Important |
 | The description does not summarise the workflow or the process. | Important |
