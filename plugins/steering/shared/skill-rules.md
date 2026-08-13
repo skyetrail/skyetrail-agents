@@ -35,7 +35,6 @@ things.
 | The description states the conditions that should trigger it. | Blocking |
 | The description includes the file types, error text, and casual phrasings people actually type. | Important |
 | The description does not summarise the workflow or the process. | Important |
-| The description speaks in the third person. | Important |
 
 Skills undertrigger more often than they overtrigger. So a description that reads as slightly
 insistent is closer to right than one that reads as neutral.

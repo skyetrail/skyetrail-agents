@@ -86,9 +86,17 @@ The four items built to test that rule returned 35 of 36 across every arm, inclu
 break it. Our own rule says a Blocking severity needs a named consequence. This one has never named
 one. Lowered to Important.
 
-**The third-person rule is unresolved and confounded.** The only comparison above the floor runs
-against it, and it cannot be separated from the imperative mood or from breaking form with the
-surrounding collection. Both plausibly hurt. Settling it needs a fourth arm that holds mood constant.
+**The third-person rule is cut.** Pete cut it on 2026-08-12, after this result.
+
+The cut does not rest on the comparison that runs against the rule. That comparison carries two
+confounds, so it does not show the pronoun causing the loss.
+
+It rests on this: two real tests, fifteen runs between them, have failed to find the rule helping. A
+rule that names no consequence across two measurements does not earn a place in a file an agent
+loads on every run.
+
+The capability rule survived the same evidence at a lower severity. A capability statement carries
+information a reader uses. Grammatical person does not.
 
 ## What a third test would need
 

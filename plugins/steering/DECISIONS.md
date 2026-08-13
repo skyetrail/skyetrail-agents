@@ -219,6 +219,25 @@ both severities and deleted the fabricated runs. Stating the capability is Block
 person is Important. Do not change a severity on an argument. That is what the fabrication already
 got wrong once.
 
+**The third-person rule is cut. 2026-08-12.** Trigger test 2 ran nine times across three arms. The
+arm written to this rule scored lowest, 52 of 60 against 57 for the arm that breaks both rules under
+test. That comparison is the only one in the test above its own detection floor.
+
+The cut does not rest on that comparison, because two confounds sit on it and both were named before
+the run. The imperative travels with the second person. And all six distractor descriptions open
+"Use when", so the arm following our rule reads as foreign to the collection around it. The result
+does not show that the pronoun causes the loss.
+
+The cut rests on this instead: two real tests, nine runs and six runs, have failed to find the rule
+helping. A rule that names no consequence across two measurements does not earn a place in a file an
+agent loads on every run. The capability rule survived on the same evidence with a lower severity,
+because a capability statement carries information a reader uses. Grammatical person does not.
+
+This is the second time both rules were cut. The first cut, on 2026-08-01, rested on six run files
+written by hand and analysed as measurements. This one rests on nine recorded runs, a pilot that
+gated them, and a scorer that refused the verdict its own numbers invited. The standing instruction
+above still holds: do not change a severity on an argument.
+
 **The trigger test ran on 2026-08-11, and it cannot answer the question.** Earlier entries here said
 nobody had run it. Both arms scored 36 of 36, with zero variance inside an arm. The design
 pre-committed to reading no difference as grounds for cutting a blocking rule, and the scorer
