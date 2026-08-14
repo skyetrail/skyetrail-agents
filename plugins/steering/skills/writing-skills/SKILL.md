@@ -22,6 +22,10 @@ skill by moving that inner directory to the install path, so nothing installs it
 install path is the directory the person named. Where they named none, use `skills/<skill-name>/`
 under the plugin holding the record.
 
+The skill directory holds `SKILL.md` and a `reference/` directory. Every reference file sits in
+that directory. Three runs of one task named that directory two ways, and no run found a name to
+follow.
+
 Where the skill already exists, edit the installed SKILL.md where it sits. That file is already
 installed, so there is nothing to hold back.
 
@@ -132,10 +136,10 @@ delivered: <absolute path of the SKILL.md you wrote>
 [ ] 4  Baseline dispatched with no skill loaded; output saved
 [ ] 5  Misses numbered; each one quoted from that saved output
 [ ] 6  Description written against the Discovery table
-[ ] 7  Body written against the section order and the rule tables; every condition settled by its own test; draft read against the step 3 list; no authoring history; a default for every deferred value
+[ ] 7  Body written against the section order and the rule tables; every condition settled by its own test; draft read against the step 3 list; no authoring history; every deferred value carries a default the reader acts on alone
 [ ] 8  Every numbered miss addressed, and nothing else
 [ ] 9  Nothing correct from the step 4 output dropped
-[ ] 10 Detail moved into reference files
+[ ] 10 Detail moved into reference files, in the directory "What you deliver" names
 [ ] 11 Baseline dispatched with the skill loaded; output saved; table filled
 [ ] 12 `npm run audit` run on the delivered path; the printed path matches
 [ ] 13 Independent audit dispatched; findings saved
@@ -218,9 +222,9 @@ ticks all of them.
    against every rule in the Discovery table of `../../shared/skill-rules.md`. Open that file and
    work down the table.
 
-7. **Write the body.** Order the sections the way `../../shared/steering-rules.md` orders its own.
-   Open it and read the section list. A copy of that list here drifts from it, and an agent then
-   reads two lists that differ.
+7. **Write the body.** Take the section order and each heading's text from
+   `../../shared/steering-rules.md`. Open it and read the section list. A copy of that list here
+   drifts from it, and an agent then reads two lists that differ.
 
    Write the body against every rule in that file, and against the Boundary and Content tables of
    `../../shared/skill-rules.md`. Open both and work down them. Write every sentence against
@@ -244,9 +248,18 @@ ticks all of them.
    of a prompt like this one treated ...", which the receiving agent could not resolve.
 
    Give a default for every value the body or a reference file leaves to the reader's own setup. A
-   window in days, a severity scale, and a naming convention are examples, not the whole list.
-   Write the value, then say the reader may set another. A pointer to the team's own window is dead
-   where the team has none. A default the reader may replace is not an invented fact.
+   window in days, a severity scale, a set of labels, and a naming convention are examples, not the
+   whole list.
+
+   The default is a value the reader acts on alone. Write `7 days`, and not "the window your team
+   uses". A sentence telling the reader to ask a person or a team is not a default, because the
+   reader stops there. Write the value, then say the reader may set another. A default the reader
+   may replace is not an invented fact.
+
+   Where the deferred thing is a set, name every member and the test that assigns each one. A
+   member name settles nothing alone, because the reader still picks by feel. Two runs of one task
+   left the severity scale to the reader. An unaided run of that task gave four tiers, each with
+   the test that assigns it.
 
    Read the draft against the subject list step 3 wrote into the record, before you leave this
    step. Name every instruction in the draft that came from your own knowledge of the subject
@@ -270,8 +283,11 @@ ticks all of them.
 
 10. **Move detail into reference files.** Move a passage one step needs and the other steps do not.
     Keep a passage every step needs. A rule table, a worked example, and a set of cases are the
-    kinds moved most, not the whole list. `../../shared/skill-rules.md` sets how you arrange a
-    reference file.
+    kinds moved most, not the whole list. Open `../../shared/skill-rules.md` and work down its
+    rules for reference files. They set how you arrange the file you move a passage into.
+
+    The section headed "What you deliver" names the directory every reference file goes in. Three
+    runs of one task split the detail three ways.
 
     Write each pointer as an instruction carrying the path, at the point the reader needs it. A
     reader skips a bare "see the reference", and then works without the passage entirely. Make the

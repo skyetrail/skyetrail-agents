@@ -55,6 +55,8 @@ cannot tell whether a name reads as a clear noun phrase. So read the rule as wel
 | Rule | Severity |
 | --- | --- |
 | The first lines say what the skill produces, before any steps. | Important |
+| Where the skill produces a file, it states that file's name. The name is a literal, or a pattern over the skill's inputs. | Important |
+| Where the skill carries a section that `./steering-rules.md` names, its heading is that file's heading text. | Important |
 | Nothing in the skill explains something the model would already know. | Blocking |
 | Content that would not change what an agent does is absent. | Important |
 | The skill uses one term for one thing throughout. | Important |
@@ -62,6 +64,7 @@ cannot tell whether a name reads as a clear noun phrase. So read the rule as wel
 | The skill does not document a constraint that a script or a regex could enforce instead. | Important |
 | Every example carries real input and real output, rather than a placeholder. | Important |
 | Each step in a workflow names one action the reader can carry out without guessing. | Important |
+| A default that names a set of values also carries the test that assigns each member. | Important |
 | A workflow whose steps a reader could lose track of carries a checklist. | Advisory |
 
 Read each paragraph. Ask what an agent does differently after reading it. If the answer is
@@ -93,10 +96,12 @@ run.
 | --- | --- |
 | Every reference is one hop from the SKILL.md that names it. | Blocking |
 | Detail sits in reference files rather than the front file. | Important |
+| Content sits in a reference file where a reader needs it for one case and not others. | Important |
 | Material used to test the skill is not reachable from it. So it never loads with it. | Important |
 | No reference file instructs the reader to ignore or skip part of itself. Content that one caller must skip is a separate file. | Important |
 | Every bundled file's name says what the file holds. | Important |
 | Directories group files by domain, so a run loads only the domain it needs. | Important |
+| Every reference file sits under a directory named `reference/`. | Important |
 
 A line cap on the front file is the command's proxy for the detail rule. A front file under the cap
 can still carry the detail, so read the rule as well as its record.

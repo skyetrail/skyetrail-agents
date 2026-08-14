@@ -322,14 +322,17 @@ rule exists and the runs do not all follow it.
 
 ## Still open
 
-**Structure varies, and no rule covers it. 2026-08-12.** Zero of three runs agree on structure, on
-each fixture. Five gaps: heading text, the reference directory name, a file count, a default value,
-and a filename. Every structural difference traces to an absent rule rather than to a permitting
-sentence. The remaining variance is a gap in the rules, and not a fault in them.
+**Structure varies. Four of the five gaps now carry a rule. 2026-08-13.** Zero of three runs agree
+on structure, on each fixture. Five gaps: heading text, the reference directory name, a file count,
+a default value, and a filename. Rules now cover heading text, the reference directory name, the
+reason a passage sits in a reference file, and a set default. No rule fixes a scalar default value,
+because the value belongs to the subject and not to the rules. No rule names the file a hand-off
+prompt is delivered at, because `shared/skill-rules.md` reaches no hand-off document. Nothing
+measures the four new rules yet. The next step is the baseline loop.
 
-**Severity tiers are absent. 2026-08-12.** The unaided run names the signal that assigns each
-tier. One skilled run matches it. Two give no tiers at all, so an agent reading either has no scale
-to pick from.
+**Severity tiers are absent. 2026-08-12.** The unaided run names the test that assigns each tier.
+One skilled run matches it. Two give no tiers at all, so an agent reading either has no scale to
+pick from. The Content table now carries the rule. No run has met it yet.
 
 **The skills strip domain content. 2026-08-11, still open.** A Sonnet 5 round found `writing-skills`
 removing correct, customer-facing content that the same model produced with nothing loaded. A
