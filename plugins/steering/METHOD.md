@@ -27,6 +27,12 @@ Compare the delivered artifacts, not the runs' accounts of themselves.
 **Audit last, and expect little.** An agent reads a file against the rule files and reports findings
 by severity. That measures conformance. It cannot see whether the file works.
 
+**Run the script check on both sides, before any audit.** `npm run audit -- <path>` reads a
+SKILL.md or a produced prompt for what wording cannot fake, and a caller re-runs it on what it
+received. Every check in it names the measured run that put it there, and a finding it reports is a
+defect rather than an opinion. `npm run lint` runs the same script over every skill in the
+repository together with Vale, so a style finding blocks the build. Practice 10 states the limit.
+
 ### The executing model replaced the audit
 
 This project audited its own files against its own rules across four rounds. Each round cleared the
