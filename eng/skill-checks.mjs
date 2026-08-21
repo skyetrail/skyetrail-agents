@@ -201,12 +201,29 @@ function tickedLines(ctx) {
       }
     });
   };
+  const scanDir = (dir) => {
+    let names = [];
+    try { names = fs.readdirSync(dir); } catch { return; }
+    for (const name of names) {
+      const f = path.join(dir, name);
+      if (f !== ctx.file && name.endsWith(".md") && fs.statSync(f).isFile()) scan(f, fs.readFileSync(f, "utf8"));
+    }
+  };
   scan(ctx.file, ctx.content);
   if (out.length) return out;
   const dir = path.dirname(ctx.file);
-  for (const name of fs.readdirSync(dir)) {
-    const f = path.join(dir, name);
-    if (f !== ctx.file && name.endsWith(".md") && fs.statSync(f).isFile()) scan(f, fs.readFileSync(f, "utf8"));
+  scanDir(dir);
+  // A skill's record sits beside the skill directory rather than inside it, so
+  // that it never loads with the skill. Look one level up for a SKILL.md target.
+  if (!out.length && path.basename(ctx.file) === "SKILL.md") scanDir(path.dirname(dir));
+  return out;
+}
+
+const ANCHOR_RE = /(`[^`]+`|\/[\w./-]+\.\w+|\b[\w-]+\.(md|json|txt|mjs)\b|\blines? \d+|\bsection\b|##|\{\{)/i;
+function unanchoredTicks(ctx) {
+  const out = [];
+  for (const { file, line, text } of tickedLines(ctx)) {
+    if (!ANCHOR_RE.test(text)) out.push(`${path.basename(file)}:${line}: ticked with nothing a caller can open or run`);
   }
   return out;
 }
@@ -944,14 +961,16 @@ export const CHECKS = [
     source: "writing-agents checklist rule; diet rounds, 2026-08-21: six unanchored ticks, then two",
     requires: "Every ticked checklist line carries a path, a command, or a section of the delivered artifact.",
     applies: (ctx) => (tickedLines(ctx).length ? null : "no ticked checklist in the artifact or in a markdown file beside it"),
-    run: (ctx) => {
-      const out = [];
-      for (const { file, line, text } of tickedLines(ctx)) {
-        const anchored = /(`[^`]+`|\/[\w./-]+\.\w+|\b[\w-]+\.(md|json|txt|mjs)\b|\blines? \d+|\bsection\b|##|\{\{)/i.test(text);
-        if (!anchored) out.push(`${path.basename(file)}:${line}: ticked with nothing a caller can open or run`);
-      }
-      return out;
-    },
+    run: unanchoredTicks,
+  },
+  {
+    id: "skill-tick-anchors",
+    scope: "bundle",
+    severity: "advisory",
+    source: "writing-skills checklist rule; diet round one, 2026-08-21: zero of 26 ticks anchored",
+    requires: "Every ticked line in the record beside the skill carries a path, a command, or a section of the delivered SKILL.md.",
+    applies: (ctx) => (tickedLines(ctx).length ? null : "no ticked checklist in the skill or in a markdown file beside its directory"),
+    run: unanchoredTicks,
   },
 
   // ---------------------------------------------------------------------------
