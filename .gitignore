@@ -1,4 +1,6 @@
 node_modules/
 .DS_Store
 *.log
-.vale/
+.vale/styles/ai-tells/
+.vale/manifests.md
+.vale/styles/config/

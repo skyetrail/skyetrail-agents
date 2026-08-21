@@ -31,13 +31,13 @@ that. An audit that changes nothing is out of scope too, and `auditing-skills` o
 A direct instruction from the person wins over anything in this skill. Where a request runs past
 this scope, stop and name the document that owns it.
 
-To convert a predefined agent, open `./converting-a-predefined-agent.md` and split the definition
+To convert a predefined agent, open `./reference/converting-a-predefined-agent.md` and split the definition
 the way it says. Then run the workflow below.
 
 ## Workflow
 
-Copy this checklist into your reply. Tick each line as you finish it, and return the block with
-the work. A tick carries the path or the command from this run that settles the line. The skill's
+Copy this checklist into `record.md` beside the artifact, and into your reply. Tick each line
+as you finish it. A tick carries the path or the command from this run that settles the line. The skill's
 own text settles nothing, and neither does a rule file. For a step about applying a rule file,
 the tick names the sections of the delivered artifact where those rules land. A line you cannot
 tick stays unticked and carries one line saying why.
@@ -96,6 +96,10 @@ path and name it in your report. The person chooses the final one.
 The gate sorts what you hand over and never withholds the artifact. A run that cannot dispatch or
 cannot ask still delivers. Every check that could not run goes to a record beside the artifact,
 with one line on why.
+
+Then run `npm run audit -- <artifact path>` from the root of this plugin's repository and paste
+its output into `record.md`. The caller runs the same command on what it received, so a claim in
+the record is checkable. Where you cannot run it, say so in the record.
 
 Every instruction to ask the person, here and in any prompt you write, carries a branch for a run
 that cannot ask.

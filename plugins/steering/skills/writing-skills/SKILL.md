@@ -61,37 +61,6 @@ Then route on the class.
 Do not settle the class from the request alone. Someone asking you to write a skill is naming the
 outcome they want, not the artifact that delivers it.
 
-## What has already failed
-
-These approaches were tried on this work and did not hold. They are a record for you, the author.
-Put none of them in the skill you write.
-
-- **A gate that withholds the artifact.** An earlier version sent a run that could not dispatch to
-  write its work under a name marking it unmeasured, outside any install path. This happened on six
-  runs. Every one returned a file whose own text disowned it, with holes left unfilled and a
-  closing request that a person finish the writing. The same task, tried twice with no skill loaded
-  at all, produced a working skill both times. A gate that blocks delivery loses to no gate at all.
-- **A gate that only says stop.** A run met an error at the evidence step, recorded it, then wrote
-  the description, the body and the reference split, and delivered a finished SKILL.md. That
-  skill's own gate forbade keeping the file. An agent that expects to deliver something delivers
-  it rather than stopping.
-- **A name that fails when `npm run audit` runs.** The unmeasured naming put the file in a
-  directory whose name never matched the frontmatter name. `npm run audit` then failed
-  `lint-name-matches-directory`
-  on every run. One run met that failure and audited a copy at a passing path instead. A delivered
-  directory named after the skill removes the failure and the motive together.
-- **A checklist line a run grades on its own word.** Every run in one round ticked a line it had
-  just failed. Two of them described the failing case in their own records first. A ticked line now
-  carries the path of the file that proves the claim, so a reader can confirm it without the run's
-  agreement.
-- **A step pointing forward.** One step said a later step named the directory to write to. The
-  agent read no further and reported the directory missing, while four files sat in it. Every step
-  below is complete where it stands.
-- **A description summarising the workflow.** The agent follows the summary and never opens the
-  body.
-- **A skill tuned on shape alone.** An agent following it cut correct subject content that the
-  same model wrote with no skill loaded. Steps 3, 7 and 9 below exist for that.
-
 ## Scope
 
 In scope: a new SKILL.md, a change to an existing one, the reference files it loads, and the

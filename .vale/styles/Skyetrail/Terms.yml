@@ -1,0 +1,10 @@
+# Terms this project renamed. Each swap is one term that caused a measured
+# problem: a style check flagged "named agent" as padding, and a fresh reader
+# had to re-read "gate" used in three senses. The old form must not come back.
+extends: substitution
+message: "Use '%s' rather than '%s'. This project renamed the term."
+level: error
+ignorecase: true
+swap:
+  '\bnamed agents?\b': predefined agent
+  '\bcalibration gates?\b': calibration threshold

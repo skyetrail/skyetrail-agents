@@ -53,13 +53,26 @@ const SCOPES = [
     title: "Bundle",
     opens: "the skill directory: bundled scripts, bundled files, evaluation and test records",
   },
+  {
+    key: "prompt",
+    title: "Prompt",
+    opens: "one produced prompt or template: a markdown file that is not a SKILL.md",
+  },
 ];
+
+// A SKILL.md target runs every scope but prompt. Any other markdown file is a
+// produced prompt and runs the prompt scope alone, because it carries no
+// frontmatter, no bundle, and no skill body to hold to the skill rules.
+function scopesFor(kind) {
+  return SCOPES.filter((s) => (kind === "prompt" ? s.key === "prompt" : s.key !== "prompt"));
+}
 
 // Checks this command does not make, named so a reader is never left to assume
 // a clean run means everything was checked.
 const NOT_CHECKED = [
   "Judgement rules. Everything in plugins/steering/shared/*.md that needs a reader to weigh a sentence: whether a description says what and when, whether examples are concrete, whether a workflow's steps are clear, whether a script handles its errors. Run the auditing-skills skill for those.",
   "Packaging. plugin.json, marketplace entries and generated-file drift belong to a marketplace, not to one skill. `npm run lint` checks those.",
+  "Meaning, in a prompt. The prompt scope confirms a statuses table, a retry limit, a findings path, defaults and tick anchors exist. Whether a finish check can pass on incomplete work, or a default is usable rather than only named, needs a reader.",
 ];
 
 function fail(msg) {
@@ -91,7 +104,8 @@ function resolveTarget(target) {
   // A skill under skills/ belongs to a plugin, whose test record sits at the
   // plugin root. Nothing else is read from outside the skill directory.
   const pluginRoot = path.basename(parent) === "skills" ? path.dirname(parent) : null;
-  return { file, skillDir, dirName: path.basename(skillDir), pluginRoot };
+  const kind = path.basename(file) === "SKILL.md" ? "skill" : "prompt";
+  return { kind, file, skillDir, dirName: path.basename(skillDir), pluginRoot };
 }
 
 function explain() {
@@ -185,7 +199,7 @@ function main() {
     process.exit(2);
   }
 
-  const { file, skillDir, dirName, pluginRoot } = resolveTarget(args.target);
+  const { kind, file, skillDir, dirName, pluginRoot } = resolveTarget(args.target);
   const content = fs.readFileSync(file, "utf8");
   // A skill outside this repository carries none of our records, so a check
   // that reads our records cannot judge it. skill-rules.md already says to mark
@@ -209,7 +223,7 @@ function main() {
   lines.push("");
 
   const all = [];
-  for (const scope of SCOPES) {
+  for (const scope of scopesFor(kind)) {
     const checks = CHECKS.filter((c) => c.scope === scope.key && !c.houseStyle);
     if (!checks.length) continue;
     lines.push(scope.title.toUpperCase());
