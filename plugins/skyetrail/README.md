@@ -8,7 +8,7 @@ Skyetrail house tools for agents. Starts with the Skyetrail plain-English writin
 
 This plugin follows the [Agent Plugins specification](https://agent-plugins.org), so any client that supports the spec can load it. Copy the plugin folder into your project, or add this repository as a marketplace in your host.
 
-For example, in a host that uses slash commands:
+In a host that uses slash commands:
 
 ```
 /plugin marketplace add skyetrail/skyetrail-agents

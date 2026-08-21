@@ -300,7 +300,7 @@ function pluginReadme(plugin) {
     "This plugin follows the [Agent Plugins specification](https://agent-plugins.org), so any client that supports the spec can load it. Copy the plugin folder into your project, or add this repository as a marketplace in your host.",
     ""
   );
-  lines.push("For example, in a host that uses slash commands:", "");
+  lines.push("In a host that uses slash commands:", "");
   lines.push("```");
   if (addTarget) lines.push(`/plugin marketplace add ${addTarget}`);
   lines.push(`/plugin install ${manifest.name}@${marketplaceName}`);

@@ -114,7 +114,7 @@ trials to see a five percent difference. Pre-register the power beside the predi
 Method: build two variants that differ in one description and nothing else. Strip the answer key
 from the runner prompt. Run each request at least three times, because triggering is not
 deterministic. Record which skill fired, or none.
-`tests/outcomes/trigger-test/ARMS.md` holds the executed arms and two declared deviations.
+[trigger-test/RESULTS.md](./tests/outcomes/trigger-test/RESULTS.md) holds the executed arms and two declared deviations.
 
 ### A query set for this plugin's own skills
 

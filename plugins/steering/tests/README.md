@@ -53,18 +53,44 @@ The four `PILOT` runs went rather than the prompt they ran. `ste-bench/prompts/s
 `ste-prompt-fixture2.md` stay, because diffing them against version 2 is what keeps
 `EQUIVALENCE.md`'s three-row verdict checkable. The runs only showed that the rejected rewrite ran.
 
-Nothing was removed from `outcomes/sonnet-exec/`, `outcomes/ste-rewrite/`, `outcomes/rules-ab/`,
-`outcomes/skills-bench/`, `outcomes/handoff-bench/`, `outcomes/setup-bench/`, or
-`outcomes/trigger-test/`.
+At the time of the first removal, nothing had been removed from `outcomes/sonnet-exec/`,
+`outcomes/ste-rewrite/`, `outcomes/rules-ab/`, `outcomes/skills-bench/`, `outcomes/handoff-bench/`,
+`outcomes/setup-bench/`, or `outcomes/trigger-test/`. A second removal, below, later took files
+from two of those directories.
+
+## Second removal, 2026-08-21
+
+Forty-two more files, all raw agent output already folded into that directory's own `RESULTS.md`.
+This round followed the same rule as the first: delete only what a results page already carries,
+and only where nothing outside this directory cites the file by name (two citations did; both were
+retargeted to the results page first).
+
+| Directory | Files removed | What they were |
+| --- | --- | --- |
+| `outcomes/determinism/` | `DETERMINISM.md`, `GATE.md`, `GATES-VERDICT.md`, `ISOLATED-VERDICT.md`, `ROUND2-VERDICT.md`, `ROUND2-cuts.md`, `STRUCTURE-GAPS.md` | Seven round-by-round verdict dumps. `RESULTS.md` narrates all three rounds in full. |
+| `outcomes/sonnet-exec/` | `COMPARISON.md`, `DRAFT-writing-skills.md`, `ROUND2-COMPARISON.md`, `ROUND2-audits.md`, `ROUND2-condition-decision.md`, `ROUND2-run-A-with.md`, `ROUND2-run-A-without.md`, `ROUND2-run-B-with.md`, `ROUND2-run-B-without.md`, `ROUND2-wire.md`, `audits.md`, `chosen-design.md`, `draft-notes.md`, `ground.md` | Fourteen raw agent outputs across two rounds. `RESULTS.md` carries every finding drawn from them. |
+| `outcomes/trigger-test/` | `ARMS.md`, `SCORING.md`, and all six files under `runs/` | The built arms, the scoring pass, and the six raw selection runs. `RESULTS.md` carries the scored table and the verdict. |
+| `outcomes/trigger-test-2/` | `ARMS.md`, `ITEM-REVIEW.md`, `PILOT.md`, `SCORING.md`, and all nine files under `runs/` | The built arms, the adversarial item review, the pilot run, the scoring pass, and the nine raw selection runs. `RESULTS.md` carries the scored table, the pilot gate, and the verdict. |
+
+`baselines/`, `TEST_REPORT.md`, `outcomes/external-probe/`, `outcomes/handoff-bench/`,
+`outcomes/handoff-bench-2/`, `outcomes/rules-ab/`, `outcomes/setup-bench/`,
+`outcomes/skills-bench/`, `outcomes/ste-bench/`, `outcomes/ste-rewrite/`, and
+`plugins/skyetrail/tests/` were left untouched in this round. Nothing in them was rewritten either,
+even though most of what remains there would trip the ai-tells Vale style now enforced elsewhere in
+this repository: they are historical evidence, and this project's own discipline is to correct a
+wrong record in place rather than to rewrite one after the fact for style.
+
+Recovered the same way as the first removal, from the commit named in the next section.
 
 ## Where the removed files still live
 
-Commit `b4bc3c5`, the commit before the deletion. Every file was
-removed with `git rm`, so all 103 are in history and none of the reasoning above is lost. To read
-one:
+The first removal: commit `b4bc3c5`, the commit before it. The second removal: commit
+`c7b9d5c`, the commit before it. Every file in both rounds was removed with `git rm`, so all 145
+are in history and none of the reasoning above is lost. To read one:
 
 ```
 git show b4bc3c5:plugins/steering/tests/outcomes/external-probe/audits/CORRECTIONS.md
+git show c7b9d5c:plugins/steering/tests/outcomes/sonnet-exec/ground.md
 ```
 
 ## Citations changed by the removal

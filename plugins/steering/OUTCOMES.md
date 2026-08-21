@@ -214,9 +214,8 @@ Detail: [sonnet-exec/RESULTS.md](./tests/outcomes/sonnet-exec/RESULTS.md)
 ## determinism
 
 sonnet-exec ran each condition once. This directory ran three runs per fixture, three separate
-rounds over, and holds more evidence than any other directory in the project. Seven files sit in it:
-`RESULTS.md`, `DETERMINISM.md`, `GATE.md`, `ROUND2-VERDICT.md`, `ROUND2-cuts.md`,
-`ISOLATED-VERDICT.md` and `GATES-VERDICT.md`.
+rounds over, and holds more evidence than any other directory in the project. Detail:
+[determinism/RESULTS.md](./tests/outcomes/determinism/RESULTS.md).
 
 **Round one measured nothing, and diagnosed one defect.** All six runs shared one scratchpad, and
 two of them read the first run's output before writing. Agreement between those runs is
