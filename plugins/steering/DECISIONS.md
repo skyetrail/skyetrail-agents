@@ -98,7 +98,7 @@ cases and the checks that catch them.
   ask. 2026-08-12.** Of six runs that met two such instructions, none obeyed either.
 - **Never fail an audit for an agent, and promote composing at dispatch. 2026-07-31.** Unaided
   models already prefer composition, so the skill keeps the exceptions and one line of reason. Three
-  named-agent cases are legitimate:
+  predefined-agent cases are legitimate:
   - The agent is used identically in many places.
   - The harness restricts its tools only at that layer.
   - Someone else owns it as a policy boundary.
@@ -384,3 +384,11 @@ sentence is correct.
 2026-08-10 comparison found that Simplified Technical English did not change agent behaviour, so its
 only benefit was readability for the person maintaining these files. The ai-tells ruleset keeps that
 readability goal and catches prose that reads as AI-written, a target STE100 never covered.
+
+**`writing-agents` was cut from 505 lines to 101. 2026-08-21.** It was 72 lines at birth and stayed
+under 100 through every round that measured it as useful. The growth was author history,
+countermeasures to defects earlier versions of itself introduced, and restatements of rules the
+shared files already state. One rewrite under a list of eleven measured wins, then six isolated
+Sonnet runs across two rounds: the wins held and defaults were fixed, with tick anchors narrowed
+from six to two. The judge called subject coverage a fail, and the standing ruling that subject content belongs
+to the author decided it. Detail in `tests/outcomes/diet/RESULTS.md`.

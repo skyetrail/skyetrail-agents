@@ -12,7 +12,7 @@ a job.
 - `auditing-skills` checks a skill or a brief against the written rules.
 - `repo-setup` works out the basic facts about a repository and records them.
 
-Shared rule files state the rules those skills apply. This project ran eleven experiments, testing
+Shared rule files state the rules those skills apply. This project ran thirteen experiments, testing
 the skills, the rules, or both. `METHOD.md` states the practices those experiments produced. This
 page lists the results.
 
@@ -30,12 +30,14 @@ after the one before it. The order is by what each one answered, and not by date
 | handoff-bench-2 | Do those gains hold on code the brief never saw? | Partly. The injection fix generalised. The secrets fix did not, and cycle 3 recovered it. |
 | setup-bench | Does `repo-setup` write its record safely into a file someone else owns? | Yes, on one re-run. One marker pair survived and the hand-written text was untouched. |
 | external-probe | Do the audit rules find real defects in another author's skills? | Yes. The finding counts are worthless, because all ten audits breached the calibration threshold. |
-| trigger-test | Do the two description rules change which skill an agent picks? | Still unknown. Both arms scored 36 of 36, so the test had no room to show a change. |
+| trigger-test | Do the two description rules change which skill an agent picks? | Unknown from this test. Both arms scored 36 of 36, so it had no room to show a change. trigger-test-2 followed. |
+| trigger-test-2 | With harder items and three arms, do the description rules separate? | No arm separates. The arm breaking both rules scored highest. The capability rule dropped to Important and the third-person rule was cut. |
 | ste-rewrite | Did moving nine files to a controlled English change only their style? | No. A checker found three files whose demands changed, all from sentence splits. |
 | ste-bench | Does that controlled English change what an agent finds? | No, and it costs nothing. Eight runs, an exact tie, nine words longer. |
 | rules-ab | Did four rounds of audit and fix make the rules better? | No measurable difference on a repository we did not write. A null result. |
 | sonnet-exec | Do the skills work when Claude Sonnet 5 executes them? | Partly. Execution found defects an audit cannot reach. One of them resisted every fix. |
 | determinism | Do isolated runs agree, and do the gates hold? | Both started at no and ended at yes. The gate blocked six of six deliveries at first, but a caller-side gate then delivered six of six. |
+| diet | Can `writing-agents` lose 400 lines and keep every measured win? | Mostly. Delivery, injection defence, statuses, gates, and the count-proxy ban held at three of three. Defaults were fixed in round two. Tick anchors narrowed from six to two. |
 
 ## skills-bench
 
@@ -137,6 +139,38 @@ asks. So the byte-identical signal no longer separates a real run from a fabrica
 
 Detail: [trigger-test/RESULTS.md](./tests/outcomes/trigger-test/RESULTS.md), with the arms, the
 scoring and six run files beside it.
+
+## trigger-test-2
+
+trigger-test hit a ceiling, so a harder version followed: twenty items instead of twelve, none
+repeating a description's own words, every should-not item next to the boundary. The arms went from
+two to three, so one comparison isolates the capability rule and another isolates the third-person
+rule.
+Thirty should-trigger trials per arm instead of eighteen. A pilot run gated the main run, and it
+scored 19 of 20, inside the band that opens the gate.
+
+No arm separated. The arm that breaks both rules scored 57 of 60, the arm that follows both scored
+55, and the third-person arm without a capability statement scored 52. The scorer refused the
+reading its own numbers invited. A lead of 6.7 points on 30 trials is below the difference the
+pre-registration already disclaimed, so it reported no difference rather than "our rules are worse".
+It also corrected the pre-registration: a ten-point difference does not show reliably at 30 trials,
+and the claim that it does was too generous.
+
+The only comparison above the detection floor ran against the third-person rule, and two confounds
+sit on it. The imperative mood travels with the second person, and all six distractor descriptions
+open with "Use when", so the arm following our rule reads as foreign to the collection around it.
+
+The evidence changed both rules. The capability rule dropped from Blocking to Important, because
+two tests failed to find a consequence and our own rule says a Blocking severity needs one. The
+third-person rule was cut, because fifteen runs across two tests never found it helping. That cut
+cleared a standing instruction from the first time both rules were cut, on six run files written by
+hand. This time nine recorded runs, a pilot, and a scorer that refused the easy verdict sit behind
+it.
+
+The instrument still has no room. The boundary items scored 100 percent in all three arms, ten of
+ten, and one item was answered "none" by every run including the pilot, so it was an item fault.
+
+Detail: [trigger-test-2/RESULTS.md](./tests/outcomes/trigger-test-2/RESULTS.md)
 
 ## ste-rewrite
 
@@ -284,19 +318,44 @@ hold in the sessions that produced these three rounds.
 Detail: [determinism/RESULTS.md](./tests/outcomes/determinism/RESULTS.md), with the isolated verdict
 and the gate verdict beside it.
 
+## diet
+
+`writing-agents` had grown from 72 lines to 505, and most of the growth was author history and
+countermeasures to its own earlier defects. One agent cut it to 97 lines under a list of eleven
+measured wins that had to survive. Isolated Sonnet runs measured the result in two rounds of three,
+the second against the fixes to what had not held.
+
+The injection defence, whose loss alone would have failed the diet, held at three of three. So did
+delivery, statuses, caller-re-runnable gates, and the count-proxy ban. Defaults on field rows were
+missing in two runs and were fixed in round two, zero bare rows of 26. Tick anchors narrowed from six unanchored to two, both on one step, and a third
+fix for that step is unmeasured.
+
+The judge called subject coverage a fail, because two of three prompts listed fewer vulnerability
+classes than the unaided baseline. The owner had ruled that subject content belongs to the author
+and the skill's job is shape. The step the skill owes fired in all three runs, and the list sizes
+stand in the record.
+
+The skill is 101 lines and a run that follows it loads about 900 lines across five files, down from
+1,330 across six.
+
+Detail: [diet/RESULTS.md](./tests/outcomes/diet/RESULTS.md)
+
 ## What is still open
 
-- Structure varies on five points. Heading text and reference directory name are two of them. File
-  count and default values are unresolved too, and so is filename. No rule names any of them.
+- Structure still varies on four points after five rules went in. The reference directory name
+  closed at three of three. Heading text, file count, default values, and filename did not, and the
+  split rule widened the file-count spread from one to five.
 - Two of three skilled runs do not give any severity tiers, where an unaided run does.
 - The gap analysis lists 24 judgement decisions with no stated test, 15 in `writing-skills` and 9 in
   `writing-agents`. No round has measured any of them.
-- Both description rules are unsettled, and settling them needs a different test.
+- The capability rule dropped to Important and the third-person rule is cut. Settling the
+  capability rule any further needs items near a decision boundary and about thirty trials per arm.
 - Fixture A of the isolated round cannot be re-run until the prior-round output at
   `plugins/skyetrail/tests/baselines/` is moved where the next round cannot read it. Keep run output
   out of a baselines directory, because the next round reads it and measures the earlier one.
-- No baseline has run against any skill since 2026-08-01, and two skills were rewritten on
-  2026-08-12.
+- No with-and-without baseline has run against `writing-skills`, `auditing-skills`, or
+  `repo-setup` since 2026-08-01. `writing-agents` was measured against the unaided baseline in both
+  diet rounds, and its step-3 anchor fix is unmeasured.
 
 ## What to read next
 

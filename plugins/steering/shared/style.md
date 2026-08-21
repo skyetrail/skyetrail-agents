@@ -10,15 +10,15 @@ A clean run prints nothing and exits 0. `.vale.ini` holds the
 configuration. Read the rules there, not a list here. A restated list
 drifts from its source.
 
-## Which skills apply it
+## Who applies it
 
-The skills `writing-skills` and `writing-agents` apply this file. It
-states where the configuration is defined. It does not define a task of
-its own.
+The vale npm script checks the whole repository, so no skill needs to
+name this file for its prose to be checked. `writing-skills` points here
+when an author writes sentences. This file states where the
+configuration is defined. It does not define a task of its own.
 
-`auditing-skills` does not apply it. An audit does not grade a target on
-style, because style does not change what an agent does. Only an author
-runs the vale check.
+An audit does not grade a target on style, because style does not change
+what an agent does. Only an author runs the vale check.
 
 ## What it covers
 
