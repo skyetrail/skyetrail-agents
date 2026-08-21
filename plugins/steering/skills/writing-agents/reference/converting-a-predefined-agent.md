@@ -11,7 +11,7 @@ varying. Ask the person before you treat anything else as varying.
 
 **Where you cannot ask.** Treat nothing else as varying. Then name in your report each part you
 left in the template body, so the person can call it varying later. A hole you add unasked reaches
-every call site, and the Composition section of `../../shared/steering-rules.md` keeps the set of
+every call site, and the Composition section of `../../../shared/steering-rules.md` keeps the set of
 holes fixed.
 
 Then run the whole workflow, starting at step 1. A converted agent is a composed prompt once you
