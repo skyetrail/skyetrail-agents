@@ -193,8 +193,11 @@ function tickedLines(ctx) {
     const lines = text.split("\n");
     lines.forEach((l, i) => {
       if (/^\s*\[x\]/i.test(l)) {
-        const next = lines[i + 1] && /^\s{2,}\S/.test(lines[i + 1]) ? " " + lines[i + 1] : "";
-        out.push({ file, line: i + 1, text: l + next });
+        // Fold every indented continuation line, because one run anchored a
+        // tick on its second continuation line and a one-line fold missed it.
+        let text = l;
+        for (let j = i + 1; j < lines.length && /^\s{2,}\S/.test(lines[j]); j++) text += " " + lines[j];
+        out.push({ file, line: i + 1, text });
       }
     });
   };

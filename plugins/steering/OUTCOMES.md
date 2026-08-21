@@ -12,7 +12,7 @@ a job.
 - `auditing-skills` checks a skill or a brief against the written rules.
 - `repo-setup` works out the basic facts about a repository and records them.
 
-Shared rule files state the rules those skills apply. This project ran thirteen experiments, testing
+Shared rule files state the rules those skills apply. This project ran fourteen experiments, testing
 the skills, the rules, or both. `METHOD.md` states the practices those experiments produced. This
 page lists the results.
 
@@ -38,6 +38,7 @@ after the one before it. The order is by what each one answered, and not by date
 | sonnet-exec | Do the skills work when Claude Sonnet 5 executes them? | Partly. Execution found defects an audit cannot reach. One of them resisted every fix. |
 | determinism | Do isolated runs agree, and do the gates hold? | Both started at no and ended at yes. The gate blocked six of six deliveries at first, but a caller-side gate then delivered six of six. |
 | diet | Can `writing-agents` lose 400 lines and keep every measured win? | Mostly. Delivery, injection defence, statuses, gates, and the count-proxy ban held at three of three. Defaults were fixed in round two. Tick anchors narrowed from six to two. |
+| mechanical-gate | Does a caller re-running the skill's own audit command get the callee's answer? | Yes, in every run, line for line. Unanchored ticks went from two to zero of 27. The check confirms a token is present, not what it points at. |
 
 ## skills-bench
 
@@ -340,6 +341,24 @@ The skill is 101 lines and a run that follows it loads about 900 lines across fi
 
 Detail: [diet/RESULTS.md](./tests/outcomes/diet/RESULTS.md)
 
+## mechanical-gate
+
+The audit command gained a scope for produced prompts, with five checks that each name the
+measured run behind them. `writing-agents` then told a run to write its checklist beside the
+artifact and run the command on what it delivered. A judge acting as the caller re-ran the command
+on each of three delivered prompts and compared every line with what the run had pasted.
+
+The caller and the callee agreed in every run. Unanchored ticks, which were six in the first diet
+round and two in the second, were zero of 27. Delivery, injection defence, statuses, and the
+count-proxy ban all held.
+
+The round also named the limit of the check. It confirms that a token a caller can open is present
+on a ticked line. It does not confirm that the token points at the delivered artifact. One run's
+finish gate triggers on a list the run built itself, which no script can separate from an input
+property, so that stays with a reader.
+
+Detail: [mechanical-gate/RESULTS.md](./tests/outcomes/mechanical-gate/RESULTS.md)
+
 ## What is still open
 
 - Structure still varies on four points after five rules went in. The reference directory name
@@ -355,7 +374,7 @@ Detail: [diet/RESULTS.md](./tests/outcomes/diet/RESULTS.md)
   out of a baselines directory, because the next round reads it and measures the earlier one.
 - No with-and-without baseline has run against `writing-skills`, `auditing-skills`, or
   `repo-setup` since 2026-08-01. `writing-agents` was measured against the unaided baseline in both
-  diet rounds, and its step-3 anchor fix is unmeasured.
+  diet rounds, and the mechanical-gate round measured its step-3 anchor fix at zero unanchored ticks.
 
 ## What to read next
 

@@ -185,6 +185,21 @@ Fix the drift rather than keeping the better version. One of the three changes w
 and it still had to go. A rule change made inside a style branch destroys the baseline for the next
 comparison.
 
+**10. A script checks structure, and a reader checks meaning.** The audit command is the one
+check the caller and the callee run on the same artifact with no judgement in between. Every
+mechanical check in it names the measured run that put it there, the same requirement every rule
+in the steering files meets. The checks read what wording cannot fake. For a produced prompt that
+is the rows of the status table, the retry limit, the findings path, the default column, and a
+token on each ticked line. For a SKILL.md it is the heading order and the reference directory,
+plus a sentence about a prior version of the file. A check that a phrase is present is satisfied
+by pasting the phrase, so none of the checks reads for one. Whether a finish check can pass on
+incomplete work stays with a reader, and so does whether a self-built list is an input property.
+In the mechanical-gate round a caller re-running the command got the callee's answer in three of
+three runs, and unanchored ticks went from six to zero across three rounds. The check confirms
+that a token a caller can open is present. It does not confirm that the token points at the
+delivered artifact. Vale checks style the same way, with the test records scoped out, and a
+finding blocks the build.
+
 ## What does not work
 
 **Auditing our own files against our own rules.** Section two gives the null result, and two limits

@@ -392,3 +392,15 @@ shared files already state. One rewrite under a list of eleven measured wins, th
 Sonnet runs across two rounds: the wins held and defaults were fixed, with tick anchors narrowed
 from six to two. The judge called subject coverage a fail, and the standing ruling that subject content belongs
 to the author decided it. Detail in `tests/outcomes/diet/RESULTS.md`.
+
+**Mechanical checks cover structure and never meaning. 2026-08-21.** The audit command gained a
+scope for produced prompts and three structure checks for a SKILL.md, and Vale now blocks the
+build with the test records scoped out. Every mechanical check names the measured run behind it,
+the same discipline every rule here follows. A check that a phrase is present gets satisfied by
+pasting the phrase, so the mechanical layer reads only what wording cannot fake. The five
+prompt checks read the status table's rows, the retry limit, the findings path, the default
+column, and a token on each ticked line. The skill checks read the heading order and the
+reference directory. A third looks for a sentence about a prior version of the file. Whether
+a finish check can pass on incomplete work, whether a default is usable rather than only named, and
+whether a category is open stay with a reader. A caller re-running the command got the callee's
+answer in three of three runs. Detail in `tests/outcomes/mechanical-gate/RESULTS.md`.
