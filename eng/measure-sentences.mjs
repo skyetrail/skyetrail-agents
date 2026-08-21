@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// Measures sentence length across the steering files against the ASD-STE100
-// caps: 20 words for an instruction, 25 for a description. Run before any STE
-// rewrite, so the gap is known rather than guessed.
+// Measures sentence length across the steering files against its built-in
+// caps: 20 words for a rule cell, 25 for prose. The lint reports an over-cap
+// sentence as an advisory.
 //
 // Rule cells in a table are counted separately from prose. A rule is the
 // operative text an auditor applies, so its length matters more than a
@@ -18,7 +18,7 @@ const CAP_DESCRIPTION = 25;
 const words = (s) => s.trim().split(/\s+/).filter(Boolean).length;
 
 // Strip fenced code, inline code, links to their text, and markdown emphasis.
-// Those are exempt from STE and would distort a word count.
+// Those are exempt from the count and would distort it.
 function clean(text) {
   return text
     .replace(/```[\s\S]*?```/g, "")
@@ -37,7 +37,7 @@ function splitSentences(block) {
 function measure(file) {
   const raw = fs.readFileSync(file, "utf8");
   // Frontmatter is not prose. A description is capped at 1024 characters by the
-  // Agent Skills spec, not at 25 words by STE, so counting it against the prose
+  // Agent Skills spec, not at 25 words, so counting it against the prose
   // cap reports a long description as an over-cap sentence.
   const body = raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "");
   const lines = clean(body).split("\n");
@@ -86,7 +86,7 @@ function report(rows) {
   const over = (arr, cap) => arr.filter((n) => n > cap).length;
   const pct = (n, d) => (d ? Math.round((n / d) * 100) : 0);
 
-  console.log("Sentence length against the STE caps.\n");
+  console.log("Sentence length against the caps.\n");
   console.log("Rule cells are the operative text an auditor applies. Cap 20.");
   console.log("Prose is everything else. Cap 25.\n");
 

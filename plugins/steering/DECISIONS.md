@@ -377,7 +377,7 @@ repository from its root.
 The lint gained two checks on 2026-07-31. The plugin's `shared/` files are checked for reference
 resolution, because they load with the skills that name them. And a markdown link whose text reads
 as a filename must link to that filename. It gained a third on 2026-08-11: `eng/measure-sentences.mjs`
-reports an over-cap sentence as an advisory, because `shared/ste.md` names one case where a long
+reports an over-cap sentence as an advisory, because a membership test is one case where a long
 sentence is correct.
 
 **The project style changed from ASD-STE100 to the ai-tells Vale ruleset. 2026-08-21.** The

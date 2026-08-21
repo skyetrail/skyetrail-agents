@@ -55,7 +55,7 @@ One re-run confirmed that by direct count and recursive diff.
 | [dispatch-protocol.md](./shared/dispatch-protocol.md) | What the caller does to dispatch an agent, and with what comes back. |
 | [authoring.md](./shared/authoring.md) | Whether a request needs a script, an answer, a prompt or a skill. |
 | [lint.md](./shared/lint.md) | Which command settles the mechanical checks, and what to do when it will not run. |
-| [ste.md](./shared/ste.md) | The writing style, and which rules of the standard this plugin dropped. |
+| [style.md](./shared/style.md) | The vale check and its scope. |
 
 ## The one command
 
@@ -213,7 +213,7 @@ checking them.
 - [METHOD.md](./METHOD.md) states the practices, and names the failure behind each one.
 - [OUTCOMES.md](./OUTCOMES.md) states all eleven experiments and what each one settled.
 - [TESTING.md](./TESTING.md) states how to test a skill here.
-- [ste.md](./shared/ste.md) states the writing style, and what it does not buy.
+- [style.md](./shared/style.md) names the vale check and its scope.
 - [The determinism record](./tests/outcomes/determinism/RESULTS.md) holds more evidence than any
   other record here, spanning three rounds that produced the count-proxy diagnosis and the gate fix.
 - [The null A/B result](./tests/outcomes/rules-ab/RESULTS.md) holds the measurement that stopped

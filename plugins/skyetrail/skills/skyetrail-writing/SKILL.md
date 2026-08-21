@@ -8,7 +8,7 @@ metadata:
 
 # Skyetrail writing style
 
-> **Superseded.** As of 2026-08-21, this project checks writing style with the ai-tells Vale ruleset, not this skill. See `../../../steering/shared/ste.md` for the rules now in force. This file stays because other things still cite it.
+> **Superseded.** As of 2026-08-21, this project checks writing style with the ai-tells Vale ruleset, not this skill. See `../../../steering/shared/style.md` for the rules now in force. This file stays because other things still cite it.
 
 Write everything in clear, everyday language. The goal is text that is easy to read, not like an AI tool generated it. Plain does not mean short. Clarity comes first.
 

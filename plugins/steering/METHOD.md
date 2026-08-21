@@ -179,7 +179,7 @@ void findings.
 **9. Check a style rewrite for equivalence.** In one branch, nine files moved to Simplified Technical
 English. An independent checker compared each file to its pre-rewrite version and found that three
 had changed what they demanded, all from splitting one sentence into two. That is the edit this style
-asks for most often, and `shared/ste.md` records what a split costs.
+asked for most often. A split can widen a negation's scope or turn a stated property into an order. Check both halves after any split.
 
 Fix the drift rather than keeping the better version. One of the three changes was an improvement,
 and it still had to go. A rule change made inside a style branch destroys the baseline for the next

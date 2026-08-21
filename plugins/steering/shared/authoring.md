@@ -11,7 +11,7 @@ chooses nothing.
 
 Out of scope: how to write the artifact once the class is settled, and what the finished artifact
 must hold. The writing style is out of scope too. The skill named beside each class covers the
-first two. `./ste.md` covers the third.
+first two. `./style.md` covers the third.
 
 ## Contents
 

@@ -31,8 +31,9 @@ The repository has four scripts today:
   for the same check under its lint name.
 - `eng/audit-skill.mjs` runs every check against one skill, at any path on
   disk. Run it with `npm run audit -- <path>`.
-- `eng/measure-sentences.mjs` reports sentence length against the caps in
-  `plugins/steering/shared/ste.md`. It is both a library and a command.
+- `eng/measure-sentences.mjs` reports sentence length against its built-in
+  caps: 20 words for a rule cell and 25 for prose. It is both a library and
+  a command.
 
 Neither command describes its own checks in prose. Ask it: `npm run lint --
 --explain` and `npm run audit -- --explain` both print from the same lists the
@@ -62,7 +63,7 @@ Code's installer requires. Never edit the shim by hand.
 
 The project style is Vale, run against the ai-tells style. Run it with
 `npm run vale`. See [`.vale.ini`](.vale.ini) for the configuration and
-[`plugins/steering/shared/ste.md`](plugins/steering/shared/ste.md) for how
+[`plugins/steering/shared/style.md`](plugins/steering/shared/style.md) for how
 this applies inside the steering plugin.
 
 <!-- BEGIN: repo-setup -->

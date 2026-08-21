@@ -206,7 +206,7 @@ obligation`. Write both into the report instead.
    prevents. Where the result does not need a second reader, use one agent and say so.
 4. **Write the prompt** against `../../shared/steering-rules.md` and
    `../../shared/handoff-rules.md`, with the condition **hand-off** met. Write every sentence
-   against `../../shared/ste.md`. The prompt states no history the agent cannot reach. A prior
+   against `../../shared/style.md`. The prompt states no history the agent cannot reach. A prior
    version of the prompt, an earlier run of it, and a defect this project already fixed are
    examples, not the whole list. Where the prompt states an approach already tried, it gives the
    approach and the outcome in full, so the agent needs nothing outside the prompt. The Context
@@ -502,4 +502,4 @@ that cannot ask the person which parts vary. Then run the whole workflow above, 
 - `../../shared/handoff-rules.md` for what applies because the agent will not see this
   conversation. It always applies here.
 - `../../shared/dispatch-protocol.md` for the caller, the statuses, and the dependency patterns.
-- `../../shared/lint.md` for the lint command, and `../../shared/ste.md` for every sentence.
+- `../../shared/lint.md` for the lint command, and `../../shared/style.md` for every sentence.

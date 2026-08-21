@@ -101,7 +101,7 @@ Out of scope, with the owner of each:
 
 - Auditing a skill and changing nothing. `auditing-skills` owns that.
 - Writing a prompt for an agent that will not see this conversation. `writing-agents` owns that.
-- Judging writing style. `../../shared/ste.md` governs the sentences you write here, and no audit
+- Judging writing style. `../../shared/style.md` governs the sentences you write here, and no audit
   grades a target on it.
 - Any other request where the artifact test returns a class other than a skill. The boundary sits
   in that test. This list names the cases seen most, not the whole set.
@@ -231,7 +231,7 @@ ticks all of them.
 
    Write the body against every rule in that file, and against the Boundary and Content tables of
    `../../shared/skill-rules.md`. Open both and work down them. Write every sentence against
-   `../../shared/ste.md`.
+   `../../shared/style.md`.
 
    Settle each condition in the Conditions block of `../../shared/steering-rules.md` by that
    block's own test. Put every answer in the record. Name the test that returned false for any
@@ -447,4 +447,4 @@ person. Revert nothing on your own.
 - `../../shared/steering-rules.md` for the conditions, the section order, and the scope rules.
 - `../../shared/lint.md` for which command settles the mechanical checks, and for what to do where
   it does not run.
-- `../../shared/ste.md` for every sentence you write.
+- `../../shared/style.md` for every sentence you write.
