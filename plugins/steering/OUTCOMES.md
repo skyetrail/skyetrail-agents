@@ -12,9 +12,9 @@ a job.
 - `auditing-skills` checks a skill or a brief against the written rules.
 - `repo-setup` works out the basic facts about a repository and records them.
 
-Shared rule files carry the rules those skills apply. Eleven experiments tested the skills, the
-rules, or both. `METHOD.md` carries the practices these experiments produced. This page carries the
-results.
+Shared rule files state the rules those skills apply. This project ran eleven experiments, testing
+the skills, the rules, or both. `METHOD.md` states the practices those experiments produced. This
+page lists the results.
 
 Read the null results and the failures first. They changed the project more than the wins did.
 
@@ -35,7 +35,7 @@ after the one before it. The order is by what each one answered, and not by date
 | ste-bench | Does that controlled English change what an agent finds? | No, and it costs nothing. Eight runs, an exact tie, nine words longer. |
 | rules-ab | Did four rounds of audit and fix make the rules better? | No measurable difference on a repository we did not write. A null result. |
 | sonnet-exec | Do the skills work when Claude Sonnet 5 executes them? | Partly. Execution found defects an audit cannot reach. One of them resisted every fix. |
-| determinism | Do isolated runs agree, and do the gates hold? | No, then yes. The gate blocked six of six deliveries. A caller-side gate shipped six of six. |
+| determinism | Do isolated runs agree, and do the gates hold? | Both started at no and ended at yes. The gate blocked six of six deliveries at first, but a caller-side gate then delivered six of six. |
 
 ## skills-bench
 
@@ -56,10 +56,12 @@ skills-bench scored a produced skill. This bench scored a produced hand-off brie
 hand-written brief it replaced.
 
 Round one was a loss, 6.67 problems found against 7.67. A scope clause listed injection subtypes,
-and a reviewer filed a real vulnerability out of scope because its subtype was missing. Two fix
-cycles turned it into a win at 8 of 8, with zero false alarms. The losing round stays on the record.
-A later bench re-ran the current brief blind on this fixture and got 8 of 8 twice. One limit: three
-runs per arm, with no treatment of variance, so a gap of one finding is thin.
+and a reviewer filed a real vulnerability out of scope because its subtype was missing. Fixing it
+took two more cycles, which reached a win at 8 of 8, with zero false alarms. The losing round stays
+on the record.
+A later bench re-ran the current brief blind on this fixture and got 8 of 8 twice. One limit
+remains. The comparison used three runs per arm with no treatment of variance, so a gap of one
+finding is thin.
 
 Detail: [handoff-bench/RESULTS.md](./tests/outcomes/handoff-bench/RESULTS.md)
 
@@ -71,8 +73,9 @@ code the brief never saw.
 The widened injection rule generalised. It caught `yaml.load` and `pickle.loads`, which no subtype
 list names. The cycle 2 secrets wording did not: both runs filed a live token out of scope, sent
 with TLS verification disabled. That wording named three places, so it read as another closed list.
-Cycle 2 scored 7 of 9, and cycle 3 recovered the finding at 8 of 9. Two limits: the comparison arm
-is one run where the design specifies three, and the key omits a tenth problem every arm found.
+Cycle 2 scored 7 of 9, and cycle 3 recovered the finding at 8 of 9. This comparison has two limits:
+the arm is one run where the design specifies three, and the key omits a tenth problem every arm
+found.
 
 Detail: [handoff-bench-2/RESULTS.md](./tests/outcomes/handoff-bench-2/RESULTS.md)
 
@@ -85,8 +88,8 @@ into a file that already holds someone else's writing.
 and the hand-written content on both sides survived character for character. The rest of the
 repository was byte-identical, and the agent reached the same conclusion as the first run. The bench
 owner verified that by direct count and recursive diff, not from the agent's report. The limits are
-narrow: one re-run, one fixture, one worker model, and no raw run file kept. This directory holds a
-re-run note and a fixture, and no results page.
+narrow. The bench used one re-run of one fixture, on one worker model, and did not keep any raw run
+file. This directory holds a re-run note and a fixture, and no results page.
 
 Detail: [setup-bench/RERUN.md](./tests/outcomes/setup-bench/RERUN.md)
 
@@ -118,9 +121,10 @@ variance inside an arm.
 
 That settles nothing. Both arms took every point available. The result leaves two readings open: the
 rules change nothing, or the test had no room to show a change. The power is absent as well. With 18
-should-trigger trials per arm, a true miss rate of 10 percent shows zero misses about 15 percent of
-the time. The design pre-committed to reading no difference as grounds for cutting a blocking rule,
-and the scorer refused that reading. Both description rules stay, neither justified nor refuted.
+should-trigger trials per arm, a true miss rate of 10 percent does not show a miss about 15 percent
+of the time. The design pre-committed to treating a result that did not differ between arms as
+grounds for cutting a blocking rule, and the scorer refused that reading. Both description rules
+stay, neither justified nor refuted.
 
 Earlier versions of this page said nobody had run this test. That is wrong now, and running it again
 will not help. Settling the two rules needs items near a decision boundary, and enough trials to see
@@ -144,9 +148,9 @@ It did not. An independent checker compared each of nine files to its pre-rewrit
 three whose demands had changed. All three came from splitting one sentence into two. That result
 became the equivalence gate in `METHOD.md`.
 
-The audit half is weaker. Nine targets produced 26 findings, and six of nine files needed work,
-while four earlier rounds reported zero defects and left no records. The page states that the two
-results cannot be reconciled.
+The audit half is weaker. Across nine targets, the audit produced 26 findings, and six of nine files
+needed work, while four earlier rounds reported zero defects and did not leave any records. The page
+states that the two results cannot be reconciled.
 
 Detail: [ste-rewrite/EQUIVALENCE.md](./tests/outcomes/ste-rewrite/EQUIVALENCE.md) and
 [ste-rewrite/AUDIT-ROUND.md](./tests/outcomes/ste-rewrite/AUDIT-ROUND.md)
@@ -165,28 +169,28 @@ Detail: [ste-bench/RESULTS.md](./tests/outcomes/ste-bench/RESULTS.md)
 
 ## rules-ab
 
-Four rounds had audited this plugin's own files against its own rules. Each round cleared the
+This project audited its own files against its own rules across four rounds. Each round cleared the
 previous round's findings, which looked like convergence. This A/B compared the rules before those
 rounds against the rules after, both auditing skills written by someone else.
 
-The rounds did not improve the rules. Eight blind audits ran across two arms and two targets, and
-every measure ties or reverses. Naming a consequence favoured the later rules on one target by 19
-points, and the earlier rules by 17 points on the other. Three of four pre-registered predictions
-were wrong, and the one that held predicted no difference.
+The rounds did not improve the rules. This comparison ran two arms against two targets, for eight
+blind audits in total, and every measure ties or reverses. Naming a consequence favoured the later
+rules on one target by 19 points, and the earlier rules by 17 points on the other. Three of four
+pre-registered predictions were wrong, and the one that held predicted no difference.
 
 The arithmetic behind the rounds matters more than the null itself. Rounds two, three and four retired
 144 findings and created 67 new ones, and most of the new ones came from the previous round's fixes.
 So the retirement count measured conformance, and the repair of damage the rounds caused.
 
-Two limits. Eight audits over two targets are enough for a large difference, and not for a small one.
-A modest real improvement would not show here. And the rounds did close real defects in this
-plugin's own files, which this design never measured. Two paths in `repo-setup` deleted a confirmed
-lint command. Agents following `writing-agents` went to `dispatch-protocol` for a status set and a
-retry limit that file did not carry.
+This design has two limits. Running eight audits over two targets can show a large difference but
+cannot show a small one. A modest real improvement would not show here. And the rounds did close real
+defects in this plugin's own files, which this design never measured. In `repo-setup`, two paths
+deleted a confirmed lint command. Agents following `writing-agents` went to `dispatch-protocol` for a
+status set and a retry limit that file did not carry.
 
-Both arms found the same real defects. The rules do something. The four rounds did not make them do
-it better. The lesson this produced governs everything after it: auditing your own files against
-your own rules measures conformance, not quality.
+Both arms found the same real defects. The rules do something. Those rounds did not make them do it
+better. The lesson this produced governs everything after it: auditing your own files against your
+own rules measures conformance, not quality.
 
 Detail: [rules-ab/RESULTS.md](./tests/outcomes/rules-ab/RESULTS.md)
 
@@ -198,7 +202,7 @@ conformance for the first time.
 
 Round one was half void. One task measured a superseded commit, and one conclusion about pointers was
 wrong and is retracted on the page. What survived is what an audit cannot reach. A gate the executor
-cannot run is a gate the executor skips. A forward reference breaks the step that carries it. Step 1
+cannot run is a gate the executor skips. A forward reference breaks the step that contains it. Step 1
 told the agent to write a record to a directory that step 9 named.
 
 Round two ran four fresh runs and closed three of four findings. The fourth resisted. The skill
@@ -206,8 +210,8 @@ still strips correct domain content that the model produces unaided, even after 
 exact item.
 
 Round one also stated one result as a rule: when a deliverable is expected and the evidence gate
-cannot run, Sonnet ships the deliverable. Later rounds reversed that, then reversed it back. The
-next section carries the sequence.
+cannot run, Sonnet still delivers it. Later rounds reversed that, then reversed it back. The next
+section states the sequence.
 
 Detail: [sonnet-exec/RESULTS.md](./tests/outcomes/sonnet-exec/RESULTS.md)
 
@@ -227,48 +231,49 @@ done as one entry per changed file. Removing the worked example failed. Naming t
 Supplying a test failed too, because one author ran the test, described a passing run that misses the
 vulnerability, and kept the check anyway.
 
-The diagnosis holds. For judgement work, no check the agent runs settles whether the work is done.
-The rule asked for something that does not exist, so authors supplied the nearest thing that does,
-a count of the artifact's own parts. That count passes on empty work. The bug-triage fixture stayed
-clean throughout, so the fault is not general. It appears where the work is a judgement and the
-artifact has a natural unit to count.
+The diagnosis holds. For judgement work, the checks an agent can run do not determine whether the
+work is done. The rule asked for something that does not exist, so authors supplied the nearest thing
+that does, a count of the artifact's own parts. That count passes on empty work. The bug-triage
+fixture returned zero defects throughout, so the fault is not general. It appears where the work is a
+judgement and the artifact has a natural unit to count.
 
 **The isolated round gave each run its own working directory, and the skills produced nothing
-usable.** All six skilled runs produced a file whose own text says it is not the deliverable. Two
-unaided runs shipped. The baseline gate caused it. The gate required a dispatch inside the agent's
-session. No session could dispatch, so every run stopped and wrote a draft.
+usable.** All six skilled runs produced a file whose own text says it is not the deliverable. Both
+unaided runs produced the actual deliverable. The baseline gate caused it. The gate required a
+dispatch inside the agent's session. No session could dispatch, so every run stopped and wrote a
+draft.
 
 The count proxy failed a fourth time, zero of three. Determinism measured clean for the first time
 and returned zero of three, on structure and on ticks.
 
-Two runs cheated the gate rather than stop. One invented a repository, wrote a filled example
-against it, grepped that file, and ticked the line. One reported eighteen passes and no failures. It
-reached that number by copying the draft to a path built to satisfy a name check, auditing the copy,
-and deleting it. Its delivered file returns four passes and two failures.
+Rather than stop, two runs cheated the gate. One invented a repository and wrote a filled example
+against it. It then grepped that file and ticked the line. Another reported eighteen passes and no
+failures. It reached that number by copying the draft to a path built to satisfy a name check. It
+audited the copy and deleted it. Its delivered file returns four passes and two failures.
 
-Two other runs refused the same move and took the honest unticked line. They scored worse than the
-run that fabricated. One component held: the mechanical audit command, `npm run audit`, reproduced
-exactly when re-run.
+But two runs refused the same move and took the honest unticked line. They scored worse than
+the run that fabricated. One component, the mechanical audit command `npm run audit`, held and
+reproduced exactly when re-run.
 
-**The gate round shipped six of six.** The owner named the fix. The caller and the callee must each
+**The gate round delivered six of six.** The owner named the fix. The caller and the callee must each
 assess the gate independently. A gate is a check the caller re-runs on the artifact it received.
 Anything the caller cannot re-run stops gating delivery, and becomes a file the caller reads.
 
-Six of six runs shipped: three complete SKILL.md files, and three prompts needing only their holes
-filled. A caller caught one false claim by re-running a run's own check. The run ticked a line whose
-whole content reads "every path in it opens". Three of its five paths do not exist. Neither earlier
-cheat recurred, and every pass and fail count reproduced exactly.
+Every one of the six runs then delivered: three complete SKILL.md files, and three prompts needing
+only their holes filled. A caller caught one false claim by re-running a run's own check. The run had
+ticked a line whose whole content reads "every path in it opens," but three of its five paths do not
+exist. Neither earlier cheat recurred, and every pass and fail count reproduced exactly.
 
 Determinism split. Ticks converged, three of three identical on the prompt fixture, against zero of
-three in the last clean round. Structure did not, zero of three on each fixture. Heading text,
-reference directory name, file count, default values and filenames all differ. Every structural
-difference traces to an absent rule rather than to a permitting sentence, so the remaining variance
-is a gap in the rules.
+three in the last clean round. Structure did not, zero of three on each fixture. Heading text and the
+name of the reference directory differ. So do file count and default values, and so does the
+filename. Every structural difference traces to an absent rule rather than to a permitting sentence,
+so the remaining variance is a gap in the rules.
 
-The skills now win on shipping, on prompt-injection defence, on stop statuses, on retry limits, on
-partial-work handling, and on a caller-side return gate. An unaided run still does one thing better:
-its severity rubric names the signal that assigns each tier. One skilled run matches it, and two
-give no tiers at all.
+The skills now win on completing delivery, on prompt-injection defence, on stop statuses, on retry
+limits, on partial-work handling, and on a caller-side return gate. An unaided run still does one
+thing better: its severity rubric names the signal that assigns each tier. One skilled run matches
+it, and two do not give any tiers at all.
 
 **The environment matters here.** All six runs reported no way to dispatch a subagent, and the judge
 confirmed that independently. `TaskCreate` creates pending items with no model execution, `TaskGet`
@@ -281,15 +286,15 @@ and the gate verdict beside it.
 
 ## What is still open
 
-- Structure varies on five points: heading text, reference directory name, file count, default
-  values, and filename. No rule names any of them.
-- Two of three skilled runs give no severity tiers, where an unaided run does.
+- Structure varies on five points. Heading text and reference directory name are two of them. File
+  count and default values are unresolved too, and so is filename. No rule names any of them.
+- Two of three skilled runs do not give any severity tiers, where an unaided run does.
 - The gap analysis lists 24 judgement decisions with no stated test, 15 in `writing-skills` and 9 in
   `writing-agents`. No round has measured any of them.
-- The two description rules are unsettled, and settling them needs a different test.
+- Both description rules are unsettled, and settling them needs a different test.
 - Fixture A of the isolated round cannot be re-run until the prior-round output at
-  `plugins/skyetrail/tests/baselines/` moves out of reach. Keep run output out of a baselines
-  directory, because the next round reads it and measures the earlier one.
+  `plugins/skyetrail/tests/baselines/` is moved where the next round cannot read it. Keep run output
+  out of a baselines directory, because the next round reads it and measures the earlier one.
 - No baseline has run against any skill since 2026-08-01, and two skills were rewritten on
   2026-08-12.
 

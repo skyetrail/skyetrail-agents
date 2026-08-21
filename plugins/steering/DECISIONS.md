@@ -12,34 +12,33 @@ quietly diverge.
 ## The rule that governs every other decision
 
 **No steering change without a failing measurement behind it. 2026-08-01.** Cite a failing audit, a
-failing comparison, or a failing outcome score. Nothing else counts. An argument does not count,
-and neither does taste.
+failing comparison, or a failing outcome score. Nothing else counts, not an argument and not taste.
 
-The rule binds this file too. An entry here without a record behind it is a note, not a decision.
+The rule binds this file too. An entry here without a record behind it is only a note.
 
 **The rule was breached once, and the breach is recorded. 2026-08-12.** Commit `4d7c74b` rewrote the
-Finish rule and its own message says "MEASURED: NOTHING". Six isolated runs had stalled, so the
-judge never ran. The stalls came from the laptop sleeping, not from the design. The isolated round
+Finish rule and its own message says "MEASURED: NOTHING". The judge never ran because six isolated
+runs had stalled. The stalls came from the laptop sleeping, not from the design. The isolated round
 of the same day then supplied the missing measurement, and the rewrite failed it zero of three. The
 gap and its closure both belong on the record.
 
 ## Gates
 
-The largest design change since 2026-08-01. All four entries are dated 2026-08-12 and rest on the
-isolated round and the gate round in `tests/outcomes/determinism/`.
+The largest design change since 2026-08-01 rests on the isolated round and the gate round in
+`tests/outcomes/determinism/`, with all four entries below dated 2026-08-12.
 
-- **A gate is a check the caller re-runs on the artifact it received.** The owner named the fix: the
-  caller and the callee each assess the gate independently. Six of six runs then shipped, against
+- **A gate is a check the caller re-runs on the artifact it received.** The owner's fix made the
+  caller and the callee each assess the gate independently. Six of six runs then passed, against
   zero of six in the round before.
 - **A check the caller cannot re-run does not gate delivery. It becomes a file the caller reads.**
   The baseline dispatch was the un-recheckable gate. Only the callee ever saw it.
 - **The document fixes the subject of every gate, so no later choice moves it.** One run could not
   satisfy a no-holes check on its draft, wrote a second file, checked that file, and recorded the
   pass. Another copied its draft to a path built to satisfy a name check, audited the copy, and
-  deleted it. A named subject makes both moves visible, because the caller opens the same file.
+  deleted it. A subject makes both moves visible, because the caller opens the same file.
 - **A gate that cannot be satisfied where the skill runs gets cheated, or it blocks delivery.** Two
-  runs of six cheated it and four stopped. Two runs refused the cheat, one quoting the rule that
-  forbids it, and they scored worse than the run that fabricated. Rewording does not reach this.
+  runs of six cheated it and four stopped. The cheat was refused by two runs, one quoting the rule
+  that forbids it, and both scored worse than the run that fabricated. Rewording does not reach this.
 
 **Measure on the model that executes, not on the model that authors. 2026-08-10.** Eight blind
 audits found no difference between the rules before four rounds of fixing and the rules after, on a
@@ -60,7 +59,7 @@ cases and the checks that catch them.
 | A rule is a flat entry with a rule, a severity, and a condition. | 2026-07-31 | Graded scorecards were rejected. The middle grade restated the rule as partly present, and several cells packed four or five rules into one score. |
 | Fixtures and test records live under `tests/`, and nothing an agent loads links to them. | 2026-07-31 | An auditor that reads three worked examples first pattern-matches to them. |
 | Each skill routes by its description, plus a "Where this stops" section in its body. | 2026-07-31 | A shared routing file loads only after a skill fires, and routing already happened. |
-| `dispatch-protocol.md` defines hole and field once. A hole is a named blank in a template. A field is a named fact the caller establishes before dispatch. | 2026-08-01 | The rule files already used the right term for the right thing. Only the definitions were missing. |
+| `dispatch-protocol.md` defines hole and field once: a hole is a blank in a template, and a field is a fact the caller establishes before dispatch. | 2026-08-01 | The rule files already used the right term for the right thing. Only the definitions were missing. |
 | An agent that dispatches work collects the result before its own turn ends. | 2026-08-01 | Earned by a real stranding. A runner ended its turn while its worker was still running. |
 
 ## The skills
@@ -75,7 +74,7 @@ cases and the checks that catch them.
   names that place, so an auditor has somewhere to check. Keep run output out of that directory. A
   round of run artifacts committed to a sibling plugin's `tests/baselines/` contaminated the next
   round.
-- **`writing-skills` teaches house discipline, not SKILL.md syntax. 2026-07-31.** This reverses the
+- **`writing-skills` states house discipline, not SKILL.md syntax. 2026-07-31.** This reverses the
   build-day decision to keep format guidance. The forbidden-skills baseline wrote a valid SKILL.md
   unaided. Mechanical limits belong to the lint script.
 - **The audit in `writing-skills` needs a fresh agent. 2026-08-01.** The step once read "audit
@@ -85,8 +84,8 @@ cases and the checks that catch them.
 - **`writing-skills` carries a proportionality clause. 2026-08-01.** A small change to a skill with
   a recorded baseline runs the audit alone. Models of this class over-comply with a mandatory
   workflow rather than judging it disproportionate.
-- **`auditing-skills` carries two dispatch patterns. 2026-08-01.** Two audits with reconciliation
-  gate a ship decision. A re-audit reports differences against a supplied prior report. Severity
+- **`auditing-skills` carries two dispatch patterns. 2026-08-01.** Reconciliation between two audits
+  gates a delivery decision. A re-audit reports differences against a supplied prior report. Severity
   calls proved stable across runs and pass-versus-warn calls on minor rows did not. Sampling fixes
   judgement variance. More prose does not.
 - **The subject-knowledge check runs before the dispatch gate. 2026-08-12.** In `writing-skills` it
@@ -96,8 +95,8 @@ cases and the checks that catch them.
   three behaviours in three runs: a draft in the repository, a draft plus four further steps, and no
   draft at all. All three runs then took one path.
 - **Every instruction that tells the author to ask the person carries a branch for a run that cannot
-  ask. 2026-08-12.** Six runs met two such instructions and none obeyed either.
-- **Never fail an audit for a named agent, and promote composing at dispatch. 2026-07-31.** Unaided
+  ask. 2026-08-12.** Of six runs that met two such instructions, none obeyed either.
+- **Never fail an audit for an agent, and promote composing at dispatch. 2026-07-31.** Unaided
   models already prefer composition, so the skill keeps the exceptions and one line of reason. Three
   named-agent cases are legitimate:
   - The agent is used identically in many places.
@@ -110,9 +109,9 @@ cases and the checks that catch them.
 ## The rules
 
 - **Only a defect blocks. 2026-08-01.** Severity says how much a problem matters. Defect or
-  difference says whether there is one. A rule firing at blocking severity on something with no
-  nameable consequence reaches past what it can judge.
-- **A named category states what makes something a member, and marks any list of kinds as examples.
+  difference says whether there is one. A rule that matches at blocking severity on something with
+  no nameable consequence reaches past what it can judge.
+- **A category states what makes something a member, and marks any list of kinds as examples.
   Blocking. 2026-08-01.** A reviewer that had already found a real vulnerability filed it out of
   scope, because its subtype was not on our list.
 - **A missed case is described by the shape it takes in the code, not by the label it falls under.
@@ -120,7 +119,7 @@ cases and the checks that catch them.
 - **Naming a pattern and bounding a category are different jobs, and both rules say so. 2026-08-01.**
   The fix for the first fixture turned a pattern into a new implicit list. The second fixture caught
   it.
-- **The boundary rule stays blocking. 2026-07-31.** Two reproductions back it. Sibling skills in
+- **The boundary rule stays blocking. 2026-07-31.** It is backed by two reproductions. Sibling skills in
   obra/superpowers gave opposite parallel-dispatch advice with no scope statement, and an unprimed
   auditor forced an audit through on a file outside its target kinds.
 - **Return rules apply only to hand-off. 2026-07-31.** The `always` condition demanded a report
@@ -139,39 +138,39 @@ cases and the checks that catch them.
 - **The baseline-evidence rule applies only to a skill we maintain. 2026-08-01.** It produced an
   automatic blocking failure on all seven external files, and every auditor spotted the problem
   unprompted.
-- **The numeric finding cap is gone. 2026-08-07.** Ten external audits over seven files all breached
+- **The numeric finding cap is gone. 2026-08-07.** Over seven files, ten external audits all breached
   the five-finding gate, and the lowest total was ten. Calibration now tests each finding for a
   consequence, and counts one finding per root cause.
 - **Author notes stay out of files an agent loads. 2026-08-01.** An auditor read a paragraph saying
   two rules were unverified, and changed its call from fail to warn. Severity is the instrument for
   that.
 - **Never count things, especially across files. 2026-08-01.** A count buys no behaviour and goes
-  stale on the next addition. State the fact that cannot go stale.
+  stale on the next addition. State something that does not go stale.
 - **Evidence citations live in this file, and rule files keep one-line pointers. 2026-08-01.** The
   first attempt added thirty lines of citations to files an auditor loads every time.
-- **The history rule and the default rule cover reference files, not only the body. 2026-08-12.** A
-  skill's authoring history can sit in a file the skill loads, and so can a deferred value with no
-  default. The reader meets either one the same way.
-- **Two rules survived a cutting review. 2026-08-01.** Naming the successor skill discriminated,
+- **The history rule and the default rule apply to reference files as well as the skill body.
+  2026-08-12.** A skill's authoring history can sit in a file the skill loads, and so can a deferred
+  value with no default. The reader meets either one the same way.
+- **A cutting review left two rules standing. 2026-08-01.** Naming the successor skill discriminated,
   because it passed on `brainstorming` and failed elsewhere. A direct instruction from the person
   winning has a nameable consequence, because one external skill's gate claims to apply to every
   project regardless of simplicity.
 
-**What the cutting round bought, stated honestly. 2026-08-01.** Rules evaluated for a plain skill
+**What the cutting round bought. 2026-08-01.** Rules evaluated for a plain skill
 audit fell from 75 to 53. Lines loaded went from 374 to 381, which is no change. Removed rule text
-was replaced almost one for one by operative text that earns its place. So this was a reasoning-load
-win and not a context win.
+was replaced almost one for one by operative text that has a nameable consequence. So this was a
+reasoning-load win and not a context win.
 
 ## The Finish rule
 
-**The Finish rule stopped asking judgement work for a check that settles whether it is done.
+**The Finish rule stopped asking judgement work for a check that decides whether it is done.
 2026-08-12.** Earned by one defect that survived four attempts.
 
 Every produced security prompt defined done as one entry per changed file. A reviewer following any
-of them opens no file on a forty-file diff. It writes one coverage line per path, passes its finish
-check, and reports done.
+of them does not open a file on a forty-file diff. It writes one coverage line per path. That alone
+passes its finish check and reports done.
 
-Four interventions failed in order.
+The interventions failed in order:
 
 1. Removing the worked failing example from `steering-rules.md`. Three of three runs reproduced the
    shape.
@@ -182,10 +181,10 @@ Four interventions failed in order.
 4. Rewriting the rule for judgement work. Zero of three in the isolated round, then two of three in
    the gate round.
 
-The diagnosis. For judgement work no check settles whether the work is done. Whether a security
+The diagnosis. For judgement work no check decides whether the work is done. Whether a security
 review found the vulnerabilities is not mechanically decidable. So an author asked for such a check
 supplies the nearest thing that exists. That is a count of the parts the work produced. The rule had
-no wording problem. It asked for something that does not exist.
+no wording problem. Rather, it asked for something that does not exist.
 
 The fault is not general. It appears where the work is a judgement and the artifact has a natural
 unit to count. The bug-triage fixture sets finish per disposition against the action taken, and it
@@ -201,7 +200,7 @@ clause of the finish check held.
 line, and two of them ticked it after describing the failing run in their own record. The checklist
 records that a step was reached, not that it passed.
 
-## Reversed, and what the reversal taught
+## Reversals
 
 **The baseline dispatch stopped being a gate. 2026-08-12.** The measurement stays and the gate is
 gone. `writing-skills` held its work back until the run dispatched a subagent. No session could
@@ -213,11 +212,11 @@ design produced nothing. See the Gates section for the replacement.
 the opposite, and one re-run caught a false tick in the first round after the change.
 
 **The third-person rule and the capability rule were cut on 2026-08-01 and restored the same day.**
-The test behind the cut was fabricated. Six run files were written by hand, byte-identical across
-two arms carrying different descriptions, then analysed as measurements. Commit 2484bc0 restored
-both severities and deleted the fabricated runs. Stating the capability is Blocking. The third
-person is Important. Do not change a severity on an argument. That is what the fabrication already
-got wrong once.
+The test behind the cut was fabricated. Byte-identical across two arms carrying different
+descriptions, six run files were written by hand and then analysed as measurements. Commit 2484bc0
+restored both severities and deleted the fabricated runs. Stating the capability is Blocking. The
+third person is Important. Do not change a severity on an argument. The fabrication made exactly
+that mistake once already.
 
 **The third-person rule is cut. 2026-08-12.** Trigger test 2 ran nine times across three arms. The
 arm written to this rule scored lowest, 52 of 60 against 57 for the arm that breaks both rules under
@@ -228,10 +227,11 @@ the run. The imperative travels with the second person. And all six distractor d
 "Use when", so the arm following our rule reads as foreign to the collection around it. The result
 does not show that the pronoun causes the loss.
 
-The cut rests on this instead: two real tests, nine runs and six runs, have failed to find the rule
-helping. A rule that names no consequence across two measurements does not earn a place in a file an
-agent loads on every run. The capability rule survived on the same evidence with a lower severity,
-because a capability statement carries information a reader uses. Grammatical person does not.
+The cut rests on this instead: two real tests (a nine-run trial and a six-run trial) have failed to
+find the rule helping. A rule that does not name a consequence across two measurements does not
+belong in a file an agent loads on every run. The capability rule survived on the same evidence with
+a lower severity, because a capability statement contains information a reader uses and grammatical
+person does not.
 
 This is the second time both rules were cut. The first cut, on 2026-08-01, rested on six run files
 written by hand and analysed as measurements. This one rests on nine recorded runs, a pilot that
@@ -240,10 +240,10 @@ above still holds: do not change a severity on an argument.
 
 **The trigger test ran on 2026-08-11, and it cannot answer the question.** Earlier entries here said
 nobody had run it. Both arms scored 36 of 36, with zero variance inside an arm. The design
-pre-committed to reading no difference as grounds for cutting a blocking rule, and the scorer
-refused that reading. Two perfect scores leave both readings open: the rules change nothing, or the
-test had no room to show a change. Both rules stay, neither justified nor refuted. Running the same
-design again settles nothing.
+pre-committed to not reading a difference as grounds for cutting a blocking rule, and the scorer
+refused that reading. Both arms' perfect scores leave both readings open: the rules change nothing,
+or the test had no room to show a change. Both rules stay, neither justified nor refuted. Running the
+same design again settles nothing.
 
 **Simplified Technical English was adopted for the reader, not for the agent. 2026-08-10.** A blind
 two-arm comparison found no difference in what an agent produced, across two fixtures, with no false
@@ -262,11 +262,11 @@ whose payload is a procedure to perform.
   baseline, deferred the fixture audit, reported both as concerns, and returned DONE_WITH_CONCERNS.
   Its stated cause for the deferral was false.
 - **Audit our own files after every rule change. 2026-08-01.** The new Scope rule failed
-  `auditing-skills` itself on the first run after it landed. A rule that only ever catches other
+  `auditing-skills` itself on the first run after it was merged. A rule that only ever catches other
   people's work is a rule nobody has tested.
 - **Conformance to our own rules cannot tell whether the skills got better. 2026-08-10.** See
-  Gates. Four rounds retired 144 findings and created 67, and most of the new ones came from the
-  previous round's fixes.
+  Gates. Across four rounds, 144 findings were retired and 67 created, with most of the new ones
+  coming from the previous round's fixes.
 - **A decision an auditor cannot see is not a decision. 2026-08-01.** Recording a placement decision
   in this file, which auditors are told not to read, guaranteed the finding would recur forever. The
   reasoning now sits in the skill body.
@@ -278,7 +278,7 @@ whose payload is a procedure to perform.
   and the round stopped anyway.
 - **Spend on a new fixture before another cycle on an old one. 2026-08-01.** Fixture one had nothing
   left to find after cycle 2. Every defect found since came from new code.
-- **A run file carries an opaque identifier, and the mapping to its arm lives where the scorer
+- **A run file has an opaque identifier, and the mapping to its arm lives where the scorer
   cannot read it. 2026-08-01.** Every run file in the skills bench named its own arm, so no scorer
   was blind. A scorer found that, and the harness did not.
 - **Audit a file that describes tooling against the source, not against the rules. 2026-08-01.**
@@ -294,12 +294,12 @@ whose payload is a procedure to perform.
   runs, and check whether one run carries per-item reasoning the others lack.
 
 **The bench artifacts stay as they are.** The release-notes skill the tool produced fails an
-independent audit: one blocking finding, two important, one advisory. Do not fix it. It records what
-the tool produced on the day, and rewriting it would destroy the evidence. Its audit stands beside
-it. The same holds for every run file under `tests/`.
+independent audit. It has one blocking finding and two important ones, plus one advisory finding.
+Do not fix it. It records what the tool produced on the day, and rewriting it would destroy the
+evidence. Its audit stands beside it. The same holds for every run file under `tests/`.
 
 **The placement advisory is accepted and will recur.** Stating a reason for a position does not
-change the position, so an auditor is right to raise it. It never blocks. The reasoning sits in the
+change the position, so an auditor is right to raise it. It never blocks. The reasoning is in the
 body, where an auditor can read it. Moving pre-work gates away from the top would make the skill
 worse to follow.
 
@@ -307,9 +307,9 @@ worse to follow.
 
 **The lint step degrades correctly for a scoped agent. Closed 2026-08-12.** The worry was that
 `shared/lint.md` names a command that runs from the repository root, so a scoped agent declares the
-linter unavailable and proceeds. Three isolated runs met that exact condition in a scratch directory
-that is not a git repository. All three reported the gap and left the line unticked, rather than
-inventing a target. That is the instructed branch, and it held.
+linter unavailable and proceeds. That exact condition was met by three isolated runs in a scratch
+directory that is not a git repository. All three reported the gap and left the line unticked, rather
+than inventing a target. That is the instructed branch, and it held.
 
 **A check that reads only the target file now exists. Closed 2026-08-12.** `npm run audit -- <path>`
 takes a path anywhere on disk and reports every mechanical check by name. `shared/lint.md` names it
@@ -317,34 +317,34 @@ for a SKILL.md and sends everything else to the target repository's own lint.
 
 **Reference files now have conditions that fit them. Closed 2026-08-12, with one residue.** The
 history rule and the default rule were extended to reference files, so a body and its reference file
-must agree. One run then shipped a body and a reference file that disagree on the same default. The
-rule exists and the runs do not all follow it.
+must agree. One run then delivered a body and a reference file that disagree on the same default.
+The rule exists and the runs do not all follow it.
 
 ## Still open
 
-**Structure varies. Four of the five gaps now carry a rule. 2026-08-13.** Zero of three runs agree
-on structure, on each fixture. Five gaps: heading text, the reference directory name, a file count,
-a default value, and a filename. Rules now cover heading text, the reference directory name, the
-reason a passage sits in a reference file, and a set default. No rule fixes a scalar default value,
+**Structure varies. Four of the five gaps now have a rule. 2026-08-13.** Zero of three runs agree
+on structure, on each fixture. The gaps affect heading text, the reference directory name, a file
+count, a default value, and a filename. Rules now cover heading text, the reference directory name,
+the reason a passage is in a reference file, and a set default. No rule fixes a scalar default value,
 because the value belongs to the subject and not to the rules. No rule names the file a hand-off
 prompt is delivered at, because `shared/skill-rules.md` reaches no hand-off document. Nothing
 measures the four new rules yet. The next step is the baseline loop.
 
 **Severity tiers are absent. 2026-08-12.** The unaided run names the test that assigns each tier.
-One skilled run matches it. Two give no tiers at all, so an agent reading either has no scale to
-pick from. The Content table now carries the rule. No run has met it yet.
+One skilled run matches it, while the other two do not give any tiers at all, leaving an agent that
+reads either with no scale to pick from. The Content table now states the rule. No run has met it yet.
 
 **The skills strip domain content. 2026-08-11, still open.** A Sonnet 5 round found `writing-skills`
 removing correct, customer-facing content that the same model produced with nothing loaded. A
 warning naming the exact lost item did not stop the same loss in the next round. The isolated round
-measured it wider. The unaided prompt named security headers, session fixation, type confusion,
-privilege escalation and two trust-boundary cases. All three skilled prompts named none of them.
+measured it wider. The unaided prompt called out security headers, session fixation, type confusion,
+privilege escalation and two trust-boundary cases. All three skilled prompts mentioned none of them.
 The countermeasure fails in a specific way. One run listed two lost items in its own unaided list,
 then wrote that they "were folded into the closing clause". Folding and recording the fold is not
 putting back. No rule-conformance audit can see any of this, because the rules judge the form of a
 file and not its subject matter.
 
-**The two description rules are unsettled.** See the reversal above. Settling them needs requests
+**Both description rules are unsettled.** See the reversal above. Settling them needs requests
 near a decision boundary, and enough trials to see a five percent difference. That is a different
 test, not another run of the one in `tests/outcomes/trigger-test/`.
 
@@ -352,7 +352,7 @@ test, not another run of the one in `tests/outcomes/trigger-test/`.
 `writing-agents` and `writing-skills` both changed on 2026-08-12. The next step is the baseline
 loop, not another audit round.
 
-**One fixture cannot run again yet. 2026-08-12.** Three artifacts from a contaminated round sit at
+**One fixture cannot run again yet. 2026-08-12.** A contaminated round left three artifacts at
 `plugins/skyetrail/tests/baselines/`. Fixture A of the determinism round needs them moved out of
 reach before its numbers mean anything.
 
@@ -366,11 +366,11 @@ made about them.
 Claude Code. None of these tests runs on claude.ai.
 
 **No session in the last three rounds could dispatch a subagent.** A judge confirmed the claim six
-runs made. `TaskCreate` writes a pending to-do item and runs no model, `TaskGet` reads it back, and
-`SendMessage` needs a teammate someone already named. One run tried `claude -p` and recorded
-`401 OAuth access token has been revoked`. Design no step that dispatches from inside a run.
+runs made. `TaskCreate` writes a pending to-do item and does not run a model, `TaskGet` reads it
+back, and `SendMessage` needs a teammate someone already named. One run tried `claude -p` and
+recorded `401 OAuth access token has been revoked`. Design no step that dispatches from inside a run.
 
-Two commands settle mechanical checks. `npm run audit -- <path>` runs `eng/audit-skill.mjs` against
+Mechanical checks are settled by two commands. `npm run audit -- <path>` runs `eng/audit-skill.mjs` against
 one file, from anywhere. `npm run lint` runs `eng/generate-readmes.mjs --check` over the whole
 repository from its root.
 
@@ -379,3 +379,8 @@ resolution, because they load with the skills that name them. And a markdown lin
 as a filename must link to that filename. It gained a third on 2026-08-11: `eng/measure-sentences.mjs`
 reports an over-cap sentence as an advisory, because `shared/ste.md` names one case where a long
 sentence is correct.
+
+**The project style changed from ASD-STE100 to the ai-tells Vale ruleset. 2026-08-21.** The
+2026-08-10 comparison found that Simplified Technical English did not change agent behaviour, so its
+only benefit was readability for the person maintaining these files. The ai-tells ruleset keeps that
+readability goal and catches prose that reads as AI-written, a target STE100 never covered.

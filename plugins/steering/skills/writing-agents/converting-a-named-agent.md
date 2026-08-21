@@ -4,7 +4,7 @@
 agent into a template. Nothing else in it changes the workflow.
 
 Read the definition. Split it into an invariant part and a varying part. The invariant part becomes
-the template body, and the varying part becomes named holes. A part varies where two call sites you
+the template body, and the varying part becomes holes. A part varies where two call sites you
 can name would need different text there. Name those two call sites in the record. Where only one
 call site exists, treat every part naming a path, a file, a repository, a branch, or a person as
 varying. Ask the person before you treat anything else as varying.

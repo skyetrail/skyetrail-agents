@@ -1,7 +1,7 @@
 # Authoring
 
 Read this file to settle which artifact a request needs. You end with one class and the number of
-the test that gave it. The four classes are a script, an answer in this conversation, a prompt, and
+the test that gave it. The classes are a script, an answer in this conversation, a prompt, and
 a skill. These four are the whole set. Take a request you cannot place in one of them back to the
 person.
 
@@ -9,17 +9,17 @@ The skills `writing-skills` and `writing-agents` apply this file. It supplies cr
 no task of its own. `auditing-skills` does not apply it. An auditor reads a finished artifact and
 chooses nothing.
 
-Out of scope: how to write the artifact once the class is settled, what the finished artifact must
-hold, and the writing style. The skill named beside each class covers the first two. `./ste.md`
-covers the third.
+Out of scope: how to write the artifact once the class is settled, and what the finished artifact
+must hold. The writing style is out of scope too. The skill named beside each class covers the
+first two. `./ste.md` covers the third.
 
 ## Contents
 
 - The tests
 - Where two tests hold
-- Where a test does not settle
-- Where the request holds more than one kind of work
-- What the rule files carry and what they do not
+- Unsettled tests
+- Requests with more than one kind of work
+- Shape versus subject matter
 
 ## The tests
 
@@ -45,13 +45,13 @@ Fill the lines from the top. Stop at the first line that reads `yes`. Write `-` 
 it. Then write the class and the number of the deciding test.
 
 The block is complete where the deciding line reads `yes`, every line above it reads `no`, and both
-last lines hold a value. Check that yourself before you report anything. Every line is required.
-Keep the set of lines fixed.
+last lines hold a value. Check that yourself before you report anything. Keep the set of lines
+fixed, and do not drop any of them.
 
 Take the first test that reads `yes`, and act on it.
 
-1. **A script.** Write the script. Write no document. No skill takes this over.
-2. **An answer.** Say the guidance in your reply. Write no file.
+1. **A script.** Write the script. Do not write a document. No skill takes this over.
+2. **An answer.** Say the guidance in your reply. Do not write a file.
 3. **A prompt.** Use `writing-agents`.
 4. **A skill.** Use `writing-skills`.
 
@@ -76,11 +76,11 @@ too.
 Do not name the class the request comes closest to. Closeness carries no metric, so two readers
 return two classes. The order above is the metric.
 
-## Where a test does not settle
+## Unsettled tests
 
 A test does not settle where you cannot answer its question. This differs from a test whose answer
-is no. The person named no occasions, so you cannot count them. The person named no reader, so you
-cannot say which context holds the guidance. These are examples, not the whole list.
+is no. The person did not name occasions, so you cannot count them. The person did not name a
+reader, so you cannot say which context holds the guidance. This is a partial list.
 
 Write `cannot tell` on that line and stop. Then return these three things.
 
@@ -100,12 +100,12 @@ settle. That text is a draft. A draft is not the deliverable. Naming a status be
 make it one. Leave the keep-or-discard call to the person. The same holds for any other gate your
 skill names and you could not run.
 
-## Where the request holds more than one kind of work
+## Requests with more than one kind of work
 
 Split the request. Fill one block per part. Say in your report which part took which class. A
 request holding a repeatable check and a judgement is the common case, not the whole list.
 
-## What the rule files carry and what they do not
+## Shape versus subject matter
 
 These rule files carry the order and the shape of an artifact. They carry none of its subject
 matter.
@@ -118,8 +118,8 @@ Then read the finished artifact once more. Name every instruction in it that cam
 knowledge of the subject rather than from a rule file. Where you can name none, you dropped them
 all. Put them back.
 
-One run showed this loss. Two agents wrote for one task. The agent holding the rule files left out
-four things the agent without them wrote.
+One run showed this loss. For one task, two agents wrote independently, and the agent holding the
+rule files left out four things the agent without them wrote.
 
 - A pre-triage step for a security report.
 - A warning against discussing that report in a public tracker.

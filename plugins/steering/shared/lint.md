@@ -9,7 +9,7 @@ nothing at all to make a check reach further or to make it pass. The target, the
 configuration, an ignore file, a CI definition, and a fixture are examples, not the whole list.
 Recording a confirmed command through `repo-setup` is the one change this file asks for.
 
-A lint is a script. It checks things it can decide on its own. For example, it can check
+A lint is a script. It checks things it can decide on its own. It can check
 whether a file parses and whether a file stays within a stated limit. It can also check whether
 the things a file points at exist. Judgment stays with the rules files. These limits belong to
 the script. Each repository decides which checks its own lint performs. This is the repository's
@@ -31,7 +31,7 @@ Everything below about a command that will not run applies to both.
 
 ## Finding the lint command
 
-The lint command belongs to the current repository, not to this plugin. Look for it in this
+The lint command belongs to the current repository, not to this plugin, so look for it in this
 order.
 
 1. The `repo-setup` block in the repository's `AGENTS.md` file records the command a person
@@ -44,8 +44,8 @@ order.
 
 ## When it does not settle the target
 
-A lint fails to settle your target in more than one way. Three come up most, and they are not the
-same. Others exist, so read these three as examples rather than as the whole list. In every case,
+A lint fails to settle your target in more than one way, and these cases are not interchangeable.
+Others exist, so read them as examples rather than as the whole list. In every case,
 say what happened. Then continue with the judgment rules. Do not work out the mechanical limits by
 hand again. Do not present that result as a lint result.
 
@@ -63,12 +63,12 @@ is not a pass. Establish what the command reads. Do this before you record a cle
 establish whether the command's reach covers your target. If the repository offers a way to ask
 the command, use it. If not, read the script. Do not take a description of coverage from any
 document, even this one. Prose about what a script does can go stale. Nothing fails when this
-happens. If the command does not cover the target, report a coverage gap. Say which check did
+happens, so if the command does not cover the target, report a coverage gap. Say which check did
 not run. A lint can report every file up to date. It can do this while it never opens the file
 you audit. This kind of lint is worse than no lint. It makes a pass that nobody questions.
 
 Sometimes a run fails without settling which case applies. A timeout is one example. An error
-that names no cause is another example. Run the command one more time, but only after something
+that does not name a cause is another example. Run the command one more time, but only after something
 changes. If nothing changes, do not run it again. Instead, record that the command could not
 run. Say what you saw.
 

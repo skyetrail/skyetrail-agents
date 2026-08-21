@@ -1,6 +1,6 @@
 ---
 name: writing-agents
-description: Writes the prompt for an agent that will not see the current conversation, along with the caller side that dispatches it and handles what comes back, producing an agents/*.md definition or a prompt template. Use this whenever someone mentions handing work to a subagent, dispatching or spawning agents, writing a prompt or a template for an agent, running work in parallel across several agents, or turning a predefined named agent into something composed at the point of dispatch. Use it also when a subagent came back with nothing useful, returned a summary instead of the work, ignored half its instruction, or ran out of context. Use it even when the word agent is not used, if work is being handed to something that starts with no context.
+description: Writes the prompt for an agent that will not see the current conversation. Also writes the caller side, which dispatches that prompt and handles what comes back. The result is an agents/*.md definition or a prompt template. Use this whenever someone mentions handing work to a subagent, or dispatching or spawning agents. It also applies to writing a prompt or a template for an agent, and to running work in parallel across several agents. Use it too for turning a predefined named agent into something composed at the point of dispatch. Use it also when a subagent came back with nothing useful, returned a summary instead of the work, ignored half its instruction, or ran out of context. Use it even when the word agent is not used, if work is being handed to something that starts with no context.
 ---
 
 # Writing agents
@@ -12,63 +12,65 @@ record naming every check that ran, the command each one used, and every check t
 ## Read the artifact test first
 
 **Open `../../shared/authoring.md` now, before you plan or write anything.** Fill the artifact-test
-block that file carries. Put the filled block in your reply. It returns one class and the number of
+block in that file. Put the filled block in your reply. It returns one class and the number of
 the deciding test. Then route on the class.
 
 - The class is a prompt. Run the workflow below.
-- The class is anything else. Stop. Name the class and the deciding test, and name the skill that
-  owns that class. `writing-skills` owns a skill for an agent that already holds this conversation.
+- The class is anything else. Stop. Name the class and the deciding test, and name the skill for
+  that class. `writing-skills` is the skill for an agent that already holds this conversation.
 - A line in the block reads `cannot tell`. Stop and ask the person the question that file tells you
   to ask. Do not write a prompt anyway. Where you cannot ask, put that question in your report and
   stop there.
 
 Where that path does not resolve, stop and say which path failed. Do not settle the class from
-memory. Do not search the disk for another copy, because a copy carries some other day's rules.
+memory. Do not search the disk for another copy, because a copy contains some other day's rules.
 
 ## What has already failed
 
 This section is about this skill, and it is for you, the author. Keep every line of it out of the
 prompts you write. The agent you dispatch never saw this project, so a sentence about a prior
-version of anything is a sentence it cannot resolve. Where one of these taught a rule, the prompt
-carries the rule and none of the history.
+version of anything is a sentence it cannot resolve. Where one of these established a rule, the
+prompt states the rule and omits the history.
 
 - **A gate that blocks delivery.** One run met an error at its evidence step, recorded it, then
-  handed the whole deliverable over as finished. A later version blocked instead. Six runs could
-  not dispatch the audit. All six shipped a file named `-unverified` that its own text calls not
-  the deliverable, and two unaided runs shipped a dispatchable prompt. So the gate below sorts what
-  you hand over, rather than deciding whether you hand anything over.
+  handed the whole deliverable over as finished. A later version blocked instead. Dispatch of the
+  audit failed in six runs. All six delivered a file named `-unverified` that its own text calls not
+  the deliverable, and two unaided runs delivered a dispatchable prompt. So the gate below sorts
+  what you hand over, rather than deciding whether you hand anything over.
 - **A step pointing forward.** One step said a later step named the directory to write to. The
   agent read no further and reported the directory missing, while four files sat in it. Every step
   below is complete where it stands.
-- **One named agent shared across call sites.** The section below carries what that costs.
-- **Two conditions read as exclusive.** A run set `changes something` false because it had already
-  set `advisory` true, then skipped a blocking rule. The security review prompt it produced carries
-  no line forbidding the agent to weaken a check. Step 4 below settles each condition on its own.
+- **One named agent shared across call sites.** The section below states what that costs.
+- **Conditions read as mutually exclusive.** A run set `changes something` false because `advisory`
+  was already true, then skipped a blocking rule. The security review prompt it produced carries no
+  line forbidding the agent to weaken a check. Step 4 below settles each condition on its own.
 - **A prompt tuned on shape alone.** An agent following the rule files cut correct subject content
   that the same model wrote with no rule file loaded. Step 7 below exists for that.
-- **A finish check copied out of a rule file's bad example.** One run read a worked pair and
-  shipped the bad half near verbatim, because that half was a usable sentence. Deleting the example
-  did not stop it, and three later runs wrote the same shape with no example in front of them.
+- **A finish check copied out of a rule file's bad example.** One run read a worked pair and wrote
+  the bad half near verbatim, because that half was a usable sentence. Deleting the example did
+  not stop it, and three later runs wrote the same shape with no example in front of them.
 - **A test the author could overrule.** Step 5 asked the author to describe a run that passes the
   check and misses the outcome. One run described such a run, kept the check, and called the gap
-  disclosed. Another moved the trigger onto what the agent read, so a run that opens no file
+  disclosed. Another moved the trigger onto what the agent read, so a run that does not open a file
   passed. Step 5 now names the failing shapes and forbids them.
-- **An instruction to ask the person, with no branch for a run that cannot ask.** Six runs met two
-  such instructions, and none obeyed either. Every such instruction now carries that branch.
+- **An instruction to ask the person, with no branch for a run that cannot ask.** Such
+  instructions occurred twice, across six runs, and none obeyed either. Every such instruction now
+  carries that branch.
 - **A check run on a file the caller never receives.** One run could not fill its holes. It
   invented a repository, wrote a filled example against that invention, grepped the example, and
   ticked the hole line. Another copied its draft to a path built to satisfy a name check, audited
   the copy, deleted it, and reported eighteen passes. The delivered file returns four passes and
   two failures. Step 2 below binds every check to the delivery path.
-- **A tick that outranked the truth.** Two runs refused that copy move and took the honest unticked
-  line. Those two failed the gate, and the run that fabricated its evidence passed. A tick is now a
-  claim you make about your own work, and the gate rests on two commands and the record instead.
+- **A tick that outranked the truth.** Refusing that copy move, two runs took the honest unticked
+  line instead. Those two failed the gate, and the run that fabricated its evidence passed. A tick
+  is now a claim you make about your own work, and the gate rests on two commands and the record
+  instead.
 
 ## Compose at dispatch
 
-A named agent carries one fixed instruction set to every call site. So each call gets too much
+A named agent has one fixed instruction set for every call site. So each call gets too much
 context or too little. Callers then patch it until two instructions conflict. Compose the prompt at
-the moment of use instead. A checked-in template with named holes counts as composed, because the
+the moment of use instead. A checked-in template with holes counts as composed, because the
 caller holds the filled text. The difference is control at dispatch, not the amount you reuse.
 
 Keep a named agent where something outside the call site depends on it staying one fixed thing.
@@ -108,13 +110,13 @@ as a caller obligation.
   at one model and one effort level. Where the two reports differ in what they found, the prompt is
   underspecified. Fix it, then run both again. Keep both outputs beside the template.
 - **One call site.** Run it once. Say in your report that no second run exists, and that the audit
-  is the whole evidence. Two measured arms cost more than the dispatch does.
+  is the whole evidence. Running two measured arms costs more than the dispatch does.
 
 ## Which harness shape
 
 One agent is the default. A second agent costs a prompt, a dispatch, and a report. Add one only
-where you can name what it prevents. Three failures make a harness worth its cost, and they are the
-common ones rather than the whole list.
+where you can name what it prevents. A harness is worth its cost only against the failures below,
+the common ones rather than the whole list.
 
 - **Agentic laziness.** The agent stops short of the work and reports as though it finished.
 - **Self-preferential bias.** The agent rates its own output higher than a fresh reader would.
@@ -123,8 +125,8 @@ common ones rather than the whole list.
 | Shape | Use it where | What it needs | What it guards |
 | --- | --- | --- | --- |
 | Classify and act | The branches are known and one case decides the route. | The agent returns one value, and deterministic code in the caller routes on it. | Goal drift |
-| Fan out and synthesize | The work reads more than one context holds. | The pieces share no read and no write. | Nothing on that list |
-| Adversarial verification | One agent would otherwise judge its own output. | The verifier reads what it did not write, and checks each named command and its output. | Self-preferential bias |
+| Fan out and synthesize | The material to read is large, and one context window is not enough for it. | The pieces do not share a read or a write. | Nothing on that list |
+| Adversarial verification | One agent would otherwise judge its own output. | The verifier reads what it did not write, and checks each command and its output. | Self-preferential bias |
 | Generate and filter | One attempt is often weak and a bar can be written first. | The bar written before the first candidate. | Agentic laziness |
 | Tournament | Comparing two candidates beats scoring one alone. | One comparison per candidate after the first. | Nothing on that list |
 | Loop until done | A gate settles the work and someone else can run it. | The gate and the repeat cap named before the first run. | Agentic laziness |
@@ -175,8 +177,8 @@ obligation`. Write both into the report instead.
 1. **Check the artifact.** Open `../../shared/authoring.md` and act on the class it returns. Write
    that class and the number of the deciding test into the first line of your report.
 2. **Anchor the objective and establish the facts.** Create the record now. It is one file beside
-   the path the prompt takes. Where the person named no path for the prompt, ask for one before
-   you go on. Write the person's request into the record word for word, under a heading
+   the path the prompt takes. Where the person did not name a path for the prompt, ask for one
+   before you go on. Write the person's request into the record word for word, under a heading
    `## Objective`. Name that file in your report. The record also holds the facts below and the
    result of every check this workflow names.
 
@@ -201,19 +203,19 @@ obligation`. Write both into the report instead.
 3. **Pick the shape.** Count the call sites first. The section "Reused, or one call" above says
    what each count changes. Then name one harness shape from the table above, and one dependency
    pattern from `../../shared/dispatch-protocol.md`. Say in one line what the second agent
-   prevents. Where the result needs no second reader, use one agent and say so.
+   prevents. Where the result does not need a second reader, use one agent and say so.
 4. **Write the prompt** against `../../shared/steering-rules.md` and
    `../../shared/handoff-rules.md`, with the condition **hand-off** met. Write every sentence
    against `../../shared/ste.md`. The prompt states no history the agent cannot reach. A prior
    version of the prompt, an earlier run of it, and a defect this project already fixed are
    examples, not the whole list. Where the prompt states an approach already tried, it gives the
    approach and the outcome in full, so the agent needs nothing outside the prompt. The Context
-   rows of that first file carry both rules, and the one against an unreachable reference blocks.
+   rows of that first file state both rules, and the one against an unreachable reference blocks.
 
    Settle every other condition in the Conditions block of `../../shared/steering-rules.md` by that
    block's own test. Put each answer in the record. Name the test that returned false for any
-   condition you set false. Two conditions can hold together, and a false answer for one is never a
-   true answer for another.
+   condition you set false. More than one condition can be true at once, and a false answer for one
+   is never a true answer for another.
 
    A prompt names a category wherever it tells the agent to find, fix, report, or act on things of
    a kind. A noun pointing at one thing at a path is not a category. Read every noun that is one.
@@ -224,30 +226,30 @@ obligation`. Write both into the report instead.
    - **A noun the prompt already defines by what makes something a member.** Leave it.
 
    A list ending in "or any other X" is closed. A list that just stops is not. The Scope section of
-   `../../shared/steering-rules.md` carries the rule, a worked pair, and what it cost to learn.
+   `../../shared/steering-rules.md` states the rule, a worked pair, and what it cost to learn.
 5. **Write the finish check, then name the statuses.** The finish check settles when the agent
    stops. Write it in the form the Finish section of `../../shared/steering-rules.md` gives for the
    kind of work this prompt steers.
 
    A finish check fails where the agent's own choices decide whether it passes. What the agent
-   writes and opens are two such choices, not the whole set. Three such shapes sit in prompts this
-   skill produced. Write none of the three, whatever else the check says, and whatever the test
+   writes and opens are two such choices, not the whole set. Such shapes sit in prompts this
+   skill produced. Write none of them, whatever else the check says, and whatever the test
    below returns. A check matching one is the wrong check, so delete it and write another.
 
    - **The measure is a tally of the artifact's own parts.** One entry per changed file, one line
      per ticket, and one paragraph per section are three examples. The work can be empty at every
      part, and the tally still comes out whole.
    - **The trigger is something the agent chose.** "Fails: name every file you read" and "fails:
-     list each check you ran" are two examples, labelled inside the quote so a copy carries the
+     list each check you ran" are two examples, labelled inside the quote so a copy keeps the
      label. An agent that opens nothing satisfies either one with nothing to name.
-   - **An empty run passes it.** Take a run that opens no file, finds nothing, and writes nothing.
-     Where that run passes, the check measures nothing.
+   - **An empty run passes it.** Take a run that does not open a file or find anything, and writes
+     nothing. Where that run passes, the check measures nothing.
 
    Trigger the check on the input instead. The input is the material the prompt names for the agent
    to read. A property of it holds or fails before the agent acts, so no later choice moves it.
 
    Then test the check that survives. Describe one run that passes it and stops short of the
-   outcome. Two things follow that description, and no third.
+   outcome. What follows is one of two things, and nothing else.
 
    - **You described such a run.** Rewrite the check so that run fails it. Then test the new check
      the same way.
@@ -261,24 +263,24 @@ obligation`. Write both into the report instead.
 
    Read the three shapes and run the test against every sentence saying when the work is done. The
    outcome statement, the finish check, and each status reporting success are three such places,
-   not the whole set. A prompt passing in one place and failing in another teaches the failing one,
-   because the agent reads all three. Read and test any check you copied from a rule file's
-   example. A copied sentence reaches your prompt without the words around it.
+   not the whole set. A prompt passing in one place and failing in another leaves the agent free to
+   follow the failing one, because the agent reads all three. Read and test any check you copied
+   from a rule file's example. A copied sentence reaches your prompt without the words around it.
 
-   A passing check settles that the agent covered the input the method names. It settles nothing
+   A passing check confirms that the agent covered the input the method names. It settles nothing
    about whether the result is right. So no sentence in the prompt says that a passing check makes
    the result correct, the finding set whole, or the material clean. Write one line beside the
    statuses saying what the check does not establish.
 
    Then take the four core statuses from `../../shared/dispatch-protocol.md` unchanged, with the
    caller's obligation for each. Add a status only where the caller must do something no core
-   status asks for, and write that action beside it. Two statuses taking one caller action are one
-   status. Name the retry limit, and write two retries per agent into the prompt where nothing else
-   sets it. Say what happens to partial work when a run stops.
+   status asks for, and write that action beside it. Statuses that take the same caller action
+   collapse into one status. Name the retry limit, and write two retries per agent into the prompt
+   where nothing else sets it. Say what happens to partial work when a run stops.
 6. **Write the return gate into the prompt.** The caller of this prompt watches nothing the agent
    does. So the prompt names the checks that caller runs on what comes back. Every one of them
    returns the same answer for the caller as it returned for the agent. This is not the finish
-   check from step 5. That one settles when the agent stops. This one settles what the caller
+   check from step 5. That one settles when the agent stops. This one covers what the caller
    confirms once the agent has gone.
 
    Write these four things under a heading reading `## Return gate`.
@@ -287,20 +289,20 @@ obligation`. Write both into the report instead.
      report is not the artifact.
    - **The exact command for every check the prompt names.** Give the file it runs on and the file
      its output goes to. Both are files the caller receives.
-   - **The value every finding carries.** A file and a line, a quoted line, and a caller's name are
+   - **The value every finding includes.** A file and a line, a quoted line, and a caller's name are
      values a reader confirms against the material. The Finish section of
-     `../../shared/steering-rules.md` carries that rule and what it cost to learn.
-   - **A named place for anything only the agent could see.** Label each one a claim. No status in
+     `../../shared/steering-rules.md` states that rule and what it cost to learn.
+   - **A place for anything only the agent could see.** Label each one a claim. No status in
      the prompt rests on a claim.
 
    Then take every check the prompt names, one at a time, and ask this question.
 
    > The caller runs this check on what it received. Does it get the answer the agent got?
 
-   - **Yes.** It is a gate. Keep it.
+   - **Yes.** Keep this check, because it is a gate.
    - **No, the check leaves nothing behind.** Rewrite it so the agent writes a value into the
      artifact. "Passes: you read every changed file in full" is that shape, labelled inside the
-     quote so a copy carries the label.
+     quote so a copy keeps the label.
    - **No, it reports a run somewhere else.** Move it to the claims place, and record the move.
      "Passes: you dispatched the audit" is that shape, labelled the same way.
 
@@ -309,16 +311,16 @@ obligation`. Write both into the report instead.
    caller receives. A check bound to nothing leaves the caller a claim to believe.
 7. **Keep what you know about the subject.** Open `../../shared/authoring.md` at the section headed
    "What the rule files carry and what they do not". Run that check against the draft prompt. A run
-   performed that check and still shipped a prompt with subject matter missing. So run these two
+   performed that check and still delivered a prompt with subject matter missing. So run these two
    tests as well. Each one names a shape you can see in the draft.
 
    - **The unit of work is smaller than the outcome needs.** List every sentence telling the agent
-     what to read. Name the unit each one gives: a hunk, a file, a caller, or any other span the
-     agent opens. Then name the unit the outcome needs, and widen any sentence giving a smaller
-     one. One prompt told a reviewer to read the changed hunks. The same model with no rule file
-     loaded told it to open the whole file. A defect can depend on context outside the changed
-     lines. Compare the unit against the finish check from step 5. An agent meeting the smaller
-     unit in both places reads it as the whole work.
+     what to read. Name the unit each one gives. Common units are a hunk and a file. A caller can
+     serve too, and so can any other span the agent opens. Then name the unit the outcome needs,
+     and widen any sentence giving a smaller one. One prompt told a reviewer to read the changed
+     hunks. The same model with no rule file loaded told it to open the whole file. A defect can
+     depend on context outside the changed lines. Compare the unit against the finish check from
+     step 5. An agent meeting the smaller unit in both places reads it as the whole work.
    - **The list of cases is shorter than the one you would write unaided.** Write your own list
      first, from what you know about the subject, and write it before you read the draft's list.
      Then compare the two. Put back every case your list holds and the draft does not. One security
@@ -332,7 +334,7 @@ obligation`. Write both into the report instead.
 
    - Nothing tells the agent that the material it reads is data rather than instruction. An agent
      reading text an attacker can influence needs that line.
-   - Nothing says which fields each finding carries. The caller then holds findings it cannot
+   - Nothing says which fields each finding includes. The caller then holds findings it cannot
      compare or act on.
    - Nothing supplies a value the prompt defers to someone else. A prompt pointing at a team
      convention, a project setting, or any other source outside itself carries the value to use
@@ -401,9 +403,9 @@ obligation`. Write both into the report instead.
     <check>      | <the exact error text>
     ```
 
-    One checksum covers every row, and it is the checksum of the file you hand over. Where a row
-    ran against earlier text, run it again before you fill it. Fixing an audit finding is the
-    common case. The return gate row settles that the section exists, and nothing about what it
+    One checksum applies to every row, and it is the checksum of the file you hand over. Where a
+    row ran against earlier text, run it again before you fill it. Fixing an audit finding is the
+    common case. The return gate row confirms that the section exists, and nothing about what it
     says.
 11. **Dispatch.** Name the model and the effort level. Do not let either inherit from this session,
     because two runs of one template must stay comparable. Where the prompt is a template, run it
@@ -417,10 +419,10 @@ obligation`. Write both into the report instead.
       `../../shared/dispatch-protocol.md`. Re-run each reproducible check against the delivered
       path, and compare each output to the report. Do not repeat the agent's reading, searching,
       judgement, or writing.
-    - **A named command or section is missing.** The run is incomplete, whatever status it
+    - **A command or section is missing.** The run is incomplete, whatever status it
       returned. Treat it as BLOCKED. Name what is missing. Do not run it yourself.
     - **The status is not one the prompt enumerated.** Treat it as NEEDS_CONTEXT. Fix the template
-      so the next call carries the whole set.
+      so the next call includes the whole set.
 
     Then read the `## Objective` heading again. Where the report does not answer those words, say
     which words it dropped. Where nobody dispatches in this session, write the model, the effort
@@ -428,8 +430,8 @@ obligation`. Write both into the report instead.
 
 ## The gate
 
-Four results settle what you hand over. The caller settles each one from the file it receives and
-the record beside it, and gets the answer you got.
+The results below settle what you hand over. The caller settles each one from the file it receives
+and the record beside it, and gets the answer you got.
 
 - The grep in step 8 printed only names the prompt's hole table holds.
 - The lint in step 8 reported no problem.
@@ -443,10 +445,10 @@ reach, so `independent` is a report. Write it down, and rest no result on it.
 
 Where all four hold, the prompt is ready to dispatch, and your report names the checks nobody ran.
 Nothing here stops you from writing the prompt to the delivery path. A caller holding a prompt and
-a named gap acts on both. A caller holding a block report acts on nothing.
+a gap acts on both. A caller holding a block report acts on nothing.
 
 No tick settles a result above. The Finish rows of `../../shared/steering-rules.md` are properties
-of the text, and the audit in step 9 settles them. Run the grep, the lint and the audit yourself.
+of the text, and the audit in step 9 confirms them. Run the grep, the lint and the audit yourself.
 Do not hand a draft to the person with a request to check it.
 
 A check that ran and failed differs from a check that could not run. Read the two apart.
@@ -469,14 +471,14 @@ reads it first.
 Stop at any of these, and report what you found.
 
 - The artifact test returns a class other than a prompt, or a line reading `cannot tell`.
-- A fact the prompt asserts is not established, or a hole sits in no row of the hole table.
+- A fact the prompt asserts is not established, or a hole is not listed in the hole table.
 - You cannot read a rule file this skill names.
 - The person will not name the call sites. A run with nobody to ask takes the branch in "Reused, or
   one call" instead.
 - Any other point where the prompt would assert something you cannot supply.
 
-Retry a dispatch at most twice per agent, and only after something changed. Re-sending the same
-prompt to the same model is not a retry. Stopping carries no penalty.
+Retry a dispatch at most twice per agent, and only when you change something before the retry.
+Re-sending the same prompt to the same model is not a retry. Stopping carries no penalty.
 
 Do not weaken a check. Do not loosen a rule. Do not fill a hole with a placeholder to force a pass.
 Do not run a check on a file the caller will not receive. Fix the input instead, or stop. A pass

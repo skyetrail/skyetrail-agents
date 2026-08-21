@@ -7,7 +7,7 @@ Every entry here applies when the audited thing is a SKILL.md, and not otherwise
 
 The skills `writing-skills` and `auditing-skills` apply these rules. This file supplies criteria and
 defines no task of its own. Where a procedural property an audit needs is missing here, look in
-those two skills. The stop conditions and the evidence each finding carries are two examples, not
+those two skills. The stop conditions and the evidence each finding includes are two examples, not
 the whole list.
 
 A mechanical check is a script's job, not judgment work. `./lint.md` names the command that settles
@@ -39,8 +39,9 @@ things.
 Skills undertrigger more often than they overtrigger. So a description that reads as slightly
 insistent is closer to right than one that reads as neutral.
 
-The command settles one narrow case of the first rule: a name built only from generic words. It
-cannot tell whether a name reads as a clear noun phrase. So read the rule as well as its record.
+The command checks one narrow case of the first rule: whether a name is built only from generic
+words. It cannot tell whether a name reads as a clear noun phrase. So read the rule as well as its
+record.
 
 ## Boundary
 
@@ -56,13 +57,13 @@ cannot tell whether a name reads as a clear noun phrase. So read the rule as wel
 | --- | --- |
 | The first lines say what the skill produces, before any steps. | Important |
 | Where the skill produces a file, it states that file's name. The name is a literal, or a pattern over the skill's inputs. | Important |
-| Where the skill carries a section that `./steering-rules.md` names, its heading is that file's heading text. | Important |
+| Where the skill includes a section that `./steering-rules.md` names, its heading is that file's heading text. | Important |
 | Nothing in the skill explains something the model would already know. | Blocking |
 | Content that would not change what an agent does is absent. | Important |
 | The skill uses one term for one thing throughout. | Important |
 | Time-sensitive material is absent, or it appears only in a section for old patterns. | Important |
 | The skill does not document a constraint that a script or a regex could enforce instead. | Important |
-| Every example carries real input and real output, rather than a placeholder. | Important |
+| Every example includes real input and real output, rather than a placeholder. | Important |
 | Each step in a workflow names one action the reader can carry out without guessing. | Important |
 | A default that names a set of values also carries the test that assigns each member. | Important |
 | A workflow whose steps a reader could lose track of carries a checklist. | Advisory |
@@ -79,11 +80,11 @@ decides a shape they do not cover.
   instrument than the severity field.
 - A count of anything, especially of things in another file. The number gives an agent nothing and
   goes wrong the moment someone adds one.
-- A restatement of a list that lives in another file. The copy drifts. An agent then loads two
+- A restatement of a list defined in another file. The copy drifts. An agent then loads two
   files that say different things.
 
 Content does not count as a finding where it changes what an agent does with the next paragraph.
-That test decides a case the examples below do not cover. They are examples, not the whole list. An
+That test decides a case the examples below do not cover. This is a partial list. An
 explanation of why a constraint exists, where the rule requiring it says to give the reason. A
 worked example of a rule being met and broken. A line saying what the document does not cover.
 
@@ -101,7 +102,7 @@ run.
 | No reference file instructs the reader to ignore or skip part of itself. Content that one caller must skip is a separate file. | Important |
 | Every bundled file's name says what the file holds. | Important |
 | Directories group files by domain, so a run loads only the domain it needs. | Important |
-| Every reference file sits under a directory named `reference/`. | Important |
+| Every reference file sits under a directory called `reference/`. | Important |
 
 A line cap on the front file is the command's proxy for the detail rule. A front file under the cap
 can still carry the detail, so read the rule as well as its record.
@@ -117,10 +118,10 @@ rule in this section not applicable.
 | The skill states how to run each bundled script and what the script returns. | Important |
 | The skill says, for each bundled script, whether to run it or read it as reference. | Important |
 | A validation script's error names the problem and the values that would pass. | Important |
-| Every constant in a bundled script carries the reason for its value. | Advisory |
+| Every constant in a bundled script states the reason for its value. | Advisory |
 | The skill names every dependency that no bundled script imports. | Important |
 | Every package the skill lists is available on the runtime the skill targets. | Important |
-| Every MCP tool the skill names carries its server prefix, in the form `Server:tool`. | Important |
+| Every MCP tool the skill names includes its server prefix, in the form `Server:tool`. | Important |
 
 The command reads what a bundled script imports and checks each import against the SKILL.md. The
 dependency rule covers what that check cannot see. A command line tool, a service, and a font are

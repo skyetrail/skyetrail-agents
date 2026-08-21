@@ -1,6 +1,6 @@
 ---
 name: auditing-skills
-description: Audits any document written to steer an agent against every best practice this project holds, and reports what to fix, marking each finding blocking, important, or advisory. Use this whenever someone asks to lint, audit, review, check, or sanity-check a skill, a SKILL.md, a slash command, a prompt written for a subagent, a hand-off brief, a runbook, or an AGENTS.md or CLAUDE.md instruction file, to check a skill or a SKILL.md against best practices, to scan a repository or plugin for skills that need fixing, when they want to know why a skill is not triggering or not being followed, why a subagent came back with nothing useful, or when a skill is about to ship.
+description: Audits any document written to steer an agent against every best practice this project holds, and reports what to fix, marking each finding blocking, important, or advisory. Use this whenever someone asks to lint, audit, review, check, or sanity-check a skill, a SKILL.md, a slash command, a prompt written for a subagent, a hand-off brief, a runbook, or an AGENTS.md or CLAUDE.md instruction file. Also use it to check a skill or a SKILL.md against best practices, or to scan a repository or plugin for skills that need fixing. It also applies when someone wants to know why a skill is not triggering or not being followed. Use it as well when someone wants to know why a subagent came back with nothing useful, or when a skill is about to go into use.
 ---
 
 # Auditing skills
@@ -8,11 +8,10 @@ description: Audits any document written to steer an agent against every best pr
 This audit produces a findings table, ordered by severity, and the three things to fix first. The
 Report section below fixes that table's columns. This audit changes nothing.
 
-One pass covers every best practice this project holds. Two things settle them, and they do not
-overlap. The command `npm run audit -- <path>` settles every mechanical check. The rule files
-settle every judgement check. Never re-derive a mechanical check by hand, even where the answer
-looks plain. This file calls `npm run audit` the command. The word audit stays with this pass,
-which is judgement work.
+One pass checks this project's best practices in two parts, which do not overlap. The command
+`npm run audit -- <path>` settles every mechanical check. The rule files settle every judgement
+check. Never re-derive a mechanical check by hand, even where the answer looks plain. This file
+calls `npm run audit` the command. The word audit stays with this pass, which is judgement work.
 
 ## Which rules apply
 
@@ -27,7 +26,7 @@ another for each condition the target meets.
   `../../shared/steering-rules.md` states the test and why two earlier audits split on it.
 - Anything else written to shape what an agent does. A command, a runbook, and a one-off request
   are examples, not the whole list. Where a person wrote it to steer an agent, it belongs here,
-  and it needs no extra file for what it is. It still takes a file for each condition it meets.
+  and it does not need an extra file for what it is. It still takes a file for each condition it meets.
 
 Decide the conditions from what the target holds, not from how you are using it. Route by
 condition rather than by what you would call the document, because more than one name fits the
@@ -48,9 +47,9 @@ This audit does not judge writing style. This includes punctuation, heading case
 Those do not change what an agent does.
 
 This audit runs the command in step 1 on the target, whether or not the author recorded a result.
-One command costs little, and two parties running it on one file is the check that holds. This
-audit repeats none of the author's reading, searching, or judgement. Confirm the record is complete
-instead.
+Running one command takes little effort, and two parties running it on one file is the check that
+holds. This audit repeats none of the author's reading, searching, or judgement. Confirm the record
+is complete instead.
 
 A direct instruction from the person overrides this audit.
 
@@ -74,8 +73,9 @@ A direct instruction from the person overrides this audit.
    hardening into findings.
 5. Report.
 
-Where the target holds more than one skill, such as a plugin or a repository, list the skills
-first. Then run these steps once per skill. Give one table per skill, then one summary across them.
+This audit runs steps 1 through 5 once per skill where the target holds more than one, such as a
+plugin or a repository. List the skills first, give one table per skill, then one summary across
+them.
 
 ## Calibration
 
@@ -99,7 +99,7 @@ These are not findings.
 - A missing section the task did not need.
 - A stylistic preference with no effect on behaviour.
 - A sibling skill named by its name, such as `writing-skills`. A skill name is how this plugin
-  resolves a skill. So a skill name is a working reference, not an unresolvable nickname.
+  resolves a skill, so it points to an exact, working target.
 
 `../../shared/steering-rules.md` states the default outcome. Fail means the rule is broken and you
 can point at where. Warn means you cannot tell from what you can read whether the rule is broken.
@@ -110,17 +110,17 @@ Count one finding per root cause. A missing section is one finding even when sev
 on it. List the dependent rules under that finding, not as findings of their own. A rule about
 the position or wording of a section that does not exist is not applicable.
 
-## Two audits for a ship decision
+## Before a release or adoption decision
 
 Where the audit gates a release or an adoption, run two independent audits of the same target.
 Reconcile the two audits. A finding that both report is a finding. A finding that only one
-reports becomes a warn carrying both readings. Severity is the higher of the two. One audit is
+reports becomes a warn that states both readings. Severity is the higher of the two. One audit is
 enough for ordinary work.
 
 Where the two audits pass and fail the same rule on the same text, that is not a one-reporter
 finding. It does not become a warn. Report it as a finding against that text, at the higher
-severity, giving both readings. Two readers who disagree about what a line says show that the
-line is unclear. That is worth more than either verdict.
+severity, giving both readings. When the two readers disagree about what a line says, that
+disagreement shows the line is unclear. It is worth more than either verdict alone.
 
 ## Re-auditing a target
 
@@ -132,9 +132,10 @@ whose inputs stay the same. Name the report you compared against.
 
 A re-audit table carries one more column than a first audit. Head it **Since last audit** and put it
 before Result. It holds confirmed, retired, or changed, and nothing else. Do not head it status,
-which names the values this skill returns to a caller. A retired row carries only that mark, and
+which names the values this skill returns to a caller. A retired row states only that mark and
 leaves Result, Defect or difference, and Evidence empty, because a retired finding has no current
-result to give. The new-findings table gains no such column, because every row in it is new.
+result to give. Every row in the new-findings table is new, so that table never gains such a
+column.
 
 Without the third mark, a half-fixed finding fits neither confirmed nor retired, and two rounds of
 this audit invented the word rather than reporting the gap.
@@ -157,17 +158,21 @@ Source takes one of three words, and nothing else.
 - **House**. Everything else. This project wrote the rule, and it holds here.
 
 Read Source off the rule file, not off what the rule reminds you of. Where a rule file records no
-published origin, mark it House. Where a rule file records no origins at all, say so once above the
-table. House then reads as unrecorded, not as ours. A reader can then check a published rule at its
-source, and weigh a house rule as ours. Claim a published origin the rule file does not record, and
-you send a reader to a page that does not carry the rule.
+published origin, mark it House, and where it does not record any origins at all, also say so once
+above the table. House then reads as unrecorded, not as ours. A reader can then check a published
+rule at its source, and weigh a house rule as ours. Claim a published origin the rule file does not
+record, and you send a reader to a page that does not state the rule.
 
 Mark every fail and warn a defect or a difference. Count the defects and the differences
-separately. A defect is one where you can name what an agent would do wrong. An unlisted project
-type gets no setup. A real finding ends up out of scope. A credential reaches a log. A difference
-is where the target works another way. You cannot say what goes wrong. You can only say that we
-would write it another way. Unmarked, the two read alike at the same severity. Nobody can tell a
-document that will misbehave from one that is merely unfamiliar.
+separately. A defect is one where you can name what an agent would do wrong.
+
+- An unlisted project type does not get set up.
+- A real finding is marked out of scope.
+- A credential is written into a log.
+
+A difference is where the target works another way. You cannot say what goes wrong. You can only
+say that we would write it another way. Unmarked, the two read alike at the same severity. Nobody
+can tell a document that will misbehave from one that is merely unfamiliar.
 
 Only a defect blocks. Severity says how much a problem matters. Defect or difference says whether
 there is one. A blocking difference does not hold the target back. Read it instead as a signal
@@ -177,5 +182,5 @@ name a consequence for reaches past what it can judge.
 A blocking defect means the target needs work before use. The report lists advisory items once.
 Advisory items never block. This is narrower than the same sentence in
 `../../shared/steering-rules.md`. That sentence speaks of any blocking failure. That file has no
-defect and difference marking. So that file cannot draw the distinction. This file does draw the
+defect and difference marking. So that file cannot make the distinction. This file does make the
 distinction.

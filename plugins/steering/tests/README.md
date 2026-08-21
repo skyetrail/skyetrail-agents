@@ -1,16 +1,16 @@
 # Tests
 
-Two kinds of record live here.
+This directory holds two kinds of record.
 
-- `baselines/` — one file per skill this plugin maintains. A Blocking rule in `auditing-skills`
+- `baselines/` (one file per skill this plugin maintains). A Blocking rule in `auditing-skills`
   requires them, so nothing in this directory may be removed.
-- `TEST_REPORT.md` — the report `SUMMARY.md` links to.
-- `outcomes/` — one directory per experiment. Each holds its pre-registration or design, its
-  results page, its fixtures and prompts, and its raw runs.
+- `TEST_REPORT.md` (the report `SUMMARY.md` links to).
+- `outcomes/` (one directory per experiment). Each holds its pre-registration or design and its
+  results page. Each also holds its fixtures and prompts, and its raw runs.
 
 ## What survives
 
-Everything that carries evidence. Specifically, and in every experiment directory:
+Everything that contains evidence, in every experiment directory:
 
 - **Pre-registrations and designs.** `KEY.md`, `SCORING.md`, `DESIGN.md`, `PREREGISTRATION.md`,
   `chosen-design.md`. Each one proves a prediction was written before the result. That ordering is
@@ -18,13 +18,13 @@ Everything that carries evidence. Specifically, and in every experiment director
 - **Results pages.** `RESULTS.md`, `AUDIT-ROUND.md`, `EQUIVALENCE.md`, `RERUN.md`, `COMPARISON.md`.
 - **Fixtures and prompts.** The seeded source both arms read, and the exact prompt text each arm
   ran. Several are consumed by later experiments: `handoff-bench` fixture 1 and
-  `handoff-bench-2` fixture 2 are both reused by `ste-bench`, and `ste-bench` keeps no copy of its
-  own Arm A prompt.
-- **Raw runs.** The agent output beneath each results page. A results page reports counts; the runs
-  are the only place a count can be re-checked, an absence claim settled, or a quoted line found.
-  `ste-bench/RESULTS.md` records what happens when summaries stand in for raw output, and
-  `METHOD.md` section 17 exists because run files were once written by hand and then analysed as
-  measurements.
+  `handoff-bench-2` fixture 2 are both reused by `ste-bench`, and `ste-bench` does not keep a copy
+  of its own Arm A prompt.
+- **Raw runs** are the agent output beneath each results page. A results page reports counts. The
+  runs are the only place to re-check a count or settle an absence claim. They are also the only
+  place to find a quoted line. `ste-bench/RESULTS.md` records what happens when summaries replace
+  raw output, and `METHOD.md` section 17 exists because run files were once written by hand and
+  then analysed as measurements.
 - **Unblinding keys.** `BLIND-MAP.txt`, `ARM-MAP.txt`, `PAIR-MAP.txt`, `SOURCE-SHA.txt`. Without
   these the blinded and neutrally-named files cannot be assigned to arms, and the result tables
   cannot be reproduced.
@@ -82,11 +82,11 @@ wrong record in place rather than to rewrite one after the fact for style.
 
 Recovered the same way as the first removal, from the commit named in the next section.
 
-## Where the removed files still live
+## Recovering removed files
 
-The first removal: commit `b4bc3c5`, the commit before it. The second removal: commit
-`c7b9d5c`, the commit before it. Every file in both rounds was removed with `git rm`, so all 145
-are in history and none of the reasoning above is lost. To read one:
+The first removal is recorded at commit `b4bc3c5`, the commit before it. The second removal is
+recorded at commit `c7b9d5c`, the commit before it. Every file in both rounds was removed with
+`git rm`, so all 145 are in history and none of the reasoning above is lost. To read one:
 
 ```
 git show b4bc3c5:plugins/steering/tests/outcomes/external-probe/audits/CORRECTIONS.md
@@ -98,6 +98,6 @@ git show c7b9d5c:plugins/steering/tests/outcomes/sonnet-exec/ground.md
 - `outcomes/ste-bench/EQUIVALENCE.md` and `outcomes/ste-bench/RESULTS.md` both said the four pilot
   runs were kept. Both now say they were deleted and point at the version 1 prompts that remain.
 - `outcomes/external-probe/RESULTS.md` gained the retry-limit observation and the per-audit
-  counting rule, which were the last two things only the deleted files carried.
+  counting rule, which were the last two things found only in the deleted files.
 - `outcomes/handoff-bench-2/SCORING.md` gained a section naming where each arm's prompt lives,
   because the old-arm prompt is now only in `handoff-bench`.
