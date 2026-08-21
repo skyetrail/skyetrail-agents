@@ -207,7 +207,7 @@ tier. One skilled run matches it. Two give no tiers at all.
 
 Five rules went in to close five measured differences. Three isolated runs then measured them. The
 round is clean: no cross-run reference, no duplicate file, and all three audit counts reproduce when
-re-run. Full verdict in `./STRUCTURE-GAPS.md`.
+re-run. The raw verdict was folded into this page, and its file was removed in `5fbd718`.
 
 ## The scoreboard
 
