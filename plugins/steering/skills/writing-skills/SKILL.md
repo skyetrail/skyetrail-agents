@@ -5,415 +5,144 @@ description: Writes a new Agent Skill or fixes an existing one, producing a SKIL
 
 # Writing skills
 
-This skill produces a SKILL.md, its reference files, and a record measuring what the skill
-changed. Every run produces both the skill and the record. The person asked for a skill, so deliver
-a whole one. A step you could not run becomes a line in the record. It is never a reason to hold
-the file back.
-
-## What you deliver
-
-Deliver one complete SKILL.md and its reference files. Complete means a person uses it as it
-stands. Fill every hole. Keep any note about the file's own status out of the file. Write every
-sentence as a finished instruction. The person acts on it as written and never adds words to
-complete it.
-
-Where the skill is new, write it to `<record directory>/<skill-name>-delivery/<skill-name>/`. Name
-that inner directory after the skill. Step 1 locates the record directory. A person installs the
-skill by moving that inner directory to the install path, so nothing installs it on its own. The
-install path is the directory the person named. Where they named none, use `skills/<skill-name>/`
-under the plugin holding the record.
-
-The skill directory holds `SKILL.md` and a `reference/` directory. Every reference file sits in
-that directory. One task, run three times, named that directory two different ways, and no run
-found a name to follow.
-
-Where the skill already exists, edit the installed SKILL.md where it sits. That file is already
-installed, so there is nothing to hold back.
-
-The file you wrote is the delivered file, whichever of those two branches you took. Write its
-absolute path on the `delivered` line of the checklist below, as soon as you know it. Every step
-below that names the delivered path means that file. Step 14 copies the path into `measured.md`,
-at `<record directory>/<skill-name>-delivery/measured.md`.
-
-`measured.md` says what was and was not measured about the delivered file. It sits outside the
-directory a person installs, so it never loads with the skill. Moving the skill past it is the
-person's act of accepting what it says.
-
-Do not put measurement status inside the SKILL.md. `../../shared/skill-rules.md` counts a statement
-about a test not yet run as content that changes nothing for the agent reading it. The agent
-loading the skill is not the reader of that status.
+Produces a SKILL.md, the reference files it loads, and a record of what the skill changed,
+measured against a run that had no skill.
 
 ## Read the artifact test first
 
-**Open `../../shared/authoring.md` now, before you plan or write anything.** Fill the artifact-test
-block that file contains. Put the filled block in your reply. It returns one class and the number of
-the deciding test.
-
-Then route on the class.
+Open `../../shared/authoring.md` before you plan or write anything. Fill the artifact-test block
+in that file and put the filled block in your reply. Then route on the class it returns.
 
 - The class is a skill. Run the workflow below.
-- The class is anything else. Stop. Name the class and the deciding test. Hand the request to the
-  skill that file names for that class.
-- A line in the block reads `cannot tell`. Stop and ask the person the question that file tells you
-  to ask. Do not write a SKILL.md anyway. Where you cannot ask, put that question in your report
-  and stop there.
-
-Do not settle the class from the request alone. Someone asking you to write a skill is naming the
-outcome they want, not the artifact that delivers it.
+- The class is anything else. Stop. Name the class and the deciding test, and name the skill for
+  that class.
+- A line reads `cannot tell`. Ask the person the question that file tells you to ask. Where you
+  cannot ask, put that question in your report and stop.
 
 ## Scope
 
 In scope: a new SKILL.md, a change to an existing one, the reference files it loads, and the
-record measuring it.
+record that measures it.
 
-Out of scope, with the owner of each:
+Out of scope: an audit that changes nothing, which `auditing-skills` owns, and a prompt for an
+agent that will not see this conversation, which `writing-agents` owns. Any request where the
+artifact test returns another class is out of scope too.
 
-- Auditing a skill and changing nothing. `auditing-skills` owns that.
-- Writing a prompt for an agent that will not see this conversation. `writing-agents` owns that.
-- Judging writing style. `../../shared/style.md` governs the sentences you write here, and no audit
-  grades a target on it.
-- Any other request where the artifact test returns a class other than a skill. The boundary sits
-  in that test. This list names the cases seen most, not the whole set.
+A direct instruction from the person wins over anything in this skill. Where a request runs past
+this scope, stop and name the document that owns it.
 
-A direct instruction from the person wins over anything in this skill.
+## What you deliver
 
-Where a request runs past this scope, stop and name the document that owns it. Do not stretch this
-skill to cover it.
+Write a new skill to `<skill-name>/SKILL.md` under the directory the person named, with every
+reference file under `<skill-name>/reference/`. Where nobody named a directory and you cannot
+ask, pick one and name it in your report. A person installs the skill by moving the
+`<skill-name>/` directory, so nothing installs it on its own. Where the skill already exists, edit
+it where it is.
+
+Write `record.md` beside the `<skill-name>/` directory, and the saved runs under `runs/` beside
+it. Neither is inside the directory a person installs, so neither loads with the skill. The
+SKILL.md never points at them and never carries a note about its own status.
+
+Deliver a whole skill. Fill every hole and give every deferred value a default. A step you could
+not run is a line in `record.md`, and never a reason to hold the file back.
 
 ## Workflow
 
-Copy this checklist into your reply before you start. Tick each line as you finish it. Return the
-block with the work.
-
-Append to every line you tick the path of the file that proves the claim, or the command another
-reader runs to confirm it. A tick with nothing appended is not a tick, because a reader cannot
-check it. Ticked lines look like this:
-
-```text
-[x] 4  Baseline dispatched with no skill loaded; output saved
-       plugins/skyetrail/tests/baselines/bug-report-triage-runs/without-skill.md
-[x] 12 `npm run audit` run on the delivered path; the printed path matches
-       plugins/skyetrail/tests/baselines/bug-report-triage-runs/audit.md
-```
-
-A line you cannot tick stays unticked and carries one line saying why.
+Copy this checklist into `record.md` and into your reply. Tick each line as you finish it. A
+tick carries the path or the command from this run that settles the line. The skill's own text
+settles nothing, and neither does a rule file. For a step about applying a rule file, the tick
+names the sections of the delivered SKILL.md where those rules land. A line you cannot tick stays
+unticked and carries one line saying why.
 
 ```text
 writing-skills
 delivered: <absolute path of the SKILL.md you wrote>
-[ ] 0  ../../shared/authoring.md artifact-test block filled; the class is a skill
-[ ] 1  Case decided: new skill, large change, or small change
-[ ] 2  Objective written into the record
-[ ] 3  Subject knowledge listed in the record before any section order applied
-[ ] 4  Baseline dispatched with no skill loaded; output saved
-[ ] 5  Misses numbered; each one quoted from that saved output
-[ ] 6  Description written against the Discovery table
-[ ] 7  Body written against the section order and the rule tables; every condition settled by its own test; draft read against the step 3 list; no authoring history; every deferred value carries a default the reader acts on alone
-[ ] 8  Every numbered miss addressed, and nothing else
-[ ] 9  Nothing correct from the step 4 output dropped
-[ ] 10 Detail moved into reference files, in the directory "What you deliver" names
-[ ] 11 Baseline dispatched with the skill loaded; output saved; table filled
-[ ] 12 `npm run audit` run on the delivered path; the printed path matches
-[ ] 13 Independent audit dispatched; findings saved
-[ ] 14 measured.md written; every path in it opens
+[ ] 1  artifact-test block from ../../shared/authoring.md filled; the class is a skill
+[ ] 2  case decided: new skill, large change, or small change
+[ ] 3  the person's request copied into record.md under ## Objective, word for word
+[ ] 4  subject list written into record.md before any rule; finished draft checked against it
+[ ] 5  baseline dispatched with no skill loaded and saved to runs/without-skill.md, or blocked with the error text
+[ ] 6  misses numbered, each quoted from runs/without-skill.md
+[ ] 7  description written against the Discovery table of ../../shared/skill-rules.md
+[ ] 8  body written against ../../shared/steering-rules.md and ../../shared/skill-rules.md; each numbered miss addressed by its shape and nothing else
+[ ] 9  baseline dispatched with the skill loaded and saved to runs/with-skill.md, one row per miss, or blocked with the error text
+[ ] 10 npm run audit run on the delivered path; output pasted into record.md; the printed path matches
+[ ] 11 independent audit dispatched with auditing-skills and findings pasted into record.md, or blocked with the error text
+[ ] 12 measured block written into record.md; every path in it opens
 ```
 
-A small change ticks 0, 1, 2, 12, 13 and 14, and marks 3 to 11 not in this case. Every other case
-ticks all of them.
-
-1. **Decide the case.** The case you choose sets which steps you run.
-
-   - No skill exists for this request yet. Run every step.
-   - A skill exists and the change is large. Run every step.
-   - A skill exists and the change is small. Run steps 0, 1, 2, 12, 13 and 14 only.
-
-   A change is small where the description and the sentence saying what the skill produces both
-   stay word for word the same. Every other change is large.
-
-   The record is the file `tests/baselines/<skill-name>.md`, inside the plugin directory holding
-   the skill you write. List that plugin directory to find it. Create the directory where it does
-   not exist. Where the skill does not belong to any plugin, put the record beside the skill's own
-   directory and name that path inside the record. The directory holding the record is the record
-   directory, and every other path in this skill hangs off it.
-
-   The record contains one line reading `Small changes since the last full loop: <count>`. Raise
-   it by one for a small change. Set it to zero when a run of every step finishes. The cap is
-   three. The fourth change runs every step, whatever its size. Without the cap, small changes
-   accumulate, and nobody ever meets a change large enough to run the loop.
-
-2. **Anchor the objective.** Write the person's request into the record you located in step 1, word
-   for word, under a heading `## Objective`. Where the record already has that heading from an
-   earlier loop, replace what sits under it with the current request.
-
-   Nothing a skill loads at run time points at the record, so the SKILL.md never links to it.
-
-3. **List what you know about the subject.** This skill shapes a document. It supplies no subject
-   knowledge, and the model already holds much of it. Open `../../shared/authoring.md` at the
-   section headed "What the rule files carry and what they do not". Write the list that section
-   asks for into the record, before you apply any section order. That section also names what one
-   run dropped this way.
-
-   This step does not need a dispatch. Run it before you dispatch anything. A dispatch that fails
-   does not excuse it.
-
-4. **Baseline with no skill loaded.** Take the task from what the person asked for. Where they did
-   not name a task, ask for one. Do not invent one, because a task you chose measures the skill
-   against your own reading of the request. Where you cannot ask, write one task from the request,
-   and name it in the record and in your report as your own.
-
-   Dispatch one subagent on that task, in a fresh context. Tell it to work from its own knowledge,
-   and tell it not to invoke any installed skill. Where an installed skill covers the task, you
-   measure that skill rather than the model. Name the model and the effort level in the dispatch.
-   Save the whole output to `<record directory>/<skill-name>-runs/without-skill.md`.
-
-   Where the run uses an installed skill anyway, read that skill. Where its description
-   names the condition the person described, extend that skill rather than writing a new one, and
-   say which skill. Otherwise record which skill the run used. Either way that run is void.
-   Dispatch a replacement with that skill forbidden by name.
-
-   **Where you cannot dispatch.** Copy the error text into the record, word for word, under a
-   heading `## Blocked`, with the number of this step beside it. Then carry on. Run every remaining
-   step that does not need a dispatch, and deliver the skill.
-
-   Write a whole skill. The person asked for one, and a missing measurement is not a missing skill.
-   Fill every hole, settle every default, and do not write any sentence asking the person to finish
-   the writing. The section headed "What you deliver" says where the file goes and what may not sit
-   inside it.
-
-   Do not run the task yourself in place of the subagent. You already hold the request and the
-   misses you expect, so your own run measures your reading rather than the model's.
-
-5. **Number the misses.** A miss is anything the run produced that a person must correct before
-   using the result. Anything you would only word differently is not a miss.
-
-   Quote the text settling each miss from `without-skill.md`, word for word. A miss you cannot
-   quote is not a miss. A quote a reader cannot find in that file is not a quote. Number the
-   misses, and hold those numbers to the end of the loop.
-
-6. **Write the description.** This is the trigger and the most common point of failure. Write it
-   against every rule in the Discovery table of `../../shared/skill-rules.md`. Open that file and
-   work down the table.
-
-7. **Write the body.** Take the section order and each heading's text from
-   `../../shared/steering-rules.md`. Open it and read the section list. A copy of that list here
-   drifts from it, and an agent then reads two lists that differ.
-
-   Write the body against every rule in that file, and against the Boundary and Content tables of
-   `../../shared/skill-rules.md`. Open both and work down them. Write every sentence against
-   `../../shared/style.md`.
-
-   Settle each condition in the Conditions block of `../../shared/steering-rules.md` by that
-   block's own test. Put every answer in the record. Name the test that returned false for any
-   condition you set false. More than one condition can be true, and a false answer for one is
-   never a true answer for another. A run that read two of them as exclusive dropped a blocking
-   rule from a security review prompt.
-
-   A section restates the description where every sentence in it states a capability or a trigger
-   the description already states. Compare the two sentence by sentence. Cut such a section. The
-   description loads before the body, so the agent pays for the same words twice.
-
-   Do not put any authoring history in the body, or in any file the skill loads. A failure met doing the
-   work the skill steers belongs, because the reader meets that same work. A failure met writing
-   the skill does not, because the reader has never seen an earlier draft. Test a sentence about a
-   past failure by asking whether the reader can reach what it names. One run mirrored the section
-   headed "What has already failed" into its artifact. That artifact opened with "A prior version
-   of a prompt like this one treated ...", which the receiving agent could not resolve.
-
-   Give a default for every value the body or a reference file leaves to the reader's own setup. A
-   window in days, a severity scale, a set of labels, and a naming convention are examples, not the
-   whole list.
-
-   The default is a value the reader acts on alone. Write `7 days`, and not "the window your team
-   uses". A sentence telling the reader to ask a person or a team is not a default, because the
-   reader stops there. Write the value, then say the reader may set another. A default the reader
-   may replace is not an invented fact.
-
-   Where the deferred thing is a set, name every member and the test that assigns each one. A
-   member name settles nothing alone, because the reader still picks by feel. One task run twice
-   left the severity scale to the reader both times. An unaided run of that task gave four tiers,
-   each with the test that assigns it.
-
-   Read the draft against the subject list step 3 wrote into the record, before you leave this
-   step. Name every instruction in the draft that came from your own knowledge of the subject
-   rather than from a rule file. Where you can name none, you dropped them all. Put them back.
-
-   Deferring content to another document counts as dropping it, unless you move it into a reference
-   file and point at where it went.
-
-8. **Address the numbered misses, and nothing else.** Read the `## Objective` heading in the record
-   again first. Take each numbered miss. Describe the shape it takes in the work, not the label it
-   falls under. The Calibration section of `../../shared/steering-rules.md` states that rule with
-   a worked pair. Leave out anything the run already got right.
-
-   Where step 5 did not run, the misses stay unnumbered. Write that line into the record, and go on
-   to step 10. Do not invent a miss to fill the step.
-
-9. **Keep what the unaided run got right.** Put `without-skill.md` beside your draft and read the
-   two against each other. Where the unaided run gave a correct, specific instruction about the
-   subject, that instruction stays in the draft. Move it into whichever section the order puts it
-   in.
-
-10. **Move detail into reference files.** Move a passage one step needs and the other steps do not.
-    Keep a passage every step needs. A rule table, a worked example, and a set of cases are the
-    kinds moved most, not the whole list. Open `../../shared/skill-rules.md` and work down its
-    rules for reference files. They set how you arrange the file you move a passage into.
-
-    The section headed "What you deliver" names the directory every reference file goes in. Three
-    runs of one task split the detail three ways.
-
-    Write each pointer as an instruction that states the path, at the point the reader needs it. A
-    reader skips a bare "see the reference", and then works without the passage entirely. Make the
-    pointer plainer rather than copying the passage back.
-
-11. **Baseline with the skill loaded, and grade it.** Run the same task again, in a fresh context,
-    with the skill loaded, at the model and effort level step 4 named. Save the output to
-    `<record directory>/<skill-name>-runs/with-skill.md`.
-
-    Fill one row per numbered miss. Each row states the number, whether the run still shows the
-    miss, and the quoted text settling that call. Quote from `with-skill.md`, word for word, so
-    another reader finds the same text in the same file. Put the table in the record.
-
-    Where you cannot dispatch, follow the branch in step 4. It applies here word for word.
-
-12. **Check the mechanics, on the file you deliver.** Run `npm run audit -- <path>` from the root of
-    this plugin's repository. Give it the absolute path on the `delivered` line of your checklist,
-    and no other path. The command takes any path, so the delivered file need not sit in that
-    repository. This settles every mechanical check once, so no later finding argues them again.
-
-    The command prints the absolute path it read, on a line beginning `SKILL.md`. Copy that line
-    and the closing count line into the record, word for word. The path on the `SKILL.md` line
-    matches the `delivered` line character for character, or the command measured some other file.
-    Its counts then say nothing about yours. Save the whole output to
-    `<record directory>/<skill-name>-runs/audit.md`.
-
-    Run the command once, on that file, where it sits. Do not copy the file to another path and
-    audit the copy. Do not create a directory to make a check pass. One run extracted its draft to
-    a path built to satisfy the name check, audited it, deleted it, and reported eighteen passes
-    and no failures. The file it delivered returns four passes and two failures.
-
-    Another reader runs the same command on the same path and gets the same lines. Where the two
-    disagree, that reader's run is the one that counts.
-
-    Where the command cannot run, or runs without reaching your file, follow what
-    `../../shared/lint.md` says and record what did not run.
-
-13. **Audit, and not by yourself.** Dispatch a fresh agent to audit the delivered file, using
-    `auditing-skills`. Give it the absolute path on the `delivered` line of your checklist, and no
-    other path. Read the `## Objective` heading in the record again first. Where the draft no
-    longer answers those words, say which words it dropped.
-
-    Save the findings to `<record directory>/<skill-name>-runs/audit-independent.md`, and put them
-    in the record.
-
-    Do not audit your own draft. You know what you meant each line to say, so you read the intent
-    rather than the text. You then pass wording that a reader with no context would not pass.
-
-    Where you cannot dispatch, follow the branch in step 4.
-
-14. **Write `measured.md`.** Fill this block and write it to
-    `<record directory>/<skill-name>-delivery/measured.md`. Write it on every run. A run where
-    every step ran writes it too.
-
-    ```text
-    Measured
-
-    skill      <name from the frontmatter>
-    delivered  <the absolute path your checklist carries>
-    re-run     npm run audit -- <that same path>
-
-    4  baseline, no skill loaded  <path>  ran | not in this case | blocked: <error text>
-    5  misses numbered            <path>  ran | not in this case | blocked: <reason>
-    11 baseline, skill loaded     <path>  ran | not in this case | blocked: <error text>
-    12 mechanical audit           <path>  ran | not in this case | blocked: <reason>
-    13 independent audit          <path>  ran | not in this case | blocked: <error text>
-    ```
-
-    Read the `## Blocked` heading in the record. Every step listed there takes a `blocked` line
-    carrying its error text. Use `not in this case` only where step 1 chose a case that does
-    not call for that step. Every other step takes a `ran` line.
-
-    Open every path in the block before you write the line. A `ran` line naming a file that is not
-    there is a false line, and another reader finds it with one `ls`.
-
-    Say in your report what the block says. Do not report a step as run because you meant to run it.
-
-## The gate
-
-Run the command and the audit yourself before you report anything. Do not hand a draft to the
-person with a request to check it.
-
-Read the step 11 table one row at a time.
-
-- The run still shows the miss, so the skill does not address it.
-- The run no longer shows the miss. The skill addresses it.
-
-Where the skill addresses no miss at all, it changes nothing. Say that in your report, and leave
-the keep-or-discard call to the person.
-
-Where the run with the skill shows a miss that has no number, give it the next number. The skill
-introduced that one, so put it and the run's own reasoning into the skill. Then run steps 8 to 11
-again.
-
-The loop settles at the round of steps 8 to 11 that does not add a new number and leaves every miss
-addressed. The work is done when the loop settles, `audit.md` names the delivered path, and
-`audit-independent.md` carries no unfixed blocking finding.
-
-A dispatch you could not make stops the loop before it starts. The work is then done when three
-things hold. The skill is at the delivered path. `audit.md` names that path. `measured.md`
-carries a `blocked` line for every step that did not run. Say in your report that no baseline
-measured this skill.
-
-Every gate above is one another reader settles from what you delivered.
-
-- The mechanical check. That reader runs `npm run audit -- <delivered path>` and compares the
-  printed `SKILL.md` line and the count line against `audit.md`.
-- The baselines. That reader opens `without-skill.md` and `with-skill.md`, and looks for every
-  quote your step 5 and step 11 rows carry. A quote nobody can find in those files settles nothing,
-  whatever the row says about it.
-- The audit. That reader opens `audit-independent.md` and holds each finding against the delivered
-  file.
-- The measurement. That reader opens each path in `measured.md` and sees whether it is there.
-
-The first is a command that reader runs again. The other three are files that reader opens. Who ran
-the audit is a claim, and no reader can reach it. So the word independent is a report. Write it
-down, and rest no gate on it.
-
-No gate here withholds the artifact. A gate that did not run is a `blocked` line in `measured.md`,
-and the skill is still delivered alongside it.
-
-## When to stop
-
-Stop at any of these, and report what you found.
-
-- The artifact test returns a class other than a skill, or a line reading `cannot tell`.
-- You can ask the person for a task, and they refuse to name one.
+A small change ticks 1, 2, 3, 10, 11 and 12, and marks the rest not in this case.
+
+1. **Fill the artifact-test block** from `../../shared/authoring.md` and route on the class, as
+   above.
+2. **Decide the case.** A change is small where the description and the sentence saying what the
+   skill produces both stay word for word the same. Every other change is large, and a new skill
+   runs every step. After three small changes in a row, the next change runs every step.
+3. **Anchor the objective.** Copy the person's request into `record.md` under `## Objective`,
+   word for word.
+4. **List what you know about the subject** before you apply any rule. The section "Shape versus
+   subject matter" in `../../shared/authoring.md` states the step. The rule files carry the shape
+   of a skill and none of its subject matter. Check the finished draft against this list and put
+   back what it dropped.
+5. **Baseline with no skill loaded.** Take the task from what the person asked for. Where they
+   named none, ask for one. Where you cannot ask, write one task from the request and mark it in
+   `record.md` as your own. Dispatch one subagent on that task in a fresh context, told to use no
+   installed skill, with the model and the effort level named. Save its whole output to
+   `runs/without-skill.md`. Do not run the task yourself, because your own run measures your
+   reading of the request rather than the model's.
+
+   Where you cannot dispatch, copy the error text into `record.md` under `## Blocked` with the
+   step number, and carry on. Retry a dispatch at most twice, and only where the second attempt
+   differs from the first.
+6. **Number the misses.** A miss is anything the run produced that a person must correct before
+   using the result. Quote the text that settles each miss from `runs/without-skill.md`, word for
+   word. A miss you cannot quote is not a miss. Where step 5 was blocked, write `misses
+   unnumbered` and go on.
+7. **Write the description** against every rule in the Discovery table of
+   `../../shared/skill-rules.md`.
+8. **Write the body.** Take the section order and each heading's text from
+   `../../shared/steering-rules.md`, and settle each condition in its Conditions block by that
+   block's own test, with the answers in `record.md`. Write against every other table in
+   `../../shared/skill-rules.md` that applies. Put a membership test beside every category the
+   skill names and mark every list as examples. Give a default beside every value the skill leaves
+   to the reader's setup, and where the default is a set, name each member with the test that
+   assigns it. Move detail one case needs into `reference/`, with an instruction naming the path
+   at the point the reader needs it. Address each numbered miss by the shape it takes in the work,
+   as the Calibration section of `../../shared/steering-rules.md` shows, and nothing else. Keep
+   every correct instruction the unaided run gave. Do not put authoring history in the skill.
+9. **Baseline with the skill loaded.** Run the same task again in a fresh context, with the skill
+   loaded, at the model and effort level of step 5. Save the output to `runs/with-skill.md`. Fill
+   one row per numbered miss in `record.md`, with the number and the quote from that file that shows
+   whether the miss is still there. A miss the run still shows, or a new one, goes back through step 8, at
+   most twice. Where you cannot dispatch, follow the branch in step 5.
+10. **Run `npm run audit -- <delivered path>`** from the root of this plugin's repository and
+    paste its output into `record.md`. The path on its `SKILL.md` line matches the `delivered`
+    line character for character, or it measured another file. Audit the delivered file where it
+    is, never a copy.
+11. **Dispatch an independent audit** of the delivered path with `auditing-skills`, and paste the
+    findings into `record.md`. Fix each blocking finding or say in `record.md` why not. Do not
+    audit your own draft. Where you cannot dispatch, follow the branch in step 5.
+12. **Write the measured block** into `record.md`, one line for each of steps 5, 6, 9, 10 and 11:
+    `ran <path>`, `not in this case`, or `blocked: <error text>`. Open every path before you
+    write its line.
+
+## Delivery
+
+No gate here withholds the skill. A run that cannot dispatch still delivers, with a `blocked`
+line for each step that did not run, and says in its report that no baseline measured the skill.
+
+Every claim in `record.md` is one another reader settles from what you delivered. That reader
+re-runs `npm run audit` on the delivered path and opens each path in the measured block. The
+reader also looks for each quote in the saved runs. Who ran the independent audit is a claim no
+reader can reach, so rest no gate on it.
+
+Stop, and report what you have, at any of these points.
+
+- The artifact test returns another class or `cannot tell`.
+- The person refuses to name a task.
 - You cannot read a rule file this skill names.
-- Steps 8 to 11, run twice more, still leave a numbered miss showing.
-- Any other point where you would have to assert something you cannot check.
+- Two more rounds of steps 8 and 9 still leave a numbered miss.
 
-A dispatch you cannot make is not on that list. Record it under `## Blocked` in the record, and
-carry on to the delivery.
-
-Retry a dispatch at most twice, and only where the second attempt differs from the first, such as a
-different prompt or a different model. Re-sending the same prompt to the same model is not a retry.
-
-Do not weaken a gate to make it pass. Do not ease the task, loosen a rule, or edit a recorded
-result. Do not audit a copy in place of the delivered file, and do not lower the bar for what
-counts as a miss. Fix the skill instead, or stop. A result earned by changing the gate measures
-nothing.
-
-## What survives a stop
-
-Keep the skill and the record when you stop. Write what you have to the path the section headed
-"What you deliver" names. Run step 14, so `measured.md` marks every step that did not run. Name the
-delivered path, the record, and `measured.md` in your report. Leave the keep-or-discard call to the
-person. Revert nothing on your own.
-
-## Rules
-
-- `../../shared/authoring.md` for the artifact test. Read it before anything else.
-- `../../shared/skill-rules.md` for a SKILL.md. It names which other rule files apply and when.
-- `../../shared/steering-rules.md` for the conditions, the section order, and the scope rules.
-- `../../shared/lint.md` for which command settles the mechanical checks, and for what to do where
-  it does not run.
-- `../../shared/style.md` for every sentence you write.
+Keep the skill and `record.md` when you stop, and leave the keep-or-discard call to the person.
+Do not weaken a gate to make it pass. Do not ease the task, loosen a rule, edit a recorded result,
+or audit a copy in place of the delivered file.
