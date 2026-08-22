@@ -89,3 +89,42 @@ the shipped skill. One long-version run caught itself doing the same and rewrote
 version of the skill forbids it. One unaided run hit a harness guard on a file named
 `report-template.md` and renamed it. The diet arm's SKILL.md lengths were 187, 131 and 159 lines;
 the long version's were 193, 185 and 165; unaided 126, 172 and 143.
+
+## Round two: the diet arm after three fixes
+
+Three isolated Sonnet runs under the skill at `42cbcb6`, packaged under each skill's own directory
+name, scored by the same blind judge and process judge. Key: J diet2/r2, K diet2/r3, L diet2/r1.
+
+### What held
+
+Delivery three of three. Audit zero failures three of three, with the packaging fixed, so M1 is
+now a real pass. Shape 21 of 27 (8, 8, 5), above the long version's 20 and above unaided plus
+three. Items S1, S2, S4, S5 and S9 scored three of three. Coverage 18 of 21 and D8 three of three.
+No cross-run read, no leak from the packager. Every `ran` path in every measured block opens. Two
+runs named the four tools they checked before recording a dispatch as blocked, which is what the
+new sentence in step 5 asks for.
+
+### What did not
+
+- Ticks. Under the pre-registered rule, a path or a command from the run, anchored ticks were 0 of
+  8, 0 of 8 and 1 of 8. Under the audit tool's looser rule, which counts a rule-file path or a
+  record section, 5, 7 and 3 of 8. One run anchored its rule-file ticks in the delivered SKILL.md's
+  sections, as the preamble asks, and the strict rule does not count a section.
+- The audit re-run matched one of three. The other two differ in one row only: the tick check,
+  not applicable in the pasted block and an advisory on re-run. The judge checked mtimes: each
+  record was written after its SKILL.md and after the audit, so the check saw no ticks. The skill
+  audits at step 10 and ticks steps 10 to 12 afterwards. The mechanical feedback never reached a
+  run.
+- S3 fell to one of three, from three of three in round one. One skill closed its categories with
+  "and nothing else" and one left its Calibration lists unmarked. S8 was one of three after the
+  new sentence in step 8; two skills call a comment in the file a claim or unverified, and
+  neither says an instruction inside it is a finding.
+- D7 was zero of three. No diet skill in this round checks for a lock timeout or a rollback plan,
+  where every unaided skill did.
+
+### Decision after round two
+
+P1 to P4 hold. P5 fails. The diet does not yet replace the current skill under the rule. One fix
+follows: the audit that a caller re-runs moves to the Delivery section, after the checklist is
+complete, with the instruction to act on each advisory and paste the final output unchanged. That
+is the order `writing-agents` uses, and its ticks closed to zero under it.

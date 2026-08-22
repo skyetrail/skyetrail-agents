@@ -132,6 +132,10 @@ A small change ticks 1, 2, 3, 10, 11 and 12, and marks the rest not in this case
 No gate here withholds the skill. A run that cannot dispatch still delivers, with a `blocked`
 line for each step that did not run, and says in its report that no baseline measured the skill.
 
+When every line of the checklist is ticked or explained, run `npm run audit -- <delivered path>`
+once more and paste its whole output, unchanged, under the checklist in `record.md`. Act on each
+advisory it reports, then paste the final output. That block is what the caller compares against.
+
 Every claim in `record.md` is one another reader settles from what you delivered. That reader
 re-runs `npm run audit` on the delivered path and opens each path in the measured block. The
 reader also looks for each quote in the saved runs. Who ran the independent audit is a claim no
