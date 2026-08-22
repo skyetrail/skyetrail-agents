@@ -12,7 +12,7 @@ a job.
 - `auditing-skills` checks a skill or a brief against the written rules.
 - `repo-setup` works out the basic facts about a repository and records them.
 
-Shared rule files state the rules those skills apply. This project ran fourteen experiments, testing
+Shared rule files state the rules those skills apply. This project ran fifteen experiments, testing
 the skills, the rules, or both. `METHOD.md` states the practices those experiments produced. This
 page lists the results.
 
@@ -39,6 +39,7 @@ after the one before it. The order is by what each one answered, and not by date
 | determinism | Do isolated runs agree, and do the gates hold? | Both started at no and ended at yes. The gate blocked six of six deliveries at first, but a caller-side gate then delivered six of six. |
 | diet | Can `writing-agents` lose 400 lines and keep every measured win? | Mostly. Delivery, injection defence, statuses, gates, and the count-proxy ban held at three of three. Defaults were fixed in round two. Tick anchors narrowed from six to two. |
 | mechanical-gate | Does a caller re-running the skill's own audit command get the callee's answer? | Yes, in every run, line for line. Unanchored ticks went from two to zero of 27. The check confirms a token is present, not what it points at. |
+| writing-skills-diet | Does `writing-skills` beat an unaided run, and does a 154-line diet keep what 419 lines had? | Yes on shape. Out of 27, an unaided run scored 15 and the long skill 20. The diet scored 24. Coverage cost one item. Ticks closed to 23 of 24 after the audit moved behind the checklist. |
 
 ## skills-bench
 
@@ -359,6 +360,23 @@ property, so that stays with a reader.
 
 Detail: [mechanical-gate/RESULTS.md](./tests/outcomes/mechanical-gate/RESULTS.md)
 
+## writing-skills-diet
+
+`writing-skills` went from 419 lines to 154. A pre-registered round ran nine isolated Sonnet
+runs, three per arm, on a migration-review fixture in a domain no earlier round used, and a blind
+judge scored them against a rubric. The diet scored 24 of 27 on shape. The long skill scored 20
+and an unaided run 15. No unaided run had a finish check or a stated boundary, and the skill
+supplied both in every run. Every arm delivered three of three. Coverage of seven planted faults: unaided 21, both
+skilled arms 19, and the gap is the lock-timeout item. The mechanical audit passed all nine, so it
+does not separate the arms.
+
+Two more rounds of the diet arm closed the process gap. The runs had audited before they ticked,
+so the tick check saw nothing, and the audit now runs again after the checklist. Ticks then
+anchored at 23 of 24 under the reading that a reader can open the anchor. That reading widened
+after the data, and the results page records the change. The check itself now counts only an anchor that resolves.
+
+Detail: [writing-skills-diet/RESULTS.md](./tests/outcomes/writing-skills-diet/RESULTS.md)
+
 ## What is still open
 
 - Structure still varies on four points after five rules went in. The reference directory name
@@ -372,9 +390,12 @@ Detail: [mechanical-gate/RESULTS.md](./tests/outcomes/mechanical-gate/RESULTS.md
 - Fixture A of the isolated round cannot be re-run until the prior-round output at
   `plugins/skyetrail/tests/baselines/` is moved where the next round cannot read it. Keep run output
   out of a baselines directory, because the next round reads it and measures the earlier one.
-- No with-and-without baseline has run against `writing-skills`, `auditing-skills`, or
-  `repo-setup` since 2026-08-01. `writing-agents` was measured against the unaided baseline in both
-  diet rounds, and the mechanical-gate round measured its step-3 anchor fix at zero unanchored ticks.
+- No with-and-without baseline has run against `auditing-skills` or `repo-setup` since
+  2026-08-01. `writing-agents` was measured in its diet rounds and `writing-skills` in its own.
+- No workflow run can dispatch a subagent, so the baseline and independent-audit steps of
+  `writing-skills` have never run under measurement.
+- Every unaided run on the migration fixture checked for a lock timeout, and at most two of three
+  skilled runs did. The subject list does not stop a drop of an item the run never listed.
 
 ## What to read next
 

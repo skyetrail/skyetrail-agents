@@ -219,11 +219,44 @@ function tickedLines(ctx) {
   return out;
 }
 
-const ANCHOR_RE = /(`[^`]+`|\/[\w./-]+\.\w+|\b[\w-]+\.(md|json|txt|mjs)\b|\blines? \d+|\bsection\b|##|\{\{)/i;
+// A tick is anchored where something on the line resolves: a command that
+// names its target, a path that exists, a heading that exists in a file from
+// this run, or a line number. A token alone is not an anchor. The checklist
+// template's own wording carries rule-file names and the word section, and
+// three rounds of verbatim copies passed the earlier token test.
+function headingsUnder(dir, out = new Set(), depth = 0) {
+  let names = [];
+  try { names = fs.readdirSync(dir); } catch { return out; }
+  for (const name of names) {
+    const f = path.join(dir, name);
+    let st;
+    try { st = fs.statSync(f); } catch { continue; }
+    if (st.isDirectory()) { if (depth < 3) headingsUnder(f, out, depth + 1); continue; }
+    if (!name.endsWith(".md")) continue;
+    for (const m of fs.readFileSync(f, "utf8").matchAll(/^#{1,6}\s+(.+?)\s*$/gm)) out.add(m[1].trim().toLowerCase());
+  }
+  return out;
+}
+function tickAnchored(text, recordFile, ctx) {
+  if (/\bnpm run \S+ -- \S+|\bcd \S+ &&|\bnode \S+\.mjs\b/.test(text)) return true;
+  if (/\blines? \d+/.test(text) || /\{\{/.test(text)) return true;
+  const bases = [path.dirname(recordFile), path.dirname(ctx.file), path.dirname(path.dirname(ctx.file))];
+  for (const m of text.matchAll(/`([^`]+)`|(\/[\w./-]+)|\b((?:[\w-]+\/)*[\w-]+\.(?:md|json|txt|mjs|sql|py|ya?ml))\b/g)) {
+    const tok = (m[1] || m[2] || m[3] || "").trim().split(/\s+/)[0];
+    if (!tok) continue;
+    if (path.isAbsolute(tok)) { if (exists(tok)) return true; continue; }
+    if (bases.some((b) => exists(path.normalize(path.join(b, tok))))) return true;
+  }
+  const heads = headingsUnder(path.dirname(recordFile));
+  for (const m of text.matchAll(/##\s*([A-Za-z][\w -]*?)(?=\s*(?:[;,.():]|\bbelow\b|\bline\b|\band\b|$))/g)) {
+    if (heads.has(m[1].trim().toLowerCase())) return true;
+  }
+  return false;
+}
 function unanchoredTicks(ctx) {
   const out = [];
   for (const { file, line, text } of tickedLines(ctx)) {
-    if (!ANCHOR_RE.test(text)) out.push(`${path.basename(file)}:${line}: ticked with nothing a caller can open or run`);
+    if (!tickAnchored(text, file, ctx)) out.push(`${path.basename(file)}:${line}: ticked with nothing a caller can open or run`);
   }
   return out;
 }

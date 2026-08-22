@@ -128,3 +128,58 @@ P1 to P4 hold. P5 fails. The diet does not yet replace the current skill under t
 follows: the audit that a caller re-runs moves to the Delivery section, after the checklist is
 complete, with the instruction to act on each advisory and paste the final output unchanged. That
 is the order `writing-agents` uses, and its ticks closed to zero under it.
+
+
+## Round three: the audit after the checklist
+
+Three runs under the skill at `4729857`. Key: M diet3/r3, N diet3/r1, O diet3/r2.
+
+Shape 24 of 27 (8, 8, 8), the round-one figure again. Audit zero failures three of three.
+Coverage 20 of 21, with the lock-timeout item back in two of three. D8 three of three. Delivery
+three of three. No cross-run read, no leak from the packager. Every `ran` path opens.
+
+The new order worked where it could. Every record holds a final audit block after the checklist,
+and every final block matches the judge's re-run line for line. One run's first block carried a
+real failure, a reference that did not resolve, and the run fixed it before the final block.
+Another fixed two advisories the same way. That is the mechanism the round set out to test: a
+finding the run sees, it acts on.
+
+### Ticks under three readings, 24 ticks
+
+| Reading | Anchored |
+| --- | --- |
+| the pre-registered wording: a path or a command from the run | 6 (4, 2, 0) |
+| the skill's preamble, which adds a section of the delivered SKILL.md | 12 (5, 5, 2) |
+| an anchor a reader can open, which adds a section of the record itself | 23 (8, 8, 7) |
+
+Most ticks name a section of the record, as in "see ## Objective below". A reader opens that
+section and settles the line there. The pre-registered wording did not count it, and the skill's
+preamble did not name it. Both were narrower than the purpose. The one tick unanchored under
+every reading says "no existing SKILL.md at this path or name" and names no path.
+
+### The check was passing the template
+
+The mechanical check reported every record as passing, in all three rounds, because it accepted
+any file token or the word section, and the checklist's own wording carries both. It now counts
+only an anchor that resolves: a command with a target, a path that exists, or a heading that
+exists in a file from the run. On the round-one records, which were verbatim copies, it now
+reports 0, 5 and 5 unanchored ticks. On the round-three records it reports 0, 4 and 1.
+Its heading match is exact, so a heading that carries punctuation does not match, which is part
+of the difference between its counts and the judge's. The preamble now says a tick carries the path, the command, or the section of a file from this
+run, which is the reading the records already followed.
+
+### Decision
+
+P1 to P4 hold in all three rounds. P5 fails under the pre-registered wording and passes at 23 of
+24 under the reading that matches the purpose. That reading was adopted after the data, and this
+page says so. The long version fails every reading by more, because two of its three runs wrote
+no checklist at all. The diet stays as the skill in the tree, at 154 lines. The owner decides
+whether the amended reading stands.
+
+### What three rounds did not settle
+
+No workflow run could dispatch a subagent, so steps 5, 9 and 11 have never run under
+measurement. Every unaided run checked for a lock timeout and at most two of three skilled runs
+did; the subject list does not stop a drop of an item the run never listed. No round ran the
+produced skills on the migration, so whether a review under them finds more than a review without
+them is the skills-bench design and a later round.

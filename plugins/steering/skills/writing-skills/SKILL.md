@@ -49,7 +49,8 @@ not run is a line in `record.md`, and never a reason to hold the file back.
 ## Workflow
 
 Copy this checklist into `record.md` and into your reply. Tick each line as you finish it. A
-tick carries the path or the command from this run that settles the line. The skill's own text
+tick carries the path, the command, or the section of a file from this run that settles the
+line. The skill's own text
 settles nothing, and neither does a rule file. For a step about applying a rule file, the tick
 names the sections of the delivered SKILL.md where those rules land. A line you cannot tick stays
 unticked and carries one line saying why.

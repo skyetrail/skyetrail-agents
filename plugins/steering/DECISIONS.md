@@ -404,3 +404,12 @@ reference directory. A third looks for a sentence about a prior version of the f
 a finish check can pass on incomplete work, whether a default is usable rather than only named, and
 whether a category is open stay with a reader. A caller re-running the command got the callee's
 answer in three of three runs. Detail in `tests/outcomes/mechanical-gate/RESULTS.md`.
+
+**The writing-skills diet stands, and the tick rule reads by its purpose. 2026-08-21.** The
+419-line skill became 154 lines and a pre-registered three-arm round measured it. The diet scored
+24 of 27 on shape. The long version scored 20 and an unaided run 15. Delivery was three of three,
+and coverage one item below unaided. The process prediction failed as worded, because it counted a path or a command only,
+while the runs anchored most ticks in a section of the record, which a reader opens just as
+well. After the data, the reading widened to a section of a file from this run. The preamble and
+the mechanical check now say the same. The long version fails every reading by more. Detail
+in `tests/outcomes/writing-skills-diet/RESULTS.md`.
