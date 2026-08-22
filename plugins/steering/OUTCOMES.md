@@ -392,8 +392,9 @@ Detail: [writing-skills-diet/RESULTS.md](./tests/outcomes/writing-skills-diet/RE
   out of a baselines directory, because the next round reads it and measures the earlier one.
 - No with-and-without baseline has run against `auditing-skills` or `repo-setup` since
   2026-08-01. `writing-agents` was measured in its diet rounds and `writing-skills` in its own.
-- No workflow run can dispatch a subagent, so the baseline and independent-audit steps of
-  `writing-skills` have never run under measurement.
+- Agents started by the Workflow tool have no Agent tool, so the baseline and independent-audit
+  steps of `writing-skills` never ran in its first three rounds. Agents started by the Agent tool
+  can dispatch, and the next round uses them.
 - Every unaided run on the migration fixture checked for a lock timeout, and at most two of three
   skilled runs did. The subject list does not stop a drop of an item the run never listed.
 

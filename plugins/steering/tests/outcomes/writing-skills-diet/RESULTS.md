@@ -178,8 +178,10 @@ whether the amended reading stands.
 
 ### What three rounds did not settle
 
-No workflow run could dispatch a subagent, so steps 5, 9 and 11 have never run under
-measurement. Every unaided run checked for a lock timeout and at most two of three skilled runs
+No run in these three rounds could dispatch a subagent, so steps 5, 9 and 11 never ran. The
+cause is the Workflow tool: agents it starts have no Agent tool. A subagent started with the
+Agent tool does have it, checked by a probe on 2026-08-21, and the docs say subagents nest three
+deep by default. A fourth round starts the runs with the Agent tool. Every unaided run checked for a lock timeout and at most two of three skilled runs
 did; the subject list does not stop a drop of an item the run never listed. No round ran the
 produced skills on the migration, so whether a review under them finds more than a review without
 them is the skills-bench design and a later round.
