@@ -185,3 +185,66 @@ deep by default. A fourth round starts the runs with the Agent tool. Every unaid
 did; the subject list does not stop a drop of an item the run never listed. No round ran the
 produced skills on the migration, so whether a review under them finds more than a review without
 them is the skills-bench design and a later round.
+
+## Round four: the runs could dispatch
+
+The first three rounds started their runs with the Workflow tool, whose agents have no Agent
+tool. This round started three runs with the Agent tool, under the skill at `1f314a7`, and each
+run could start children of its own. The machine slept six times during the round; every run was
+resumed from its own transcript and its files on disk, and two children were retried once with a
+changed instruction, which the records state. Key: P diet4/r2, Q diet4/r3, R diet4/r1.
+
+### The loop ran, three of three
+
+| | r1 | r2 | r3 |
+| --- | --- | --- | --- |
+| no-skill review saved, lines | 73 | 102 | 71 |
+| misses numbered | 3 | 3 | 3 |
+| miss quotes found in that file | 3 of 3, two once bold markers are ignored | 3 of 3 verbatim | 3 of 3, two once bold markers are ignored |
+| with-skill review saved, lines | 121 | 41 | 101 |
+| rows of the misses table that hold | 3 of 3 | 3 of 3 | 3 of 3 |
+| independent audit findings, and fixed | 12, 9 fixed, 1 declined with a reason | 7, 4 defects fixed, 3 differences left | 5, all fixed |
+| two fixes confirmed in the delivered text | yes | yes | yes |
+| final audit block matches the re-run | yes | yes | yes |
+| checklist fence intact | yes | yes | yes |
+
+Every with-skill review cleared every numbered miss. The misses were real: a wrong explanation of
+why a foreign key needs an index first, a lock-timeout tip with no SQL to paste, no written
+output a reviewer could check later, no rollback plan, advice to run outside a transaction with
+no way to do it, and constraints enforced before the data was validated.
+
+### Scores
+
+Shape 23 of 27 (9, 7, 7). Audit zero failures three of three. Coverage 20 of 21, with the
+lock-timeout item in two of three. D8 three of three. Lines 209, 214 and 187.
+
+S8, the file as data, held in one of three, as in every round. One skill scored zero on S6 for
+the sentence "a rule that flags every ALTER TABLE has been tried and does not work", which the
+rubric reads as authoring history and `skill-rules.md` would allow as a failed approach to the
+work itself. One skill's verdict set lacked the member its own Failure section tells the reader
+to use.
+
+### Ticks
+
+Anchored by the judge's rule, which does not count a checklist line whose only anchor is the
+template's own wording: 8 of 12, 11 of 12 and 16 of 24, which is 35 of 48. Counting those lines
+where the file or section they name exists, as round three did: 45 of 48. Every anchor the judge
+counted opens.
+
+### What the round cost
+
+The three runs used 328, 264 and 279 thousand subagent tokens by the harness's count, against
+about 60 thousand for a run that could not dispatch. Each run started three children. Wall-clock
+time is not comparable, because the machine slept six times.
+
+### One gap in our own check, found by a run
+
+One run reported that `lint-reference-resolves` ignores a reference path written without a
+leading `./`, and added the prefix to pass. The check now resolves a bare `reference/` path too,
+in both places the audit reads reference paths.
+
+### Decision after round four
+
+P1 to P4 hold. P5 holds at 94 percent under the round-three reading and fails at 73 percent under
+the judge's stricter one. The loop the skill is built around ran in every run and cleared every
+miss it found. The diet stands.

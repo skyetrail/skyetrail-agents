@@ -149,7 +149,7 @@ export function referencedMarkdown(file, content) {
     if (exists(resolved)) out.add(resolved);
   };
   for (const link of content.matchAll(/\[([^\]]*)\]\(([^)]+)\)/g)) add(link[2]);
-  for (const tick of content.matchAll(/`(\.{1,2}\/[^`\n]+\.md)`/g)) add(tick[1]);
+  for (const tick of content.matchAll(/`((?:\.{1,2}\/|reference\/)[^`\n]+\.md)`/g)) add(tick[1]);
   return [...out];
 }
 
@@ -697,7 +697,7 @@ export const CHECKS = [
         }
       }
       // Relative paths in backticks are how these skills name their references.
-      for (const tick of ctx.content.matchAll(/`(\.{1,2}\/[^`\n]+\.md)`/g)) {
+      for (const tick of ctx.content.matchAll(/`((?:\.{1,2}\/|reference\/)[^`\n]+\.md)`/g)) {
         if (!exists(path.normalize(path.join(path.dirname(ctx.file), tick[1])))) {
           out.push(`reference does not resolve: ${tick[1]}`);
         }

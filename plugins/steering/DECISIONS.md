@@ -413,3 +413,9 @@ while the runs anchored most ticks in a section of the record, which a reader op
 well. After the data, the reading widened to a section of a file from this run. The preamble and
 the mechanical check now say the same. The long version fails every reading by more. Detail
 in `tests/outcomes/writing-skills-diet/RESULTS.md`.
+
+**Runs that must dispatch start with the Agent tool. 2026-08-21.** Agents the Workflow tool starts
+have no Agent tool, so three rounds of `writing-skills` never ran its baseline or audit steps, and
+I told the owner that no subagent could dispatch. He was right that they can: a probe child
+replied, and the docs say subagents nest three deep. The fourth round used the Agent tool, and the
+skill's loop ran in every run. The Workflow tool stays for agents that only read, judge, or copy.

@@ -375,6 +375,14 @@ so the tick check saw nothing, and the audit now runs again after the checklist.
 anchored at 23 of 24 under the reading that a reader can open the anchor. That reading widened
 after the data, and the results page records the change. The check itself now counts only an anchor that resolves.
 
+A fourth round started the runs with the Agent tool instead of the Workflow tool, so each run
+could start children. The skill's own loop then ran in every run for the first time. Each run saved a
+no-skill review and quoted three misses from it. Each then saved a with-skill review in which every
+miss was gone, and fixed the findings of an independent audit, which a judge confirmed in the
+delivered text. Shape 23 of
+27 and coverage 20 of 21. A run that dispatches costs about five times the tokens of one that
+cannot.
+
 Detail: [writing-skills-diet/RESULTS.md](./tests/outcomes/writing-skills-diet/RESULTS.md)
 
 ## What is still open
@@ -392,9 +400,10 @@ Detail: [writing-skills-diet/RESULTS.md](./tests/outcomes/writing-skills-diet/RE
   out of a baselines directory, because the next round reads it and measures the earlier one.
 - No with-and-without baseline has run against `auditing-skills` or `repo-setup` since
   2026-08-01. `writing-agents` was measured in its diet rounds and `writing-skills` in its own.
-- Agents started by the Workflow tool have no Agent tool, so the baseline and independent-audit
-  steps of `writing-skills` never ran in its first three rounds. Agents started by the Agent tool
-  can dispatch, and the next round uses them.
+- Agents started by the Workflow tool have no Agent tool. A measurement whose runs must dispatch
+  starts them with the Agent tool, as the fourth diet round did.
+- The file-as-data item held in one of three skills in every round, with or without a sentence
+  asking for it in step 8.
 - Every unaided run on the migration fixture checked for a lock timeout, and at most two of three
   skilled runs did. The subject list does not stop a drop of an item the run never listed.
 
