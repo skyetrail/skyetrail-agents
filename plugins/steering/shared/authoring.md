@@ -51,19 +51,22 @@ fixed, and do not drop any of them.
 Take the first test that reads `yes`, and act on it.
 
 1. **A script.** Write the script. Do not write a document. No skill takes this over.
-2. **An answer.** Say the guidance in your reply. Do not write a file.
+2. **An answer.** Say the guidance in your reply. Do not write a file. No skill takes this over.
 3. **A prompt.** Use `writing-agents`.
 4. **A skill.** Use `writing-skills`.
 
 A subagent, a scheduled run, and a fresh session are examples of an agent that will not hold this
-conversation. They are not the whole list.
+conversation. They are not the whole list. An agent holds this conversation where the turns you
+are reading are in its context. An agent given a transcript or a summary of it does not hold it,
+and neither does a fresh session.
 
 Where the class names a skill other than the one you run, say which test held. Name that skill.
 Hand the request over. Do not write the artifact your own skill produces.
 
 ## Where two tests hold
 
-Take the earlier test. The earlier class costs less per use.
+Fill from the top and stop at the first yes. This section is for a reader who feels a later class
+fits better. The earlier class still wins, because it costs less per use.
 
 - A script costs no agent context.
 - An answer costs one turn.

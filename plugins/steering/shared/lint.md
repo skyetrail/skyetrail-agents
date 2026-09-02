@@ -11,7 +11,7 @@ Recording a confirmed command through `repo-setup` is the one change this file a
 
 A lint is a script. It checks things it can decide on its own. It can check
 whether a file parses and whether a file stays within a stated limit. It can also check whether
-the things a file points at exist. Judgment stays with the rules files. These limits belong to
+the things a file points at exist. Judgement stays with the rule files. These limits belong to
 the script. Each repository decides which checks its own lint performs. This is the repository's
 business, not this file's business. Establish what those checks are. Do not assume them.
 
@@ -46,7 +46,7 @@ order.
 
 A lint fails to settle your target in more than one way, and these cases are not interchangeable.
 Others exist, so read them as examples rather than as the whole list. In every case,
-say what happened. Then continue with the judgment rules. Do not work out the mechanical limits by
+say what happened. Then continue with the judgement rules. Do not work out the mechanical limits by
 hand again. Do not present that result as a lint result.
 
 **No lint command exists for this repository.** Say so. If a person is present, tell them the

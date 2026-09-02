@@ -10,7 +10,7 @@ defines no task of its own. Where a procedural property an audit needs is missin
 those two skills. The stop conditions and the evidence each finding includes are two examples, not
 the whole list.
 
-A mechanical check is a script's job, not judgment work. `./lint.md` names the command that settles
+A mechanical check is a script's job, not judgement work. `./lint.md` names the command that settles
 those checks, and says what to do where the command does not run. Ask the command itself what it
 checks. Confirm its record rather than re-deriving a check by hand. Do not restate the checks here.
 A second copy of that list drifts from the first. An agent then loads two files that say different
@@ -104,8 +104,12 @@ run.
 | Directories group files by domain, so a run loads only the domain it needs. | Important |
 | Every reference file sits under a directory called `reference/`. | Important |
 
-A line cap on the front file is the command's proxy for the detail rule. A front file under the cap
-can still carry the detail, so read the rule as well as its record.
+A line cap on the front file is the command's proxy for the detail rule. A front file under the cap can still carry the detail, so read the rule as well as its record.
+
+These rules cover the files a skill includes inside its own directory, its bundled files. A bundled
+script is a bundled file the skill runs. The rule files under `shared/` are not bundled, and a
+skill points at them by relative path. A file is one hop from a SKILL.md where that SKILL.md names
+its path directly.
 
 ## Code
 

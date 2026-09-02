@@ -15,7 +15,7 @@ own.
 ## Contents
 
 - One principle
-- Two terms
+- Three terms
 - Invariants
 - Evidence
 - Re-running checks
@@ -42,12 +42,15 @@ One caution. An agent that cannot find something says so. A script instead retur
 result, which reads as nothing to do. State what an empty result means. State whether you expect
 it.
 
-## Two terms
+## Three terms
 
 A hole is a labeled blank in a prompt template, while a field is a labeled fact in the record the
 caller establishes before dispatch. Filling a template writes field values into holes. The two
 correspond, but they differ. Fields exist before any template. A template need not use every
 field.
+
+The caller is the agent or person that dispatched this run and receives what it returns. A person
+who invoked a skill directly is its caller.
 
 ## Invariants
 
@@ -55,7 +58,8 @@ field.
    origin. Neither a script nor an agent is needed for what the caller already knows.
 2. The prompt enumerates the status values the agent may return. It states the caller's
    obligation for each one. A status with no defined caller action is decoration.
-3. The detail goes to a file. A capped summary returns to the caller. The prompt names both.
+3. The detail goes to a file. A capped summary returns to the caller, and the cap is 30 lines
+   unless the prompt sets another. The prompt names both.
    A prompt saying only "report your findings" fails this, because it names neither.
 4. The retry limit is stated, along with what must change before a retry. The default is two
    attempts per agent. Re-dispatching the same prompt to the same model is not a retry.
@@ -68,8 +72,7 @@ field.
 6. The prompt states what happens to partial work when a run stops. By default, keep it. Name its
    location in the report. Leave the decision to a person. Do not revert automatically, because
    partial work that passes its own checks is often worth keeping.
-7. An agent that dispatches work collects the result before its own turn ends. A dispatched task
-   with no collected result is unfinished work, not a hand-off.
+7. An agent that dispatches work collects the result before its own turn ends. A dispatched task with no collected result is unfinished work, and not a completed dispatch.
 8. The prompt names the model and the effort level. Left to inherit from the calling session, two
    runs of one prompt stop being comparable.
 9. A check the caller cannot re-run does not gate delivery. Turn it into an artifact instead. The
@@ -192,7 +195,9 @@ a protocol.
   where the class needs a reading. An item that fits no class, or more than one, goes to a person
   and never to the nearest class. The template is in `writing-agents`.
 
-Agents that modify shared state are not a fan-out case even when the tasks look independent.
+Agents that modify shared state are not a fan-out case even when the tasks look independent. Shared
+state is anything two agents both read or write. A file, a record, a branch, and an external system
+are examples, not the whole list.
 
 These four cover the dependency patterns seen so far, not every pattern there is. Stop and report what is missing where work fits none of them. Do the same where you cannot
 establish a fact a shape depends on. Do not force the work into the nearest shape.

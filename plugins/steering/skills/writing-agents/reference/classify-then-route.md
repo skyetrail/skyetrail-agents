@@ -2,7 +2,9 @@
 
 The caller's shape for work whose items are of more than one kind, where each kind needs its own
 prompt. One agent, the classifier, reads one item and returns its class. The caller sends the item
-to the prompt for that class. The classifier decides nothing else and changes nothing.
+to the prompt for that class. The classifier decides nothing else and changes nothing. Class here
+means the kind of one item of work. The artifact test in `../../../shared/authoring.md` uses the
+same word for the kind of deliverable a request needs.
 
 ## Contents
 

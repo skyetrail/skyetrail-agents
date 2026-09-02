@@ -3,10 +3,9 @@
 These rules apply only when the agent will not see the conversation the author had.
 Read this file with `./steering-rules.md` when the **hand-off** condition is met. Do not read it otherwise.
 
-Severity, the default outcome, and reporting work exactly as in `./steering-rules.md`. Any blocking
-failure means the document needs work before use. Sometimes you cannot tell from the document
-whether a rule here is met. If so, mark the rule warn. State what you could not determine. Do not
-guess either way.
+Severity, the default outcome, warn, and reporting work exactly as in `./steering-rules.md`, and
+its Terms section defines the words used here. Any blocking failure means the document needs work
+before use.
 
 The skills `auditing-skills` and `writing-agents` apply these rules. This file supplies criteria and
 defines no task of its own. Where a procedural property an audit needs is missing here, look in the
@@ -58,7 +57,7 @@ return. So every rule here applies only at hand-off.
 | --- | --- |
 | The sections of the report are named. | Blocking |
 | The wording is fixed enough that results from two runs can be compared without editing. | Important |
-| The detail goes to a file the prompt names, and only a capped summary returns to the caller. | Important |
+| The detail goes to a file the prompt names, and only a capped summary returns to the caller. The cap is 30 lines unless the prompt sets another. | Important |
 | Failures are included in the summary rather than only written to the file. | Important |
 | A section asks the agent to list anything it did that nobody asked for. | Important |
 | The report format sits at the end of the document. | Advisory |
@@ -75,4 +74,4 @@ return. So every rule here applies only at hand-off.
 | Each status declares whether it affects only the agent reporting it or stops the whole run. | Important |
 | The caller checks the report is complete, then re-runs every check it can run on the delivered artifact. | Important |
 | A check the caller cannot re-run is named as a claim, and no status rests on it. | Important |
-| Where a predefined agent is dispatched, the instruction includes no context that call does not need. | Advisory |
+| Where a predefined agent is dispatched, one defined in a static file such as `agents/*.md`, the instruction includes no context that call does not need. | Advisory |
