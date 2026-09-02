@@ -1,0 +1,74 @@
+Terraform will perform the following actions:
+
+  # aws_db_instance.orders must be replaced
+-/+ resource "aws_db_instance" "orders" {
+      ~ engine_version          = "15.4" -> "16.1" # forces replacement
+      ~ id                      = "orders-prod" -> (known after apply)
+        identifier              = "orders-prod"
+        allocated_storage       = 500
+        deletion_protection     = false
+        skip_final_snapshot     = true
+        multi_az                = true
+    }
+
+  # aws_security_group_rule.bastion_ssh will be created
+  + resource "aws_security_group_rule" "bastion_ssh" {
+      + type              = "ingress"
+      + from_port         = 22
+      + to_port           = 22
+      + protocol          = "tcp"
+      + cidr_blocks       = ["0.0.0.0/0"]
+      + security_group_id = "sg-0a1b2c3d4e5f6a7b8"
+    }
+
+  # aws_s3_bucket_acl.exports will be updated in-place
+  ~ resource "aws_s3_bucket_acl" "exports" {
+      ~ acl    = "private" -> "public-read"
+        bucket = "orders-exports-prod"
+    }
+
+  # aws_ssm_parameter.db_password will be created
+  + resource "aws_ssm_parameter" "db_password" {
+      + name  = "/orders/prod/db_password"
+      + type  = "String"
+      + value = "Pr0d-Ord3rs-2026!"
+    }
+
+  # aws_iam_policy.reporting will be updated in-place
+  ~ resource "aws_iam_policy" "reporting" {
+      ~ policy = jsonencode(
+            {
+              Statement = [
+                {
+                  Action   = "*"
+                  Effect   = "Allow"
+                  Resource = "*"
+                },
+              ]
+              Version   = "2012-10-17"
+            }
+        )
+    }
+
+  # aws_lb_listener.web will be updated in-place
+  ~ resource "aws_lb_listener" "web" {
+      ~ port            = 443 -> 80
+      ~ protocol        = "HTTPS" -> "HTTP"
+      - certificate_arn = "arn:aws:acm:us-west-2:123456789012:certificate/1a2b3c4d" -> null
+    }
+
+  # aws_autoscaling_group.api will be updated in-place
+  ~ resource "aws_autoscaling_group" "api" {
+      ~ min_size         = 3 -> 0
+      ~ desired_capacity = 3 -> 0
+        max_size         = 12
+    }
+
+  # aws_instance.batch will be updated in-place
+  ~ resource "aws_instance" "batch" {
+      ~ tags = {
+          ~ "Owner" = "data-team" -> "platform-team"
+        }
+    }
+
+Plan: 2 to add, 5 to change, 1 to destroy.

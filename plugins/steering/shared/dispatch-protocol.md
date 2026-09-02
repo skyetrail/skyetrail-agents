@@ -21,7 +21,7 @@ own.
 - Re-running checks
 - Checks the caller cannot re-run
 - Statuses
-- Three shapes
+- Shapes
 - Establishing facts
 
 ## One principle
@@ -177,7 +177,7 @@ Write both columns for each status into the artifact that runs the work: the evi
 returns, and the caller's obligation. Held as a convention rather than written down, they are not
 a protocol.
 
-## Three shapes
+## Shapes
 
 - **Fan out.** The default. Use it when the pieces of work do not read or write anything in
   common and none of them needs the result of another.
@@ -185,10 +185,16 @@ a protocol.
   dispatch, and the caller fills the next prompt from the previous report.
 - **Establish then fan out.** Use it when the facts the workers need are not yet known. Nothing is
   dispatched until those facts are established and validated.
+- **Classify then route.** Use it when the items of work are of more than one kind and each kind
+  needs its own prompt. A classifier reads one item and returns its class and the test that
+  decided it. The caller then sends the item to the prompt for that class. A script classifies
+  where a rule can decide, such as a file extension or a field value. An agent classifies only
+  where the class needs a reading. An item that fits no class, or more than one, goes to a person
+  and never to the nearest class. The template is in `writing-agents`.
 
 Agents that modify shared state are not a fan-out case even when the tasks look independent.
 
-These three cover the dependency patterns seen so far, not every pattern there is. Stop and report what is missing where work fits none of them. Do the same where you cannot
+These four cover the dependency patterns seen so far, not every pattern there is. Stop and report what is missing where work fits none of them. Do the same where you cannot
 establish a fact a shape depends on. Do not force the work into the nearest shape.
 
 ## Establishing facts

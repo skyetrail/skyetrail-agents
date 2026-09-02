@@ -1,0 +1,1 @@
+Since yesterday the invoice PDF download returns a 500 error. Chrome, account 4471. Steps: Billing, then Invoices, then Download.

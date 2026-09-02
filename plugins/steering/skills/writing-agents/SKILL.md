@@ -34,6 +34,10 @@ this scope, stop and name the document that owns it.
 To convert a predefined agent, open `./reference/converting-a-predefined-agent.md` and split the definition
 the way it says. Then run the workflow below.
 
+Where the items of work are of more than one kind and each kind needs its own prompt, open
+`./reference/classify-then-route.md` and use that shape. The Shapes section of
+`../../shared/dispatch-protocol.md` states the test.
+
 ## Workflow
 
 Copy this checklist into `record.md` beside the artifact, and into your reply. Tick each line
@@ -53,6 +57,7 @@ writing-agents
 [ ] 7 finish check triggered on the input; no count of produced parts settles it
 [ ] 8 return gate names each check's command with its path, and the output that settles the check
 [ ] 9 no authoring history in the prompt; a default beside every deferred value
+[ ] 10 dispatch shape named from ../../shared/dispatch-protocol.md; a classify-then-route prompt has a class table with a test per class, a none row, and a route per class
 ```
 
 1. **Fill the artifact-test block** from `../../shared/authoring.md` and route on the class, as
@@ -87,6 +92,11 @@ writing-agents
    reader may change. A field table gives every row a default, or the reason no default can exist,
    in the same column. A repository path has no possible default and says so. A base ref does:
    `origin/main`.
+10. **Name the shape.** The Shapes section of `../../shared/dispatch-protocol.md` states the
+    test for each. Write the shape and the test that chose it into the caller side. Where the
+    shape is classify then route, `./reference/classify-then-route.md` holds the classifier
+    template and the tables. Copy the class table into the prompt with a test per class and a
+    `none` row, and give every class a route.
 
 ## Delivery
 
