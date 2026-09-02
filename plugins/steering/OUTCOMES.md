@@ -12,7 +12,7 @@ a job.
 - `auditing-skills` checks a skill or a brief against the written rules.
 - `repo-setup` works out the basic facts about a repository and records them.
 
-Shared rule files state the rules those skills apply. This project ran fifteen experiments, testing
+Shared rule files state the rules those skills apply. This project ran sixteen experiments, testing
 the skills, the rules, or both. `METHOD.md` states the practices those experiments produced. This
 page lists the results.
 
@@ -40,6 +40,7 @@ after the one before it. The order is by what each one answered, and not by date
 | diet | Can `writing-agents` lose 400 lines and keep every measured win? | Mostly. Delivery, injection defence, statuses, gates, and the count-proxy ban held at three of three. Defaults were fixed in round two. Tick anchors narrowed from six to two. |
 | mechanical-gate | Does a caller re-running the skill's own audit command get the callee's answer? | Yes, in every run, line for line. Unanchored ticks went from two to zero of 27. The check confirms a token is present, not what it points at. |
 | writing-skills-diet | Does `writing-skills` beat an unaided run, and does a 154-line diet keep what 419 lines had? | Yes on shape. Out of 27, an unaided run scored 15 and the long skill 20. The diet scored 24. Coverage cost one item. Ticks closed to 23 of 24 after the audit moved behind the checklist. |
+| round-five | Does a produced skill improve a fresh review, and does `writing-agents` produce classify then route where the work needs it? | The reviews tied, because unaided Sonnet found every planted fault. Classify then route: skilled 30 of 30, unaided 15 of 30. The branch merges. |
 
 ## skills-bench
 
@@ -385,6 +386,24 @@ cannot.
 
 Detail: [writing-skills-diet/RESULTS.md](./tests/outcomes/writing-skills-diet/RESULTS.md)
 
+## round-five
+
+The fixtures were in domains no earlier round used. Every run started with the Agent tool so it
+could dispatch children, and the terminology pass was committed first. On a Terraform plan with seven
+planted faults, three `writing-skills` runs each ran their whole loop: a no-skill review, misses
+quoted from it, a with-skill review that cleared them, and an audit whose fixes a judge confirmed.
+Scored blind against the fault key, the unaided reviews found every fault, and the with-skill
+reviews tied in two runs and lost one borderline item in the third. The skill changes the shape
+of a review, and this fixture cannot say whether that is worth more.
+
+On a support inbox with a phishing sample, a two-class sample and a no-class sample, three
+`writing-agents` runs each chose classify then route by the template's tests and scored 30 of 30
+on the rubric. The unaided runs scored 15 of 30, and the same five items separated the arms every time: the deciding test, the `none` branch for a two-class item, statuses with caller
+obligations, a retry limit, and a caller re-check. The pre-registered rule says merge, and the
+branch merges.
+
+Detail: [round-five/RESULTS.md](./tests/outcomes/round-five/RESULTS.md)
+
 ## What is still open
 
 - Structure still varies on four points after five rules went in. The reference directory name
@@ -402,8 +421,10 @@ Detail: [writing-skills-diet/RESULTS.md](./tests/outcomes/writing-skills-diet/RE
   2026-08-01. `writing-agents` was measured in its diet rounds and `writing-skills` in its own.
 - Agents started by the Workflow tool have no Agent tool. A measurement whose runs must dispatch
   starts them with the Agent tool, as the fourth diet round did.
-- The file-as-data item held in one of three skills in every round, with or without a sentence
-  asking for it in step 8.
+- The file-as-data item held in one of three skills in the diet rounds and two of three in round
+  five, with a sentence asking for it in step 8.
+- Coverage fixtures saturate: unaided Sonnet found every planted fault on the migration and on the
+  Terraform plan. Downstream gain needs a harder fixture or a measure of the review's shape.
 - Every unaided run on the migration fixture checked for a lock timeout, and at most two of three
   skilled runs did. The subject list does not stop a drop of an item the run never listed.
 

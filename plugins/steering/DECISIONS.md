@@ -419,3 +419,11 @@ have no Agent tool, so three rounds of `writing-skills` never ran its baseline o
 I told the owner that no subagent could dispatch. He was right that they can: a probe child
 replied, and the docs say subagents nest three deep. The fourth round used the Agent tool, and the
 skill's loop ran in every run. The Workflow tool stays for agents that only read, judge, or copy.
+
+**The branch merges. 2026-09-01.** Round five was pre-registered with a rule. The branch
+merges where every arm delivers and the with-skill reviews do not fall below the unaided ones on
+the fault key. It also needs the skilled inbox runs to produce classify then route where the
+unaided ones do not. All three held. The
+reviews tied because the unaided model found every planted fault, which two fixtures have now
+shown, so the downstream question stays open, and the results page says so. Detail in
+`tests/outcomes/round-five/RESULTS.md`.
