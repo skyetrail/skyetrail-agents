@@ -42,11 +42,12 @@ belong in the block.
    run a command that only reports. Where you cannot confirm a candidate without changing
    something, record it as a candidate you did not confirm, and say why. Do not change something to
    settle it.
-4. **Take the decision to a person where there is a real choice.** One working candidate is the
-   answer. It needs no discussion. A real choice arises where several candidates disagree, where
-   they cover different files, or where the only candidate does not work today. That is a decision
-   about how this repository is meant to be checked, and the person owns it. Put the candidates in
-   front of them. Say what each one covers, and what you saw when you tried it. Ask which one is
+4. **Take the decision to a person where more than one answer is possible.** One working candidate
+   is the answer. It does not need discussion. A decision is needed where several candidates
+   disagree, where they cover different files, or where the only candidate does not work today.
+   That is a decision about how this repository is meant to be checked, and the person owns it.
+   Put the candidates in front of them. Say what each one covers, and what you saw when you tried
+   it. Ask which one is
    the lint command. Where you find no candidate at all, do not invent one. Tell the person the
    repository needs a lint command. Tell them that skills relying on one cannot run their
    mechanical checks until it has one.
@@ -75,16 +76,17 @@ belong in the block.
    away. Go to step 8 only where you cannot fix it.
 
    Delete `AGENTS.md.repo-setup-backup` where step 5 made one, once every check holds and before
-   you report. A leftover backup file reads as an unfinished run. Where step 5 made no backup,
-   there is nothing to delete, and a failed delete is not a failed check.
+   you report. A leftover backup file reads as an unfinished run. Where step 5 did not make a
+   backup, there is nothing to delete, and a failed delete is not a failed check.
 8. **Put the file back where a check fails and you cannot fix it.** Where step 5 made a backup, copy
    it over `AGENTS.md`, then delete the backup. Where you created `AGENTS.md` in step 6, delete
    `AGENTS.md` itself. Never delete a block you did not write in this run. On a re-run the block
    already there is an answer somebody confirmed, and deleting it leaves the repository with no
    lint command at all. Then report `BLOCKED` and say which check failed.
 
-   Do not weaken these checks to finish. Do not skip them. Do not report a check you did not run.
-   An unverified block is worse than no block, because everything downstream trusts it.
+   Do not weaken these checks to finish. Do not skip them, and do not report a check you did not
+   run. Later skills read this block without checking it again, so an unverified block is worse
+   than none at all.
 
 ## The block
 
@@ -103,21 +105,22 @@ Unresolved: <anything a person still has to decide, or "none">
 <!-- END: repo-setup -->
 ```
 
-A block may hold more than this. Where the block already carries a fact this run did not establish,
+A block may hold more than this. Where the block already has a fact this run did not establish,
 keep that fact and write it back unchanged. A re-run replaces what it confirms and preserves the
 rest.
 
-That rule matters more than it looks. Every check in step 7 passes on a block that is missing a
-bullet, because those checks read the markers, the placeholders, and what sits outside them. None of
-them counts the facts. So a re-run that quietly drops one loses work that nobody sees go.
+Every check in step 7 passes on a block that is missing a bullet, because those checks read the
+markers, the placeholders, and what sits outside them, and none of them counts the facts. This is
+why preserving unestablished facts matters more than step 7 alone would suggest. A re-run that
+drops one loses work, and no check in step 7 catches it.
 
 ## Statuses
 
 | Status | Means | The caller must |
 | --- | --- | --- |
 | `DONE` | The block is written and every check in step 7 holds. | Use the recorded facts. Do not re-establish them. |
-| `NEEDS_DECISION` | A real choice remains and no person was there to decide it. | Put the candidates to a person. Never pick one on their behalf. |
-| `BLOCKED` | A check failed and no edit fixed it, or `AGENTS.md` could not be written. | Read the named cause. Fix it, then run this skill again. |
+| `NEEDS_DECISION` | More than one candidate remains and no person was there to decide between them. | Put the candidates to a person. Never pick one on their behalf. |
+| `BLOCKED` | A check failed and no edit fixed it, or `AGENTS.md` could not be written. | Read the cause. Fix it, then run this skill again. |
 | `NEEDS_CONTEXT` | The instruction that dispatched this run left out something it needed. | Supply what was missing. This is the caller's failure, not the agent's. |
 
 Add a status only where a run needs one these four do not cover. Declare the addition here rather
@@ -137,13 +140,18 @@ nothing else removes it.
 
 Stopping for either reason carries no penalty. Both are correct outcomes.
 
-A command that fails because no such script exists has settled the question. It needs no second
-try. A command can also fail without settling anything, through a permission error, a timeout, or a
-failure that names no cause. Run that one once more, and only after something has changed, such as
-running from the repository root rather than a subdirectory. Where nothing has changed, do not run
-it again. Record it as a candidate you could not confirm. Say what you saw. Treat it as unconfirmed
-rather than as absent. The two differ, and a later reader cannot tell them apart unless you say
-which one it was.
+A command that fails because no such script exists has answered the question. It does not need a
+second try. A command can also fail without answering anything.
+
+- A permission error.
+- A timeout.
+- A failure that does not name a cause.
+
+Run that one once more, and only after something has changed, such as running from the repository
+root rather than a subdirectory. Where nothing has changed, do not run it again. Record it as a
+candidate you could not confirm. Say what you saw. Treat it as unconfirmed rather than as absent.
+Unconfirmed and absent differ, and a later reader cannot tell them apart unless you say which one
+it was.
 
 ## Where this stops
 
@@ -153,7 +161,7 @@ choose between candidates for the person. It edits no file other than `AGENTS.md
 file it edits only its own block. It also writes and then removes `AGENTS.md.repo-setup-backup`,
 which exists only between step 5 and the end of the run.
 
-No skill takes over where this one stops. Both stop conditions hand back to a person, because both
-are decisions about how this repository is meant to work, and nothing here can settle them.
+No skill takes over where this one stops. Both stop conditions hand back to a person. Both are
+decisions about how this repository is meant to work, and no other skill can decide them instead.
 
 A direct instruction from the person wins over anything here.

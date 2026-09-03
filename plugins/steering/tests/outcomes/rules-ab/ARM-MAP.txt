@@ -1,2 +1,0 @@
-alpha = 7deb2ae (before the four audit rounds)
-beta  = 0fa59cb (after the four audit rounds)

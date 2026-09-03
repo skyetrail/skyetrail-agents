@@ -200,3 +200,59 @@ and carries none of those.
 
 One thing the unaided run still does better. Its severity rubric names the signal that assigns each
 tier. One skilled run matches it. Two give no tiers at all.
+
+---
+
+# The structure round: one gap of five closed
+
+Five rules went in to close five measured differences. Three isolated runs then measured them. The
+round is clean: no cross-run reference, no duplicate file, and all three audit counts reproduce when
+re-run. The raw verdict was folded into this page, and its file was removed in `5fbd718`.
+
+## The scoreboard
+
+| Gap | Before | After | Verdict |
+| --- | --- | --- | --- |
+| Reference directory name | two spellings | `reference/` three times | **Closed** |
+| Section headings | one run renamed all six | two runs identical, one renamed all six | Not closed |
+| Number of reference files | 2, 2, 1 | 4, 1, 6 | **Worse** |
+| The deferred default value | 14, 7, 7 | 14, 7, 7 | Unchanged |
+| The output filename | two names | the runs disagree that a file exists | Not testable here |
+
+## The one that worked, and it was not a structure rule
+
+The severity rubric came back in all three runs, with the test on every tier. Two of three runs in
+the previous round gave no tiers at all.
+
+The rule asks a default that names a set to carry the test that picks a member. That rule bound
+something. The four structure rules did not.
+
+## The gap that got worse
+
+Adding the split rule widened the spread from one file to five. The rule says content sits in a
+reference file where a reader needs it for one case and not others. It is a membership test, and it
+holds at any grain. One run carved one case and wrote one file. One carved six.
+
+A membership test constrains what goes in a file. It says nothing about how finely a reader cuts the
+cases. That is the flaw, and it was not visible until three runs applied it.
+
+## The gap I misdiagnosed
+
+The deferred-value difference was 14, 7 and 7 in both rounds. Every run gave a literal number in
+both rounds.
+
+So the runs never deferred without a default. They chose different numbers. I read a value
+disagreement as a format problem and wrote a rule about format. The rule is sound and it changed
+nothing here, because nothing here broke it.
+
+No rule converges a value choice without naming the value.
+
+## Two rules I asked for that already existed
+
+I asked for a template-strictness rule and a visual-analysis rule, calling one missing and one
+already covered. Both already sat in `steering-rules.md`, at the same severity, under the same
+condition, added in the same commit.
+
+The agent declined both and showed the lines. My gap analysis had grepped `skill-rules.md` alone and
+read absence there as absence everywhere. That is the same error that produced a false claim about
+`repo-setup` having no baseline, four days earlier in the same week.

@@ -1,9 +1,0 @@
-A7 = alpha / receiving-code-review / auditor 1
-A3 = alpha / receiving-code-review / auditor 2
-A1 = beta  / receiving-code-review / auditor 1
-A6 = beta  / receiving-code-review / auditor 2
-A4 = alpha / using-git-worktrees / auditor 1
-A8 = alpha / using-git-worktrees / auditor 2
-A2 = beta  / using-git-worktrees / auditor 1
-A5 = beta  / using-git-worktrees / auditor 2
-Pairs: P1=(A7,A3) P2=(A1,A6) P3=(A4,A8) P4=(A2,A5)

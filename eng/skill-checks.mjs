@@ -27,7 +27,6 @@
 import fs from "node:fs";
 import path from "node:path";
 import { builtinModules } from "node:module";
-import { measure, CAP_INSTRUCTION, CAP_DESCRIPTION } from "./measure-sentences.mjs";
 
 export const MAX_NAME = 64; // Agent Skills frontmatter name limit
 export const MAX_DESCRIPTION = 1024; // Agent Skills frontmatter description limit
@@ -149,8 +148,116 @@ export function referencedMarkdown(file, content) {
     if (exists(resolved)) out.add(resolved);
   };
   for (const link of content.matchAll(/\[([^\]]*)\]\(([^)]+)\)/g)) add(link[2]);
-  for (const tick of content.matchAll(/`(\.{1,2}\/[^`\n]+\.md)`/g)) add(tick[1]);
+  for (const tick of content.matchAll(/`((?:\.{1,2}\/|reference\/)[^`\n]+\.md)`/g)) add(tick[1]);
   return [...out];
+}
+
+
+// Parse every pipe table in a markdown string into {header, rows}. Cells are
+// trimmed and the separator row is dropped. A table is a run of consecutive
+// lines that begin with a pipe.
+export function markdownTables(content) {
+  const tables = [];
+  let block = [];
+  const flush = () => {
+    if (block.length >= 2) {
+      const split = (l) => l.replace(/^\s*\|/, "").replace(/\|\s*$/, "").split("|").map((c) => c.trim());
+      const header = split(block[0]);
+      const rows = block.slice(1).filter((l) => !/^\s*\|[\s:|-]+\|?\s*$/.test(l)).map(split);
+      tables.push({ header, rows });
+    }
+    block = [];
+  };
+  for (const line of content.split("\n")) {
+    if (/^\s*\|/.test(line)) block.push(line);
+    else flush();
+  }
+  flush();
+  return tables;
+}
+
+// Markdown files a SKILL.md references that live inside its own directory.
+// A pointer at ../../shared/ is a rule file, not a bundled reference.
+function bundledReferences(ctx) {
+  const dir = path.dirname(ctx.file) + path.sep;
+  return referencedMarkdown(ctx.file, ctx.content).filter((f) => f.startsWith(dir));
+}
+
+// Ticked checklist lines in the artifact, or in markdown files beside it,
+// each with one continuation line folded in. A skill returns its checklist
+// with the work, so the record beside the artifact is where it usually sits.
+function tickedLines(ctx) {
+  const out = [];
+  const scan = (file, text) => {
+    const lines = text.split("\n");
+    lines.forEach((l, i) => {
+      if (/^\s*\[x\]/i.test(l)) {
+        // Fold every indented continuation line, because one run anchored a
+        // tick on its second continuation line and a one-line fold missed it.
+        let text = l;
+        for (let j = i + 1; j < lines.length && /^\s{2,}\S/.test(lines[j]); j++) text += " " + lines[j];
+        out.push({ file, line: i + 1, text });
+      }
+    });
+  };
+  const scanDir = (dir) => {
+    let names = [];
+    try { names = fs.readdirSync(dir); } catch { return; }
+    for (const name of names) {
+      const f = path.join(dir, name);
+      if (f !== ctx.file && name.endsWith(".md") && fs.statSync(f).isFile()) scan(f, fs.readFileSync(f, "utf8"));
+    }
+  };
+  scan(ctx.file, ctx.content);
+  if (out.length) return out;
+  const dir = path.dirname(ctx.file);
+  scanDir(dir);
+  // A skill's record sits beside the skill directory rather than inside it, so
+  // that it never loads with the skill. Look one level up for a SKILL.md target.
+  if (!out.length && path.basename(ctx.file) === "SKILL.md") scanDir(path.dirname(dir));
+  return out;
+}
+
+// A tick is anchored where something on the line resolves: a command that
+// names its target, a path that exists, a heading that exists in a file from
+// this run, or a line number. A token alone is not an anchor. The checklist
+// template's own wording carries rule-file names and the word section, and
+// three rounds of verbatim copies passed the earlier token test.
+function headingsUnder(dir, out = new Set(), depth = 0) {
+  let names = [];
+  try { names = fs.readdirSync(dir); } catch { return out; }
+  for (const name of names) {
+    const f = path.join(dir, name);
+    let st;
+    try { st = fs.statSync(f); } catch { continue; }
+    if (st.isDirectory()) { if (depth < 3) headingsUnder(f, out, depth + 1); continue; }
+    if (!name.endsWith(".md")) continue;
+    for (const m of fs.readFileSync(f, "utf8").matchAll(/^#{1,6}\s+(.+?)\s*$/gm)) out.add(m[1].trim().toLowerCase());
+  }
+  return out;
+}
+function tickAnchored(text, recordFile, ctx) {
+  if (/\bnpm run \S+ -- \S+|\bcd \S+ &&|\bnode \S+\.mjs\b/.test(text)) return true;
+  if (/\blines? \d+/.test(text) || /\{\{/.test(text)) return true;
+  const bases = [path.dirname(recordFile), path.dirname(ctx.file), path.dirname(path.dirname(ctx.file))];
+  for (const m of text.matchAll(/`([^`]+)`|(\/[\w./-]+)|\b((?:[\w-]+\/)*[\w-]+\.(?:md|json|txt|mjs|sql|py|ya?ml))\b/g)) {
+    const tok = (m[1] || m[2] || m[3] || "").trim().split(/\s+/)[0];
+    if (!tok) continue;
+    if (path.isAbsolute(tok)) { if (exists(tok)) return true; continue; }
+    if (bases.some((b) => exists(path.normalize(path.join(b, tok))))) return true;
+  }
+  const heads = headingsUnder(path.dirname(recordFile));
+  for (const m of text.matchAll(/##\s*([A-Za-z][\w -]*?)(?=\s*(?:[;,.():]|\bbelow\b|\bline\b|\band\b|$))/g)) {
+    if (heads.has(m[1].trim().toLowerCase())) return true;
+  }
+  return false;
+}
+function unanchoredTicks(ctx) {
+  const out = [];
+  for (const { file, line, text } of tickedLines(ctx)) {
+    if (!tickAnchored(text, file, ctx)) out.push(`${path.basename(file)}:${line}: ticked with nothing a caller can open or run`);
+  }
+  return out;
 }
 
 // The context every check reads. Build it once per file.
@@ -589,7 +696,7 @@ export const CHECKS = [
         }
       }
       // Relative paths in backticks are how these skills name their references.
-      for (const tick of ctx.content.matchAll(/`(\.{1,2}\/[^`\n]+\.md)`/g)) {
+      for (const tick of ctx.content.matchAll(/`((?:\.{1,2}\/|reference\/)[^`\n]+\.md)`/g)) {
         if (!exists(path.normalize(path.join(path.dirname(ctx.file), tick[1])))) {
           out.push(`reference does not resolve: ${tick[1]}`);
         }
@@ -648,34 +755,6 @@ export const CHECKS = [
       return [
         `is ${lines} lines and has no "## Contents" heading; a reference file over ${CONTENTS_REQUIRED_LINES} lines opens with a contents list`,
       ];
-    },
-  },
-  {
-    id: "lint-sentence-caps",
-    scope: "markdown",
-    severity: "advisory",
-    // House style, not a published best practice. `npm run lint` runs it over
-    // this repository. `npm run audit` leaves it out, because auditing-skills
-    // says an audit does not judge writing style, and a command whose findings
-    // that skill must discard is worse than no command.
-    houseStyle: true,
-    source: "current script, original to this repository",
-    requires: `A rule cell is ${CAP_INSTRUCTION} words or fewer; a prose sentence is ${CAP_DESCRIPTION} or fewer.`,
-    run: (ctx) => {
-      let m;
-      try {
-        m = measure(ctx.file);
-      } catch {
-        return []; // unreadable here is reported by whatever opened it
-      }
-      const over = (arr, cap) => arr.filter((n) => n > cap);
-      const rules = over(m.rules, CAP_INSTRUCTION);
-      const prose = over(m.prose, CAP_DESCRIPTION);
-      if (!rules.length && !prose.length) return [];
-      const parts = [];
-      if (rules.length) parts.push(`${rules.length} rule cell(s) over ${CAP_INSTRUCTION} words, longest ${Math.max(...rules)}`);
-      if (prose.length) parts.push(`${prose.length} prose sentence(s) over ${CAP_DESCRIPTION} words, longest ${Math.max(...prose)}`);
-      return [parts.join("; ")];
     },
   },
   {
@@ -775,7 +854,7 @@ export const CHECKS = [
     scope: "bundle",
     severity: "advisory",
     source: "Anthropic best practices",
-    requires: `The test record names every model the skill runs on: ${MODELS.join(", ")}.`,
+    requires: `The test record names every model the skill runs on, ${MODELS.join(", ")}, or says which of them it runs on.`,
     applies: (ctx) => {
       if (!ctx.ours) return "the skill is not ours, so its evidence is not available to check here";
       return testRecordsNaming(ctx).length
@@ -785,13 +864,182 @@ export const CHECKS = [
     run: (ctx) => {
       const records = testRecordsNaming(ctx);
       const text = records.map((r) => r.text).join("\n").toLowerCase();
-      const missing = MODELS.filter((m) => !text.includes(m));
+      // A record that says "runs on sonnet only" narrows the set to what it
+      // names. The skills here target one model by design, and a check that
+      // wanted the other two named would only be satisfied by naming them.
+      const stated = text.match(/runs on ([a-z0-9, ]+?) only\b/);
+      const wanted = stated ? MODELS.filter((m) => stated[1].includes(m)) : MODELS;
+      const missing = wanted.filter((m) => !text.includes(m));
       return missing.length
         ? [
             `${records.length} test record(s) name this skill and none names ${missing.join(", ")}; ` +
               "a skill runs on every model unless it says otherwise",
           ]
         : [];
+    },
+  },
+
+  // ---------------------------------------------------------------------------
+  // Prompt scope. A produced prompt or template, the artifact writing-agents
+  // delivers. Nothing mechanical read one before 2026-08-21. Each check below
+  // names the measured run it answers.
+  // ---------------------------------------------------------------------------
+  {
+    id: "prompt-statuses-table",
+    scope: "prompt",
+    severity: "fail",
+    source: "dispatch-protocol.md Statuses; diet rounds, 2026-08-21",
+    requires: "A table lists DONE, DONE_WITH_CONCERNS, BLOCKED and NEEDS_CONTEXT, with a column for what the caller must do.",
+    run: (ctx) => {
+      const tables = markdownTables(ctx.content);
+      const wanted = ["DONE", "DONE_WITH_CONCERNS", "BLOCKED", "NEEDS_CONTEXT"];
+      let best = null;
+      for (const t of tables) {
+        const firsts = t.rows.map((r) => r[0].replace(/`/g, "").trim().toUpperCase());
+        const hits = wanted.filter((w) => firsts.includes(w));
+        if (!best || hits.length > best.hits.length) best = { t, hits };
+      }
+      if (!best || best.hits.length === 0) return ["no table lists the four statuses"];
+      const out = [];
+      const missing = wanted.filter((w) => !best.hits.includes(w));
+      if (missing.length) out.push(`status table lacks ${missing.join(", ")}`);
+      if (!best.t.header.some((h) => /caller/i.test(h))) {
+        out.push("status table has no column naming what the caller must do");
+      }
+      return out;
+    },
+  },
+  {
+    id: "prompt-retry-limit",
+    scope: "prompt",
+    severity: "fail",
+    source: "dispatch-protocol.md invariant 4; diet rounds, 2026-08-21",
+    requires: "A retry limit is stated as a number of attempts.",
+    run: (ctx) => {
+      const t = ctx.content;
+      const named = /\b(retry|retries|re-?dispatch|re-?send)\b/i.test(t);
+      const counted = /\b(one|two|three|1|2|3)\s+(attempts?|retries|tries)\b/i.test(t)
+        || /\b(retry|retries)[^.\n]{0,80}\b(one|two|three|1|2|3)\b/i.test(t)
+        || /\bat most (once|twice|one|two|three)\b/i.test(t);
+      if (named && counted) return [];
+      if (!named) return ["no retry or re-dispatch rule found"];
+      return ["a retry rule is present but states no limit as a number of attempts"];
+    },
+  },
+  {
+    id: "prompt-findings-path",
+    scope: "prompt",
+    severity: "fail",
+    source: "handoff-rules.md Return; diet rounds, 2026-08-21",
+    requires: "The prompt names the file or path the agent writes its findings to.",
+    run: (ctx) => {
+      const t = ctx.content;
+      const ok = /\bfindings?[_ -]?(path|file)\b/i.test(t)
+        || /\bfindings?\b[^.\n]{0,60}(\{\{|`[^`]*\.(md|json|txt)`|\.md\b)/i.test(t)
+        || /\bwrite\b[^.\n]{0,40}\bfindings?\b[^.\n]{0,40}\b(to|into)\b[^.\n]{0,40}(`|\{\{|\/)/i.test(t);
+      return ok ? [] : ["no findings file or path is named"];
+    },
+  },
+  {
+    id: "prompt-field-defaults",
+    scope: "prompt",
+    severity: "fail",
+    source: "steering-rules.md Context and diet round two, 2026-08-21: ten bare rows became zero once this was required",
+    requires: "In a field table with a Default column, every row's Default cell is non-empty.",
+    applies: (ctx) =>
+      markdownTables(ctx.content).some((t) => t.header.some((h) => /default/i.test(h)))
+        ? null
+        : "the prompt has no field table with a Default column",
+    run: (ctx) => {
+      const out = [];
+      for (const t of markdownTables(ctx.content)) {
+        const col = t.header.findIndex((h) => /default/i.test(h));
+        if (col < 0) continue;
+        for (const r of t.rows) {
+          const cell = (r[col] ?? "").trim();
+          if (!cell) out.push(`row ${r[0].trim() || "(unnamed)"} has an empty Default cell`);
+        }
+      }
+      return out;
+    },
+  },
+  {
+    id: "prompt-tick-anchors",
+    scope: "prompt",
+    severity: "advisory",
+    source: "writing-agents checklist rule; diet rounds, 2026-08-21: six unanchored ticks, then two",
+    requires: "Every ticked checklist line carries a path, a command, or a section of the delivered artifact.",
+    applies: (ctx) => (tickedLines(ctx).length ? null : "no ticked checklist in the artifact or in a markdown file beside it"),
+    run: unanchoredTicks,
+  },
+  {
+    id: "skill-tick-anchors",
+    scope: "bundle",
+    severity: "advisory",
+    source: "writing-skills checklist rule; diet round one, 2026-08-21: zero of 26 ticks anchored",
+    requires: "Every ticked line in the record beside the skill carries a path, a command, or a section of the delivered SKILL.md.",
+    applies: (ctx) => (tickedLines(ctx).length ? null : "no ticked checklist in the skill or in a markdown file beside its directory"),
+    run: unanchoredTicks,
+  },
+
+  // ---------------------------------------------------------------------------
+  // Structure of a produced SKILL.md. Three isolated runs of one task varied on
+  // all three of these, and each traced to a rule nobody had made checkable.
+  // Advisory, because each rule row is Important rather than Blocking.
+  // ---------------------------------------------------------------------------
+  {
+    id: "skill-section-order",
+    scope: "markdown",
+    severity: "advisory",
+    source: "steering-rules.md section order; determinism structure round, 2026-08-21",
+    requires: "Sections that share a name with steering-rules.md appear in that file's order.",
+    applies: (ctx) => (path.basename(ctx.file) === "SKILL.md" ? null : "not a SKILL.md"),
+    run: (ctx) => {
+      const order = ["outcome", "context", "scope", "method", "finish", "failure", "calibration", "composition"];
+      const seen = [];
+      for (const m of ctx.content.matchAll(/^##\s+(.+?)\s*$/gm)) {
+        const i = order.indexOf(m[1].trim().toLowerCase());
+        if (i >= 0) seen.push({ name: m[1].trim(), i });
+      }
+      const out = [];
+      for (let k = 1; k < seen.length; k++) {
+        if (seen[k].i < seen[k - 1].i) out.push(`"${seen[k].name}" comes after "${seen[k - 1].name}"; steering-rules.md orders it before`);
+      }
+      return out;
+    },
+  },
+  {
+    id: "skill-reference-dir",
+    scope: "markdown",
+    severity: "advisory",
+    source: "skill-rules.md Loading; determinism structure round, 2026-08-21: reference/ and references/ across three runs",
+    requires: "Every markdown file a SKILL.md references sits under a directory named reference/.",
+    applies: (ctx) => {
+      if (path.basename(ctx.file) !== "SKILL.md") return "not a SKILL.md";
+      return bundledReferences(ctx).length ? null : "the SKILL.md bundles no reference file of its own";
+    },
+    run: (ctx) =>
+      bundledReferences(ctx)
+        .filter((f) => !f.startsWith(path.join(path.dirname(ctx.file), "reference") + path.sep))
+        .map((f) => `${path.relative(path.dirname(ctx.file), f)} is not under reference/`),
+  },
+  {
+    id: "skill-no-authoring-history",
+    scope: "markdown",
+    severity: "advisory",
+    source: "skill-rules.md Content; sonnet-exec round two, 2026-08-21: a produced prompt opened with a prior version it could not resolve",
+    requires: "The body carries no sentence about a prior version, an earlier round, or what has already failed.",
+    run: (ctx) => {
+      const out = [];
+      // A rule telling an author not to write history mentions history, so
+      // match only narrative forms: a heading for it, or a sentence about an
+      // earlier version of this very document.
+      const re = /(^#+\s+what has already failed)|\b(an? (earlier|prior|previous) (version|draft|round) of (this|the same) (skill|prompt|file|document))\b|\bthis (skill|prompt|file) (once|used to|was (cut|rewritten|reverted))\b/i;
+      ctx.body.split("\n").forEach((line, i) => {
+        const m = line.match(re);
+        if (m) out.push(`line ${i + 1 + (ctx.content.length - ctx.body.length > 0 ? ctx.content.slice(0, ctx.content.length - ctx.body.length).split("\n").length - 1 : 0)}: "${m[0].trim()}"`);
+      });
+      return out;
     },
   },
 ];

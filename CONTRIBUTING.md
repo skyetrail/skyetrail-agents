@@ -32,7 +32,7 @@ skyetrail-agents/
 └── LICENSE
 ```
 
-Each plugin carries one manifest, `plugin.json`, at its root, per the Agent
+Each plugin has one manifest, `plugin.json`, at its root, per the Agent
 Plugins specification. The catalog's source of truth is `marketplace.json` at
 the repository root. Claude Code's installer reads the catalog only from
 `.claude-plugin/marketplace.json`, so the generator writes that copy as a shim;
@@ -59,14 +59,14 @@ those too.
 
 3. Run the generator (see below) and commit the changes.
 
-Write the skill body in plain English. The
+Write the skill body in clear, everyday language. The
 [skyetrail-writing](plugins/skyetrail/skills/skyetrail-writing/SKILL.md) skill in
-this repository is the house style we follow.
+this repository is the project style we follow.
 
 ## Add a new plugin
 
 1. Create `plugins/<plugin-name>/plugin.json`. The spec requires `$schema` and
-   `name`; the lint enforces both. A fuller manifest looks like this:
+   `name`. The lint enforces both. A fuller manifest looks like this:
 
    ```json
    {
@@ -104,7 +104,7 @@ kind of file gets.
 
 ## Check one skill
 
-To run every mechanical check against a single skill, including the ones on
+To run every mechanical check against a skill, including the ones on
 bundled scripts and evaluation records:
 
 ```sh

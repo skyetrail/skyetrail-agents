@@ -8,8 +8,10 @@
   "scripts": {
     "build": "node eng/generate-readmes.mjs",
     "check": "node eng/generate-readmes.mjs --check",
-    "lint": "node eng/generate-readmes.mjs --check",
-    "audit": "node eng/audit-skill.mjs"
+    "lint": "node eng/generate-readmes.mjs --check && npm run vale",
+    "audit": "node eng/audit-skill.mjs",
+    "vale:sync": "npx vale sync",
+    "vale": "node eng/vale-manifest-extract.mjs && npx vale --output=line ."
   },
   "engines": {
     "node": ">=18"
@@ -25,5 +27,8 @@
     "plugins",
     "claude-code",
     "skyetrail"
-  ]
+  ],
+  "devDependencies": {
+    "@vvago/vale": "^3.17.1"
+  }
 }

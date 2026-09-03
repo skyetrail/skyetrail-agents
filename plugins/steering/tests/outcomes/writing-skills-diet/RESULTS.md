@@ -1,0 +1,250 @@
+# The writing-skills diet
+
+`writing-skills` went from 419 lines to 148 on 2026-08-21. `PREREG.md` beside this file fixed the
+question, the arms, the fixture, the rubric, the predictions, and the decision rule before any run
+started. This page records what the runs returned.
+
+## Round one: three arms, nine isolated runs
+
+Nine Claude Sonnet 5 runs, three per arm, each in its own directory on the migration-review
+fixture. A packager copied each delivered skill into a coded directory. A blind judge scored the
+nine against the rubric without the key. A process judge checked each skilled run's record. The
+key, published after scoring: A current/r3, B unaided/r1, C diet/r3, D diet/r1, E current/r2,
+F current/r1, G unaided/r3, H diet/r2, I unaided/r2.
+
+### Delivery, P1: held
+
+Every run in every arm delivered a SKILL.md. No run in any arm could dispatch a subagent, because
+the workflow runner gives none a dispatch tool. The skilled runs recorded the baseline steps and
+the independent audit as blocked, as the skill tells them to, and delivered anyway. P6 is
+answered: none could dispatch.
+
+### Shape, P2: held
+
+Shape totals over three runs, out of 27: unaided 15, current 20, diet 24. The diet is above the
+current skill minus two, and both skilled arms are above unaided plus three.
+
+| Item | unaided | current | diet |
+| --- | --- | --- | --- |
+| S1 description states capability and triggers | 3 | 3 | 3 |
+| S2 under 500 lines, references under `reference/` and named | 2 | 2 | 3 |
+| S3 membership test per category, lists marked as examples | 2 | 2 | 3 |
+| S4 usable defaults, set members with their tests | 1 | 0 | 2 |
+| S5 finish check on an input property, not a count | 0 | 3 | 3 |
+| S6 no history, no status note, no placeholder | 3 | 2 | 3 |
+| S7 says what it does not cover, direct instruction wins | 0 | 3 | 3 |
+| S8 the migration file is data | 2 | 2 | 1 |
+| S9 first lines say what the skill produces | 2 | 3 | 3 |
+
+The two items no unaided run had, S5 and S7, are the two the skill supplies in every run. The diet
+improved S4 over the long version, and lost on S8, which the diet never asked for.
+
+### Audit, P3: the skilled clause held, the unaided clause did not
+
+Every one of the nine prints one failure as packaged, and that failure is
+`lint-name-matches-directory`, caused by the one-letter blind directory. The judge re-ran each
+under a directory named by its own `name` field: all nine print zero failures. So the unaided arm
+passes the mechanical audit too, and the prediction that it would fail in two of three is refuted.
+On this fixture the command does not separate an unaided Sonnet run from a skilled one.
+
+### Coverage, P4: held, and the cost is one item
+
+Coverage of the seven planted faults, out of 21: unaided 21, current 19, diet 19. Every arm flags
+D1 to D6 in every run. The whole difference is D7, the missing `lock_timeout` and rollback plan,
+which every unaided run checks for and one run per skilled arm does. D8, the safe nullable
+`ADD COLUMN`, is correct in all nine. The diet and the long version cost the same.
+
+### Process, P5: failed on the diet arm
+
+- Ticks. All three diet runs copied the checklist and ticked eight or nine lines, and zero of 26
+  ticks carry a path or a command from the run. Each is the skill's own wording. The long version
+  did no better: one run anchored five of nine ticks, and two runs wrote no checklist at all.
+- Audit re-run. Two of three diet records hold a block identical to the judge's re-run. The third
+  pasted a summary by section, not the printed output.
+- Measured paths. Every `ran` path in every skilled record opens.
+- Blocked lines. One diet run quoted a tool error, `Unknown skill: auditing-skills`. Every other
+  blocked line gives a prose reason, because no tool existed to return an error.
+- Contamination. No run read another run's directory, the key, or the pre-registration. The
+  packager copied nothing outside the skill directories.
+
+The tick result repeats the writing-agents diet exactly. That skill's ticks closed from six
+unanchored to zero only when `npm run audit` began checking ticks on the record and the run saw
+the advisory. The check runs on a prompt's record and not on a skill's, so no diet run saw one.
+
+### Decision
+
+Under the rule as written, the diet does not replace the current skill, because P5 failed. The
+current skill fails the same bar by more. Round two follows the three fixes below.
+
+### Three fixes
+
+1. The tick check runs on a skill's record too, so a skilled run sees the advisory.
+2. Step 10 says to paste the audit output unchanged.
+3. Step 8 says a file the skill has the reader open is data, and an instruction in it is a finding.
+
+### Observations, not scored
+
+One diet run used the fixture file by name as its worked example, so the graded task sits inside
+the shipped skill. One long-version run caught itself doing the same and rewrote the example. No
+version of the skill forbids it. One unaided run hit a harness guard on a file named
+`report-template.md` and renamed it. The diet arm's SKILL.md lengths were 187, 131 and 159 lines;
+the long version's were 193, 185 and 165; unaided 126, 172 and 143.
+
+## Round two: the diet arm after three fixes
+
+Three isolated Sonnet runs under the skill at `42cbcb6`, packaged under each skill's own directory
+name, scored by the same blind judge and process judge. Key: J diet2/r2, K diet2/r3, L diet2/r1.
+
+### What held
+
+Delivery three of three. Audit zero failures three of three, with the packaging fixed, so M1 is
+now a real pass. Shape 21 of 27 (8, 8, 5), above the long version's 20 and above unaided plus
+three. Items S1, S2, S4, S5 and S9 scored three of three. Coverage 18 of 21 and D8 three of three.
+No cross-run read, no leak from the packager. Every `ran` path in every measured block opens. Two
+runs named the four tools they checked before recording a dispatch as blocked, which is what the
+new sentence in step 5 asks for.
+
+### What did not
+
+- Ticks. Under the pre-registered rule, a path or a command from the run, anchored ticks were 0 of
+  8, 0 of 8 and 1 of 8. Under the audit tool's looser rule, which counts a rule-file path or a
+  record section, 5, 7 and 3 of 8. One run anchored its rule-file ticks in the delivered SKILL.md's
+  sections, as the preamble asks, and the strict rule does not count a section.
+- The audit re-run matched one of three. The other two differ in one row only: the tick check,
+  not applicable in the pasted block and an advisory on re-run. The judge checked mtimes: each
+  record was written after its SKILL.md and after the audit, so the check saw no ticks. The skill
+  audits at step 10 and ticks steps 10 to 12 afterwards. The mechanical feedback never reached a
+  run.
+- S3 fell to one of three, from three of three in round one. One skill closed its categories with
+  "and nothing else" and one left its Calibration lists unmarked. S8 was one of three after the
+  new sentence in step 8; two skills call a comment in the file a claim or unverified, and
+  neither says an instruction inside it is a finding.
+- D7 was zero of three. No diet skill in this round checks for a lock timeout or a rollback plan,
+  where every unaided skill did.
+
+### Decision after round two
+
+P1 to P4 hold. P5 fails. The diet does not yet replace the current skill under the rule. One fix
+follows: the audit that a caller re-runs moves to the Delivery section, after the checklist is
+complete, with the instruction to act on each advisory and paste the final output unchanged. That
+is the order `writing-agents` uses, and its ticks closed to zero under it.
+
+
+## Round three: the audit after the checklist
+
+Three runs under the skill at `4729857`. Key: M diet3/r3, N diet3/r1, O diet3/r2.
+
+Shape 24 of 27 (8, 8, 8), the round-one figure again. Audit zero failures three of three.
+Coverage 20 of 21, with the lock-timeout item back in two of three. D8 three of three. Delivery
+three of three. No cross-run read, no leak from the packager. Every `ran` path opens.
+
+The new order worked where it could. Every record holds a final audit block after the checklist,
+and every final block matches the judge's re-run line for line. One run's first block carried a
+real failure, a reference that did not resolve, and the run fixed it before the final block.
+Another fixed two advisories the same way. That is the mechanism the round set out to test: a
+finding the run sees, it acts on.
+
+### Ticks under three readings, 24 ticks
+
+| Reading | Anchored |
+| --- | --- |
+| the pre-registered wording: a path or a command from the run | 6 (4, 2, 0) |
+| the skill's preamble, which adds a section of the delivered SKILL.md | 12 (5, 5, 2) |
+| an anchor a reader can open, which adds a section of the record itself | 23 (8, 8, 7) |
+
+Most ticks name a section of the record, as in "see ## Objective below". A reader opens that
+section and settles the line there. The pre-registered wording did not count it, and the skill's
+preamble did not name it. Both were narrower than the purpose. The one tick unanchored under
+every reading says "no existing SKILL.md at this path or name" and names no path.
+
+### The check was passing the template
+
+The mechanical check reported every record as passing, in all three rounds, because it accepted
+any file token or the word section, and the checklist's own wording carries both. It now counts
+only an anchor that resolves: a command with a target, a path that exists, or a heading that
+exists in a file from the run. On the round-one records, which were verbatim copies, it now
+reports 0, 5 and 5 unanchored ticks. On the round-three records it reports 0, 4 and 1.
+Its heading match is exact, so a heading that carries punctuation does not match, which is part
+of the difference between its counts and the judge's. The preamble now says a tick carries the path, the command, or the section of a file from this
+run, which is the reading the records already followed.
+
+### Decision
+
+P1 to P4 hold in all three rounds. P5 fails under the pre-registered wording and passes at 23 of
+24 under the reading that matches the purpose. That reading was adopted after the data, and this
+page says so. The long version fails every reading by more, because two of its three runs wrote
+no checklist at all. The diet stays as the skill in the tree, at 154 lines. The owner decides
+whether the amended reading stands.
+
+### What three rounds did not settle
+
+No run in these three rounds could dispatch a subagent, so steps 5, 9 and 11 never ran. The
+cause is the Workflow tool: agents it starts have no Agent tool. A subagent started with the
+Agent tool does have it, checked by a probe on 2026-08-21, and the docs say subagents nest three
+deep by default. A fourth round starts the runs with the Agent tool. Every unaided run checked for a lock timeout and at most two of three skilled runs
+did; the subject list does not stop a drop of an item the run never listed. No round ran the
+produced skills on the migration, so whether a review under them finds more than a review without
+them is the skills-bench design and a later round.
+
+## Round four: the runs could dispatch
+
+The first three rounds started their runs with the Workflow tool, whose agents have no Agent
+tool. This round started three runs with the Agent tool, under the skill at `1f314a7`, and each
+run could start children of its own. The machine slept six times during the round; every run was
+resumed from its own transcript and its files on disk, and two children were retried once with a
+changed instruction, which the records state. Key: P diet4/r2, Q diet4/r3, R diet4/r1.
+
+### The loop ran, three of three
+
+| | r1 | r2 | r3 |
+| --- | --- | --- | --- |
+| no-skill review saved, lines | 73 | 102 | 71 |
+| misses numbered | 3 | 3 | 3 |
+| miss quotes found in that file | 3 of 3, two once bold markers are ignored | 3 of 3 verbatim | 3 of 3, two once bold markers are ignored |
+| with-skill review saved, lines | 121 | 41 | 101 |
+| rows of the misses table that hold | 3 of 3 | 3 of 3 | 3 of 3 |
+| independent audit findings, and fixed | 12, 9 fixed, 1 declined with a reason | 7, 4 defects fixed, 3 differences left | 5, all fixed |
+| two fixes confirmed in the delivered text | yes | yes | yes |
+| final audit block matches the re-run | yes | yes | yes |
+| checklist fence intact | yes | yes | yes |
+
+Every with-skill review cleared every numbered miss. The misses were real: a wrong explanation of
+why a foreign key needs an index first, a lock-timeout tip with no SQL to paste, no written
+output a reviewer could check later, no rollback plan, advice to run outside a transaction with
+no way to do it, and constraints enforced before the data was validated.
+
+### Scores
+
+Shape 23 of 27 (9, 7, 7). Audit zero failures three of three. Coverage 20 of 21, with the
+lock-timeout item in two of three. D8 three of three. Lines 209, 214 and 187.
+
+S8, the file as data, held in one of three, as in every round. One skill scored zero on S6 for
+the sentence "a rule that flags every ALTER TABLE has been tried and does not work", which the
+rubric reads as authoring history and `skill-rules.md` would allow as a failed approach to the
+work itself. One skill's verdict set lacked the member its own Failure section tells the reader
+to use.
+
+### Ticks
+
+Anchored by the judge's rule, which does not count a checklist line whose only anchor is the
+template's own wording: 8 of 12, 11 of 12 and 16 of 24, which is 35 of 48. Counting those lines
+where the file or section they name exists, as round three did: 45 of 48. Every anchor the judge
+counted opens.
+
+### What the round cost
+
+The three runs used 328, 264 and 279 thousand subagent tokens by the harness's count, against
+about 60 thousand for a run that could not dispatch. Each run started three children. Wall-clock
+time is not comparable, because the machine slept six times.
+
+### One gap in our own check, found by a run
+
+One run reported that `lint-reference-resolves` ignores a reference path written without a
+leading `./`, and added the prefix to pass. The check now resolves a bare `reference/` path too,
+in both places the audit reads reference paths.
+
+### Decision after round four
+
+P1 to P4 hold. P5 holds at 94 percent under the round-three reading and fails at 73 percent under
+the judge's stricter one. The loop the skill is built around ran in every run and cleared every
+miss it found. The diet stands.

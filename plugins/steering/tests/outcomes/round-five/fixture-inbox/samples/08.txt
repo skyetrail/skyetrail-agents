@@ -1,0 +1,1 @@
+Search returns nothing for order numbers with a leading zero, for example 00123. It worked last month.

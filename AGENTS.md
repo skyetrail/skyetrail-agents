@@ -7,8 +7,9 @@ it before you change anything here. For how to add a plugin or a skill, see
 ## Scripts are plain Node JavaScript
 
 Write every script in this repository as a plain, Node-executable ES module in a
-`.mjs` file. Keep the codebase to one kind of script: no Python, no TypeScript,
-no build step, and no runtime dependencies. Run a script directly:
+`.mjs` file. Keep the codebase to that one kind of script, runnable straight
+from source with the Node standard library as its only dependency. Run a
+script directly:
 
 ```sh
 node path/to/script.mjs
@@ -18,20 +19,21 @@ Use the Node standard library only, so the scripts run on any modern Node with n
 install.
 
 The repository has four scripts today:
-- `eng/skill-checks.mjs` — every mechanical check this repository makes against a
-  skill, held as data. It is a library. Nothing runs it directly. Both scripts
-  below take their checks and their message text from it, so a check cannot say
-  one thing in the build and another in an audit. Add a check here, not in a
-  caller.
-- `eng/generate-readmes.mjs` — builds the generated README files and the manifest
+- `eng/skill-checks.mjs` is a library holding every mechanical check this
+  repository makes against a skill, as data. Nothing runs it directly. Both
+  scripts below take their checks and their message text from it, so a check
+  cannot say one thing in the build and another in an audit. Add a check
+  here, not in a caller.
+- `eng/generate-readmes.mjs` builds the generated README files and the manifest
   mirrors, and runs the subset of the checks that guards this repository. A fail
   stops the build before anything is written. Run it with `npm run build`,
   `npm run check` to verify the committed files are current, or `npm run lint`
   for the same check under its lint name.
-- `eng/audit-skill.mjs` — runs every check against one skill, at any path on
+- `eng/audit-skill.mjs` runs every check against one skill, at any path on
   disk. Run it with `npm run audit -- <path>`.
-- `eng/measure-sentences.mjs` — reports sentence length against the caps in
-  `plugins/steering/shared/ste.md`. It is both a library and a command.
+- `eng/measure-sentences.mjs` reports sentence length against its built-in
+  caps: 20 words for a rule cell and 25 for prose. It is both a library and
+  a command.
 
 Neither command describes its own checks in prose. Ask it: `npm run lint --
 --explain` and `npm run audit -- --explain` both print from the same lists the
@@ -51,18 +53,18 @@ workflow both regenerate the files and fail when they are out of date.
 
 Plugins follow the Agent Plugins specification (agent-plugins.org). Each plugin
 carries one manifest, `plugin.json`, at its root, with the spec's `$schema`
-field; the lint enforces both. The catalog's source of truth is
-`marketplace.json` at the repository root; the spec leaves distribution out of
+field. The lint enforces both. The catalog's source of truth is
+`marketplace.json` at the repository root. The spec leaves distribution out of
 scope, so the root location is this repository's neutral convention. The one
 generated file pair is `.claude-plugin/marketplace.json`, the shim Claude
 Code's installer requires. Never edit the shim by hand.
 
 ## Writing style
 
-Write prose in plain English. No em dashes, plain everyday words, complete
-sentences, no jargon, and no imagery. The
-[skyetrail-writing](plugins/skyetrail/skills/skyetrail-writing/SKILL.md) skill in
-this repository is the house style.
+The project style is Vale, run against the ai-tells style. Run it with
+`npm run vale`. See [`.vale.ini`](.vale.ini) for the configuration and
+[`plugins/steering/shared/style.md`](plugins/steering/shared/style.md) for how
+this applies inside the steering plugin.
 
 <!-- BEGIN: repo-setup -->
 ## Repository facts
@@ -76,7 +78,7 @@ Established by the `repo-setup` skill. Re-run it rather than editing this block 
   running it. It runs `eng/audit-skill.mjs` over one skill directory or one SKILL.md, at any path
   on disk, and reports every mechanical check by name. The lint runs a subset of the same checks
   and covers only files inside this repository.
-- **What each command covers:** ask it, with `npm run lint -- --explain` or
+- **Ask a command what it covers** with `npm run lint -- --explain` or
   `npm run audit -- --explain`. Each prints which checks it makes, from the same list the run uses.
   Do not rely on a description written anywhere else, including here: the one that used to sit in
   this block was wrong four times in two days. An agent auditing a file should run that command and
