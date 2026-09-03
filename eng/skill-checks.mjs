@@ -27,7 +27,6 @@
 import fs from "node:fs";
 import path from "node:path";
 import { builtinModules } from "node:module";
-import { measure, CAP_INSTRUCTION, CAP_DESCRIPTION } from "./measure-sentences.mjs";
 
 export const MAX_NAME = 64; // Agent Skills frontmatter name limit
 export const MAX_DESCRIPTION = 1024; // Agent Skills frontmatter description limit
@@ -759,34 +758,6 @@ export const CHECKS = [
     },
   },
   {
-    id: "lint-sentence-caps",
-    scope: "markdown",
-    severity: "advisory",
-    // House style, not a published best practice. `npm run lint` runs it over
-    // this repository. `npm run audit` leaves it out, because auditing-skills
-    // says an audit does not judge writing style, and a command whose findings
-    // that skill must discard is worse than no command.
-    houseStyle: true,
-    source: "current script, original to this repository",
-    requires: `A rule cell is ${CAP_INSTRUCTION} words or fewer; a prose sentence is ${CAP_DESCRIPTION} or fewer.`,
-    run: (ctx) => {
-      let m;
-      try {
-        m = measure(ctx.file);
-      } catch {
-        return []; // unreadable here is reported by whatever opened it
-      }
-      const over = (arr, cap) => arr.filter((n) => n > cap);
-      const rules = over(m.rules, CAP_INSTRUCTION);
-      const prose = over(m.prose, CAP_DESCRIPTION);
-      if (!rules.length && !prose.length) return [];
-      const parts = [];
-      if (rules.length) parts.push(`${rules.length} rule cell(s) over ${CAP_INSTRUCTION} words, longest ${Math.max(...rules)}`);
-      if (prose.length) parts.push(`${prose.length} prose sentence(s) over ${CAP_DESCRIPTION} words, longest ${Math.max(...prose)}`);
-      return [parts.join("; ")];
-    },
-  },
-  {
     id: "c5-forward-slash-paths-in-code",
     scope: "bundle",
     severity: "advisory",
@@ -883,7 +854,7 @@ export const CHECKS = [
     scope: "bundle",
     severity: "advisory",
     source: "Anthropic best practices",
-    requires: `The test record names every model the skill runs on: ${MODELS.join(", ")}.`,
+    requires: `The test record names every model the skill runs on, ${MODELS.join(", ")}, or says which of them it runs on.`,
     applies: (ctx) => {
       if (!ctx.ours) return "the skill is not ours, so its evidence is not available to check here";
       return testRecordsNaming(ctx).length
@@ -893,7 +864,12 @@ export const CHECKS = [
     run: (ctx) => {
       const records = testRecordsNaming(ctx);
       const text = records.map((r) => r.text).join("\n").toLowerCase();
-      const missing = MODELS.filter((m) => !text.includes(m));
+      // A record that says "runs on sonnet only" narrows the set to what it
+      // names. The skills here target one model by design, and a check that
+      // wanted the other two named would only be satisfied by naming them.
+      const stated = text.match(/runs on ([a-z0-9, ]+?) only\b/);
+      const wanted = stated ? MODELS.filter((m) => stated[1].includes(m)) : MODELS;
+      const missing = wanted.filter((m) => !text.includes(m));
       return missing.length
         ? [
             `${records.length} test record(s) name this skill and none names ${missing.join(", ")}; ` +

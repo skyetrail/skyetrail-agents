@@ -142,8 +142,7 @@ function explain() {
   out.push("  under an evals/ or evaluations/ directory in the skill.");
   out.push(`  Each scenario carries ${EVAL_FIELDS.join(", ")}.`);
   out.push("The test record it reads for model coverage:");
-  out.push("  the evaluation records, anything under tests/, and TESTING.md or");
-  out.push(`  TEST_REPORT.md, in the skill and at its plugin root. Models: ${MODELS.join(", ")}.`);
+  out.push(`  the evaluation records and anything under tests/, in the skill and at its plugin root. Models: ${MODELS.join(", ")}.`);
   out.push("");
   out.push("Not checked here:");
   for (const item of NOT_CHECKED) out.push(`  - ${item}`);

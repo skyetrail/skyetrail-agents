@@ -1,8 +1,0 @@
-report-01.md  <-  armB-v2-f1-r2.md
-report-02.md  <-  armB-v2-f1-r1.md
-report-03.md  <-  armA-f1-r1.md
-report-04.md  <-  armA-f1-r2.md
-report-05.md  <-  armA-f2-r1.md
-report-06.md  <-  armA-f2-r2.md
-report-07.md  <-  armB-v2-f2-r1.md
-report-08.md  <-  armB-v2-f2-r2.md

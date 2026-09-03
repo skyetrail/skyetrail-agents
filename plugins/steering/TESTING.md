@@ -216,11 +216,4 @@ because eight blind audits found no difference between two versions of those rul
 
 ## What none of these tests covers
 
-- Structure. One prompt, run three times, still produces three arrangements. No rule names a
-  heading, a reference directory name, a file count, a default value, or a filename.
-- Severity. Two of three skilled runs do not give severity tiers, where the unaided run names the
-  signal that assigns each tier.
-- Any executor other than Claude Sonnet 5.
-- Any tester outside this project.
-
-`DECISIONS.md` records what each round changed, and what stays open.
+The open items are listed once, in `OUTCOMES.md` under "What is still open".

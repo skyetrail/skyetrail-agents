@@ -218,23 +218,7 @@ checking them.
 
 ## What is still open
 
-- **The description rules.** The trigger test ran on 2026-08-11, and both arms scored 36 of 36.
-  Both arms took every point available, so the result settles nothing. The design also has too few
-  trials to see a five percent difference. Both rules stay, neither justified nor refuted. Another
-  run of the same test changes nothing. Settling them needs items near a decision boundary, and more
-  trials.
-- **The count proxy.** It survived four attempts, and the latest round is the third in a row where
-  at least one run reproduced it. The rewritten finish rule took effect with no measurement behind
-  it. Later rounds then measured it twice, at zero of three and at two of three.
-- **Structure varies on five points:** heading text, reference directory name, file count, default
-  values, and filename. No rule names any of them.
-- **Severity tiers.** Two of three skilled runs don't give severity tiers, where an unaided run does.
-- **Twenty-four judgement decisions have no stated test.** The gap analysis lists 15 in
-  `writing-skills` and 9 in `writing-agents`. No round has measured whether any of them changes what
-  a run produces.
-- **One fixture is blocked.** Run output from a contaminated round sits in
-  `plugins/skyetrail/tests/baselines/`, and one isolated run read it. Move it where that fixture
-  cannot read it before you re-run it.
+The open items are listed once, in [OUTCOMES.md](./OUTCOMES.md) under "What is still open".
 
 ## Further reading
 
@@ -248,7 +232,7 @@ checking them.
   this project auditing itself.
 - [tests/baselines/](./tests/baselines/) holds one before-and-after record per skill. None records a
   run after 2026-08-01.
-- [TEST_REPORT.md](./tests/TEST_REPORT.md) narrates the audit rounds up to 2026-08-01. It covers
+- The tests directory's [README.md](./tests/README.md) says what it keeps and where removed files are. It covers
   none of the five rounds after that, so read it as history.
 
 ## License

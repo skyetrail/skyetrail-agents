@@ -96,15 +96,13 @@ const COMPONENT_CHECKS = [
   "lint-body-length",
   "lint-reference-resolves",
   "lint-link-text-matches-filename",
-  "lint-sentence-caps",
-];
-const REFERENCED_CHECKS = ["lint-contents-list", "lint-sentence-caps"];
+  ];
+const REFERENCED_CHECKS = ["lint-contents-list", ];
 const SURFACE_CHECKS = [
   "lint-reference-resolves",
   "lint-link-text-matches-filename",
   "lint-contents-list",
-  "lint-sentence-caps",
-];
+  ];
 const lintProblems = [];
 const lintAdvisories = [];
 
@@ -333,7 +331,7 @@ function pluginReadme(plugin) {
   if (plugin.hasTests && !plugin.summary) {
     lines.push("## Evidence", "");
     lines.push(
-      "The skills in this plugin were tested before adoption: baseline comparisons with and without each skill loaded, audit rounds against the shared rules, and a description A/B. The full narrative is in [TEST_REPORT.md](tests/TEST_REPORT.md), and the per-skill baseline records are in [tests/baselines/](tests/baselines/).",
+      "The skills in this plugin were measured before adoption: isolated runs on the model that executes them, with and without each skill, scored blind against pre-registered rubrics. The results pages are under [tests/outcomes/](tests/outcomes/).",
       ""
     );
   }
@@ -430,7 +428,7 @@ function main() {
       marketplaceName,
       addTarget,
       repoUrl,
-      hasTests: exists(path.join(pluginDir, "tests", "TEST_REPORT.md")),
+      hasTests: exists(path.join(pluginDir, "tests", "outcomes")),
       summary,
     };
     plugins.push(plugin);

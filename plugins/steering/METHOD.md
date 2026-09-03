@@ -289,13 +289,4 @@ nine words on 949. Adopt the style for the person who maintains the file, and cl
 
 ### Still open
 
-- Structural choices without a rule include heading text and reference directory name. File count
-  and default values are unresolved too, and so is filename. Runs keep differing until a rule names
-  them.
-- Two of three skilled runs do not include any severity tiers, where the unaided run names the signal
-  that assigns each tier.
-- The gap analysis lists 24 judgement decisions with no stated test, 15 in `writing-skills` and 9 in
-  `writing-agents`. No round has measured any of them.
-- Both description rules stay, neither justified nor refuted. Settling them needs items near a
-  decision boundary and enough trials to see a five percent difference. That is a different test.
-- No baseline has run since 2026-08-01, against two skills rewritten on 2026-08-12.
+The open items are listed once, in `OUTCOMES.md` under "What is still open".
