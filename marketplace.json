@@ -10,23 +10,6 @@
   },
   "plugins": [
     {
-      "name": "skyetrail",
-      "source": "./plugins/skyetrail",
-      "description": "Skyetrail house tools for agents. Starts with the Skyetrail plain-English writing style and grows as we share more of our working setup.",
-      "author": {
-        "name": "Skyetrail",
-        "email": "info@skyetrail.com"
-      },
-      "license": "MIT",
-      "keywords": [
-        "skyetrail",
-        "writing",
-        "style",
-        "plain-english",
-        "house-style"
-      ]
-    },
-    {
       "name": "steering",
       "source": "./plugins/steering",
       "description": "Skills for steering agents. Write a skill with a measured baseline, audit a skill or an agent prompt against the house rules, and write the prompt and caller side for a dispatched agent.",
