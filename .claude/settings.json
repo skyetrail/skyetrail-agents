@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          { "type": "command", "command": "node \"$CLAUDE_PROJECT_DIR\"/eng/hooks/log-tool-call.mjs" }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+# evals/eval.yaml for sample-skill. Test material: nothing the skill loads points here.
+skill: sample-skill
+model: sonnet
+judge: opus
+trials: 2
+budget:
+  tool_calls: 10
+  seconds: 120
+cases:
+  - name: counts-three-lines
+    skills: [sample-skill]
+    query: How many lines does this file have?
+    files: [fixtures/three.txt]
+    check: "grep -qx 'lines: 3' out/count.md"
+    expected_behavior: >
+      The output names the count three and nothing else.
+  - name: asks-which-file
+    skills: [sample-skill]
+    query: How many lines does the file have?
+    files: []
+    expect_status: NEEDS_CONTEXT
+    check: "test ! -s out/count.md"
+  - name: given-the-file
+    skills: [sample-skill]
+    query: How many lines does the file have?
+    files: [fixtures/three.txt]
+    facts:
+      file: three.txt
+    check: "grep -qx 'lines: 3' out/count.md"
+  - name: not-a-count
+    skills: [sample-skill]
+    query: Review this migration before it ships.
+    files: []
+    trigger: none

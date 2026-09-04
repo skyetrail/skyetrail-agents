@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "hooks": {
+    "postToolUse": [
+      { "type": "command", "bash": "node eng/hooks/log-tool-call.mjs --copilot", "timeoutSec": 5 }
+    ]
+  }
+}

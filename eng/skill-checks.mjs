@@ -27,6 +27,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { builtinModules } from "node:module";
+import { findEval, loadEval, validateEval } from "./run-eval.mjs";
 
 export const MAX_NAME = 64; // Agent Skills frontmatter name limit
 export const MAX_DESCRIPTION = 1024; // Agent Skills frontmatter description limit
@@ -861,6 +862,34 @@ export const CHECKS = [
         }
       }
       return out;
+    },
+  },
+  {
+    id: "eval-template",
+    scope: "bundle",
+    severity: "fail",
+    source: "shared/eval-protocol.md; the same rules npm run eval refuses on",
+    requires: "The skill's evals/eval.yaml meets every Blocking rule of the eval protocol.",
+    applies: (ctx) => (findEval(ctx.skillDir).evalFile ? null : "the skill has no evals/eval.yaml"),
+    run: (ctx) => {
+      const { evalFile } = findEval(ctx.skillDir);
+      let ev;
+      try { ev = loadEval(evalFile); } catch (e) { return [`evals/${path.basename(evalFile)} does not parse: ${e.message}`]; }
+      return validateEval(ev, { evalDir: path.dirname(evalFile) }).refusals;
+    },
+  },
+  {
+    id: "eval-template-advice",
+    scope: "bundle",
+    severity: "advisory",
+    source: "shared/eval-protocol.md; the Important and Advisory rules",
+    requires: "The eval has a trigger-none case, plain queries, and a reason where it runs past eight cases.",
+    applies: (ctx) => (findEval(ctx.skillDir).evalFile ? null : "the skill has no evals/eval.yaml"),
+    run: (ctx) => {
+      const { evalFile } = findEval(ctx.skillDir);
+      let ev;
+      try { ev = loadEval(evalFile); } catch { return []; }
+      return validateEval(ev, { evalDir: path.dirname(evalFile) }).warnings;
     },
   },
   {
