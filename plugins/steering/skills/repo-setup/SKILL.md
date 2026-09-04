@@ -5,9 +5,10 @@ description: Establishes the basic facts about the repository an agent is workin
 
 # Repo setup
 
-This skill produces a checked record of this repository's basic facts and writes it to the
-project's memory: the persistent memory directory your system prompt names for this project. It
-changes nothing in the repository. It also states plainly anything a person still has to decide.
+This skill produces a checked record of this repository's basic facts and writes it to one fixed
+path: `repo-setup.md` in the project's memory, the persistent memory directory your system prompt
+names for this project. Every run that reaches step 4 writes that file, whatever it found. The
+skill changes nothing in the repository. It also states plainly anything a person still has to decide.
 
 This skill is safe to run again. A second run replaces what it confirms and keeps the rest.
 
@@ -22,7 +23,7 @@ A fact about one task, one branch, or one person's preference is not a repo fact
 
 ## Workflow
 
-1. **Read the existing record first.** Where the memory directory already holds `repo-facts.md`,
+1. **Read the existing record first.** Where the memory directory already holds `repo-setup.md`,
    this run is a re-run. Check whether each recorded command still resolves. Keep the recorded
    answer where it does. Do not ask the person again about a question the record already answers.
    Then run `git status --porcelain` in the repository and keep its output, because step 6
@@ -38,7 +39,7 @@ A fact about one task, one branch, or one person's preference is not a repo fact
    packages, run an install step, create a file to see what a tool says, or run a command that
    writes or fixes in place. You may run a command that only reports. Where you cannot confirm a
    candidate without changing something, record it as unconfirmed and say why.
-4. **Write the record, whatever you found.** Write `repo-facts.md` in the memory directory, in
+4. **Write the record, whatever you found.** Write `repo-setup.md` in the memory directory, in
    the shape below, and one line for it in that directory's `MEMORY.md`, replacing the line where
    one is there. One working candidate is the answer, and the record names it as confirmed. Where
    several candidates disagree, cover different files, or none works today, the record names no
@@ -54,8 +55,9 @@ A fact about one task, one branch, or one person's preference is not a repo fact
 6. **Check your own work before you report.** Run these commands. Do not judge by eye.
 
    ```
-   grep -c '<command>\|<what it covers\|<anything a person' <memory dir>/repo-facts.md   # must print 0
-   grep -c 'repo-facts.md' <memory dir>/MEMORY.md                                      # must print 1
+   test -f <memory dir>/repo-setup.md && echo present                                    # must print present
+   grep -c '<command>\|<what it covers\|<anything a person' <memory dir>/repo-setup.md   # must print 0
+   grep -c 'repo-setup.md' <memory dir>/MEMORY.md                                      # must print 1
    git status --porcelain      # must match what step 1 kept, or you changed the repository
    ```
 
@@ -68,7 +70,7 @@ A fact about one task, one branch, or one person's preference is not a repo fact
 
 ```
 ---
-name: repo-facts
+name: repo-setup
 description: "<the lint command, and what it covers, in one line>"
 metadata:
   type: project
@@ -82,14 +84,14 @@ Established by the `repo-setup` skill on <date>. Re-run it rather than editing t
 Unresolved: <anything a person still has to decide, or "none">
 ```
 
-The index line in `MEMORY.md`: `- [Repo facts](repo-facts.md) — lint: <command>`.
+The index line in `MEMORY.md`: `- [Repo setup](repo-setup.md) — lint: <command>`.
 
 ## Statuses
 
 | Status | Means | The caller must |
 | --- | --- | --- |
-| `DONE` | The record is written and every check in step 6 holds. | Use the recorded facts. Do not re-establish them. |
-| `NEEDS_DECISION` | More than one candidate remains and no person was there to decide. The record lists them under `Unresolved`. | Put the candidates to a person. Never pick one on their behalf. |
+| `DONE` | `repo-setup.md` is written and every check in step 6 holds. | Use the recorded facts. Do not re-establish them. |
+| `NEEDS_DECISION` | More than one candidate remains and no person was there to decide. `repo-setup.md` lists them under `Unresolved`. | Put the candidates to a person. Never pick one on their behalf. |
 | `BLOCKED` | A check failed and no edit fixed it, or the memory directory could not be written. | Read the cause. Fix it, then run this skill again. |
 | `NEEDS_CONTEXT` | The instruction that dispatched this run left out something it needed. | Supply what was missing. This is the caller's failure, not the agent's. |
 
