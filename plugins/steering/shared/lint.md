@@ -34,7 +34,7 @@ Everything below about a command that will not run applies to both.
 The lint command belongs to the current repository, not to this plugin, so look for it in this
 order.
 
-1. The `repo-facts.md` record in the project's memory directory, written by `repo-setup`,
+1. The `repo-setup.md` record in the project's memory directory, written by `repo-setup`,
    records the command a person confirmed. If it exists, use it.
 2. `npm run lint` is the default. Try it where step 1 finds no recorded command. A recorded
    command always wins, because a person confirmed it.
@@ -74,5 +74,5 @@ run. Say what you saw.
 
 Some lints describe themselves, often behind a flag such as `--explain`. A self-description built
 from the same data as the run cannot disagree with the run. Prefer it over any prose, including
-prose in this file. Where the project's memory holds a `repo-facts.md` record, it says whether the lint offers one.
+prose in this file. Where the project's memory holds a `repo-setup.md` record, it says whether the lint offers one.
 Where it does not, try the flag and see.
