@@ -37,8 +37,9 @@ A fact about one task, one branch, or one person's preference is not a repo fact
    list. Where you find no candidate, say you found none. Do not conclude that none exists.
 3. **Do not change the repository to find out.** Establishing a fact is a read. Do not install
    packages, run an install step, create a file to see what a tool says, or run a command that
-   writes or fixes in place. You may run a command that only reports. Where you cannot confirm a
-   candidate without changing something, record it as unconfirmed and say why.
+   writes or fixes in place. You may run a command that only reports. Running `npx <tool>` where the tool is not in
+   `node_modules` fetches it, and that is an install step. Where you cannot confirm a candidate
+   without changing something, record it as unconfirmed and say why.
 4. **Write the record, whatever you found.** Write `repo-setup.md` in the memory directory, in
    the shape below, and one line for it in that directory's `MEMORY.md`, replacing the line where
    one is there. One working candidate is the answer, and the record names it as confirmed. Where

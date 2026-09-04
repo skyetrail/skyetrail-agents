@@ -448,3 +448,9 @@ a failure.
 record, because the skill ordered the write after the decision and stopped on a pending one. The next agent would have repeated the discovery. The
 write is now step 4 and always runs, with the candidates under `Unresolved` where no command is
 confirmed. Detail in `tests/outcomes/round-six/RESULTS.md`.
+
+**`repo-setup` is measured on both paths. 2026-09-01.** Six runs, three on the ambiguous
+repository and three on a clean one, all wrote `repo-setup.md` and an index line, left the
+repository untouched, handed the ambiguous decision to a person with the candidates recorded, and
+confirmed `npm run lint` where it existed. The round-six defect is closed. Step 3 now says that
+`npx` on a tool that is not installed is an install step, after two runs used a cached tool.
