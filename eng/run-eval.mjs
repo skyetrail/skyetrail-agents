@@ -158,8 +158,9 @@ export function validateEval(ev, { evalDir } = {}) {
     if (none) triggerNone++;
     if (!none && !c.check && !c.expected_behavior) refusals.push(`${id} has neither check nor expected_behavior`);
     if (c.check !== undefined && (typeof c.check !== "string" || /\n/.test(c.check))) refusals.push(`${id}: check is not one shell command`);
-    if (c.expect_status !== undefined && !STATUSES.includes(c.expect_status)) refusals.push(`${id}: expect_status "${c.expect_status}" is not one of ${STATUSES.join(", ")}`);
+    if (c.expect_status !== undefined && !(STATUSES.includes(c.expect_status) || /^[A-Z][A-Z_]+$/.test(String(c.expect_status)))) refusals.push(`${id}: expect_status "${c.expect_status}" is not one of ${STATUSES.join(", ")} or a status the skill declares, in capitals`);
     if (c.facts !== undefined && (typeof c.facts !== "object" || Array.isArray(c.facts))) refusals.push(`${id}: facts is not a map`);
+    if (c.repo !== undefined && typeof c.repo !== "boolean") refusals.push(`${id}: repo is not true or false`);
     if (evalDir && Array.isArray(c.files)) for (const f of c.files) if (!fs.existsSync(path.join(evalDir, f))) refusals.push(`${id}: file ${f} is not under evals/`);
     if (typeof c.query === "string" && /\b(follow|use) the skill\b/i.test(c.query)) warnings.push(`${id}: the query names the skill; a person's request would not (Important)`);
   });
@@ -203,7 +204,7 @@ const writeJson = (f, o) => fs.writeFileSync(f, JSON.stringify(o, null, 2) + "\n
 // ---------------------------------------------------------------------------
 // plan
 // ---------------------------------------------------------------------------
-function executorPrompt({ dir, skillFile, query, files, facts, model }) {
+function executorPrompt({ dir, skillFile, query, files, facts, model, repo }) {
   const lines = [
     `You are one executor in an eval. Your working directory is ${dir}. Create files only under ${dir}/out/.`,
     `Do not read any directory outside ${dir} except the skill named below and the files it points to.`,
@@ -211,7 +212,7 @@ function executorPrompt({ dir, skillFile, query, files, facts, model }) {
   ];
   if (facts && Object.keys(facts).length) { lines.push("Facts established before this run:"); for (const [k, v] of Object.entries(facts)) lines.push(`- ${k}: ${v}`); }
   lines.push(`Read the skill at ${skillFile} and follow it exactly as written. Its relative paths resolve from the directory that holds it.`);
-  if (files.length) lines.push(`The files for this task are under ${dir}/in/: ${files.map((f) => path.basename(f)).join(", ")}.`);
+  if (files.length) lines.push(`The files for this task are under ${dir}/in/: ${files.map((f) => path.basename(f)).join(", ")}.${repo ? ` ${dir}/in is a git repository with one commit; it is the repository this task is about.` : ""}`);
   lines.push(`The request: ${query}`);
   lines.push("When you finish, return exactly this block and nothing after it:", "", "Status: <DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT>", "Question: <the question you would have asked a person, or none>", "Output: <every path under out/ you wrote, one per line>");
   return lines.join("\n") + "\n";
@@ -233,7 +234,7 @@ function plan() {
   const cases = ev.cases.map((c) => ({
     name: c.name, trigger: c.trigger === "none" ? "none" : "expected", expect_status: c.expect_status || "DONE",
     check: c.check || null, expected_behavior: c.expected_behavior || null, files: c.files || [], facts: c.facts || {},
-    budget: { ...budget, ...(c.budget || {}) }, baseline: c.baseline === true, query: c.query,
+    budget: { ...budget, ...(c.budget || {}) }, baseline: c.baseline === true, repo: c.repo === true, query: c.query,
     trials: c.trigger === "none" ? 0 : c.expected_behavior ? trials : 1,
   }));
   console.log(`eval ${evalFile}\nskill ${ev.skill} at ${skillFile}\nharness ${harness}, model ${model}, judge ${judge}, trials ${trials}`);
@@ -248,7 +249,12 @@ function plan() {
       const dir = path.join(runRoot, c.name, `t${t}`);
       fs.mkdirSync(path.join(dir, "in"), { recursive: true }); fs.mkdirSync(path.join(dir, "out"), { recursive: true });
       for (const f of c.files) fs.copyFileSync(path.join(evalDir, f), path.join(dir, "in", path.basename(f)));
-      fs.writeFileSync(path.join(dir, "prompt.md"), executorPrompt({ dir, skillFile, query: c.query, files: c.files, facts: c.facts, model }));
+      if (c.repo) {
+        // the fixture is a repository: one commit, so a skill's git checks have something to read
+        const inDir = path.join(dir, "in");
+        for (const a of [["init", "-q"], ["add", "-A"], ["-c", "user.name=fixture", "-c", "user.email=fixture@example", "commit", "-q", "-m", "fixture"]]) spawnSync("git", ["-C", inDir, ...a], { encoding: "utf8" });
+      }
+      fs.writeFileSync(path.join(dir, "prompt.md"), executorPrompt({ dir, skillFile, query: c.query, files: c.files, facts: c.facts, model, repo: c.repo }));
       writeJson(path.join(dir, "executor.json"), { status: null, agent_id: null, question: null, returned: null, model });
       dirs.push(dir);
     }

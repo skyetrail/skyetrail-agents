@@ -36,7 +36,8 @@ breaks a rule below, naming the rule.
 The values the eval sets, each with its default: `model`, the model that executes, `sonnet`;
 `judge`, the model that judges, `opus`; `trials`, runs per judged case, `3`, and `1` for a case
 with a check and no judgement; `budget`, per trial, `tool_calls: 40`, `seconds: 600`, and
-`tokens: 120000` where the harness reports tokens.
+`tokens: 120000` where the harness reports tokens. A case marked `repo: true` has its `in/`
+initialised as a git repository with one commit before it runs, for a skill whose checks read git.
 
 ## Conditions
 

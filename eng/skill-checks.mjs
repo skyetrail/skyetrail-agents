@@ -857,7 +857,7 @@ export const CHECKS = [
       for (const file of evalRecords(ctx.skillDir)) {
         const rel = path.relative(ctx.skillDir, file);
         for (const scenario of evalScenarios(file)) {
-          const missing = EVAL_FIELDS.filter((f) => !scenario.fields.has(f));
+          const missing = EVAL_FIELDS.filter((f) => !scenario.fields.has(f) && !(f === "expected_behavior" && scenario.fields.has("check")));
           if (missing.length) out.push(`${rel}: scenario "${scenario.label}" is missing ${missing.join(", ")}`);
         }
       }

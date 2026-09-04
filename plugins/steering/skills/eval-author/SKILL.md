@@ -57,7 +57,8 @@ skill: <absolute path of the SKILL.md>
    or must not exist, write it as `check`, one shell command that reads only `in/` and `out/`.
    Write `expected_behavior` only for what needs a reading, in one paragraph a judge decides from
    the output alone, and never as a restatement of the check.
-6. **Fixtures.** Write every fixture under `evals/fixtures/`. Never copy the file the skill was measured against when it was written. Write a sibling.
+6. **Fixtures.** Write every fixture under `evals/fixtures/`. Never copy the file the skill was measured against when it was written. Write a sibling. Where
+   the fixture is a repository, mark the case `repo: true`.
 7. **Run the dry plan.** Run `npm run eval -- plan <path to SKILL.md> --dry` from the directory that holds
    this plugin's `package.json` and paste its output. Fix every refusal and every warning it
    prints, then run it again.

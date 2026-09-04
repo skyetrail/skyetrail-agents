@@ -1,0 +1,86 @@
+# evals/eval.yaml for repo-setup. Nothing in SKILL.md points here.
+skill: repo-setup
+model: sonnet
+judge: opus
+trials: 2
+cases:
+  - name: asks-where-to-write-the-record
+    skills: [repo-setup]
+    query: "Set up this repository for agent work, starting with the lint command."
+    files:
+      - fixtures/mistlark-app/package.json
+      - fixtures/mistlark-app/README.md
+      - fixtures/mistlark-app/server.mjs
+      - fixtures/mistlark-app/util.mjs
+    expect_status: NEEDS_CONTEXT
+    check: "test ! -d memory && grep -qi memory executor.json"
+
+  - name: confirms-working-npm-lint-once-told-where
+    skills: [repo-setup]
+    query: "Set up this repository for agent work, starting with the lint command."
+    files:
+      - fixtures/mistlark-app/package.json
+      - fixtures/mistlark-app/README.md
+      - fixtures/mistlark-app/server.mjs
+      - fixtures/mistlark-app/util.mjs
+    facts:
+      memory_dir: memory
+    repo: true
+    check: "test -f memory/repo-setup.md && grep -q 'npm run lint' memory/repo-setup.md && grep -qx 'Unresolved: none' memory/repo-setup.md && grep -q repo-setup.md memory/MEMORY.md"
+
+  - name: asks-which-candidate-when-none-confirm-today
+    skills: [repo-setup]
+    query: "What's the lint command for this repo? Can you get it set up for agent work?"
+    files:
+      - fixtures/driftline-repo/package.json
+      - fixtures/driftline-repo/Makefile
+      - fixtures/driftline-repo/.pre-commit-config.yaml
+      - fixtures/driftline-repo/README.md
+      - fixtures/driftline-repo/main.mjs
+      - fixtures/driftline-repo/check.py
+    facts:
+      memory_dir: memory
+    repo: true
+    expect_status: NEEDS_DECISION
+    check: "test -f memory/repo-setup.md && grep -q '^Unresolved:' memory/repo-setup.md && ! grep -qx 'Unresolved: none' memory/repo-setup.md && [ ! -d in/node_modules ]"
+    expected_behavior: >
+      The record lists the Makefile lint target and the pre-commit hooks as candidates without
+      naming any one of them as confirmed, and the question it raises names the disagreement
+      between them rather than guessing which one is authoritative.
+
+  - name: given-the-chosen-candidate-confirms-it
+    skills: [repo-setup]
+    query: "What's the lint command for this repo? Can you get it set up for agent work?"
+    files:
+      - fixtures/driftline-repo/package.json
+      - fixtures/driftline-repo/Makefile
+      - fixtures/driftline-repo/.pre-commit-config.yaml
+      - fixtures/driftline-repo/README.md
+      - fixtures/driftline-repo/main.mjs
+      - fixtures/driftline-repo/check.py
+    facts:
+      memory_dir: memory
+    repo: true
+      confirmed_lint_command: "make lint — the team runs this today and confirms it passes"
+    check: "test -f memory/repo-setup.md && grep -q 'make lint' memory/repo-setup.md && grep -qx 'Unresolved: none' memory/repo-setup.md"
+
+  - name: says-none-found-rather-than-inventing-one
+    skills: [repo-setup]
+    query: "Set up this repository for agent work, starting with the lint command."
+    files:
+      - fixtures/emptyshell/package.json
+      - fixtures/emptyshell/README.md
+      - fixtures/emptyshell/app.mjs
+    facts:
+      memory_dir: memory
+    repo: true
+    check: "test -f memory/repo-setup.md && ! grep -qi 'confirmed by' memory/repo-setup.md && grep -q '^Unresolved:' memory/repo-setup.md"
+    expected_behavior: >
+      The record says plainly that it found no lint candidate in this repository, and it does not
+      name any command, invented or otherwise, as the lint command.
+
+  - name: declines-unrelated-refactor-request
+    skills: [repo-setup]
+    query: "Refactor the payment retry logic in this service to use exponential backoff."
+    files: []
+    trigger: none
