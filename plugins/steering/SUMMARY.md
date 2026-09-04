@@ -34,13 +34,15 @@ the artifact it produces before it states any step.
 | `writing-skills` | A SKILL.md, its reference files, and a record measuring what the skill changed. |
 | `writing-agents` | A prompt for an agent that will not see this conversation, and the caller side that dispatches it. |
 | `auditing-skills` | A findings table ordered by severity, and the three things to fix first. It edits no file. A blocking defect still holds a skill back. |
-| `repo-setup` | A verified record of a repository's basic facts, written into `AGENTS.md` between fixed markers. |
+| `repo-setup` | A checked record of a repository's basic facts, written to the project's memory as `repo-setup.md`. |
+| `eval-author` | The runnable eval for a skill, `evals/eval.yaml` beside its `SKILL.md`, in one template. |
+| `eval-runner` | A results page from running a skill's eval with no person in the loop, one fresh executor per case. |
 
 Each skill writes a record of what it changed. A record does not replace the artifact. One round of
 six isolated runs produced six records and zero usable files, and that round counts as a failure.
 Produce the artifact first, then write the record.
 
-`repo-setup` is safe to run again. A second run replaces its block rather than adding another one.
+`repo-setup` is safe to run again. A second run replaces what it confirms and keeps the rest.
 One re-run confirmed that by direct count and recursive diff.
 
 ## The rule files
@@ -70,6 +72,11 @@ a gate the caller re-runs.
 It checks only what a script can decide. It does not judge whether a file works, and it does not
 apply the judgement rules. Run the `auditing-skills` skill for those. `npm run lint` checks the
 repository rather than one skill.
+
+A second command, `npm run eval -- plan <path>`, reads a skill's `evals/eval.yaml`, refuses one that
+breaks a rule of `shared/eval-protocol.md` and names the rule, and lays out one directory per case
+and trial. `check` and `results` follow once `eval-runner` has dispatched the executors. The mechanical half of an eval is this script. `eval-runner` and `eval-author` do only the dispatching and
+the judging.
 
 ## Running it
 

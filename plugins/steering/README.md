@@ -22,6 +22,8 @@ In a host that uses slash commands:
 | Skill | Version | Description |
 | --- | --- | --- |
 | `auditing-skills` | 1.0.0 | Audits any document written to steer an agent against every best practice this project holds, and reports what to fix, marking each finding blocking, important, or advisory. Use this whenever someone asks to lint, audit, review, check, or sanity-check a skill, a SKILL.md, a slash command, a prompt written for a subagent, a hand-off brief, a runbook, or an AGENTS.md or CLAUDE.md instruction file. Also use it to check a skill or a SKILL.md against best practices, or to scan a repository or plugin for skills that need fixing. It also applies when someone wants to know why a skill is not triggering or not being followed. Use it as well when someone wants to know why a subagent came back with nothing useful, or when a skill is about to go into use. |
+| `eval-author` | 1.0.0 | Writes the runnable eval for a skill, evals/eval.yaml beside its SKILL.md with fixtures beside it, in the one template the eval protocol fixes, from the misses a measurement found or from the skill's own scope. Use whenever someone asks to write, create or add an eval, evals, test cases or scenarios for a skill, when writing-skills has numbered the misses for a skill it is writing, or when a skill has no evals directory and someone wants it tested. Use it too when an existing eval is refused by npm run eval. |
+| `eval-runner` | 1.0.0 | Runs a skill's eval, the runnable test at evals/eval.yaml beside its SKILL.md, with no person in the loop, dispatching one fresh executor per case and trial, and writes a results page a caller can re-check. Use whenever someone asks to run or check the evals for a skill, or wants to know whether a skill still passes. Use it before merging a change to a skill, and when a skill has an evals directory that nobody has run. |
 | `repo-setup` | 1.0.0 | Establishes the basic facts about the repository an agent is working in, starting with its lint command, and records them in the project's memory so no later agent has to work them out again. Use whenever someone asks to set up, configure, or onboard a repository for agent work, asks what the lint or test or build command here is, says an agent could not find the lint command, or when a skill needs a repository fact that has not been recorded yet. Safe to run again at any time. |
 | `writing-agents` | 1.0.0 | Writes the prompt for an agent that will not see the current conversation. Also writes the caller side, which dispatches that prompt and handles what comes back. The result is an agents/*.md definition or a prompt template. Use this whenever someone mentions handing work to a subagent, or dispatching or spawning agents. It also applies to writing a prompt or a template for an agent, and to running work in parallel across several agents. Use it too for turning a predefined agent into something composed at the point of dispatch. Use it also when a subagent came back with nothing useful, returned a summary instead of the work, ignored half its instruction, or ran out of context. Use it even when the word agent is not used, if work is being handed to something that starts with no context. |
 | `writing-skills` | 1.0.0 | Writes a new Agent Skill or fixes an existing one, producing a SKILL.md, its reference files, and a record of what the skill changed. Use this whenever someone mentions writing, creating, drafting, or improving a skill, a SKILL.md, or a skill description. It also applies when someone asks how to make an agent do something the same way every time, when a skill does not trigger or does not load, when a skill is being ignored, or when an agent forgets its instructions partway through a task. Use it when someone wants a runbook, a checklist, or a prompt they keep retyping turned into something reusable. Use it even when the word skill never appears, if the request is about capturing a repeatable way of working. |
@@ -62,13 +64,15 @@ the artifact it produces before it states any step.
 | `writing-skills` | A SKILL.md, its reference files, and a record measuring what the skill changed. |
 | `writing-agents` | A prompt for an agent that will not see this conversation, and the caller side that dispatches it. |
 | `auditing-skills` | A findings table ordered by severity, and the three things to fix first. It edits no file. A blocking defect still holds a skill back. |
-| `repo-setup` | A verified record of a repository's basic facts, written into `AGENTS.md` between fixed markers. |
+| `repo-setup` | A checked record of a repository's basic facts, written to the project's memory as `repo-setup.md`. |
+| `eval-author` | The runnable eval for a skill, `evals/eval.yaml` beside its `SKILL.md`, in one template. |
+| `eval-runner` | A results page from running a skill's eval with no person in the loop, one fresh executor per case. |
 
 Each skill writes a record of what it changed. A record does not replace the artifact. One round of
 six isolated runs produced six records and zero usable files, and that round counts as a failure.
 Produce the artifact first, then write the record.
 
-`repo-setup` is safe to run again. A second run replaces its block rather than adding another one.
+`repo-setup` is safe to run again. A second run replaces what it confirms and keeps the rest.
 One re-run confirmed that by direct count and recursive diff.
 
 ## The rule files
@@ -98,6 +102,11 @@ a gate the caller re-runs.
 It checks only what a script can decide. It does not judge whether a file works, and it does not
 apply the judgement rules. Run the `auditing-skills` skill for those. `npm run lint` checks the
 repository rather than one skill.
+
+A second command, `npm run eval -- plan <path>`, reads a skill's `evals/eval.yaml`, refuses one that
+breaks a rule of `shared/eval-protocol.md` and names the rule, and lays out one directory per case
+and trial. `check` and `results` follow once `eval-runner` has dispatched the executors. The mechanical half of an eval is this script. `eval-runner` and `eval-author` do only the dispatching and
+the judging.
 
 ## Running it
 
