@@ -17,7 +17,7 @@ Steering is anything a person writes to shape what an agent does. A skill, a sub
 rules file and a hand-off brief are examples, not the whole set.
 
 This plugin includes four skills that write or check steering, and seven rule files those skills
-apply. Experiments measured them across eighteen trials, and every rule here came from a measured
+apply. Experiments measured them across nineteen trials, and every rule here came from a measured
 failure. A practice with no failure behind it is a preference, so this plugin contains none.
 
 [METHOD.md](./METHOD.md) states the method, and that method transfers without these rules.
@@ -195,7 +195,7 @@ The open items are listed once, in [OUTCOMES.md](./OUTCOMES.md) under "What is s
 ## Further reading
 
 - [METHOD.md](./METHOD.md) states the practices, and names the failure behind each one.
-- [OUTCOMES.md](./OUTCOMES.md) states all eighteen experiments and what each one settled.
+- [OUTCOMES.md](./OUTCOMES.md) states all nineteen experiments and what each one settled.
 - [TESTING.md](./TESTING.md) states how to test a skill here.
 - [style.md](./shared/style.md) names the vale check and its scope.
 - [The determinism record](./tests/outcomes/determinism/RESULTS.md) holds more evidence than any
