@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // The mechanical half of the eval protocol, plugins/steering/shared/eval-protocol.md.
 //
-//   npm run eval -- plan <SKILL.md | eval.yaml> [--run-root DIR] [--dry] [--harness claude|copilot]
+//   npm run eval -- plan <SKILL.md | eval.yaml> [--run-root DIR] [--dry] [--harness claude|copilot] [--trials N]
 //   npm run eval -- check <run root>
 //   npm run eval -- results <run root> [--out DIR]
 //
@@ -225,7 +225,9 @@ function plan() {
   const { refusals, warnings } = validateEval(ev, { evalDir });
   for (const w of warnings) console.log(`warning: ${w}`);
   if (refusals.length) { for (const r of refusals) console.log(`refused: ${r}`); process.exit(2); }
-  const model = ev.model || DEFAULTS.model, judge = ev.judge || DEFAULTS.judge, trials = ev.trials || DEFAULTS.trials;
+  const model = ev.model || DEFAULTS.model, judge = ev.judge || DEFAULTS.judge;
+  const trialsOverride = flag("--trials") ? Number(arg("--trials")) : null;
+  const trials = trialsOverride || ev.trials || DEFAULTS.trials;
   const budget = { ...DEFAULTS.budget, ...(ev.budget || {}) };
   const harness = harnessDefault();
   const load = staticLoad(skillDir);
@@ -242,7 +244,7 @@ function plan() {
   for (const c of cases) console.log(`  ${c.name}: ${c.trials} executor run(s), trigger ${c.trigger}, expect ${c.expect_status}${c.check ? ", check" : ""}${c.expected_behavior ? ", judged" : ""}`);
   if (flag("--dry")) { console.log("dry run: nothing written"); return; }
   fs.mkdirSync(runRoot, { recursive: true });
-  const planObj = { skill: ev.skill, skill_file: skillFile, skill_dir: skillDir, eval_file: evalFile, plugin_root: pluginRoot, commit: gitCommit(skillDir), harness, model, judge, trials, budget, static_load: load, warnings, created: new Date().toISOString(), cases: [] };
+  const planObj = { skill: ev.skill, skill_file: skillFile, skill_dir: skillDir, eval_file: evalFile, plugin_root: pluginRoot, commit: gitCommit(skillDir), harness, model, judge, trials, trials_override: trialsOverride, budget, static_load: load, warnings, created: new Date().toISOString(), cases: [] };
   for (const c of cases) {
     const dirs = [];
     for (let t = 1; t <= c.trials; t++) {
@@ -363,6 +365,7 @@ function results() {
   const outDir = path.resolve(arg("--out", p.plugin_root ? path.join(p.plugin_root, "tests", "evals", p.skill, date) : path.join(root, "results")));
   fs.mkdirSync(outDir, { recursive: true });
   const L = [`# Eval: ${p.skill}`, "", `Skill at \`${p.skill_file}\`${p.commit ? `, commit \`${p.commit}\`` : ""}. Harness ${p.harness}, executor ${p.model}, judge ${p.judge}. Static load ${p.static_load.lines} lines across ${p.static_load.files} file(s). Run root \`${root}\`.`, ""];
+  if (p.trials_override) L.push(`Trials overridden to ${p.trials_override} on the command line; the eval asks for more.`, "");
   if (p.warnings && p.warnings.length) { L.push("Warnings from plan:", ""); for (const w of p.warnings) L.push(`- ${w}`); L.push(""); }
   L.push("| Case | Trial | trigger | completion | economy | result |", "| --- | --- | --- | --- | --- | --- |");
   let allPass = true, anyPass = false, blocked = false;

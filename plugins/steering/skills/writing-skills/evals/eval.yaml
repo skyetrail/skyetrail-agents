@@ -1,0 +1,135 @@
+# evals/eval.yaml for writing-skills. Nothing in SKILL.md points here.
+#
+# Source: the numbered misses in round-eight's three independent runs of
+# writing-skills on the same PostgreSQL-migration-review task (record.md at
+# f1-skills/r1, r2 and r3, and their runs/audit files). Four misses recur
+# across those runs' independent audits even after each run's own fix pass;
+# cases 1-4 below are one case per miss. Every migration fixture here is a
+# sibling of that task's fixture-migration/20260821_orders_cleanup.sql: same
+# shape, different tables, columns and values, never a copy.
+skill: writing-skills
+model: sonnet
+judge: opus
+cases:
+  - name: description-quotes-real-error-text
+    skills: [writing-skills]
+    query: >
+      Our team keeps reviewing database migrations by hand before every deploy, and everyone
+      checks for different things. Can you turn this into something the whole team can reuse for
+      every migration from now on? I put the details in request.md and a sample migration to test
+      it against in migration.sql, both in this folder.
+    files:
+      - fixtures/shipments/request.md
+      - fixtures/shipments/migration.sql
+    check: "f=$(find out -iname SKILL.md | head -n 1); test -n "$f" && grep -qE "^description:" "$f""
+    expected_behavior: >
+      The delivered SKILL.md's frontmatter description names at least one literal, quotable
+      PostgreSQL error or warning string, such as a lock-timeout or deadlock message, rather than
+      only casual phrasings like "is this safe to ship" or a list of file types. A judge reads the
+      description field of the SKILL.md under out/ and confirms a real, code-quoted database error
+      string appears in it, not a paraphrase of one.
+
+  - name: scope-names-successor-for-every-item
+    skills: [writing-skills]
+    query: >
+      Same kind of thing: our invoices team wants a repeatable way to check a database migration
+      before it ships, instead of everyone eyeballing it differently. request.md in this folder has
+      the details, and migration.sql is the file to measure it against.
+    files:
+      - fixtures/invoices/request.md
+      - fixtures/invoices/migration.sql
+    check: "f=$(find out -iname SKILL.md | head -n 1); test -n "$f" && grep -q "^## Scope" "$f""
+    expected_behavior: >
+      Every bullet under the delivered skill's "Out of scope" list either names the skill that
+      takes over that work, or states explicitly that no skill in the collection takes it over yet,
+      matching the form of whichever bullet already does this. A judge reads the Scope section of
+      the SKILL.md under out/ and confirms no out-of-scope bullet is left without one of those two
+      endings.
+
+  - name: context-flags-stale-row-count
+    skills: [writing-skills]
+    query: >
+      Our subscriptions team wants a repeatable way to check a database migration before it ships,
+      the same way other teams here have started doing it. request.md in this folder has the
+      details, and migration.sql is the file to measure it against.
+    files:
+      - fixtures/subscriptions/request.md
+      - fixtures/subscriptions/migration.sql
+    check: "f=$(find out -iname SKILL.md | head -n 1); test -n "$f" && grep -q "^## Context" "$f""
+    expected_behavior: >
+      Wherever the delivered skill's Context section states a specific row count or size for a
+      named table, that number reads as a default to confirm or a snapshot to recheck against the
+      method's own size-check step, rather than as a plain, undated fact a reader could later find
+      wrong as the table grows. A judge reads the Context section of the SKILL.md under out/ and
+      confirms no bare row-count claim stands there unqualified.
+
+  - name: finish-check-runs-by-the-agent
+    skills: [writing-skills]
+    query: >
+      Our sessions team wants the same thing the other teams have been asking for: a repeatable way
+      to check a database migration before it ships. request.md in this folder has the details, and
+      migration.sql is the file to measure it against.
+    files:
+      - fixtures/sessions/request.md
+      - fixtures/sessions/migration.sql
+    check: "f=$(find out -iname SKILL.md | head -n 1); test -n "$f" && grep -q "^## Finish" "$f""
+    expected_behavior: >
+      The delivered skill's Finish section states that the agent carrying out the review runs the
+      finishing check itself before it hands back the report, rather than naming a check that only
+      the person who asked for the review, or some other later reader, is the one who runs. A judge
+      reads the Finish section of the SKILL.md under out/ and confirms the check is written as
+      something the reviewing agent performs on its own before reporting.
+
+  - name: small-change-touches-only-the-named-line
+    skills: [writing-skills]
+    query: >
+      The reviewing-index-health skill in this folder names reference/lock-modes.md in its Context
+      section, but that file doesn't exist under that name — it's actually
+      reference/lock-behavior.md. Can you fix just that in SKILL.md?
+    files:
+      - fixtures/small-change/SKILL.md
+    check: "f=$(find out -iname SKILL.md | head -n 1); test -n "$f" || exit 1; grep -q lock-behavior.md "$f" || exit 1; grep -q lock-modes.md "$f" && exit 1; a=$(mktemp); b=$(mktemp); grep -v lock- in/SKILL.md > "$a"; grep -v lock- "$f" > "$b"; diff "$a" "$b" >/dev/null; rc=$?; rm -f "$a" "$b"; exit $rc"
+    expected_behavior: >
+      The delivered SKILL.md changes only the one reference path named in the request. Its
+      description, Outcome sentence, Scope, Method, and every other section read exactly as they do
+      in the input file under in/, aside from the corrected filename: the skill invents no new
+      section, no rewritten wording, and no extra content beyond the one correction asked for.
+
+  - name: audit-request-declines-writing-skills
+    skills: [writing-skills]
+    query: >
+      Can you look at the reviewing-lock-timeouts skill in this folder and tell me everything it's
+      missing against best practices? Don't change any of the files, I just want your notes.
+    files:
+      - fixtures/trigger-none/SKILL.md
+    trigger: none
+
+  - name: recurring-need-unclear-asks-before-writing
+    skills: [writing-skills]
+    query: >
+      We keep manually checking database migrations before every deploy and everyone checks
+      something different. Can you make this more reliable?
+    files: []
+    expect_status: NEEDS_CONTEXT
+    check: "test -z "$(find out -iname SKILL.md)" && grep -rlF "?" out >/dev/null 2>&1"
+    expected_behavior: >
+      The output explains that it cannot tell whether this guidance is meant for today's occasion
+      alone, read only by the person in this conversation, or whether it will be needed again on
+      future migrations by other people. It asks the person to say which of those is true before it
+      goes further, rather than guessing or producing a skill anyway.
+
+  - name: recurring-need-confirmed-writes-skill
+    skills: [writing-skills]
+    query: >
+      We keep manually checking database migrations before every deploy and everyone checks
+      something different. Can you make this more reliable?
+    files: []
+    facts:
+      recurrence: This need comes up on every future migration, not just this one, indefinitely.
+      future_reader: Whichever engineer is on call at deploy time will use it, each in their own conversation with you.
+    expect_status: DONE
+    check: "find out -iname SKILL.md | grep -q ."
+    expected_behavior: >
+      Given that this need recurs across future migrations and future readers, the output proceeds
+      past the question of whether this serves one occasion, and reaches a finished SKILL.md rather
+      than stopping to ask again.
