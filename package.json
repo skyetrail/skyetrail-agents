@@ -11,7 +11,8 @@
     "lint": "node eng/generate-readmes.mjs --check && npm run vale",
     "audit": "node eng/audit-skill.mjs",
     "vale:sync": "npx vale sync",
-    "vale": "node eng/vale-manifest-extract.mjs && npx vale --output=line ."
+    "vale": "node eng/vale-manifest-extract.mjs && npx vale --output=line .",
+    "eval": "node eng/run-eval.mjs"
   },
   "engines": {
     "node": ">=18"
