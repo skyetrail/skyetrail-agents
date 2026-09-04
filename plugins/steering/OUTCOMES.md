@@ -12,7 +12,7 @@ a job.
 - `auditing-skills` checks a skill or a brief against the written rules.
 - `repo-setup` works out the basic facts about a repository and records them.
 
-Shared rule files state the rules those skills apply. This project ran eighteen experiments, testing
+Shared rule files state the rules those skills apply. This project ran nineteen experiments, testing
 the skills, the rules, or both. `METHOD.md` states the practices those experiments produced. This
 page lists the results.
 
@@ -43,20 +43,25 @@ after the one before it. The order is by what each one answered, and not by date
 | round-five | Does a produced skill improve a fresh review, and does `writing-agents` produce classify then route where the work needs it? | The reviews tied, because unaided Sonnet found every planted fault. Classify then route: skilled 30 of 30, unaided 15 of 30. The branch merges. |
 | round-six | Does a skeleton the run copies fix structure, and does `repo-setup` on memory leave the repository alone and defer the decision? | Yes: identical headings three of three. Yes: untouched, decided, no record, because the skill wrote after deciding. Fixed after the round. |
 | round-seven | Does the rewritten `repo-setup` write its record on both paths? | Yes, six of six: the candidates under Unresolved on the ambiguous repository, `npm run lint` confirmed on the clean one, the repository untouched in every run. |
+| round-eight | Does the tick check reach a record at the run root, and do ticks anchor? | Yes. The judge's re-run showed the check on all three records. Ticks anchored 38 of 38, against 10 of 38 in round six, and one run audited before its ticks existed. |
 
 Each row's detail is in `tests/outcomes/<name>/RESULTS.md`, beside the pre-registration or
 design that fixed its question before the runs.
 
 ## What is still open
 
-- Produced skills still vary in file count, 2 to 5, after the skeleton bound the headings three
-  of three and the data sentence three of three. Default values with tests held in one of three.
-- Ticks in `writing-skills` records anchored at 10 of 38 in round six under the strict rule,
-  after 80 percent in round five. In r1 and r2 the record was at the run root, where the mechanical check did not look. It now looks
-  there, unmeasured.
 - Downstream gain on coverage is parked. Unaided Sonnet found every planted fault on both
-  fixtures, so a with-and-without comparison on faults has no room. The skill changes the shape of a review. Measuring that needs a fixture with faults the model misses on its own,
-  or a rubric for shape, and neither is planned.
+  fixtures, so a with-and-without comparison on faults has no room. The skill changes the shape of
+  a review. Measuring that needs a fixture with faults the model misses on its own, or a rubric
+  for shape, and neither is planned.
+
+## Closed on 2026-09-02
+
+- File count of produced skills, 2 to 5: by design. The owner's rule is to constrain the container
+  and the evidence, never the model's planning, and how a run lays out its detail is planning.
+- Ticks in `writing-skills` records: the check now reaches a record at the run root, and round
+  eight anchored 38 of 38 against round six's 10 of 38. We did not add a rule for it.
+- `repo-setup`: measured on both paths in round seven, six of six.
 
 ## Closed or dropped on 2026-09-01
 

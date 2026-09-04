@@ -454,3 +454,9 @@ repository and three on a clean one, all wrote `repo-setup.md` and an index line
 repository untouched, handed the ambiguous decision to a person with the candidates recorded, and
 confirmed `npm run lint` where it existed. The round-six defect is closed. Step 3 now says that
 `npx` on a tool that is not installed is an install step, after two runs used a cached tool.
+
+**The open list closes to one parked item. 2026-09-02.** Round eight measured the tick check
+at a run-root record: the judge's re-run showed it on all three records and 38 of 38 ticks
+anchored, against 10 of 38 in round six. The file-count variance of produced skills is closed as
+by design under the owner's rule that the project constrains the container and the evidence and
+never the model's planning. What remains is the downstream question, parked.
