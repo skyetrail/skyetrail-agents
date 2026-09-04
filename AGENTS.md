@@ -65,25 +65,3 @@ The project style is Vale, run against the ai-tells style. Run it with
 `npm run vale`. See [`.vale.ini`](.vale.ini) for the configuration and
 [`plugins/steering/shared/style.md`](plugins/steering/shared/style.md) for how
 this applies inside the steering plugin.
-
-<!-- BEGIN: repo-setup -->
-## Repository facts
-
-Established by the `repo-setup` skill. Re-run it rather than editing this block by hand.
-
-- **Lint command:** `npm run lint`, run from the repository root. Confirmed by running it. It runs
-  `eng/generate-readmes.mjs --check` and also checks that the generated README files are current.
-  `npm run check` is the same command under a second name.
-- **Skill audit command:** `npm run audit -- <path>`, run from the repository root. Confirmed by
-  running it. It runs `eng/audit-skill.mjs` over one skill directory or one SKILL.md, at any path
-  on disk, and reports every mechanical check by name. The lint runs a subset of the same checks
-  and covers only files inside this repository.
-- **Ask a command what it covers** with `npm run lint -- --explain` or
-  `npm run audit -- --explain`. Each prints which checks it makes, from the same list the run uses.
-  Do not rely on a description written anywhere else, including here: the one that used to sit in
-  this block was wrong four times in two days. An agent auditing a file should run that command and
-  say which check did not reach its target, rather than reporting either a clean pass or a total
-  gap.
-
-Unresolved: none.
-<!-- END: repo-setup -->

@@ -186,6 +186,14 @@ function bundledReferences(ctx) {
 // Ticked checklist lines in the artifact, or in markdown files beside it,
 // each with one continuation line folded in. A skill returns its checklist
 // with the work, so the record beside the artifact is where it usually sits.
+// A link inside a fenced code block, or inside inline code, is an example and not a reference.
+function noFences(text) {
+  return text.replace(/```[\s\S]*?```/g, "");
+}
+function noCode(text) {
+  return noFences(text).replace(/`[^`\n]*`/g, "");
+}
+
 function tickedLines(ctx) {
   const out = [];
   const scan = (file, text) => {
@@ -688,7 +696,7 @@ export const CHECKS = [
     requires: "Every local file the text points at exists.",
     run: (ctx) => {
       const out = [];
-      for (const link of ctx.content.matchAll(/\[([^\]]*)\]\(([^)]+)\)/g)) {
+      for (const link of noCode(ctx.content).matchAll(/\[([^\]]*)\]\(([^)]+)\)/g)) {
         const target = link[2].split("#")[0].trim();
         if (!target || /^(https?:\/\/|mailto:)/.test(target)) continue;
         if (!exists(path.normalize(path.join(path.dirname(ctx.file), target)))) {
@@ -696,7 +704,7 @@ export const CHECKS = [
         }
       }
       // Relative paths in backticks are how these skills name their references.
-      for (const tick of ctx.content.matchAll(/`((?:\.{1,2}\/|reference\/)[^`\n]+\.md)`/g)) {
+      for (const tick of noFences(ctx.content).matchAll(/`((?:\.{1,2}\/|reference\/)[^`\n]+\.md)`/g)) {
         if (!exists(path.normalize(path.join(path.dirname(ctx.file), tick[1])))) {
           out.push(`reference does not resolve: ${tick[1]}`);
         }
@@ -990,7 +998,7 @@ export const CHECKS = [
   {
     id: "skill-section-order",
     scope: "markdown",
-    severity: "advisory",
+    severity: "fail",
     source: "steering-rules.md section order; determinism structure round, 2026-08-21",
     requires: "Sections that share a name with steering-rules.md appear in that file's order.",
     applies: (ctx) => (path.basename(ctx.file) === "SKILL.md" ? null : "not a SKILL.md"),
@@ -1006,6 +1014,26 @@ export const CHECKS = [
         if (seen[k].i < seen[k - 1].i) out.push(`"${seen[k].name}" comes after "${seen[k - 1].name}"; steering-rules.md orders it before`);
       }
       return out;
+    },
+  },
+  {
+    id: "skill-sections-present",
+    scope: "markdown",
+    severity: "advisory",
+    source: "steering-rules.md section order; round six, 2026-09-01: a skeleton the run copies",
+    requires: "A SKILL.md that uses the steering-rules shape carries its six unconditional sections: Outcome, Context, Scope, Method, Finish, Failure.",
+    applies: (ctx) => {
+      if (path.basename(ctx.file) !== "SKILL.md") return "not a SKILL.md";
+      const names = ["outcome", "context", "scope", "method", "finish", "failure", "calibration", "composition"];
+      const found = new Set();
+      for (const m of ctx.content.matchAll(/^##\s+(.+?)\s*$/gm)) if (names.includes(m[1].trim().toLowerCase())) found.add(m[1].trim().toLowerCase());
+      return found.size >= 3 ? null : "the file does not use the steering-rules shape (fewer than three of its section names)";
+    },
+    run: (ctx) => {
+      const required = ["outcome", "context", "scope", "method", "finish", "failure"];
+      const found = new Set();
+      for (const m of ctx.content.matchAll(/^##\s+(.+?)\s*$/gm)) found.add(m[1].trim().toLowerCase());
+      return required.filter((r) => !found.has(r)).map((r) => `no "## ${r[0].toUpperCase() + r.slice(1)}" section`);
     },
   },
   {

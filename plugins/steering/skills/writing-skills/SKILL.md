@@ -65,7 +65,7 @@ delivered: <absolute path of the SKILL.md you wrote>
 [ ] 5  baseline dispatched with no skill loaded and saved to runs/without-skill.md, or blocked with the error text
 [ ] 6  misses numbered, each quoted from runs/without-skill.md
 [ ] 7  description written against the Discovery table of ../../shared/skill-rules.md
-[ ] 8  body written against ../../shared/steering-rules.md and ../../shared/skill-rules.md; each numbered miss addressed by its shape and nothing else
+[ ] 8  body started from ./reference/skeleton.md and written against ../../shared/steering-rules.md and ../../shared/skill-rules.md; each numbered miss addressed by its shape and nothing else
 [ ] 9  baseline dispatched with the skill loaded and saved to runs/with-skill.md, one row per miss, or blocked with the error text
 [ ] 10 npm run audit run on the delivered path; output pasted into record.md; the printed path matches
 [ ] 11 audit by another agent dispatched with auditing-skills and findings pasted into record.md, or blocked with the error text
@@ -103,8 +103,9 @@ A small change ticks 1, 2, 3, 10, 11 and 12, and marks the rest not in this case
    unnumbered` and go on.
 7. **Write the description** against every rule in the Discovery table of
    `../../shared/skill-rules.md`.
-8. **Write the body.** Take the section order and each heading's text from
-   `../../shared/steering-rules.md`, and settle each condition in its Conditions block by that
+8. **Write the body.** Copy `./reference/skeleton.md` into the new SKILL.md, keep its headings
+   and their order, and fill each section. Take each rule from `../../shared/steering-rules.md`, and
+   settle each condition in its Conditions block by that
    block's own test, with the answers in `record.md`. Write against every other table in
    `../../shared/skill-rules.md` that applies. Put a membership test beside every category the
    skill names and mark every list as examples. Give a default beside every value the skill leaves

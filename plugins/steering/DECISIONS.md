@@ -427,3 +427,14 @@ unaided ones do not. All three held. The
 reviews tied because the unaided model found every planted fault, which two fixtures have now
 shown, so the downstream question stays open, and the results page says so. Detail in
 `tests/outcomes/round-five/RESULTS.md`.
+
+**`repo-setup` records to the project's memory, not to a file in the repository. 2026-09-01.**
+A block in `AGENTS.md` can be overwritten or replaced by anyone who edits that file, and the
+skills that read the lint command would then read a stale or missing block. The record now goes to the persistent memory directory the harness names for the project, as one
+file plus an index line. The skill writes nothing inside the repository. Its own check is that `git status`
+prints the same thing before and after.
+
+**The open list triaged. 2026-09-01.** Closed: severity tiers, the
+`auditing-skills` baseline, the dispatch limit, the lock-timeout drop. Dropped: the list of
+judgement decisions and the description rules. Parked: downstream gain. In round six: structure
+and `repo-setup`. The reasons are in `OUTCOMES.md` under "Closed or dropped on 2026-09-01".
