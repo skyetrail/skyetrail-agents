@@ -438,3 +438,13 @@ prints the same thing before and after.
 `auditing-skills` baseline, the dispatch limit, the lock-timeout drop. Dropped: the list of
 judgement decisions and the description rules. Parked: downstream gain. In round six: structure
 and `repo-setup`. The reasons are in `OUTCOMES.md` under "Closed or dropped on 2026-09-01".
+
+**A skeleton the run copies. 2026-09-01.** The structure rules bound one point in three rounds. A skeleton with the eight headings and the fixed sentences bound the
+headings three of three in its first round, and the data sentence three of three. The checklist showed the same thing. A run copies a block it is given and forgets a rule it is told.
+`writing-skills` now starts the body from `reference/skeleton.md`, and the section-order check is
+a failure.
+
+**`repo-setup` writes the record before it stops. 2026-09-01.** Every run in round six returned the ambiguous lint decision to a person, as asked. None wrote a
+record, because the skill ordered the write after the decision and stopped on a pending one. The next agent would have repeated the discovery. The
+write is now step 4 and always runs, with the candidates under `Unresolved` where no command is
+confirmed. Detail in `tests/outcomes/round-six/RESULTS.md`.

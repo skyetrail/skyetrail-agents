@@ -38,17 +38,19 @@ A fact about one task, one branch, or one person's preference is not a repo fact
    packages, run an install step, create a file to see what a tool says, or run a command that
    writes or fixes in place. You may run a command that only reports. Where you cannot confirm a
    candidate without changing something, record it as unconfirmed and say why.
-4. **Take the decision to a person where more than one answer is possible.** One working
-   candidate is the answer. A decision is needed where several candidates disagree, where they
-   cover different files, or where the only candidate does not work today. Put the candidates in
-   front of the person with what each covers and what you saw, and ask which one is the lint
+4. **Write the record, whatever you found.** Write `repo-facts.md` in the memory directory, in
+   the shape below, and one line for it in that directory's `MEMORY.md`, replacing the line where
+   one is there. One working candidate is the answer, and the record names it as confirmed. Where
+   several candidates disagree, cover different files, or none works today, the record names no
+   command as confirmed and lists every candidate with what it covers under `Unresolved`, so the
+   next agent inherits the discovery rather than repeating it. Where the file already holds a fact
+   this run did not establish, write that fact back unchanged. Where your system prompt does not
+   name a memory directory, put the record in your report and return `NEEDS_CONTEXT`, naming the
+   directory as the missing field.
+5. **Take the decision to a person where more than one answer is possible.** Put the candidates
+   in front of the person with what each covers and what you saw, and ask which one is the lint
    command. Where you find no candidate at all, tell the person the repository needs one, and
    that skills relying on one cannot run their mechanical checks until it has one.
-5. **Write the record.** Write `repo-facts.md` in the memory directory, in the shape below, and
-   one line for it in that directory's `MEMORY.md`, replacing the line where one is there. Where
-   the file already holds a fact this run did not establish, write that fact back unchanged.
-   Where your system prompt does not name a memory directory, put the record in your report and return
-   `NEEDS_CONTEXT`, naming the directory as the missing field.
 6. **Check your own work before you report.** Run these commands. Do not judge by eye.
 
    ```
@@ -87,7 +89,7 @@ The index line in `MEMORY.md`: `- [Repo facts](repo-facts.md) — lint: <command
 | Status | Means | The caller must |
 | --- | --- | --- |
 | `DONE` | The record is written and every check in step 6 holds. | Use the recorded facts. Do not re-establish them. |
-| `NEEDS_DECISION` | More than one candidate remains and no person was there to decide. | Put the candidates to a person. Never pick one on their behalf. |
+| `NEEDS_DECISION` | More than one candidate remains and no person was there to decide. The record lists them under `Unresolved`. | Put the candidates to a person. Never pick one on their behalf. |
 | `BLOCKED` | A check failed and no edit fixed it, or the memory directory could not be written. | Read the cause. Fix it, then run this skill again. |
 | `NEEDS_CONTEXT` | The instruction that dispatched this run left out something it needed. | Supply what was missing. This is the caller's failure, not the agent's. |
 
@@ -95,8 +97,9 @@ Add a status only where a run needs one these four do not cover, and declare it 
 
 ## When to stop
 
-Where a decision belongs to a person and no person is there, stop and report `NEEDS_DECISION`
-with the candidates and what you saw about each. Do not pick one to keep moving. A guessed lint
+Where a decision belongs to a person and no person is there, write the record with the candidates
+under `Unresolved` first, then stop and report `NEEDS_DECISION` with the candidates and what you
+saw about each. Do not pick one to keep moving. A guessed lint
 command is worse than none, because every later skill trusts it.
 
 A command that fails because no such script exists has answered the question. A permission error,

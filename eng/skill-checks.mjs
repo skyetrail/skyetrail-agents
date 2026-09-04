@@ -223,6 +223,12 @@ function tickedLines(ctx) {
   // A skill's record sits beside the skill directory rather than inside it, so
   // that it never loads with the skill. Look one level up for a SKILL.md target.
   if (!out.length && path.basename(ctx.file) === "SKILL.md") scanDir(path.dirname(dir));
+  // Two levels up, only a file named record.md: a run that puts its record at
+  // the run root. Anything wider would read a repository's own documents.
+  if (!out.length && path.basename(ctx.file) === "SKILL.md") {
+    const f = path.join(path.dirname(path.dirname(dir)), "record.md");
+    if (exists(f)) scan(f, fs.readFileSync(f, "utf8"));
+  }
   return out;
 }
 
