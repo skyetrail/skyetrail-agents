@@ -1,0 +1,264 @@
+{
+  "checked": "2026-09-04T14:56:45.058Z",
+  "cases": [
+    {
+      "name": "asks-where-to-write-the-record",
+      "trigger": "expected",
+      "trigger_hits": 3,
+      "trigger_trials": 3,
+      "trials": [
+        {
+          "dir": "/Users/pete/workspace/skyetrail-agents-runs/eval/repo-setup/first-run/asks-where-to-write-the-record/t1",
+          "status": "NEEDS_CONTEXT",
+          "expect_status": "NEEDS_CONTEXT",
+          "completion": true,
+          "unticked": 0,
+          "check": {
+            "command": "test ! -d memory && grep -qi memory executor.json",
+            "exit": 0,
+            "exit_again": 0,
+            "repeatable": true,
+            "output": "",
+            "pass": true
+          },
+          "economy": {
+            "source": "no log at /Users/pete/.claude/eval-tools.log",
+            "tool_calls": null,
+            "seconds": null,
+            "tokens": null,
+            "budget": {
+              "tool_calls": 40,
+              "seconds": 600,
+              "tokens": 120000
+            },
+            "pass": true
+          },
+          "judge": null
+        }
+      ]
+    },
+    {
+      "name": "confirms-working-npm-lint-once-told-where",
+      "trigger": "expected",
+      "trigger_hits": 3,
+      "trigger_trials": 3,
+      "trials": [
+        {
+          "dir": "/Users/pete/workspace/skyetrail-agents-runs/eval/repo-setup/first-run/confirms-working-npm-lint-once-told-where/t1",
+          "status": "DONE",
+          "expect_status": "DONE",
+          "completion": true,
+          "unticked": 0,
+          "check": {
+            "command": "test -f memory/repo-setup.md && grep -q 'npm run lint' memory/repo-setup.md && grep -qx 'Unresolved: none' memory/repo-setup.md && grep -q repo-setup.md memory/MEMORY.md",
+            "exit": 1,
+            "exit_again": 1,
+            "repeatable": true,
+            "output": "",
+            "pass": false
+          },
+          "economy": {
+            "source": "no log at /Users/pete/.claude/eval-tools.log",
+            "tool_calls": null,
+            "seconds": null,
+            "tokens": null,
+            "budget": {
+              "tool_calls": 40,
+              "seconds": 600,
+              "tokens": 120000
+            },
+            "pass": true
+          },
+          "judge": null
+        }
+      ]
+    },
+    {
+      "name": "asks-which-candidate-when-none-confirm-today",
+      "trigger": "expected",
+      "trigger_hits": 3,
+      "trigger_trials": 3,
+      "trials": [
+        {
+          "dir": "/Users/pete/workspace/skyetrail-agents-runs/eval/repo-setup/first-run/asks-which-candidate-when-none-confirm-today/t1",
+          "status": "NEEDS_DECISION",
+          "expect_status": "NEEDS_DECISION",
+          "completion": true,
+          "unticked": 0,
+          "check": {
+            "command": "test -f memory/repo-setup.md && grep -q '^Unresolved:' memory/repo-setup.md && ! grep -qx 'Unresolved: none' memory/repo-setup.md && [ ! -d in/node_modules ]",
+            "exit": 1,
+            "exit_again": 1,
+            "repeatable": true,
+            "output": "",
+            "pass": false
+          },
+          "economy": {
+            "source": "no log at /Users/pete/.claude/eval-tools.log",
+            "tool_calls": null,
+            "seconds": null,
+            "tokens": null,
+            "budget": {
+              "tool_calls": 40,
+              "seconds": 600,
+              "tokens": 120000
+            },
+            "pass": true
+          },
+          "judge": {
+            "id": "j1",
+            "pass": true,
+            "quote": "A person needs to say which command is the lint command: the Makefile target (JavaScript only...), the pre-commit hooks (JavaScript and Python...)"
+          }
+        },
+        {
+          "dir": "/Users/pete/workspace/skyetrail-agents-runs/eval/repo-setup/first-run/asks-which-candidate-when-none-confirm-today/t2",
+          "status": "NEEDS_DECISION",
+          "expect_status": "NEEDS_DECISION",
+          "completion": true,
+          "unticked": 0,
+          "check": {
+            "command": "test -f memory/repo-setup.md && grep -q '^Unresolved:' memory/repo-setup.md && ! grep -qx 'Unresolved: none' memory/repo-setup.md && [ ! -d in/node_modules ]",
+            "exit": 1,
+            "exit_again": 1,
+            "repeatable": true,
+            "output": "",
+            "pass": false
+          },
+          "economy": {
+            "source": "no log at /Users/pete/.claude/eval-tools.log",
+            "tool_calls": null,
+            "seconds": null,
+            "tokens": null,
+            "budget": {
+              "tool_calls": 40,
+              "seconds": 600,
+              "tokens": 120000
+            },
+            "pass": true
+          },
+          "judge": {
+            "id": "j2",
+            "pass": true,
+            "quote": "These two candidates disagree on scope (one file vs. two) and neither can be confirmed without an install step."
+          }
+        }
+      ]
+    },
+    {
+      "name": "given-the-chosen-candidate-confirms-it",
+      "trigger": "expected",
+      "trigger_hits": 3,
+      "trigger_trials": 3,
+      "trials": [
+        {
+          "dir": "/Users/pete/workspace/skyetrail-agents-runs/eval/repo-setup/first-run/given-the-chosen-candidate-confirms-it/t1",
+          "status": "DONE",
+          "expect_status": "DONE",
+          "completion": true,
+          "unticked": 0,
+          "check": {
+            "command": "test -f memory/repo-setup.md && grep -q 'make lint' memory/repo-setup.md && grep -qx 'Unresolved: none' memory/repo-setup.md",
+            "exit": 1,
+            "exit_again": 1,
+            "repeatable": true,
+            "output": "",
+            "pass": false
+          },
+          "economy": {
+            "source": "no log at /Users/pete/.claude/eval-tools.log",
+            "tool_calls": null,
+            "seconds": null,
+            "tokens": null,
+            "budget": {
+              "tool_calls": 40,
+              "seconds": 600,
+              "tokens": 120000
+            },
+            "pass": true
+          },
+          "judge": null
+        }
+      ]
+    },
+    {
+      "name": "says-none-found-rather-than-inventing-one",
+      "trigger": "expected",
+      "trigger_hits": 3,
+      "trigger_trials": 3,
+      "trials": [
+        {
+          "dir": "/Users/pete/workspace/skyetrail-agents-runs/eval/repo-setup/first-run/says-none-found-rather-than-inventing-one/t1",
+          "status": "NEEDS_DECISION",
+          "expect_status": "DONE",
+          "completion": false,
+          "unticked": 0,
+          "check": {
+            "command": "test -f memory/repo-setup.md && ! grep -qi 'confirmed by' memory/repo-setup.md && grep -q '^Unresolved:' memory/repo-setup.md",
+            "exit": 1,
+            "exit_again": 1,
+            "repeatable": true,
+            "output": "",
+            "pass": false
+          },
+          "economy": {
+            "source": "no log at /Users/pete/.claude/eval-tools.log",
+            "tool_calls": null,
+            "seconds": null,
+            "tokens": null,
+            "budget": {
+              "tool_calls": 40,
+              "seconds": 600,
+              "tokens": 120000
+            },
+            "pass": true
+          },
+          "judge": {
+            "id": "j3",
+            "pass": true,
+            "quote": "**Lint command:** none confirmed. No candidate was found."
+          }
+        },
+        {
+          "dir": "/Users/pete/workspace/skyetrail-agents-runs/eval/repo-setup/first-run/says-none-found-rather-than-inventing-one/t2",
+          "status": "NEEDS_DECISION",
+          "expect_status": "DONE",
+          "completion": false,
+          "unticked": 0,
+          "check": {
+            "command": "test -f memory/repo-setup.md && ! grep -qi 'confirmed by' memory/repo-setup.md && grep -q '^Unresolved:' memory/repo-setup.md",
+            "exit": 1,
+            "exit_again": 1,
+            "repeatable": true,
+            "output": "",
+            "pass": false
+          },
+          "economy": {
+            "source": "no log at /Users/pete/.claude/eval-tools.log",
+            "tool_calls": null,
+            "seconds": null,
+            "tokens": null,
+            "budget": {
+              "tool_calls": 40,
+              "seconds": 600,
+              "tokens": 120000
+            },
+            "pass": true
+          },
+          "judge": {
+            "id": "j4",
+            "pass": true,
+            "quote": "This repository has no lint command of any kind. A person must add one"
+          }
+        }
+      ]
+    },
+    {
+      "name": "declines-unrelated-refactor-request",
+      "trigger": "none",
+      "trigger_hits": 3,
+      "trigger_trials": 3,
+      "trials": []
+    }
+  ]
+}

@@ -92,7 +92,7 @@ The index line in `MEMORY.md`: `- [Repo setup](repo-setup.md) — lint: <command
 | Status | Means | The caller must |
 | --- | --- | --- |
 | `DONE` | `repo-setup.md` is written and every check in step 6 holds. | Use the recorded facts. Do not re-establish them. |
-| `NEEDS_DECISION` | More than one candidate remains and no person was there to decide. `repo-setup.md` lists them under `Unresolved`. | Put the candidates to a person. Never pick one on their behalf. |
+| `NEEDS_DECISION` | More than one candidate remains, or none was found, and no person was there to decide. `repo-setup.md` lists what was found under `Unresolved`. | Put the candidates to a person. Never pick one on their behalf. |
 | `BLOCKED` | A check failed and no edit fixed it, or the memory directory could not be written. | Read the cause. Fix it, then run this skill again. |
 | `NEEDS_CONTEXT` | The instruction that dispatched this run left out something it needed. | Supply what was missing. This is the caller's failure, not the agent's. |
 
