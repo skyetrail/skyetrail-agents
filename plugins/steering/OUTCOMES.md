@@ -55,9 +55,6 @@ design that fixed its question before the runs.
   `writing-agents`. No round has measured any of them.
 - The capability rule dropped to Important and the third-person rule is cut. Settling the
   capability rule any further needs items near a decision boundary and about thirty trials per arm.
-- Fixture A of the isolated round cannot be re-run until the prior-round output at
-  `plugins/skyetrail/tests/baselines/` is moved where the next round cannot read it. Keep run output
-  out of a baselines directory, because the next round reads it and measures the earlier one.
 - No with-and-without baseline has run against `auditing-skills` or `repo-setup` since
   2026-08-01. `writing-agents` was measured in its diet rounds and `writing-skills` in its own.
 - Agents started by the Workflow tool have no Agent tool. A measurement whose runs must dispatch
