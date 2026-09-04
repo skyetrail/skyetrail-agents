@@ -59,9 +59,8 @@ those too.
 
 3. Run the generator (see below) and commit the changes.
 
-Write the skill body in clear, everyday language. The
-`writing-skills` skill in
-this repository is the project style we follow.
+Write the skill body in clear, everyday language. The project style is the ai-tells Vale
+ruleset, which `npm run lint` runs, and `plugins/steering/shared/style.md` says what it covers.
 
 ## Add a new plugin
 

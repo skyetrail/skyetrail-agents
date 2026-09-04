@@ -47,24 +47,26 @@ design that fixed its question before the runs.
 
 ## What is still open
 
-- Structure still varies on four points after five rules went in. The reference directory name
-  closed at three of three. Heading text, file count, default values, and filename did not, and the
-  split rule widened the file-count spread from one to five.
-- Two of three skilled runs do not give any severity tiers, where an unaided run does.
-- The gap analysis lists 24 judgement decisions with no stated test, 15 in `writing-skills` and 9 in
-  `writing-agents`. No round has measured any of them.
-- The capability rule dropped to Important and the third-person rule is cut. Settling the
-  capability rule any further needs items near a decision boundary and about thirty trials per arm.
-- No with-and-without baseline has run against `auditing-skills` or `repo-setup` since
-  2026-08-01. `writing-agents` was measured in its diet rounds and `writing-skills` in its own.
-- Agents started by the Workflow tool have no Agent tool. A measurement whose runs must dispatch
-  starts them with the Agent tool, as the fourth diet round did.
-- The file-as-data item held in one of three skills in the diet rounds and two of three in round
-  five, with a sentence asking for it in step 8.
-- Coverage fixtures saturate: unaided Sonnet found every planted fault on the migration and on the
-  Terraform plan. Downstream gain needs a harder fixture or a measure of the review's shape.
-- Every unaided run on the migration fixture checked for a lock timeout, and at most two of three
-  skilled runs did. The subject list does not stop a drop of an item the run never listed.
+- Produced skills vary in heading text and file count, and in their file names and default values.
+  Round six measures a skeleton the run copies, with the section-order check now a failure. The
+  file-as-data sentence is in that skeleton, so the same round measures it.
+- `repo-setup` has no measurement since its rewrite. Round six runs it with and without on the
+  ambiguous fixture, now recording to the project's memory rather than to `AGENTS.md`.
+- Downstream gain on coverage is parked. Unaided Sonnet found every planted fault on both
+  fixtures, so a with-and-without comparison on faults has no room. The skill changes the shape of a review. Measuring that needs a fixture with faults the model misses on its own,
+  or a rubric for shape, and neither is planned.
+
+## Closed or dropped on 2026-09-01
+
+- Severity tiers: fixed by the default-with-test rule in the structure round, three of three.
+- The `auditing-skills` baseline: it ran as the audit child in six real runs across rounds four
+  and five, and its findings were real and were fixed. That is execution evidence.
+- The Workflow-tool dispatch limit: a harness fact, recorded in METHOD and DECISIONS.
+- The lock-timeout drop: by design. The domain author supplies what to look for and the skill
+  supplies the shape. The subject list protects only what a run wrote down first.
+- The 24 judgement decisions and the description rules: dropped. The terminology pass and the
+  rounds since covered the first, and anything left shows as a failed rubric item. The second
+  needs thirty trials per arm for a number nobody would act on.
 
 ## What to read next
 
