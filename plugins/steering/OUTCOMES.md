@@ -12,7 +12,7 @@ a job.
 - `auditing-skills` checks a skill or a brief against the written rules.
 - `repo-setup` works out the basic facts about a repository and records them.
 
-Shared rule files state the rules those skills apply. This project ran nineteen experiments, testing
+Shared rule files state the rules those skills apply. This project ran twenty experiments, testing
 the skills, the rules, or both. `METHOD.md` states the practices those experiments produced. This
 page lists the results.
 
@@ -44,6 +44,7 @@ after the one before it. The order is by what each one answered, and not by date
 | round-six | Does a skeleton the run copies fix structure, and does `repo-setup` on memory leave the repository alone and defer the decision? | Yes: identical headings three of three. Yes: untouched, decided, no record, because the skill wrote after deciding. Fixed after the round. |
 | round-seven | Does the rewritten `repo-setup` write its record on both paths? | Yes, six of six: the candidates under Unresolved on the ambiguous repository, `npm run lint` confirmed on the clean one, the repository untouched in every run. |
 | round-eight | Does the tick check reach a record at the run root, and do ticks anchor? | Yes. The judge's re-run showed the check on all three records. Ticks anchored 38 of 38, against 10 of 38 in round six, and one run audited before its ticks existed. |
+| eval-protocol | Can a skill carry a test another agent runs the same way every time, with no person in the loop? | Yes on `repo-setup`. The runner completed every step on both passes. The first pass found two defects in the eval and the second passed every case. `writing-skills` follows. |
 
 Each row's detail is in `tests/outcomes/<name>/RESULTS.md`, beside the pre-registration or
 design that fixed its question before the runs.

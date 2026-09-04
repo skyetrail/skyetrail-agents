@@ -460,3 +460,11 @@ at a run-root record: the judge's re-run showed it on all three records and 38 o
 anchored, against 10 of 38 in round six. The file-count variance of produced skills is closed as
 by design under the owner's rule that the project constrains the container and the evidence and
 never the model's planning. What remains is the downstream question, parked.
+
+**Evals are a protocol, a script and two skills. 2026-09-04.** A skill keeps one `evals/eval.yaml`
+in one template, with a check a script runs and a sentence a judge decides per case, scored on
+trigger, completion, economy and result. `npm run eval` does everything that runs the same every
+time. `eval-runner` dispatches and judges. `eval-author` writes an eval from a skill's misses. No
+person is in the loop: a case that would ask becomes a question case and an answered case. Economy
+comes from the harness's logs, never from the executor's own account. The first use, on
+`repo-setup`, found two defects in the eval on its first pass and passed every case on its second.

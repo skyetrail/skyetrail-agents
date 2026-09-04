@@ -361,8 +361,9 @@ function check() {
 function results() {
   const root = path.resolve(process.argv[3] || ""); const p = readJson(path.join(root, "plan.json"), null); const ch = readJson(path.join(root, "checks.json"), null);
   if (!p || !ch) { console.error("results needs plan.json and checks.json; run plan and check first"); process.exit(2); }
-  const date = (p.created || "").slice(0, 10) || stamp().slice(0, 8);
-  const outDir = path.resolve(arg("--out", p.plugin_root ? path.join(p.plugin_root, "tests", "evals", p.skill, date) : path.join(root, "results")));
+  // date and time, so two runs on one day keep both pages
+  const when = p.created ? p.created.replace(/[:.]/g, "-").replace("T", "-").slice(0, 19) : stamp();
+  const outDir = path.resolve(arg("--out", p.plugin_root ? path.join(p.plugin_root, "tests", "evals", p.skill, when) : path.join(root, "results")));
   fs.mkdirSync(outDir, { recursive: true });
   const L = [`# Eval: ${p.skill}`, "", `Skill at \`${p.skill_file}\`${p.commit ? `, commit \`${p.commit}\`` : ""}. Harness ${p.harness}, executor ${p.model}, judge ${p.judge}. Static load ${p.static_load.lines} lines across ${p.static_load.files} file(s). Run root \`${root}\`.`, ""];
   if (p.trials_override) L.push(`Trials overridden to ${p.trials_override} on the command line; the eval asks for more.`, "");
