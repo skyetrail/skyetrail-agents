@@ -60,7 +60,7 @@ those too.
 3. Run the generator (see below) and commit the changes.
 
 Write the skill body in clear, everyday language. The
-[skyetrail-writing](plugins/skyetrail/skills/skyetrail-writing/SKILL.md) skill in
+`writing-skills` skill in
 this repository is the project style we follow.
 
 ## Add a new plugin
