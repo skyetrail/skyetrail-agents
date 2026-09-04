@@ -12,7 +12,7 @@ a job.
 - `auditing-skills` checks a skill or a brief against the written rules.
 - `repo-setup` works out the basic facts about a repository and records them.
 
-Shared rule files state the rules those skills apply. This project ran sixteen experiments, testing
+Shared rule files state the rules those skills apply. This project ran seventeen experiments, testing
 the skills, the rules, or both. `METHOD.md` states the practices those experiments produced. This
 page lists the results.
 
@@ -41,17 +41,20 @@ after the one before it. The order is by what each one answered, and not by date
 | mechanical-gate | Does a caller re-running the skill's own audit command get the callee's answer? | Yes, in every run, line for line. Unanchored ticks went from two to zero of 27. The check confirms a token is present, not what it points at. |
 | writing-skills-diet | Does `writing-skills` beat an unaided run, and does a 154-line diet keep what 419 lines had? | Yes on shape. Out of 27, an unaided run scored 15 and the long skill 20. The diet scored 24. Coverage cost one item. Ticks closed to 23 of 24 after the audit moved behind the checklist. |
 | round-five | Does a produced skill improve a fresh review, and does `writing-agents` produce classify then route where the work needs it? | The reviews tied, because unaided Sonnet found every planted fault. Classify then route: skilled 30 of 30, unaided 15 of 30. The branch merges. |
+| round-six | Does a skeleton the run copies fix structure, and does `repo-setup` on memory leave the repository alone and defer the decision? | Yes: identical headings three of three. Yes: untouched, decided, no record, because the skill wrote after deciding. Fixed after the round. |
 
 Each row's detail is in `tests/outcomes/<name>/RESULTS.md`, beside the pre-registration or
 design that fixed its question before the runs.
 
 ## What is still open
 
-- Produced skills vary in heading text and file count, and in their file names and default values.
-  Round six measures a skeleton the run copies, with the section-order check now a failure. The
-  file-as-data sentence is in that skeleton, so the same round measures it.
-- `repo-setup` has no measurement since its rewrite. Round six runs it with and without on the
-  ambiguous fixture, now recording to the project's memory rather than to `AGENTS.md`.
+- Produced skills still vary in file count, 2 to 5, after the skeleton bound the headings three
+  of three and the data sentence three of three. Default values with tests held in one of three.
+- Ticks in `writing-skills` records anchored at 10 of 38 in round six under the strict rule,
+  after 80 percent in round five. In r1 and r2 the record was at the run root, where the mechanical check did not look. It now looks
+  there, unmeasured.
+- `repo-setup` with the corrected step order, write the record then stop, is unmeasured. The
+  measured version did the discovery and the restraint three of three and wrote nothing.
 - Downstream gain on coverage is parked. Unaided Sonnet found every planted fault on both
   fixtures, so a with-and-without comparison on faults has no room. The skill changes the shape of a review. Measuring that needs a fixture with faults the model misses on its own,
   or a rubric for shape, and neither is planned.
