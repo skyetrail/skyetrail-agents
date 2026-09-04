@@ -32,7 +32,7 @@ case passes on each trial.
 | --- | --- | --- |
 | trigger | Does the skill's description select it for this query, and stay silent for a query it should not answer? | A classifier agent sees the plugin's descriptions and the query, never the skill body, and names the skill that applies or none. Three trials. Pass where it names this skill, or names none for a case marked `trigger: none`. |
 | completion | Did the run finish its workflow and return the expected status? | The executor's returned status equals the case's `expect_status`, `DONE` unless set. Where the skill has a checklist, the record does not hold an unticked line. Mechanical. |
-| economy | What did the run cost, and was it within budget? | The executor's tokens, tool calls and wall time, as the harness reports them, against the case's `budget`. Also the static load: the lines `SKILL.md` and its one-hop references add to context. Mechanical. |
+| economy | What did the run cost, and was it within budget? | Tool calls and wall time from a hook log the harness writes during the run, tokens from the harness's own export where it has one, each against the case's `budget`. Also the static load: the lines `SKILL.md` and its one-hop references add to context. Mechanical. See "Economy across harnesses". |
 | result | Is the output right? | The case's `check`, a shell command whose exit code decides, run by the script in the trial directory; and its `expected_behavior`, one paragraph a judge decides from the output alone. |
 
 Trigger is the condition this project could never measure at the ceiling: every description
@@ -61,9 +61,9 @@ The script creates one directory per case and trial under a run root the caller 
 holds `in/`, a copy of the case's fixtures, `out/`, where the executor writes everything it
 produces, and `prompt.md`, the executor's whole instruction. The executor is told that directory
 is its working directory and its only place to write. No two executors share a path. Every check
-runs with that directory as its working directory, in a fresh shell. The runner records the
-executor's returned status and the harness's usage numbers to `executor.json` in the same
-directory, so the script never needs the agent's transcript.
+runs with that directory as its working directory, in a fresh shell. The runner records the executor's returned status to `executor.json` in the same directory, and
+the script fills in the economy numbers from the harness's logs, so nothing ever needs the
+agent's transcript and nothing rests on what the executor says about itself.
 
 ## The template
 
@@ -73,8 +73,10 @@ skill: reviewing-migrations
 model: sonnet            # the model that executes each case
 judge: opus              # the model that judges expected_behavior; stronger than the executor
 trials: 3                # runs per case; a case with a check and no expected_behavior runs once
-budget:
-  tokens: 120000         # per trial, unless a case sets its own
+budget:                  # per trial, unless a case sets its own
+  tool_calls: 40
+  seconds: 600
+  tokens: 120000         # applied only where the harness reports tokens
 cases:
   - name: multi-hazard-migration
     skills: [reviewing-migrations]
@@ -137,7 +139,8 @@ The rules in the template:
   output alone. It never restates the check.
 - `facts` are written into the executor prompt as established facts, one line each, before the
   query. They are how a case answers a question the skill would otherwise ask.
-- `budget` sets the token ceiling per trial. **Proposal:** where a case has `baseline: true`, the
+- `budget` sets the ceiling per trial, in tool calls and seconds always, and in tokens where the
+  harness reports them. **Proposal:** where a case has `baseline: true`, the
   budget for the skilled run is also reported as a multiple of the unaided run's tokens, because
   this project measured a dispatching skill at five times an unaided run and that number should
   stay visible.
@@ -160,14 +163,14 @@ caller re-runs what it can. The script is `eng/run-eval.mjs`, as `npm run eval`.
    `prompt.md` and nothing else. The prompt names the working directory, says there is no person,
    lists the facts, gives the query, and says to write under `out/` and return a status block.
    Executors run in parallel, and none reads another's directory. The runner writes each returned
-   status and the usage numbers to `executor.json`.
+   status and the harness's agent id to `executor.json`.
 3. **Dispatch the trigger classifier.** One agent, three trials, given the plugin's skill
    descriptions and every case's query in shuffled order, never a skill body. It returns the
    skill it would select per query. The runner writes `trigger.json`.
 4. **`npm run eval -- check <run root>`.** The script runs every `check`, twice, records command,
-   exit codes and output, compares each returned status with `expect_status`, counts unticked
-   lines in any record, reads `executor.json` against the budget, and reads `trigger.json`. It
-   writes `checks.json`.
+   exit codes and output, compares each returned status with `expect_status`, counts unticked lines in any record, reads the harness's logs for each agent id into
+   `executor.json` and holds them against the budget, and reads `trigger.json`. It writes
+   `checks.json`.
 5. **Dispatch the judge.** One agent at the eval's `judge` model. It receives each judged output
    with its `expected_behavior` and the case's `in/` files, in shuffled order without trial
    numbers, and returns pass or fail per output with a quote of at most 25 words. It never sees
@@ -182,6 +185,46 @@ caller re-runs what it can. The script is `eng/run-eval.mjs`, as `npm run eval`.
 
 To re-run as the caller, open the run root, run `npm run eval -- check <run root>` again, and
 compare `checks.json`. The judge's outputs and quotes are there to read again.
+
+## Economy across harnesses
+
+The numbers this project has been reading, tokens, tool calls and milliseconds on every agent's
+completion notice, come from the harness this session runs in. They are not the Agent tool's
+documented contract, which returns the subagent's text and its agent id. A spec that rests on them
+runs in one place. The design rests on what holds in both Claude Code and GitHub Copilot CLI as of September 2026.
+
+- A hook runs on every tool call inside a subagent and can append a line to a file. Claude Code's
+  `PostToolUse` payload carries `agent_id`, `tool_name` and `session_id`; Copilot's `postToolUse`
+  carries `toolName`, `sessionId` and a timestamp, and Copilot's persisted session log carries an
+  `agentId` on every event.
+- Neither harness puts tokens in a hook payload. Both export them elsewhere. Claude Code exports them through OpenTelemetry, with `agent.id` and `parent_agent_id` on each metric, and headless mode's cost fields for a whole run. Copilot exports them through its session log's `subagent.completed` event, which
+  carries `durationMs`, `totalTokens` and `totalToolCalls`, through `--usage-output-file`, and
+  through OpenTelemetry spans per subagent.
+
+So the script reads economy from one adapter per harness and normalises it into `executor.json`:
+
+| Number | Claude Code | Copilot CLI | any other harness |
+| --- | --- | --- | --- |
+| tool calls | the hook log, lines with this `agent_id` | the session log, events with this `agentId`, or the hook log | the hook log, or the executor's own list marked as a claim |
+| wall time | first to last hook line for this `agent_id` | `subagent.completed.durationMs` | first to last hook line |
+| tokens | OpenTelemetry, or the completion notice where the harness gives one | `subagent.completed.totalTokens` or `--usage-output-file` | not measured |
+
+The rules that follow.
+
+- Tool calls and seconds are the portable budget. Tokens count only where an adapter reports
+  them, and a missing token figure is "not measured", never a fail.
+- An executor's own account of what it called is a claim. Where a hook log exists, the script
+  compares the two and reports a difference. Where no log exists, the claim is recorded as a
+  claim, as the dispatch protocol says for a check the caller cannot re-run.
+- The repository includes the hook configuration for both harnesses: a `PostToolUse` entry in
+  `.claude/settings.json` and a `postToolUse` entry in `.github/hooks/eval.json`, each appending
+  one JSON line with a timestamp, the agent id where the payload has one, and the tool name, to a
+  log the script names. Hooks run inside subagents in both harnesses, and both load them in non-interactive mode where the repository is trusted.
+- Copilot's cloud agent is out of scope for the runner. Its filesystem is discarded when the job
+  ends, and no API reports a subagent's cost.
+- A parent agent in either harness receives only the subagent's text. So the runner never asks an executor for its own numbers, and the results page names the source of each number.
+
+**Proposal:** the self-report check as a fifth condition, off by default. The executor returns the list of tools it called. The script compares it with the hook log and scores the difference. Whether a skill's runs give an accurate account of their own calls is worth knowing, and the check costs one line in the prompt.
 
 ## The author protocol
 
