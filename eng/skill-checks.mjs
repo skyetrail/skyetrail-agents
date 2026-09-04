@@ -405,7 +405,9 @@ export function evalRecords(skillDir) {
   return walkFiles(skillDir).filter((f) => {
     const rel = path.relative(skillDir, f);
     const base = path.basename(f).toLowerCase();
-    if (/(^|\/)(evals|evaluations)\//.test(rel.split(path.sep).join("/"))) return true;
+    const posix = rel.split(path.sep).join("/");
+    if (/\/fixtures\//.test(posix)) return false; // a fixture is an input, not a record
+    if (/(^|\/)(evals|evaluations)\//.test(posix)) return true;
     return /^eval/.test(base) && /\.(json|ya?ml|md)$/.test(base);
   });
 }
@@ -857,6 +859,7 @@ export const CHECKS = [
       for (const file of evalRecords(ctx.skillDir)) {
         const rel = path.relative(ctx.skillDir, file);
         for (const scenario of evalScenarios(file)) {
+          if (scenario.fields.has("trigger")) continue; // a trigger-none case needs neither a check nor a judgement
           const missing = EVAL_FIELDS.filter((f) => !scenario.fields.has(f) && !(f === "expected_behavior" && scenario.fields.has("check")));
           if (missing.length) out.push(`${rel}: scenario "${scenario.label}" is missing ${missing.join(", ")}`);
         }

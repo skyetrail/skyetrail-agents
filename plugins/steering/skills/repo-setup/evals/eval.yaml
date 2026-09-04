@@ -23,9 +23,9 @@ cases:
       - fixtures/mistlark-app/README.md
       - fixtures/mistlark-app/server.mjs
       - fixtures/mistlark-app/util.mjs
+    repo: true
     facts:
       memory_dir: memory
-    repo: true
     check: "test -f memory/repo-setup.md && grep -q 'npm run lint' memory/repo-setup.md && grep -qx 'Unresolved: none' memory/repo-setup.md && grep -q repo-setup.md memory/MEMORY.md"
 
   - name: asks-which-candidate-when-none-confirm-today
@@ -38,9 +38,9 @@ cases:
       - fixtures/driftline-repo/README.md
       - fixtures/driftline-repo/main.mjs
       - fixtures/driftline-repo/check.py
+    repo: true
     facts:
       memory_dir: memory
-    repo: true
     expect_status: NEEDS_DECISION
     check: "test -f memory/repo-setup.md && grep -q '^Unresolved:' memory/repo-setup.md && ! grep -qx 'Unresolved: none' memory/repo-setup.md && [ ! -d in/node_modules ]"
     expected_behavior: >
@@ -58,9 +58,9 @@ cases:
       - fixtures/driftline-repo/README.md
       - fixtures/driftline-repo/main.mjs
       - fixtures/driftline-repo/check.py
+    repo: true
     facts:
       memory_dir: memory
-    repo: true
       confirmed_lint_command: "make lint — the team runs this today and confirms it passes"
     check: "test -f memory/repo-setup.md && grep -q 'make lint' memory/repo-setup.md && grep -qx 'Unresolved: none' memory/repo-setup.md"
 
@@ -71,9 +71,9 @@ cases:
       - fixtures/emptyshell/package.json
       - fixtures/emptyshell/README.md
       - fixtures/emptyshell/app.mjs
+    repo: true
     facts:
       memory_dir: memory
-    repo: true
     check: "test -f memory/repo-setup.md && ! grep -qi 'confirmed by' memory/repo-setup.md && grep -q '^Unresolved:' memory/repo-setup.md"
     expected_behavior: >
       The record says plainly that it found no lint candidate in this repository, and it does not
