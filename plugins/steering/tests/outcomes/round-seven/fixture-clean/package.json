@@ -1,0 +1,10 @@
+{
+  "name": "tidewatch",
+  "version": "0.4.2",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test",
+    "lint": "node --check src/index.mjs && node --check src/parse.mjs"
+  }
+}
