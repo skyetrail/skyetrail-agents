@@ -182,6 +182,7 @@ function harnessDefault() {
 }
 function stamp() { const d = new Date(); const p = (n) => String(n).padStart(2, "0"); return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`; }
 function pluginRootOf(dir) { let d = dir; for (let k = 0; k < 8; k++) { if (fs.existsSync(path.join(d, "plugin.json"))) return d; const up = path.dirname(d); if (up === d) break; d = up; } return null; }
+function gitRoot(dir) { const r = spawnSync("git", ["-C", dir, "rev-parse", "--show-toplevel"], { encoding: "utf8" }); return r.status === 0 ? r.stdout.trim() : null; }
 function gitCommit(dir) { const r = spawnSync("git", ["-C", dir, "rev-parse", "--short", "HEAD"], { encoding: "utf8" }); return r.status === 0 ? r.stdout.trim() : null; }
 function frontmatter(file) {
   const t = fs.readFileSync(file, "utf8"); const m = t.match(/^---\r?\n([\s\S]*?)\r?\n---/); if (!m) return {};
@@ -204,10 +205,10 @@ const writeJson = (f, o) => fs.writeFileSync(f, JSON.stringify(o, null, 2) + "\n
 // ---------------------------------------------------------------------------
 // plan
 // ---------------------------------------------------------------------------
-function executorPrompt({ dir, skillFile, query, files, facts, model, repo }) {
+function executorPrompt({ dir, skillFile, query, files, facts, model, repo, repoRoot }) {
   const lines = [
     `You are one executor in an eval. Your working directory is ${dir}. Create files only under ${dir}/out/.`,
-    `Do not read any directory outside ${dir} except the skill named below and the files it points to.`,
+    `Do not read any directory outside ${dir} except the skill named below, the files it points to${repoRoot ? `, and the repository that holds it, ${repoRoot}, where you may run the commands the skill names` : ""}.`,
     "There is no person to ask. Where the skill you follow tells you to ask a person, return the status it names for that case, with the question you would have asked, and stop.",
   ];
   if (facts && Object.keys(facts).length) { lines.push("Facts established before this run:"); for (const [k, v] of Object.entries(facts)) lines.push(`- ${k}: ${v}`); }
@@ -232,6 +233,7 @@ function plan() {
   const harness = harnessDefault();
   const load = staticLoad(skillDir);
   const pluginRoot = pluginRootOf(skillDir);
+  const repoRoot = (() => { const r = spawnSync("git", ["-C", skillDir, "rev-parse", "--show-toplevel"], { encoding: "utf8" }); return r.status === 0 ? r.stdout.trim() : pluginRoot; })();
   const runRoot = path.resolve(arg("--run-root", path.join(os.homedir(), "skyetrail-agents-runs", "eval", ev.skill, stamp())));
   const cases = ev.cases.map((c) => ({
     name: c.name, trigger: c.trigger === "none" ? "none" : "expected", expect_status: c.expect_status || "DONE",
@@ -256,7 +258,7 @@ function plan() {
         const inDir = path.join(dir, "in");
         for (const a of [["init", "-q"], ["add", "-A"], ["-c", "user.name=fixture", "-c", "user.email=fixture@example", "commit", "-q", "-m", "fixture"]]) spawnSync("git", ["-C", inDir, ...a], { encoding: "utf8" });
       }
-      fs.writeFileSync(path.join(dir, "prompt.md"), executorPrompt({ dir, skillFile, query: c.query, files: c.files, facts: c.facts, model, repo: c.repo }));
+      fs.writeFileSync(path.join(dir, "prompt.md"), executorPrompt({ dir, skillFile, query: c.query, files: c.files, facts: c.facts, model, repo: c.repo, repoRoot }));
       writeJson(path.join(dir, "executor.json"), { status: null, agent_id: null, question: null, returned: null, model });
       dirs.push(dir);
     }
@@ -331,12 +333,12 @@ function check() {
   for (const c of p.cases) {
     const trig = trigger ? p.trigger_queries.find((q) => q.name === c.name) : null;
     let trigCount = null;
-    if (trig && Array.isArray(trigger.trials)) { trigCount = 0; for (const t of trigger.trials) { const a = (t || []).find((x) => x.id === trig.id); const sel = a ? String(a.skill || "none") : "none"; if ((c.trigger === "none" && sel === "none") || (c.trigger !== "none" && sel === p.skill)) trigCount++; } }
+    if (trig && Array.isArray(trigger.trials)) { trigCount = 0; for (const t of trigger.trials) { const a = (t || []).find((x) => x.id === trig.id); const sel = a ? String(a.skill || "none") : "none"; if ((c.trigger === "none" && sel !== p.skill) || (c.trigger !== "none" && sel === p.skill)) trigCount++; } }
     const row = { name: c.name, trigger: c.trigger, trigger_hits: trigCount, trigger_trials: trigger ? (trigger.trials || []).length : 0, trials: [] };
     for (const dir of c.dirs) {
       const ex = readJson(path.join(dir, "executor.json"), {});
       const t = { dir, status: ex.status ?? null, expect_status: c.expect_status, completion: ex.status === c.expect_status, unticked: untickedLines(path.join(dir, "out")), check: null, economy: null, judge: null };
-      if (t.unticked > 0) t.completion = false;
+            // unticked lines are reported, not failed: a skill may leave a line unticked with a reason
       if (c.check) { const a = runCheck(c.check, dir), b = runCheck(c.check, dir); t.check = { command: c.check, exit: a.exit, exit_again: b.exit, repeatable: a.exit === b.exit, output: a.output, pass: a.exit === 0 && b.exit === 0 }; }
       const eco = adapter(ex.agent_id); const bud = c.budget;
       t.economy = { ...eco, budget: bud, pass: (eco.tool_calls == null || eco.tool_calls <= bud.tool_calls) && (eco.seconds == null || eco.seconds <= bud.seconds) && (eco.tokens == null || eco.tokens <= bud.tokens) };

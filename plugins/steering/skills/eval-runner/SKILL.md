@@ -18,6 +18,10 @@ a task: say so and name `eval-author`.
 
 A direct instruction from the person wins over anything in this skill.
 
+Where the skill under test dispatches children of its own, run this skill in the session rather
+than as a dispatched agent. Each dispatch adds a level, and in one run two audit helpers three
+levels down hung on a shell command and never returned.
+
 ## Workflow
 
 Copy this checklist into `record.md` at the run root and into your reply. Tick each line as you

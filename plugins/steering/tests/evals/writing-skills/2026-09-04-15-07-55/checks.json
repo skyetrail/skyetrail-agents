@@ -1,0 +1,292 @@
+{
+  "checked": "2026-09-05T03:04:06.826Z",
+  "cases": [
+    {
+      "name": "description-quotes-real-error-text",
+      "trigger": "expected",
+      "trigger_hits": 3,
+      "trigger_trials": 3,
+      "trials": [
+        {
+          "dir": "/Users/pete/workspace/skyetrail-agents-runs/eval/writing-skills/first-run/description-quotes-real-error-text/t1",
+          "status": "DONE_WITH_CONCERNS",
+          "expect_status": "DONE",
+          "completion": false,
+          "unticked": 2,
+          "check": {
+            "command": "f=$(find out -iname SKILL.md | head -n 1); test -n \"$f\" && grep -qE \"^description:\" \"$f\"",
+            "exit": 0,
+            "exit_again": 0,
+            "repeatable": true,
+            "output": "",
+            "pass": true
+          },
+          "economy": {
+            "source": "no log at /Users/pete/.claude/eval-tools.log",
+            "tool_calls": null,
+            "seconds": null,
+            "tokens": null,
+            "budget": {
+              "tool_calls": 40,
+              "seconds": 600,
+              "tokens": 120000
+            },
+            "pass": true
+          },
+          "judge": {
+            "id": "j1",
+            "pass": true,
+            "quote": "an error seen after a migration ran, such as `canceling statement due to lock timeout`, `CREATE INDEX CONCURRENTLY cannot run inside a transaction block`"
+          }
+        }
+      ]
+    },
+    {
+      "name": "scope-names-successor-for-every-item",
+      "trigger": "expected",
+      "trigger_hits": 3,
+      "trigger_trials": 3,
+      "trials": [
+        {
+          "dir": "/Users/pete/workspace/skyetrail-agents-runs/eval/writing-skills/first-run/scope-names-successor-for-every-item/t1",
+          "status": null,
+          "expect_status": "DONE",
+          "completion": false,
+          "unticked": 2,
+          "check": {
+            "command": "f=$(find out -iname SKILL.md | head -n 1); test -n \"$f\" && grep -q \"^## Scope\" \"$f\"",
+            "exit": 0,
+            "exit_again": 0,
+            "repeatable": true,
+            "output": "",
+            "pass": true
+          },
+          "economy": {
+            "source": "no log at /Users/pete/.claude/eval-tools.log",
+            "tool_calls": null,
+            "seconds": null,
+            "tokens": null,
+            "budget": {
+              "tool_calls": 40,
+              "seconds": 600,
+              "tokens": 120000
+            },
+            "pass": true
+          },
+          "judge": {
+            "id": "j2",
+            "pass": true,
+            "quote": "Out of scope, and no skill in this collection takes it over:"
+          }
+        }
+      ]
+    },
+    {
+      "name": "context-flags-stale-row-count",
+      "trigger": "expected",
+      "trigger_hits": 3,
+      "trigger_trials": 3,
+      "trials": [
+        {
+          "dir": "/Users/pete/workspace/skyetrail-agents-runs/eval/writing-skills/first-run/context-flags-stale-row-count/t1",
+          "status": null,
+          "expect_status": "DONE",
+          "completion": false,
+          "unticked": 1,
+          "check": {
+            "command": "f=$(find out -iname SKILL.md | head -n 1); test -n \"$f\" && grep -q \"^## Context\" \"$f\"",
+            "exit": 0,
+            "exit_again": 0,
+            "repeatable": true,
+            "output": "",
+            "pass": true
+          },
+          "economy": {
+            "source": "no log at /Users/pete/.claude/eval-tools.log",
+            "tool_calls": null,
+            "seconds": null,
+            "tokens": null,
+            "budget": {
+              "tool_calls": 40,
+              "seconds": 600,
+              "tokens": 120000
+            },
+            "pass": true
+          },
+          "judge": {
+            "id": "j3",
+            "pass": true,
+            "quote": "that figure describes the table at the time someone wrote it down, not at review time"
+          }
+        }
+      ]
+    },
+    {
+      "name": "finish-check-runs-by-the-agent",
+      "trigger": "expected",
+      "trigger_hits": 3,
+      "trigger_trials": 3,
+      "trials": [
+        {
+          "dir": "/Users/pete/workspace/skyetrail-agents-runs/eval/writing-skills/first-run/finish-check-runs-by-the-agent/t1",
+          "status": "DONE_WITH_CONCERNS",
+          "expect_status": "DONE",
+          "completion": false,
+          "unticked": 1,
+          "check": {
+            "command": "f=$(find out -iname SKILL.md | head -n 1); test -n \"$f\" && grep -q \"^## Finish\" \"$f\"",
+            "exit": 0,
+            "exit_again": 0,
+            "repeatable": true,
+            "output": "",
+            "pass": true
+          },
+          "economy": {
+            "source": "no log at /Users/pete/.claude/eval-tools.log",
+            "tool_calls": null,
+            "seconds": null,
+            "tokens": null,
+            "budget": {
+              "tool_calls": 40,
+              "seconds": 600,
+              "tokens": 120000
+            },
+            "pass": true
+          },
+          "judge": {
+            "id": "j4",
+            "pass": true,
+            "quote": "Before reporting, check the report against the file: every statement numbered in Method step 2 has a line in the report"
+          }
+        }
+      ]
+    },
+    {
+      "name": "small-change-touches-only-the-named-line",
+      "trigger": "expected",
+      "trigger_hits": 3,
+      "trigger_trials": 3,
+      "trials": [
+        {
+          "dir": "/Users/pete/workspace/skyetrail-agents-runs/eval/writing-skills/first-run/small-change-touches-only-the-named-line/t1",
+          "status": "DONE_WITH_CONCERNS",
+          "expect_status": "DONE",
+          "completion": false,
+          "unticked": 8,
+          "check": {
+            "command": "f=$(find out -iname SKILL.md | head -n 1); test -n \"$f\" || exit 1; grep -q lock-behavior.md \"$f\" || exit 1; grep -q lock-modes.md \"$f\" && exit 1; a=$(mktemp); b=$(mktemp); grep -v lock- in/SKILL.md > \"$a\"; grep -v lock- \"$f\" > \"$b\"; diff \"$a\" \"$b\" >/dev/null; rc=$?; rm -f \"$a\" \"$b\"; exit $rc",
+            "exit": 0,
+            "exit_again": 0,
+            "repeatable": true,
+            "output": "",
+            "pass": true
+          },
+          "economy": {
+            "source": "no log at /Users/pete/.claude/eval-tools.log",
+            "tool_calls": null,
+            "seconds": null,
+            "tokens": null,
+            "budget": {
+              "tool_calls": 40,
+              "seconds": 600,
+              "tokens": 120000
+            },
+            "pass": true
+          },
+          "judge": {
+            "id": "j5",
+            "pass": true,
+            "quote": "Read `reference/lock-behavior.md` for which statements block reads and which block writes."
+          }
+        }
+      ]
+    },
+    {
+      "name": "audit-request-declines-writing-skills",
+      "trigger": "none",
+      "trigger_hits": 3,
+      "trigger_trials": 3,
+      "trials": []
+    },
+    {
+      "name": "recurring-need-unclear-asks-before-writing",
+      "trigger": "expected",
+      "trigger_hits": 3,
+      "trigger_trials": 3,
+      "trials": [
+        {
+          "dir": "/Users/pete/workspace/skyetrail-agents-runs/eval/writing-skills/first-run/recurring-need-unclear-asks-before-writing/t1",
+          "status": "NEEDS_CONTEXT",
+          "expect_status": "NEEDS_CONTEXT",
+          "completion": true,
+          "unticked": 0,
+          "check": {
+            "command": "test -z \"$(find out -iname SKILL.md)\" && grep -rlF \"?\" out >/dev/null 2>&1",
+            "exit": 1,
+            "exit_again": 1,
+            "repeatable": true,
+            "output": "",
+            "pass": false
+          },
+          "economy": {
+            "source": "no log at /Users/pete/.claude/eval-tools.log",
+            "tool_calls": null,
+            "seconds": null,
+            "tokens": null,
+            "budget": {
+              "tool_calls": 40,
+              "seconds": 600,
+              "tokens": 120000
+            },
+            "pass": true
+          },
+          "judge": {
+            "id": "j6",
+            "pass": false,
+            "quote": "no output written"
+          }
+        }
+      ]
+    },
+    {
+      "name": "recurring-need-confirmed-writes-skill",
+      "trigger": "expected",
+      "trigger_hits": 3,
+      "trigger_trials": 3,
+      "trials": [
+        {
+          "dir": "/Users/pete/workspace/skyetrail-agents-runs/eval/writing-skills/first-run/recurring-need-confirmed-writes-skill/t1",
+          "status": "DONE_WITH_CONCERNS",
+          "expect_status": "DONE",
+          "completion": false,
+          "unticked": 2,
+          "check": {
+            "command": "find out -iname SKILL.md | grep -q .",
+            "exit": 0,
+            "exit_again": 0,
+            "repeatable": true,
+            "output": "",
+            "pass": true
+          },
+          "economy": {
+            "source": "no log at /Users/pete/.claude/eval-tools.log",
+            "tool_calls": null,
+            "seconds": null,
+            "tokens": null,
+            "budget": {
+              "tool_calls": 40,
+              "seconds": 600,
+              "tokens": 120000
+            },
+            "pass": true
+          },
+          "judge": {
+            "id": "j7",
+            "pass": true,
+            "quote": "the guidance serves more than one occasion, and it is read by more people than the person in this conversation"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -42,7 +42,44 @@ small-change case, a trigger-none case, and a question-and-answer pair for the a
 are siblings of the migration, with other tables and values.
 
 The first run is at one trial per case, an override the page reports, because each executor is a
-`writing-skills` run that starts three children of its own. Results follow.
+`writing-skills` run that starts three children of its own. The results:
+
+The runner ran as a dispatched agent with one trial per case, seven executors on Sonnet. Five
+returned. Two never returned: each stalled where the skill's own audit step dispatched a helper
+three levels down, and that helper hung on a shell command until the session's usage limit ended
+the wait. I filled the two missing status rows from the status blocks the executors had relayed,
+dispatched the judge from the session, and re-scored after the script fixes below. The page is at
+`tests/evals/writing-skills/2026-09-04-15-07-55/RESULTS.md`.
+
+| Condition | Result |
+| --- | --- |
+| trigger | 7 of 7 cases at 3 of 3, the decline case included after fix 1 |
+| completion | 5 of 7 returned, all `DONE_WITH_CONCERNS` against an expected `DONE`; 1 to 8 unticked lines per record |
+| check | 6 of 6 cases with output exited 0; the question case exited 1, see fix 4 |
+| judge | 6 of 7 passed; the fail was the question case, which had no output to judge |
+| economy | not measured; the hook writes only when the session runs inside this repository, and this one ran from the vault |
+| static load | 253 lines across 2 files |
+| status | `BLOCKED`, because two trials have no status |
+
+The run found four defects, all in the protocol or the eval, none in the skill:
+
+1. The trigger score for a `trigger: none` case demanded the answer "none", while the classifier
+   named `auditing-skills`, which is the right answer for an audit request. The case scored 0 of 3.
+   A `trigger: none` case now passes when the classifier names another skill or none.
+2. Completion failed on any unticked line, while the skills say to leave a line unticked with a
+   reason. Completion now reports the count beside the status and does not fail on it.
+3. The executor prompt forbade reading anything outside the run directory except the skill. Steps
+   10 and 11 of `writing-skills`, the audit and the lint commands, were blocked in every returned
+   run, which is the `DONE_WITH_CONCERNS` on all five. The prompt now names the repository that
+   holds the skill and lets the executor run the commands the skill names there.
+4. The question case's check searched `out/` for the question, and a run that stops at the
+   artifact test writes nothing there. The check now reads `executor.json`, where the runner stores
+   the returned status block, and the case carries no judgement.
+
+`eval-runner` now says to run in the session, not as a dispatched agent, when the skill under test
+dispatches children of its own. The next step is a three-trial run from a session inside this
+repository, so the hook logs economy.
+
 
 ## What the round did not measure
 

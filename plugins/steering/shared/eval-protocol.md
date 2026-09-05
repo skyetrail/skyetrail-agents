@@ -46,8 +46,8 @@ passes on each trial.
 
 | Condition | Passes where |
 | --- | --- |
-| trigger | A classifier that sees the plugin's skill descriptions and the query, and never a skill body, names this skill. For a case marked `trigger: none` it names none. Three trials. |
-| completion | The executor's returned status equals the case's `expect_status`, `DONE` unless set, and no record the executor wrote holds an unticked line. |
+| trigger | A classifier that sees the plugin's skill descriptions and the query, and never a skill body, names this skill. For a case marked `trigger: none` it names another skill or none. Three trials. |
+| completion | The executor's returned status equals the case's `expect_status`, `DONE` unless set. The count of unticked lines in any record the executor wrote is reported beside it. |
 | economy | Tool calls and seconds are within budget, and tokens are within budget where the harness reports them. |
 | result | The `check` exits zero, and the judge passes the `expected_behavior`. |
 
@@ -65,7 +65,8 @@ The script creates one directory per case and trial under a run root. Each holds
 fixtures; `out/`, where the executor writes everything it produces; `prompt.md`, its whole
 instruction; and `executor.json`, which the runner fills with the returned status and the harness's
 agent id. The executor is told that directory is its working directory and its only place to
-write. No two executors share a path, and none reads another's. Every check runs with that
+write, and that it may read the repository that holds the skill and run the commands the skill
+names there. No two executors share a path, and none reads another's. Every check runs with that
 directory as its working directory.
 
 ## Economy

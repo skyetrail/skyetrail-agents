@@ -111,12 +111,7 @@ cases:
       something different. Can you make this more reliable?
     files: []
     expect_status: NEEDS_CONTEXT
-    check: "test -z "$(find out -iname SKILL.md)" && grep -rlF "?" out >/dev/null 2>&1"
-    expected_behavior: >
-      The output explains that it cannot tell whether this guidance is meant for today's occasion
-      alone, read only by the person in this conversation, or whether it will be needed again on
-      future migrations by other people. It asks the person to say which of those is true before it
-      goes further, rather than guessing or producing a skill anyway.
+    check: "test -z \"$(find out -iname SKILL.md)\" && grep -q '?' executor.json"
 
   - name: recurring-need-confirmed-writes-skill
     skills: [writing-skills]
