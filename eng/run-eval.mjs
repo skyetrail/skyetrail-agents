@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // The mechanical half of the eval protocol, plugins/steering/shared/eval-protocol.md.
 //
-//   npm run eval -- plan <SKILL.md | eval.yaml> [--run-root DIR] [--dry] [--harness claude|copilot]
+//   npm run eval -- plan <SKILL.md | eval.yaml> [--run-root DIR] [--dry] [--harness claude|copilot] [--trials N]
 //   npm run eval -- check <run root>
 //   npm run eval -- results <run root> [--out DIR]
 //
@@ -158,8 +158,9 @@ export function validateEval(ev, { evalDir } = {}) {
     if (none) triggerNone++;
     if (!none && !c.check && !c.expected_behavior) refusals.push(`${id} has neither check nor expected_behavior`);
     if (c.check !== undefined && (typeof c.check !== "string" || /\n/.test(c.check))) refusals.push(`${id}: check is not one shell command`);
-    if (c.expect_status !== undefined && !STATUSES.includes(c.expect_status)) refusals.push(`${id}: expect_status "${c.expect_status}" is not one of ${STATUSES.join(", ")}`);
+    if (c.expect_status !== undefined && !(STATUSES.includes(c.expect_status) || /^[A-Z][A-Z_]+$/.test(String(c.expect_status)))) refusals.push(`${id}: expect_status "${c.expect_status}" is not one of ${STATUSES.join(", ")} or a status the skill declares, in capitals`);
     if (c.facts !== undefined && (typeof c.facts !== "object" || Array.isArray(c.facts))) refusals.push(`${id}: facts is not a map`);
+    if (c.repo !== undefined && typeof c.repo !== "boolean") refusals.push(`${id}: repo is not true or false`);
     if (evalDir && Array.isArray(c.files)) for (const f of c.files) if (!fs.existsSync(path.join(evalDir, f))) refusals.push(`${id}: file ${f} is not under evals/`);
     if (typeof c.query === "string" && /\b(follow|use) the skill\b/i.test(c.query)) warnings.push(`${id}: the query names the skill; a person's request would not (Important)`);
   });
@@ -181,6 +182,7 @@ function harnessDefault() {
 }
 function stamp() { const d = new Date(); const p = (n) => String(n).padStart(2, "0"); return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`; }
 function pluginRootOf(dir) { let d = dir; for (let k = 0; k < 8; k++) { if (fs.existsSync(path.join(d, "plugin.json"))) return d; const up = path.dirname(d); if (up === d) break; d = up; } return null; }
+function gitRoot(dir) { const r = spawnSync("git", ["-C", dir, "rev-parse", "--show-toplevel"], { encoding: "utf8" }); return r.status === 0 ? r.stdout.trim() : null; }
 function gitCommit(dir) { const r = spawnSync("git", ["-C", dir, "rev-parse", "--short", "HEAD"], { encoding: "utf8" }); return r.status === 0 ? r.stdout.trim() : null; }
 function frontmatter(file) {
   const t = fs.readFileSync(file, "utf8"); const m = t.match(/^---\r?\n([\s\S]*?)\r?\n---/); if (!m) return {};
@@ -203,15 +205,15 @@ const writeJson = (f, o) => fs.writeFileSync(f, JSON.stringify(o, null, 2) + "\n
 // ---------------------------------------------------------------------------
 // plan
 // ---------------------------------------------------------------------------
-function executorPrompt({ dir, skillFile, query, files, facts, model }) {
+function executorPrompt({ dir, skillFile, query, files, facts, model, repo, repoRoot }) {
   const lines = [
     `You are one executor in an eval. Your working directory is ${dir}. Create files only under ${dir}/out/.`,
-    `Do not read any directory outside ${dir} except the skill named below and the files it points to.`,
+    `Do not read any directory outside ${dir} except the skill named below, the files it points to${repoRoot ? `, and the repository that holds it, ${repoRoot}, where you may run the commands the skill names` : ""}.`,
     "There is no person to ask. Where the skill you follow tells you to ask a person, return the status it names for that case, with the question you would have asked, and stop.",
   ];
   if (facts && Object.keys(facts).length) { lines.push("Facts established before this run:"); for (const [k, v] of Object.entries(facts)) lines.push(`- ${k}: ${v}`); }
   lines.push(`Read the skill at ${skillFile} and follow it exactly as written. Its relative paths resolve from the directory that holds it.`);
-  if (files.length) lines.push(`The files for this task are under ${dir}/in/: ${files.map((f) => path.basename(f)).join(", ")}.`);
+  if (files.length) lines.push(`The files for this task are under ${dir}/in/: ${files.map((f) => path.basename(f)).join(", ")}.${repo ? ` ${dir}/in is a git repository with one commit; it is the repository this task is about.` : ""}`);
   lines.push(`The request: ${query}`);
   lines.push("When you finish, return exactly this block and nothing after it:", "", "Status: <DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT>", "Question: <the question you would have asked a person, or none>", "Output: <every path under out/ you wrote, one per line>");
   return lines.join("\n") + "\n";
@@ -224,16 +226,19 @@ function plan() {
   const { refusals, warnings } = validateEval(ev, { evalDir });
   for (const w of warnings) console.log(`warning: ${w}`);
   if (refusals.length) { for (const r of refusals) console.log(`refused: ${r}`); process.exit(2); }
-  const model = ev.model || DEFAULTS.model, judge = ev.judge || DEFAULTS.judge, trials = ev.trials || DEFAULTS.trials;
+  const model = ev.model || DEFAULTS.model, judge = ev.judge || DEFAULTS.judge;
+  const trialsOverride = flag("--trials") ? Number(arg("--trials")) : null;
+  const trials = trialsOverride || ev.trials || DEFAULTS.trials;
   const budget = { ...DEFAULTS.budget, ...(ev.budget || {}) };
   const harness = harnessDefault();
   const load = staticLoad(skillDir);
   const pluginRoot = pluginRootOf(skillDir);
+  const repoRoot = (() => { const r = spawnSync("git", ["-C", skillDir, "rev-parse", "--show-toplevel"], { encoding: "utf8" }); return r.status === 0 ? r.stdout.trim() : pluginRoot; })();
   const runRoot = path.resolve(arg("--run-root", path.join(os.homedir(), "skyetrail-agents-runs", "eval", ev.skill, stamp())));
   const cases = ev.cases.map((c) => ({
     name: c.name, trigger: c.trigger === "none" ? "none" : "expected", expect_status: c.expect_status || "DONE",
     check: c.check || null, expected_behavior: c.expected_behavior || null, files: c.files || [], facts: c.facts || {},
-    budget: { ...budget, ...(c.budget || {}) }, baseline: c.baseline === true, query: c.query,
+    budget: { ...budget, ...(c.budget || {}) }, baseline: c.baseline === true, repo: c.repo === true, query: c.query,
     trials: c.trigger === "none" ? 0 : c.expected_behavior ? trials : 1,
   }));
   console.log(`eval ${evalFile}\nskill ${ev.skill} at ${skillFile}\nharness ${harness}, model ${model}, judge ${judge}, trials ${trials}`);
@@ -241,14 +246,19 @@ function plan() {
   for (const c of cases) console.log(`  ${c.name}: ${c.trials} executor run(s), trigger ${c.trigger}, expect ${c.expect_status}${c.check ? ", check" : ""}${c.expected_behavior ? ", judged" : ""}`);
   if (flag("--dry")) { console.log("dry run: nothing written"); return; }
   fs.mkdirSync(runRoot, { recursive: true });
-  const planObj = { skill: ev.skill, skill_file: skillFile, skill_dir: skillDir, eval_file: evalFile, plugin_root: pluginRoot, commit: gitCommit(skillDir), harness, model, judge, trials, budget, static_load: load, warnings, created: new Date().toISOString(), cases: [] };
+  const planObj = { skill: ev.skill, skill_file: skillFile, skill_dir: skillDir, eval_file: evalFile, plugin_root: pluginRoot, commit: gitCommit(skillDir), harness, model, judge, trials, trials_override: trialsOverride, budget, static_load: load, warnings, created: new Date().toISOString(), cases: [] };
   for (const c of cases) {
     const dirs = [];
     for (let t = 1; t <= c.trials; t++) {
       const dir = path.join(runRoot, c.name, `t${t}`);
       fs.mkdirSync(path.join(dir, "in"), { recursive: true }); fs.mkdirSync(path.join(dir, "out"), { recursive: true });
       for (const f of c.files) fs.copyFileSync(path.join(evalDir, f), path.join(dir, "in", path.basename(f)));
-      fs.writeFileSync(path.join(dir, "prompt.md"), executorPrompt({ dir, skillFile, query: c.query, files: c.files, facts: c.facts, model }));
+      if (c.repo) {
+        // the fixture is a repository: one commit, so a skill's git checks have something to read
+        const inDir = path.join(dir, "in");
+        for (const a of [["init", "-q"], ["add", "-A"], ["-c", "user.name=fixture", "-c", "user.email=fixture@example", "commit", "-q", "-m", "fixture"]]) spawnSync("git", ["-C", inDir, ...a], { encoding: "utf8" });
+      }
+      fs.writeFileSync(path.join(dir, "prompt.md"), executorPrompt({ dir, skillFile, query: c.query, files: c.files, facts: c.facts, model, repo: c.repo, repoRoot }));
       writeJson(path.join(dir, "executor.json"), { status: null, agent_id: null, question: null, returned: null, model });
       dirs.push(dir);
     }
@@ -323,12 +333,12 @@ function check() {
   for (const c of p.cases) {
     const trig = trigger ? p.trigger_queries.find((q) => q.name === c.name) : null;
     let trigCount = null;
-    if (trig && Array.isArray(trigger.trials)) { trigCount = 0; for (const t of trigger.trials) { const a = (t || []).find((x) => x.id === trig.id); const sel = a ? String(a.skill || "none") : "none"; if ((c.trigger === "none" && sel === "none") || (c.trigger !== "none" && sel === p.skill)) trigCount++; } }
+    if (trig && Array.isArray(trigger.trials)) { trigCount = 0; for (const t of trigger.trials) { const a = (t || []).find((x) => x.id === trig.id); const sel = a ? String(a.skill || "none") : "none"; if ((c.trigger === "none" && sel !== p.skill) || (c.trigger !== "none" && sel === p.skill)) trigCount++; } }
     const row = { name: c.name, trigger: c.trigger, trigger_hits: trigCount, trigger_trials: trigger ? (trigger.trials || []).length : 0, trials: [] };
     for (const dir of c.dirs) {
       const ex = readJson(path.join(dir, "executor.json"), {});
       const t = { dir, status: ex.status ?? null, expect_status: c.expect_status, completion: ex.status === c.expect_status, unticked: untickedLines(path.join(dir, "out")), check: null, economy: null, judge: null };
-      if (t.unticked > 0) t.completion = false;
+            // unticked lines are reported, not failed: a skill may leave a line unticked with a reason
       if (c.check) { const a = runCheck(c.check, dir), b = runCheck(c.check, dir); t.check = { command: c.check, exit: a.exit, exit_again: b.exit, repeatable: a.exit === b.exit, output: a.output, pass: a.exit === 0 && b.exit === 0 }; }
       const eco = adapter(ex.agent_id); const bud = c.budget;
       t.economy = { ...eco, budget: bud, pass: (eco.tool_calls == null || eco.tool_calls <= bud.tool_calls) && (eco.seconds == null || eco.seconds <= bud.seconds) && (eco.tokens == null || eco.tokens <= bud.tokens) };
@@ -353,10 +363,12 @@ function check() {
 function results() {
   const root = path.resolve(process.argv[3] || ""); const p = readJson(path.join(root, "plan.json"), null); const ch = readJson(path.join(root, "checks.json"), null);
   if (!p || !ch) { console.error("results needs plan.json and checks.json; run plan and check first"); process.exit(2); }
-  const date = (p.created || "").slice(0, 10) || stamp().slice(0, 8);
-  const outDir = path.resolve(arg("--out", p.plugin_root ? path.join(p.plugin_root, "tests", "evals", p.skill, date) : path.join(root, "results")));
+  // date and time, so two runs on one day keep both pages
+  const when = p.created ? p.created.replace(/[:.]/g, "-").replace("T", "-").slice(0, 19) : stamp();
+  const outDir = path.resolve(arg("--out", p.plugin_root ? path.join(p.plugin_root, "tests", "evals", p.skill, when) : path.join(root, "results")));
   fs.mkdirSync(outDir, { recursive: true });
   const L = [`# Eval: ${p.skill}`, "", `Skill at \`${p.skill_file}\`${p.commit ? `, commit \`${p.commit}\`` : ""}. Harness ${p.harness}, executor ${p.model}, judge ${p.judge}. Static load ${p.static_load.lines} lines across ${p.static_load.files} file(s). Run root \`${root}\`.`, ""];
+  if (p.trials_override) L.push(`Trials overridden to ${p.trials_override} on the command line; the eval asks for more.`, "");
   if (p.warnings && p.warnings.length) { L.push("Warnings from plan:", ""); for (const w of p.warnings) L.push(`- ${w}`); L.push(""); }
   L.push("| Case | Trial | trigger | completion | economy | result |", "| --- | --- | --- | --- | --- | --- |");
   let allPass = true, anyPass = false, blocked = false;

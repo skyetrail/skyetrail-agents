@@ -1,0 +1,15 @@
+{
+  "name": "driftline-cli",
+  "version": "1.2.0",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test",
+    "format": "prettier --write .",
+    "verify": "node build.mjs --check && node --test"
+  },
+  "devDependencies": {
+    "eslint": "^9.14.0",
+    "prettier": "^3.3.3"
+  }
+}
