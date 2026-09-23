@@ -8,6 +8,9 @@ description: Writes the runnable eval for a skill, evals/eval.yaml beside its SK
 Produces `evals/eval.yaml` and `evals/fixtures/` beside one skill's `SKILL.md`, in the template
 `../../shared/eval-protocol.md` fixes, and writes nothing else.
 
+The house words in this skill, such as baseline, miss, and tick, keep the one meaning
+`../../shared/terms.md` gives them.
+
 ## Scope
 
 In scope: a new eval for one skill, or a change to an existing one.
@@ -22,10 +25,10 @@ A direct instruction from the person wins over anything in this skill.
 
 Run every `npm` command in this skill from the root of this plugin's repository.
 
-Copy this checklist into `record.md` beside the skill's directory and into your reply. Tick each
-line as you finish it. A tick carries the path, the command, or the section of a file from this
-run that settles the line. The skill's own text settles nothing, and neither does a rule file. A
-line you cannot tick stays unticked and carries one line saying why.
+Copy this checklist into `record.md` beside the skill's directory and into your report. Tick
+each line as you finish it. A tick carries the path, the command, or the section of a file from
+this run that shows the line is done. The skill's own text proves nothing, and neither does a rule
+file. A line you cannot tick stays unticked and carries one line saying why.
 
 ```text
 eval-author
@@ -46,8 +49,9 @@ skill: <absolute path of the SKILL.md>
    skill's own Scope, Failure and Calibration sections, and your report says that no run informed
    the cases.
 2. **One case per numbered miss.** The query is the task the baseline ran, in the person's words.
-   The files are a sibling of that task's fixture: the same shape, different names and values.
-   `expected_behavior` says the miss is absent, in the shape the miss took in the output.
+   The files are a sibling of that task's fixture: the same structure, different names and
+   values. `expected_behavior` says the miss is absent, in terms of what the output shows where the
+   miss occurs.
 3. **The required kinds.** One case the skill must catch. One it must leave alone, whose
    `expected_behavior` says the skill invents nothing. One marked `trigger: none`, a request the
    skill must decline, with no check and no judgement.
@@ -55,8 +59,8 @@ skill: <absolute path of the SKILL.md>
    `NEEDS_CONTEXT`. For each, write a question case, `expect_status: NEEDS_CONTEXT` with a check
    that finds the question in the output, and an answered case with the answer under `facts` and
    `expect_status: DONE`.
-5. **Prefer a command.** Where a shape decides the case, a verdict line, a count, a file that must
-   or must not exist, write it as `check`, one shell command that reads only `in/` and `out/`.
+5. **Prefer a command.** Where a structure decides the case, a verdict line, a count, a file that
+   must or must not exist, write it as `check`, one shell command that reads only `in/` and `out/`.
    Write `expected_behavior` only for what needs a reading, in one paragraph a judge decides from
    the output alone, and never as a restatement of the check.
 6. **Fixtures.** Write every fixture under `evals/fixtures/`. Never copy the file the skill was measured against when it was written. Write a sibling. Where

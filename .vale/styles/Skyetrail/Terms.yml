@@ -1,6 +1,8 @@
 # Terms this project renamed. Each swap is one term that caused a measured
 # problem: a style check flagged "named agent" as padding, and a fresh reader
 # had to re-read "gate" used in three senses. The old form must not come back.
+# The 2026-09-22 readability review retired the rest: plugins/steering/shared/terms.md
+# gives each word its one meaning.
 extends: substitution
 message: "Use '%s' rather than '%s'. This project renamed the term."
 level: error
@@ -8,3 +10,12 @@ ignorecase: true
 swap:
   '\bnamed agents?\b': predefined agent
   '\bcalibration gates?\b': calibration threshold
+  '\bsettl(e|es|ed|ing)\b': decide
+  '\bunsettled\b': undecided
+  '\breturn gates?\b': checks the caller re-runs
+  '\bgat(ed|ing)\b': checked
+  '\bgates? delivery\b': sets the status
+  '\bstop conditions?\b': stopping point
+  '\bshape of (a|the) miss\b': what the reader sees where the miss occurs
+  '\bfailing shapes?\b': failing pattern
+  '\bclosed lists?\b': unmarked list

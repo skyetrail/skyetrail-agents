@@ -1,6 +1,6 @@
 # Outcomes
 
-Every experiment this project ran, and what each one settled.
+Every experiment this project ran, and what each one decided.
 
 ## What was under test
 

@@ -30,7 +30,7 @@ The largest design change since 2026-08-01 rests on the isolated round and the g
 - **A gate is a check the caller re-runs on the artifact it received.** The owner's fix made the
   caller and the callee each assess the gate independently. Six of six runs then passed, against
   zero of six in the round before.
-- **A check the caller cannot re-run does not gate delivery. It becomes a file the caller reads.**
+- **A check the caller cannot re-run is not a gate. It becomes a file the caller reads.**
   The baseline dispatch was the un-recheckable gate. Only the callee ever saw it.
 - **The document fixes the subject of every gate, so no later choice moves it.** One run could not
   satisfy a no-holes check on its draft, wrote a second file, checked that file, and recorded the
@@ -239,7 +239,7 @@ person does not.
 
 This is the second time both rules were cut. The first cut, on 2026-08-01, rested on six run files
 written by hand and analysed as measurements. This one rests on nine recorded runs, a pilot that
-gated them, and a scorer that refused the verdict its own numbers invited. The standing instruction
+screened them, and a scorer that refused the verdict its own numbers invited. The standing instruction
 above still holds: do not change a severity on an argument.
 
 **The trigger test ran on 2026-08-11, and it cannot answer the question.** Earlier entries here said
@@ -247,7 +247,7 @@ nobody had run it. Both arms scored 36 of 36, with zero variance inside an arm. 
 pre-committed to not reading a difference as grounds for cutting a blocking rule, and the scorer
 refused that reading. Both arms' perfect scores leave both readings open: the rules change nothing,
 or the test had no room to show a change. Both rules stay, neither justified nor refuted. Running the
-same design again settles nothing.
+same design again decides nothing.
 
 **Simplified Technical English was adopted for the reader, not for the agent. 2026-08-10.** A blind
 two-arm comparison found no difference in what an agent produced, across two fixtures, with no false
@@ -348,7 +348,7 @@ then wrote that they "were folded into the closing clause". Folding and recordin
 putting back. No rule-conformance audit can see any of this, because the rules judge the form of a
 file and not its subject matter.
 
-**Both description rules are unsettled.** See the reversal above. Settling them needs requests
+**Both description rules are undecided.** See the reversal above. Deciding them needs requests
 near a decision boundary, and enough trials to see a five percent difference. That is a different
 test, not another run of the one in `tests/outcomes/trigger-test/`.
 
@@ -374,7 +374,7 @@ runs made. `TaskCreate` writes a pending to-do item and does not run a model, `T
 back, and `SendMessage` needs a teammate someone already named. One run tried `claude -p` and
 recorded `401 OAuth access token has been revoked`. Design no step that dispatches from inside a run.
 
-Mechanical checks are settled by two commands. `npm run audit -- <path>` runs `eng/audit-skill.mjs` against
+The mechanical checks come from `npm run audit` and `npm run lint`. `npm run audit -- <path>` runs `eng/audit-skill.mjs` against
 one file, from anywhere. `npm run lint` runs `eng/generate-readmes.mjs --check` over the whole
 repository from its root.
 
