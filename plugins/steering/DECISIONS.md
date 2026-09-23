@@ -49,6 +49,10 @@ audit reached any of them.
 **One working directory per run, and no earlier output for the same task within reach.
 2026-08-12.** Repetition without isolation measures nothing. `TESTING.md` states both contamination
 cases and the checks that catch them.
+- **No check in `writing-skills` or `writing-agents` holds delivery back, a gate included.
+  2026-09-23.** A gate's result sets the status the run reports, and the artifact is delivered
+  whatever that result is. This replaces the wording of the two entries above that say a check
+  gates or blocks delivery. The readability review of 2026-09-22 found three files that still said otherwise.
 
 ## Structure
 

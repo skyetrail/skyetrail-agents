@@ -1,10 +1,10 @@
 # Skeleton for a produced SKILL.md
 
-Copy everything below the line into the new `SKILL.md`. Keep the headings and their order. Fill
-each section, and delete only the notes in angle brackets. A section whose condition is not met
-is deleted whole, and the notes say which ones.
-
----
+Copy the lines between the opening fence line, `` ```markdown ``, and the closing fence line into
+the new `SKILL.md`. Leave out those two lines, so the new file starts with the `---` line that
+opens the frontmatter. Keep the headings and their order. Replace each note in angle brackets
+with the text it asks for. A section whose condition is not met is deleted whole, and the notes
+say which ones.
 
 ```markdown
 ---

@@ -19,10 +19,10 @@ Use `../../shared/steering-rules.md` for every target. Then add a file for what 
 another for each condition the target meets.
 
 - A SKILL.md. Add `../../shared/skill-rules.md`.
-- A target meeting the **hand-off** condition, meaning the agent reading the target itself will not
-  see the conversation its author had. Add `../../shared/handoff-rules.md`. A prompt written for a
-  subagent and a hand-off brief are two examples, not the whole list. A file of rules for writing
-  hand-off prompts does not meet it, because you read that file inside this conversation.
+- A target meeting the **hand-off** condition, meaning an agent starts from the target as its instruction
+  and returns its results to a caller that did not watch it work. Add `../../shared/handoff-rules.md`. A prompt written for a
+  subagent and the prompt of a scheduled run are two examples, not the whole list. A file of rules for writing
+  hand-off prompts does not meet it, because no agent starts from it as its instruction.
   `../../shared/steering-rules.md` states the test and why two earlier audits split on it.
 - Anything else written to shape what an agent does. A command, a runbook, and a one-off request
   are examples, not the whole list. Where a person wrote it to steer an agent, it belongs here,
@@ -35,8 +35,7 @@ same document.
 Where the target is none of these, stop and report `OUT_OF_SCOPE`. Say what the target appears to
 be. Do not force the rules onto it. Where you cannot read the target or a rule file, stop and
 report `BLOCKED`. Name the file you could not read. Do not audit from memory instead. These stop conditions sit here, ahead of the
-workflow, not beside the report. They are pre-work gates. They decide whether the audit starts at
-all.
+workflow, not beside the report. They decide whether the audit starts at all.
 
 ## Where this stops
 

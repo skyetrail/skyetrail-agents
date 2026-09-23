@@ -32,8 +32,8 @@ the artifact it produces before it states any step.
 | Skill | What it produces |
 | --- | --- |
 | `writing-skills` | A SKILL.md, its reference files, and a record measuring what the skill changed. |
-| `writing-agents` | A prompt for an agent that will not see this conversation, and the caller side that dispatches it. |
-| `auditing-skills` | A findings table ordered by severity, and the three things to fix first. It edits no file. A blocking defect still holds a skill back. |
+| `writing-agents` | A prompt that an agent starts from as its instruction, and the caller side that dispatches it. |
+| `auditing-skills` | A findings table ordered by severity, and the three things to fix first. It edits no file. A blocking defect means the skill needs work before use. |
 | `repo-setup` | A checked record of a repository's basic facts, written to the project's memory as `repo-setup.md`. |
 | `eval-author` | The runnable eval for a skill, `evals/eval.yaml` beside its `SKILL.md`, in one template. |
 | `eval-runner` | A results page from running a skill's eval with no person in the loop, one fresh executor per case. |
@@ -53,7 +53,7 @@ One re-run confirmed that by direct count and recursive diff.
 | --- | --- |
 | [steering-rules.md](./shared/steering-rules.md) | The rules for anything written to shape an agent's behaviour. |
 | [skill-rules.md](./shared/skill-rules.md) | The rules that apply when the target is a SKILL.md. |
-| [handoff-rules.md](./shared/handoff-rules.md) | The rules that apply when the agent will not see this conversation. |
+| [handoff-rules.md](./shared/handoff-rules.md) | The rules that apply when an agent starts from the prompt and returns its results to a caller that did not watch it work. |
 | [dispatch-protocol.md](./shared/dispatch-protocol.md) | What the caller does to dispatch an agent, and with what comes back. |
 | [authoring.md](./shared/authoring.md) | Whether a request needs a script, an answer, a prompt or a skill. |
 | [lint.md](./shared/lint.md) | Which command settles the mechanical checks, and what to do when it will not run. |
@@ -101,22 +101,25 @@ travels with the artifact, in a record naming the check that did not run. Nothin
 skipped, and nothing is held back.
 
 A word this page uses precisely. A **gate** is a check the caller re-runs on the artifact it
-received. A check only the author can see is a **report**, and a report never holds delivery back.
+received, and its result sets the status the run reports. A check only the author can see is a
+**report**. In `writing-skills` and `writing-agents`, neither one holds delivery back.
 
 ## What it is for
 
 Install this plugin if you write skills or agent prompts, and you want evidence that they work.
 
 1. Write against a baseline. A fresh agent runs a realistic task with no steering loaded. Its
-   mistakes decide what the steering says, and nothing else adds a line.
+   mistakes decide what the steering adds, and it adds nothing for what the model already gets
+   right.
 2. Measure on Claude Sonnet 5. Sonnet executes these skills, so Sonnet runs the test. Give one task
    to two arms, with an isolated working directory per run. Compare the delivered artifacts.
 3. Audit last, and expect little. An audit measures conformance to the rules. It cannot see whether
    the file works.
 
-One rule now governs every gate in these skills. A gate is a check the caller re-runs on the
-artifact it received. Anything the caller cannot re-run stops gating delivery, and becomes a file
-the caller reads. The measurement behind that rule is below.
+One rule now governs every gate in `writing-skills` and `writing-agents`. A gate is a check the caller re-runs on the
+artifact it received. Its result sets the status the run reports, and the artifact is delivered
+whatever that result is. Anything the caller cannot re-run is not a gate, and becomes a file the
+caller reads. The measurement behind that rule is below.
 
 [METHOD.md](./METHOD.md) states each practice and names the failure that produced it. Read it
 before you change a rule file.

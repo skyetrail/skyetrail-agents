@@ -20,6 +20,8 @@ A direct instruction from the person wins over anything in this skill.
 
 ## Workflow
 
+Run every `npm` command in this skill from the root of this plugin's repository.
+
 Copy this checklist into `record.md` beside the skill's directory and into your reply. Tick each
 line as you finish it. A tick carries the path, the command, or the section of a file from this
 run that settles the line. The skill's own text settles nothing, and neither does a rule file. A
@@ -59,8 +61,8 @@ skill: <absolute path of the SKILL.md>
    the output alone, and never as a restatement of the check.
 6. **Fixtures.** Write every fixture under `evals/fixtures/`. Never copy the file the skill was measured against when it was written. Write a sibling. Where
    the fixture is a repository, mark the case `repo: true`.
-7. **Run the dry plan.** Run `npm run eval -- plan <path to SKILL.md> --dry` from the directory that holds
-   this plugin's `package.json` and paste its output. Fix every refusal and every warning it
+7. **Run the dry plan.** Run `npm run eval -- plan <path to SKILL.md> --dry` from the root of this
+   plugin's repository and paste its output. Fix every refusal and every warning it
    prints, then run it again.
 8. **Audit.** Run `npm run audit -- <path to SKILL.md>` and paste its output. The `eval-template`
    check passes.

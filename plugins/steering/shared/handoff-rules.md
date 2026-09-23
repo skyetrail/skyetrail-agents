@@ -1,6 +1,7 @@
 # Hand-off rules
 
-These rules apply only when the agent will not see the conversation the author had.
+These rules apply only when an agent starts from the document as its instruction, and returns its
+results to a caller that did not watch it work.
 Read this file with `./steering-rules.md` when the **hand-off** condition is met. Do not read it otherwise.
 
 Severity, the default outcome, warn, and reporting work exactly as in `./steering-rules.md`, and

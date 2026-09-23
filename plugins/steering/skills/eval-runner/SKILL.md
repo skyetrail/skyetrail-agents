@@ -24,6 +24,8 @@ levels down hung on a shell command and never returned.
 
 ## Workflow
 
+Run every `npm` command in this skill from the root of this plugin's repository.
+
 Copy this checklist into `record.md` at the run root and into your reply. Tick each line as you
 finish it. A tick carries the path, the command, or the section of a file from this run that
 settles the line. The skill's own text settles nothing, and neither does a rule file. A line you
@@ -41,8 +43,8 @@ run root: <absolute path>
 [ ] 7 no file of the skill under test changed; git status on its directory pasted
 ```
 
-1. **Plan.** Run `npm run eval -- plan <path to SKILL.md> --run-root <root>` from the directory
-   that holds this plugin's `package.json`, with a run root outside every repository, and paste
+1. **Plan.** Run `npm run eval -- plan <path to SKILL.md> --run-root <root>` from the root of
+   this plugin's repository, with a run root outside every repository, and paste
    its output into `record.md`. Where it prints a refusal, stop and return `NEEDS_CONTEXT` with
    the rule it names. The plan writes one directory per case and trial, each with `prompt.md`.
 2. **Dispatch the executors.** For each directory in `plan.json`, dispatch one fresh agent with

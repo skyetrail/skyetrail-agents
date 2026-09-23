@@ -25,7 +25,7 @@ In a host that uses slash commands:
 | `eval-author` | 1.0.0 | Writes the runnable eval for a skill, evals/eval.yaml beside its SKILL.md with fixtures beside it, in the one template the eval protocol fixes, from the misses a measurement found or from the skill's own scope. Use whenever someone asks to write, create or add an eval, evals, test cases or scenarios for a skill, when writing-skills has numbered the misses for a skill it is writing, or when a skill has no evals directory and someone wants it tested. Use it too when an existing eval is refused by npm run eval. |
 | `eval-runner` | 1.0.0 | Runs a skill's eval, the runnable test at evals/eval.yaml beside its SKILL.md, with no person in the loop, dispatching one fresh executor per case and trial, and writes a results page a caller can re-check. Use whenever someone asks to run or check the evals for a skill, or wants to know whether a skill still passes. Use it before merging a change to a skill, and when a skill has an evals directory that nobody has run. |
 | `repo-setup` | 1.0.0 | Establishes the basic facts about the repository an agent is working in, starting with its lint command, and records them in the project's memory so no later agent has to work them out again. Use whenever someone asks to set up, configure, or onboard a repository for agent work, asks what the lint or test or build command here is, says an agent could not find the lint command, or when a skill needs a repository fact that has not been recorded yet. Safe to run again at any time. |
-| `writing-agents` | 1.0.0 | Writes the prompt for an agent that will not see the current conversation. Also writes the caller side, which dispatches that prompt and handles what comes back. The result is an agents/*.md definition or a prompt template. Use this whenever someone mentions handing work to a subagent, or dispatching or spawning agents. It also applies to writing a prompt or a template for an agent, and to running work in parallel across several agents. Use it too for turning a predefined agent into something composed at the point of dispatch. Use it also when a subagent came back with nothing useful, returned a summary instead of the work, ignored half its instruction, or ran out of context. Use it even when the word agent is not used, if work is being handed to something that starts with no context. |
+| `writing-agents` | 1.0.0 | Writes the prompt that an agent starts from as its whole instruction, such as a subagent or a scheduled run. Also writes the caller side, which dispatches that prompt and handles what comes back. The result is an agents/*.md definition or a prompt template. Use this whenever someone mentions handing work to a subagent, or dispatching or spawning agents. It also applies to writing a prompt or a template for an agent, and to running work in parallel across several agents. Use it too for turning a predefined agent into something composed at the point of dispatch. Use it also when a subagent came back with nothing useful, returned a summary instead of the work, ignored half its instruction, or ran out of context. Use it even when the word agent is not used, if work is being handed to something that starts from the text written for it. |
 | `writing-skills` | 1.0.0 | Writes a new Agent Skill or fixes an existing one, producing a SKILL.md, its reference files, and a record of what the skill changed. Use this whenever someone mentions writing, creating, drafting, or improving a skill, a SKILL.md, or a skill description. It also applies when someone asks how to make an agent do something the same way every time, when a skill does not trigger or does not load, when a skill is being ignored, or when an agent forgets its instructions partway through a task. Use it when someone wants a runbook, a checklist, or a prompt they keep retyping turned into something reusable. Use it even when the word skill never appears, if the request is about capturing a repeatable way of working. |
 
 ## Contents
@@ -62,8 +62,8 @@ the artifact it produces before it states any step.
 | Skill | What it produces |
 | --- | --- |
 | `writing-skills` | A SKILL.md, its reference files, and a record measuring what the skill changed. |
-| `writing-agents` | A prompt for an agent that will not see this conversation, and the caller side that dispatches it. |
-| `auditing-skills` | A findings table ordered by severity, and the three things to fix first. It edits no file. A blocking defect still holds a skill back. |
+| `writing-agents` | A prompt that an agent starts from as its instruction, and the caller side that dispatches it. |
+| `auditing-skills` | A findings table ordered by severity, and the three things to fix first. It edits no file. A blocking defect means the skill needs work before use. |
 | `repo-setup` | A checked record of a repository's basic facts, written to the project's memory as `repo-setup.md`. |
 | `eval-author` | The runnable eval for a skill, `evals/eval.yaml` beside its `SKILL.md`, in one template. |
 | `eval-runner` | A results page from running a skill's eval with no person in the loop, one fresh executor per case. |
@@ -83,7 +83,7 @@ One re-run confirmed that by direct count and recursive diff.
 | --- | --- |
 | [steering-rules.md](./shared/steering-rules.md) | The rules for anything written to shape an agent's behaviour. |
 | [skill-rules.md](./shared/skill-rules.md) | The rules that apply when the target is a SKILL.md. |
-| [handoff-rules.md](./shared/handoff-rules.md) | The rules that apply when the agent will not see this conversation. |
+| [handoff-rules.md](./shared/handoff-rules.md) | The rules that apply when an agent starts from the prompt and returns its results to a caller that did not watch it work. |
 | [dispatch-protocol.md](./shared/dispatch-protocol.md) | What the caller does to dispatch an agent, and with what comes back. |
 | [authoring.md](./shared/authoring.md) | Whether a request needs a script, an answer, a prompt or a skill. |
 | [lint.md](./shared/lint.md) | Which command settles the mechanical checks, and what to do when it will not run. |
@@ -131,22 +131,25 @@ travels with the artifact, in a record naming the check that did not run. Nothin
 skipped, and nothing is held back.
 
 A word this page uses precisely. A **gate** is a check the caller re-runs on the artifact it
-received. A check only the author can see is a **report**, and a report never holds delivery back.
+received, and its result sets the status the run reports. A check only the author can see is a
+**report**. In `writing-skills` and `writing-agents`, neither one holds delivery back.
 
 ## What it is for
 
 Install this plugin if you write skills or agent prompts, and you want evidence that they work.
 
 1. Write against a baseline. A fresh agent runs a realistic task with no steering loaded. Its
-   mistakes decide what the steering says, and nothing else adds a line.
+   mistakes decide what the steering adds, and it adds nothing for what the model already gets
+   right.
 2. Measure on Claude Sonnet 5. Sonnet executes these skills, so Sonnet runs the test. Give one task
    to two arms, with an isolated working directory per run. Compare the delivered artifacts.
 3. Audit last, and expect little. An audit measures conformance to the rules. It cannot see whether
    the file works.
 
-One rule now governs every gate in these skills. A gate is a check the caller re-runs on the
-artifact it received. Anything the caller cannot re-run stops gating delivery, and becomes a file
-the caller reads. The measurement behind that rule is below.
+One rule now governs every gate in `writing-skills` and `writing-agents`. A gate is a check the caller re-runs on the
+artifact it received. Its result sets the status the run reports, and the artifact is delivered
+whatever that result is. Anything the caller cannot re-run is not a gate, and becomes a file the
+caller reads. The measurement behind that rule is below.
 
 [METHOD.md](./METHOD.md) states each practice and names the failure that produced it. Read it
 before you change a rule file.

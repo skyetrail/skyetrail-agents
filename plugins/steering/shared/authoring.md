@@ -32,10 +32,10 @@ Artifact test
            returns the answer, and running it needs no judgement.  yes | no | cannot tell
 2 answer   The guidance serves one occasion, and the only reader
            is the person in this conversation.                     yes | no | cannot tell
-3 prompt   The agent that needs the guidance will not hold this
-           conversation.                                           yes | no | cannot tell
-4 skill    The agent that needs the guidance holds this
-           conversation.                                           yes | no | cannot tell
+3 prompt   The guidance is the text the agent starts from, as
+           its instruction.                                        yes | no | cannot tell
+4 skill    An agent loads the guidance partway through its work,
+           on more than one occasion.                              yes | no | cannot tell
 
 Class:
 Deciding test:
@@ -55,10 +55,12 @@ Take the first test that reads `yes`, and act on it.
 3. **A prompt.** Use `writing-agents`.
 4. **A skill.** Use `writing-skills`.
 
-A subagent, a scheduled run, and a fresh session are examples of an agent that will not hold this
-conversation. They are not the whole list. An agent holds this conversation where the turns you
-are reading are in its context. An agent given a transcript or a summary of it does not hold it,
-and neither does a fresh session.
+The prompt for a subagent and the prompt of a scheduled run are examples of guidance an agent
+starts from. So is a transcript or a summary of a conversation given to a fresh agent. A skill
+differs, because an agent loads it partway through its work, whether a person or a caller's
+prompt started that work. A skill that a subagent or a scheduled run loads is still a skill. So is
+guidance a person starts by a slash command on more than one occasion, and test 3 does not hold
+for it.
 
 Where the class names a skill other than the one you run, say which test held. Name that skill.
 Hand the request over. Do not write the artifact your own skill produces.
@@ -100,8 +102,9 @@ is not.
 
 Where you already wrote part of the artifact, say where it sits and name the test that did not
 settle. That text is a draft. A draft is not the deliverable. Naming a status beside it does not
-make it one. Leave the keep-or-discard call to the person. The same holds for any other gate your
-skill names and you could not run.
+make it one. Leave the keep-or-discard call to the person. This holds only for an unsettled
+artifact test. Where a later check could not run, your skill still delivers the artifact.
+Name that check in your report.
 
 ## Requests with more than one kind of work
 
@@ -115,11 +118,12 @@ matter.
 
 Write down what you know about the subject that a reader must have. Do this before you apply any
 section order. Keep that list. Check the finished artifact against it. Where you cannot find an
-item in it, change the order. Do not drop the item.
+item in it, change the order. Do not drop the item, unless your skill measured that the model
+gets it right without help.
 
 Then read the finished artifact once more. Name every instruction in it that came from your
 knowledge of the subject rather than from a rule file. Where you can name none, you dropped them
-all. Put them back.
+all. Put them back, except an item your skill measured the model gets right without help.
 
 One run showed this loss. For one task, two agents wrote independently, and the agent holding the
 rule files left out four things the agent without them wrote.

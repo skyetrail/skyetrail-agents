@@ -1,6 +1,6 @@
 # Writing style
 
-Check every document with the vale npm script. From the repository root:
+Check every document with the vale npm script. From the root of this plugin's repository:
 
 ```sh
 npm run vale

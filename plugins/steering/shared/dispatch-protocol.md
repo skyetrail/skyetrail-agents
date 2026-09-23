@@ -1,13 +1,13 @@
 # Dispatch protocol
 
 The caller's side of dispatching an agent. `./steering-rules.md` covers what the prompt says.
-`./handoff-rules.md` covers everything that applies because the dispatched agent will not see this
-conversation. That includes the report's sections and the caller's side of composing the prompt.
+`./handoff-rules.md` covers everything that applies because the dispatched agent starts from the
+prompt and returns its results to a caller that did not watch it work. That includes the report's sections and the caller's side of composing the prompt.
 This file covers what the caller does with both.
 
-Read `./handoff-rules.md` when you compose a prompt. Do not read it when you audit this file. The
-prompts this file governs are hand-offs. This file is not one, because you are reading it inside
-the conversation its author is having.
+Read `./handoff-rules.md` when you compose a prompt that meets the **hand-off** condition. Do not read it when you audit this file. Most
+prompts this file governs are hand-offs. This file is not one, because no agent starts from it as
+its instruction.
 
 The skill `writing-agents` applies this file. This file supplies criteria and defines no task of its
 own.
@@ -75,8 +75,9 @@ who invoked a skill directly is its caller.
 7. An agent that dispatches work collects the result before its own turn ends. A dispatched task with no collected result is unfinished work, and not a completed dispatch.
 8. The prompt names the model and the effort level. Left to inherit from the calling session, two
    runs of one prompt stop being comparable.
-9. A check the caller cannot re-run does not gate delivery. Turn it into an artifact instead. The
-   run writes what it saw to a file, and the caller checks that file's existence and content.
+9. A check the caller cannot re-run is not a gate, so its result does not set the status the run
+   reports. Have the run write what it saw to a file, and the caller checks that file's existence
+   and content. No check holds delivery back, a gate included.
 
 ## Evidence
 
@@ -134,13 +135,14 @@ does instead, best first.
 
 Believing a claim is a legitimate answer. Presenting it as an independent check is not.
 
-Invariant 9 exists because one recorded gate required a dispatch inside the agent's session, which
-the caller never sees. In six runs under that gate, every one delivered a file whose own text says
-it is not the deliverable. Without that gate, two runs each delivered something usable. The gate
-blocked every delivery, and the caller could check none of it.
+Invariant 9 exists because one recorded check held delivery back until a dispatch inside the
+agent's session had run, which the caller never sees. In six runs under that check, every one
+delivered a file whose own text says it is not the deliverable. Without that check, two runs each
+delivered something usable. The check held back every delivery, and the caller could check none
+of it.
 
-Keep the dispatch, and have it write its result to a file, gating on that file's existence and
-content. The caller reads that file and gets the same answer every time.
+Keep the dispatch, and have it write its result to a file. The status then comes from that file's
+existence and content. The caller reads that file and gets the same answer every time.
 
 ## Statuses
 
@@ -154,11 +156,12 @@ than anything about the domain, so every template uses them with the same meanin
 | --- | --- | --- | --- |
 | DONE | The work is finished and its checks pass. | Every check the prompt named, each with its command, its path, and the lines that decide it. | Check the report is complete. Re-run each reproducible check against the delivered path. |
 | DONE_WITH_CONCERNS | The work is finished and the agent has doubts worth reading. | The DONE evidence, and each concern stated apart from it. A concern does not include a command. | Do the DONE re-runs. Read every concern. Decide each one before using the result. |
-| BLOCKED | The agent cannot finish. | The last command run, its output, its path, and where the partial work sits. | Re-run that command against the delivered path. Fix the cause, or report the block upward. Do not re-send the same prompt. |
+| BLOCKED | A required step did not run, or the agent cannot finish. | The step that did not run, the last command run, its output, its path, and the path of the artifact it delivered, whole or partial. | Re-run that command against the delivered path. Read the delivered artifact. Fix the cause, or report the block upward. Do not re-send the same prompt. |
 | NEEDS_CONTEXT | The instruction was insufficient. This is the caller's failure, not the agent's. | The missing field or hole, named, and where the agent looked for it. No command output, because the run did not start. | Supply what was missing. Then re-dispatch. Fix the template too, so the next call includes it. |
 
 A check that did not run is not a concern. If a required step was skipped or deferred, the status
-is BLOCKED, or NEEDS_CONTEXT when the cause is something the caller failed to supply.
+is BLOCKED, or NEEDS_CONTEXT when the cause is something the caller failed to supply. A BLOCKED
+run still delivers its artifact and names the step that did not run.
 
 Every status declares whether it affects only the agent reporting it or stops the whole run. The
 four above affect one agent. A status added for a run may not.

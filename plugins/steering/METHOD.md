@@ -16,7 +16,7 @@ preference, so this page lists none.
 The method below runs in a fixed order: write, then measure on the model that executes, then audit.
 
 **Write against a baseline.** A fresh agent gets a realistic task and no steering. Its mistakes
-decide what the steering says. Every line costs context on every run, so a line that states what the
+decide what the steering adds. Every line costs context on every run, so a line that states what the
 model already does is a loss. `tests/baselines/` holds one record per skill. Those four records are
 stale: no baseline has run since 2026-08-01, and two skills changed on 2026-08-12.
 
@@ -57,7 +57,7 @@ for the first time, and it found defects no audit could reach. The record is in
 
 ### Building
 
-**1. Measure a baseline before you write, and add only what it missed.** Asked for a release-notes
+**1. Measure a baseline before you write, and add nothing for what it already got right.** Asked for a release-notes
 skill, `writing-skills` ran four baselines. The model made the same six judgement calls correctly
 every time, so the skill included none of them. Both failures that repeated are an invented version
 number stated as fact and a different document form each run. Forbid the baseline agent to load any
@@ -105,7 +105,8 @@ check. It audited the copy and deleted it. That run then reported 18 passes on a
 passes and 2 failures. The honest runs scored worse than the run that fabricated.
 
 The fix makes the caller and the callee each assess the gate independently. Anything the caller
-cannot re-run stops gating delivery and becomes a file the caller reads. **Six of six runs then
+cannot re-run is not a gate, and becomes a file the caller reads. No check in `writing-skills` or
+`writing-agents` holds delivery back. **Six of six runs then
 delivered.** A caller caught a false claim by re-running one run's own check. The run had ticked a
 line claiming that every path in it opens, but three of its five paths do not exist. Neither earlier
 cheat recurred.
@@ -113,7 +114,7 @@ cheat recurred.
 These consequences follow.
 
 1. Check that the environment can satisfy every gate you write. A gate that cannot be satisfied
-   where the skill runs gets cheated, or it blocks delivery.
+   where the skill runs gets cheated, or it fails on every run.
 2. Prefer a mechanical check. `npm run audit` runs `eng/audit-skill.mjs` over one file and reproduces
    exactly on every re-run. It is the only component that has been honest in every round that
    measured it.
@@ -243,7 +244,7 @@ criteria test the action taken per disposition. The fault appears where the work
 the artifact has a natural unit to count.
 
 **A gate the environment cannot satisfy.** Practice 4 gives the numbers. Such a gate gets cheated or
-blocks delivery. A fifth rewrite of its wording will not change that.
+fails on every run. A fifth rewrite of its wording will not change that.
 
 **A warning naming the exact loss, and a step written to prevent it.** Round two of `sonnet-exec`
 added a sentence naming the item lost in round one. Both fresh runs read the page holding that

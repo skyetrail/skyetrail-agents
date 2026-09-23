@@ -80,7 +80,10 @@ hand-off never reads them.
 **Conditions.** Use these and nothing else.
 
 - always, the row applies to every document these rules cover
-- **hand-off**, the agent will not see the conversation the author has been having
+- **hand-off**, an agent starts from the document as its instruction, and returns its results to
+  a caller that did not watch it work, such as a dispatching agent or the owner of a scheduled run.
+  Where the document does not say who reads its results, a prompt for a subagent or a scheduled
+  run meets it, and a command or instruction file a person runs in their own session does not
 - **changes something**, the work this document steers writes a file or any other state that
   outlives the run, whether the document carries out that work itself or a caller applies it. A
   file the work writes to store its own findings counts.
@@ -94,8 +97,8 @@ conditions it meets as a claim to check, not as a fact to accept. Otherwise an a
 a rule by writing one sentence about the document.
 
 Every condition is about the document in front of you, not about anything that document describes.
-A file of rules for writing hand-off prompts is not itself a hand-off, because the agent reading it
-sits in the conversation its author is having.
+A file of rules for writing hand-off prompts is not itself a hand-off, because no agent starts from
+it as its instruction, and a skill applies it as criteria.
 
 To decide **describes work**, ask what a reader does with the document. Where a reader follows it,
 the condition holds. Where a reader holds it against another document and judges that one, it
