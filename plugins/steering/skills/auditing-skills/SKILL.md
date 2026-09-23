@@ -9,9 +9,12 @@ This audit produces a findings table, ordered by severity, and the three things 
 Report section below fixes that table's columns. This audit changes nothing.
 
 One pass checks this project's best practices in two parts, which do not overlap. The command
-`npm run audit -- <path>` settles every mechanical check. The rule files settle every judgement
+`npm run audit -- <path>` decides every mechanical check. The rule files decide every judgement
 check. Never re-derive a mechanical check by hand, even where the answer looks plain. This file
 calls `npm run audit` the command. The word audit stays with this pass, which is judgement work.
+
+The house words in this skill, such as caller, condition, and warn, keep the one meaning
+`../../shared/terms.md` gives them.
 
 ## Which rules apply
 
@@ -19,24 +22,25 @@ Use `../../shared/steering-rules.md` for every target. Then add a file for what 
 another for each condition the target meets.
 
 - A SKILL.md. Add `../../shared/skill-rules.md`.
-- A target meeting the **hand-off** condition, meaning the agent reading the target itself will not
-  see the conversation its author had. Add `../../shared/handoff-rules.md`. A prompt written for a
-  subagent and a hand-off brief are two examples, not the whole list. A file of rules for writing
-  hand-off prompts does not meet it, because you read that file inside this conversation.
+- A target meeting the **hand-off** condition, meaning an agent starts from the target as its instruction
+  and returns its results to a caller that did not watch it work. Add `../../shared/handoff-rules.md`. A prompt written for a
+  subagent and the prompt of a scheduled run are two examples, not the whole list. A file of rules for writing
+  hand-off prompts does not meet it, because no agent starts from it as its instruction.
   `../../shared/steering-rules.md` states the test and why two earlier audits split on it.
-- Anything else written to shape what an agent does. A command, a runbook, and a one-off request
+- Anything else written to steer what an agent does. A command, a runbook, and a one-off request
   are examples, not the whole list. Where a person wrote it to steer an agent, it belongs here,
-  and it does not need an extra file for what it is. It still takes a file for each condition it meets.
+  and it does not need an extra file for what it is. It still takes a file for each condition it
+  meets.
 
-Decide the conditions from what the target holds, not from how you are using it. Route by
+Decide the conditions from what the target contains, not from how you are using it. Route by
 condition rather than by what you would call the document, because more than one name fits the
 same document.
 
 Where the target is none of these, stop and report `OUT_OF_SCOPE`. Say what the target appears to
 be. Do not force the rules onto it. Where you cannot read the target or a rule file, stop and
-report `BLOCKED`. Name the file you could not read. Do not audit from memory instead. These stop conditions sit here, ahead of the
-workflow, not beside the report. They are pre-work gates. They decide whether the audit starts at
-all.
+report `BLOCKED`. Name the file you could not read. Do not audit from memory instead. These
+stopping points sit here, ahead of the workflow, not beside the report. They decide whether the
+audit starts at all.
 
 ## Where this stops
 
@@ -57,7 +61,7 @@ A direct instruction from the person overrides this audit.
 
 1. Run `npm run audit -- <path>` over the target, from the root of this plugin's repository. The
    command takes the target path, so the target need not sit in that repository. Record its
-   result and cite it in the report. This settles every mechanical check once. The findings never
+   result and cite it in the report. This decides every mechanical check once. The findings never
    re-argue them. Where you cannot run the command, or it runs without reaching the target,
    follow what `../../shared/lint.md` says about that case. That file also covers a repository
    with no such command, and says when you may run a command again. Then say in the report what
@@ -66,15 +70,15 @@ A direct instruction from the person overrides this audit.
    a gap.
 2. Read the target in full. Read every reference file it names too. A rule the target satisfies
    in a file you did not open reads as a failure.
-3. Work through each rule. Mark it pass, fail, warn, or not applicable. This lets the reader tell
+3. Work through each rule. Mark it pass, fail, warn, or not applicable. This lets the caller tell
    a rule that held from one that never applied. A rule whose condition does not hold is not
    applicable. Not applicable is not the same as a pass.
 4. Apply the calibration below before you write anything down. This stops first impressions from
    hardening into findings.
 5. Report.
 
-This audit runs steps 1 through 5 once per skill where the target holds more than one, such as a
-plugin or a repository. List the skills first, give one table per skill, then one summary across
+This audit runs steps 1 through 5 once per skill where the target contains more than one, such as
+a plugin or a repository. List the skills first, give one table per skill, then one summary across
 them.
 
 ## Calibration
@@ -96,7 +100,7 @@ These are not findings.
 - Wording you would phrase differently.
 - A section shorter than its neighbours.
 - A heading you would name something else.
-- A missing section the task did not need.
+- A missing section the target's task did not need.
 - A stylistic preference with no effect on behaviour.
 - A sibling skill named by its name, such as `writing-skills`. A skill name is how this plugin
   resolves a skill, so it points to an exact, working target.
@@ -112,14 +116,14 @@ the position or wording of a section that does not exist is not applicable.
 
 ## Before a release or adoption decision
 
-Where the audit gates a release or an adoption, run two independent audits of the same target.
+Where the audit decides a release or an adoption, run two independent audits of the same target.
 Reconcile the two audits. A finding that both report is a finding. A finding that only one
 reports becomes a warn that states both readings. Severity is the higher of the two. One audit is
 enough for ordinary work.
 
 Where the two audits pass and fail the same rule on the same text, that is not a one-reporter
 finding. It does not become a warn. Report it as a finding against that text, at the higher
-severity, giving both readings. When the two readers disagree about what a line says, that
+severity, giving both readings. When the two auditors disagree about what a line says, that
 disagreement shows the line is unclear. It is worth more than either verdict alone.
 
 ## Re-auditing a target
@@ -131,11 +135,10 @@ moved a fault rather than removing it produces. Then list only what is new. Do n
 whose inputs stay the same. Name the report you compared against.
 
 A re-audit table carries one more column than a first audit. Head it **Since last audit** and put it
-before Result. It holds confirmed, retired, or changed, and nothing else. Do not head it status,
+before Result. It contains confirmed, retired, or changed, and nothing else. Do not head it status,
 which names the values this skill returns to a caller. A retired row states only that mark and
 leaves Result, Defect or difference, and Evidence empty, because a retired finding has no current
-result to give. Every row in the new-findings table is new, so that table never gains such a
-column.
+result to give. Every row in the new-findings table is new, so that table never gains such a column.
 
 Without the third mark, a half-fixed finding fits neither confirmed nor retired, and two rounds of
 this audit invented the word rather than reporting the gap.
@@ -159,9 +162,9 @@ Source takes one of three words, and nothing else.
 
 Read Source off the rule file, not off what the rule reminds you of. Where a rule file records no
 published origin, mark it House, and where it does not record any origins at all, also say so once
-above the table. House then reads as unrecorded, not as ours. A reader can then check a published
+above the table. House then reads as unrecorded, not as ours. The caller can then check a published
 rule at its source, and weigh a house rule as ours. Claim a published origin the rule file does not
-record, and you send a reader to a page that does not state the rule.
+record, and you send the caller to a page that does not state the rule.
 
 Mark every fail and warn a defect or a difference. Count the defects and the differences
 separately. A defect is one where you can name what an agent would do wrong.

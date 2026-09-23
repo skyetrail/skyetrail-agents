@@ -1,18 +1,19 @@
 # Skill rules
 
 Rules for a SKILL.md. The rules in `./steering-rules.md` also apply to a skill. These rules apply
-when the condition **reused** is met and the condition **hand-off** is not met. Read that file too.
+when the condition **reused** is met and the condition **hand-off** is not met, two conditions that
+`./steering-rules.md` defines under Conditions. Read that file too.
 
 Every entry here applies when the audited thing is a SKILL.md, and not otherwise.
 
 The skills `writing-skills` and `auditing-skills` apply these rules. This file supplies criteria and
 defines no task of its own. Where a procedural property an audit needs is missing here, look in
-those two skills. The stop conditions and the evidence each finding includes are two examples, not
+those two skills. The stopping points and the evidence each finding includes are two examples, not
 the whole list.
 
-A mechanical check is a script's job, not judgement work. `./lint.md` names the command that settles
+A mechanical check is a script's job, not judgement work. `./lint.md` names the command that decides
 those checks, and says what to do where the command does not run. Ask the command itself what it
-checks. Confirm its record rather than re-deriving a check by hand. Do not restate the checks here.
+checks. Confirm its output rather than re-deriving a check by hand. Do not restate the checks here.
 A second copy of that list drifts from the first. An agent then loads two files that say different
 things.
 
@@ -32,7 +33,7 @@ things.
 | The name reads as a gerund or a clear noun phrase. | Important |
 | The name follows the same pattern as the other skills in its collection. | Important |
 | The description states the capability, in the words someone looking for it would use. | Important |
-| The description states the conditions that should trigger it. | Blocking |
+| The description states the situations that should trigger it. | Blocking |
 | The description includes the file types, error text, and casual phrasings people actually type. | Important |
 | The description does not summarise the workflow or the process. | Important |
 
@@ -40,8 +41,8 @@ Skills undertrigger more often than they overtrigger. So a description that read
 insistent is closer to right than one that reads as neutral.
 
 The command checks one narrow case of the first rule: whether a name is built only from generic
-words. It cannot tell whether a name reads as a clear noun phrase. So read the rule as well as its
-record.
+words. It cannot tell whether a name reads as a clear noun phrase. So read the rule as well as the
+command's output.
 
 ## Boundary
 
@@ -61,7 +62,7 @@ record.
 | Nothing in the skill explains something the model would already know. | Blocking |
 | Content that would not change what an agent does is absent. | Important |
 | The skill uses one term for one thing throughout. | Important |
-| Time-sensitive material is absent, or it appears only in a section for old patterns. | Important |
+| Time-sensitive content is absent, or it appears only in a section for old patterns. | Important |
 | The skill does not document a constraint that a script or a regex could enforce instead. | Important |
 | Every example includes real input and real output, rather than a placeholder. | Important |
 | Each step in a workflow names one action the reader can carry out without guessing. | Important |
@@ -69,8 +70,8 @@ record.
 | A workflow whose steps a reader could lose track of carries a checklist. | Advisory |
 
 Read each paragraph. Ask what an agent does differently after reading it. If the answer is
-nothing, it is a finding. These shapes are the ones seen so far, not the whole list. The test above
-decides a shape they do not cover.
+nothing, it is a finding. These kinds are the ones seen so far, not the whole list. The test above
+decides a kind they do not cover.
 
 - A paragraph about how this document changed: which wording replaced which, what an earlier
   round of review showed, why a section moved. A previously tried approach to the work itself that
@@ -96,15 +97,16 @@ run.
 | Rule | Severity |
 | --- | --- |
 | Every reference is one hop from the SKILL.md that names it. | Blocking |
-| Detail sits in reference files rather than the front file. | Important |
+| Detail sits in reference files rather than in the SKILL.md. | Important |
 | Content sits in a reference file where a reader needs it for one case and not others. | Important |
-| Material used to test the skill is not reachable from it. So it never loads with it. | Important |
-| No reference file instructs the reader to ignore or skip part of itself. Content that one caller must skip is a separate file. | Important |
-| Every bundled file's name says what the file holds. | Important |
+| Files used to test the skill are not reachable from it. So they never load with it. | Important |
+| No reference file instructs the reader to ignore or skip part of itself. Content that one reader must skip is a separate file. | Important |
+| Every bundled file's name says what the file contains. | Important |
 | Directories group files by domain, so a run loads only the domain it needs. | Important |
 | Every reference file sits under a directory called `reference/`. | Important |
 
-A line cap on the front file is the command's proxy for the detail rule. A front file under the cap can still carry the detail, so read the rule as well as its record.
+A line cap on the SKILL.md is the command's proxy for the detail rule. A SKILL.md under the cap can
+still carry the detail, so read the rule as well as the command's output.
 
 These rules cover the files a skill includes inside its own directory, its bundled files. A bundled
 script is a bundled file the skill runs. The rule files under `shared/` are not bundled, and a
@@ -138,7 +140,7 @@ absent there fails when the script runs, not when the skill loads.
 
 | Rule | Severity |
 | --- | --- |
-| The skill went through a baseline comparison, with and without it loaded. The plugin's `tests/baselines/` directory holds the observed failures it addresses, one file per skill. Nothing an agent loads at run time links to that directory. | Blocking |
+| The skill went through a baseline comparison, with and without it loaded. The plugin's `tests/baselines/` directory contains the observed failures it addresses, one file per skill. Nothing an agent loads at run time links to that directory. | Blocking |
 | The recorded runs of the skill include real tasks, not only synthetic scenarios. | Important |
 | The skill's evaluation scenarios came before its long-form content. | Advisory |
 | The skill's evidence names feedback from a second person, and the change that feedback caused. | Advisory |

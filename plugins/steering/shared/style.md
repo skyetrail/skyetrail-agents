@@ -1,12 +1,12 @@
 # Writing style
 
-Check every document with the vale npm script. From the repository root:
+Check every document with the vale npm script. From the root of this plugin's repository:
 
 ```sh
 npm run vale
 ```
 
-A clean run prints nothing and exits 0. `.vale.ini` holds the
+A clean run prints nothing and exits 0. `.vale.ini` contains the
 configuration. Read the rules there, not a list here. A restated list
 drifts from its source.
 
@@ -22,7 +22,7 @@ what an agent does. Only an author runs the vale check.
 
 ## What it covers
 
-This file covers the sentences a person writes for an agent or a reader.
+This file covers the sentences a person writes for an agent or another person.
 That includes a skill body, a rule file, a prompt template, a hand-off
 brief, and a frontmatter description. A frontmatter description is in
 scope because the generated README files republish it word for word, and
@@ -34,6 +34,6 @@ Out of scope: code, commands, file paths, error text, and anything
 quoted from another source. Keep those verbatim. To quote a word as a
 word, put it in a code span, which the check skips.
 
-`./steering-rules.md` contains the Voice rules. Those rules state who may
-act and which sentences take an actor. An audit checks those rules. This
-file does not restate them.
+`./steering-rules.md` contains the Voice rules. Those rules state what may
+be the subject of an action verb, and which sentences need an actor. An
+audit checks those rules. This file does not restate them.

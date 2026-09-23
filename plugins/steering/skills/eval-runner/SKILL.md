@@ -8,6 +8,9 @@ description: Runs a skill's eval, the runnable test at evals/eval.yaml beside it
 Produces a results page under `<plugin>/tests/evals/<skill>/<date>/RESULTS.md` and a run root of
 one directory per case and trial, by running `../../shared/eval-protocol.md` against one skill.
 
+The house words in this skill, such as caller, report, and tick, keep the one meaning
+`../../shared/terms.md` gives them.
+
 ## Scope
 
 In scope: one end-to-end run of one skill's eval, where the skill has `evals/eval.yaml`.
@@ -24,10 +27,12 @@ levels down hung on a shell command and never returned.
 
 ## Workflow
 
-Copy this checklist into `record.md` at the run root and into your reply. Tick each line as you
+Run every `npm` command in this skill from the root of this plugin's repository.
+
+Copy this checklist into `record.md` at the run root and into your report. Tick each line as you
 finish it. A tick carries the path, the command, or the section of a file from this run that
-settles the line. The skill's own text settles nothing, and neither does a rule file. A line you
-cannot tick stays unticked and carries one line saying why.
+shows the line is done. The skill's own text proves nothing, and neither does a rule file. A line
+you cannot tick stays unticked and carries one line saying why.
 
 ```text
 eval-runner
@@ -41,8 +46,8 @@ run root: <absolute path>
 [ ] 7 no file of the skill under test changed; git status on its directory pasted
 ```
 
-1. **Plan.** Run `npm run eval -- plan <path to SKILL.md> --run-root <root>` from the directory
-   that holds this plugin's `package.json`, with a run root outside every repository, and paste
+1. **Plan.** Run `npm run eval -- plan <path to SKILL.md> --run-root <root>` from the root of
+   this plugin's repository, with a run root outside every repository, and paste
    its output into `record.md`. Where it prints a refusal, stop and return `NEEDS_CONTEXT` with
    the rule it names. The plan writes one directory per case and trial, each with `prompt.md`.
 2. **Dispatch the executors.** For each directory in `plan.json`, dispatch one fresh agent with
@@ -63,8 +68,8 @@ run root: <absolute path>
    at the run root. Then run `npm run eval -- check <root>` again, so the judge's verdicts enter
    `checks.json`. Where no case is judged, the check output says so, and this step is not in this
    case.
-6. **Results.** Run `npm run eval -- results <root>` and paste the path it prints. The page holds
-   the four conditions per case and trial and the eval's status.
+6. **Results.** Run `npm run eval -- results <root>` and paste the path it prints. The page
+   contains the four measures per case and trial and the eval's status.
 7. **Prove you changed nothing.** Run `git status --porcelain <skill directory>` and paste its
    output. It prints nothing.
 

@@ -30,7 +30,7 @@ The largest design change since 2026-08-01 rests on the isolated round and the g
 - **A gate is a check the caller re-runs on the artifact it received.** The owner's fix made the
   caller and the callee each assess the gate independently. Six of six runs then passed, against
   zero of six in the round before.
-- **A check the caller cannot re-run does not gate delivery. It becomes a file the caller reads.**
+- **A check the caller cannot re-run is not a gate. It becomes a file the caller reads.**
   The baseline dispatch was the un-recheckable gate. Only the callee ever saw it.
 - **The document fixes the subject of every gate, so no later choice moves it.** One run could not
   satisfy a no-holes check on its draft, wrote a second file, checked that file, and recorded the
@@ -49,6 +49,10 @@ audit reached any of them.
 **One working directory per run, and no earlier output for the same task within reach.
 2026-08-12.** Repetition without isolation measures nothing. `TESTING.md` states both contamination
 cases and the checks that catch them.
+- **No check in `writing-skills` or `writing-agents` holds delivery back, a gate included.
+  2026-09-23.** A gate's result sets the status the run reports, and the artifact is delivered
+  whatever that result is. This replaces the wording of the two entries above that say a check
+  gates or blocks delivery. The readability review of 2026-09-22 found three files that still said otherwise.
 
 ## Structure
 
@@ -105,6 +109,11 @@ cases and the checks that catch them.
 - **`repo-setup` writes its record between fixed markers in `AGENTS.md`, and a second run replaces
   the block. 2026-08-01.** A re-run against a file holding someone else's writing left exactly one
   marker pair and preserved the hand-written content character for character.
+- **`repo-setup` keeps its record when a check fails. 2026-09-23.** It writes each failed check
+  under `Unresolved`, moves there each fact that neither worked in the run nor has a person's
+  confirmation, marks the lint unresolved where it moved, and reports `BLOCKED`. Deleting the
+  record hid what the run saw, and an `Unresolved` line already stops a later agent from trusting
+  the fact. `shared/lint.md` treats an unresolved record as no answer.
 
 ## The rules
 
@@ -160,6 +169,18 @@ cases and the checks that catch them.
 audit fell from 75 to 53. Lines loaded went from 374 to 381, which is no change. Removed rule text
 was replaced almost one for one by operative text that has a nameable consequence. So this was a
 reasoning-load win and not a context win.
+
+**An instruction file is a fifth class of the artifact test. 2026-09-23.** A file that every
+session loads at its start, such as `CLAUDE.md`, fit none of the four classes. It costs the most
+context of the five, so its test comes last. The run gives the person the lines and writes the file
+only on request, because such a file is often shared, and another tool may replace it.
+
+**The outcome row covers reused documents. 2026-09-23.** The hand-off condition no longer covers a
+slash command or an instruction file that a person runs. So the row about an outcome the agent can
+check without asking the author moved into `steering-rules.md` with the condition **reused**, and
+**reused** now names a slash command and an instruction file among its examples. The row stays in
+`handoff-rules.md` for a one-off hand-off. The conventions row stays where it is, because
+an `always` row in `steering-rules.md` already covers it.
 
 ## The Finish rule
 
@@ -235,7 +256,7 @@ person does not.
 
 This is the second time both rules were cut. The first cut, on 2026-08-01, rested on six run files
 written by hand and analysed as measurements. This one rests on nine recorded runs, a pilot that
-gated them, and a scorer that refused the verdict its own numbers invited. The standing instruction
+screened them, and a scorer that refused the verdict its own numbers invited. The standing instruction
 above still holds: do not change a severity on an argument.
 
 **The trigger test ran on 2026-08-11, and it cannot answer the question.** Earlier entries here said
@@ -243,7 +264,7 @@ nobody had run it. Both arms scored 36 of 36, with zero variance inside an arm. 
 pre-committed to not reading a difference as grounds for cutting a blocking rule, and the scorer
 refused that reading. Both arms' perfect scores leave both readings open: the rules change nothing,
 or the test had no room to show a change. Both rules stay, neither justified nor refuted. Running the
-same design again settles nothing.
+same design again decides nothing.
 
 **Simplified Technical English was adopted for the reader, not for the agent. 2026-08-10.** A blind
 two-arm comparison found no difference in what an agent produced, across two fixtures, with no false
@@ -344,7 +365,7 @@ then wrote that they "were folded into the closing clause". Folding and recordin
 putting back. No rule-conformance audit can see any of this, because the rules judge the form of a
 file and not its subject matter.
 
-**Both description rules are unsettled.** See the reversal above. Settling them needs requests
+**Both description rules are undecided.** See the reversal above. Deciding them needs requests
 near a decision boundary, and enough trials to see a five percent difference. That is a different
 test, not another run of the one in `tests/outcomes/trigger-test/`.
 
@@ -370,7 +391,7 @@ runs made. `TaskCreate` writes a pending to-do item and does not run a model, `T
 back, and `SendMessage` needs a teammate someone already named. One run tried `claude -p` and
 recorded `401 OAuth access token has been revoked`. Design no step that dispatches from inside a run.
 
-Mechanical checks are settled by two commands. `npm run audit -- <path>` runs `eng/audit-skill.mjs` against
+The mechanical checks come from `npm run audit` and `npm run lint`. `npm run audit -- <path>` runs `eng/audit-skill.mjs` against
 one file, from anywhere. `npm run lint` runs `eng/generate-readmes.mjs --check` over the whole
 repository from its root.
 

@@ -111,7 +111,7 @@ nothing, or the test had no room to show a change. Only the first would justify 
 With 18 should-trigger trials per arm, a true miss rate of 10 percent does not show a miss about
 15 percent of the time.
 
-A test that settles the two description rules needs requests near a decision boundary, and enough
+A test that decides the two description rules needs requests near a decision boundary, and enough
 trials to see a five percent difference. Pre-register the power beside the prediction.
 
 Method: build two variants that differ in one description and nothing else. Strip the answer key

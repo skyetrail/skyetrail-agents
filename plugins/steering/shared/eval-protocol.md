@@ -2,12 +2,12 @@
 
 The contract between an eval, the skill it tests, the runner that executes it, and the author that
 writes it. The skills `eval-runner` and `eval-author` apply this file. It supplies criteria and
-defines no task of its own. `./steering-rules.md` defines the terms used here.
+defines no task of its own. `./terms.md` defines the terms used here.
 
 ## Contents
 
 - The eval
-- Conditions
+- Measures
 - No person in the loop
 - One directory per executor
 - Economy
@@ -39,12 +39,12 @@ with a check and no judgement; `budget`, per trial, `tool_calls: 40`, `seconds: 
 `tokens: 120000` where the harness reports tokens. A case marked `repo: true` has its `in/`
 initialised as a git repository with one commit before it runs, for a skill whose checks read git.
 
-## Conditions
+## Measures
 
 A case is scored on all four and passes where all four pass. The eval passes where each case
 passes on each trial.
 
-| Condition | Passes where |
+| Measure | Passes where |
 | --- | --- |
 | trigger | A classifier that sees the plugin's skill descriptions and the query, and never a skill body, names this skill. For a case marked `trigger: none` it names another skill or none. Three trials. |
 | completion | The executor's returned status equals the case's `expect_status`, `DONE` unless set. The count of unticked lines in any record the executor wrote is reported beside it. |
@@ -56,16 +56,16 @@ passes on each trial.
 An eval runs unattended. The executor's prompt says there is no person to ask. Where the skill
 would ask, the executor returns the status the skill names for that case, with the question it
 would have asked, and stops. The question case passes on that status and on a check that finds
-the question. The answered case holds the answer under `facts`, which the runner writes into
+the question. The answered case has the answer under `facts`, which the runner writes into
 the prompt as facts established before dispatch, and passes on `DONE`.
 
 ## One directory per executor
 
-The script creates one directory per case and trial under a run root. Each holds `in/`, the
+The script creates one directory per case and trial under a run root. Each contains `in/`, the
 fixtures; `out/`, where the executor writes everything it produces; `prompt.md`, its whole
-instruction; and `executor.json`, which the runner fills with the returned status and the harness's
+prompt; and `executor.json`, which the runner fills with the returned status and the harness's
 agent id. The executor is told that directory is its working directory and its only place to
-write, and that it may read the repository that holds the skill and run the commands the skill
+write, and that it may read the repository that contains the skill and run the commands the skill
 names there. No two executors share a path, and none reads another's. Every check runs with that
 directory as its working directory.
 
@@ -81,9 +81,10 @@ each number.
 
 ## The results page
 
-`npm run eval -- results <run root>` writes `RESULTS.md` under `<plugin>/tests/evals/<skill>/<date>/`,
-outside the skill. It holds one row per case and trial with the four conditions, each with its
-number and its evidence path, then the eval's status: `DONE` where each case passes on each trial;
-`DONE_WITH_CONCERNS` where a case passes on some trials; `BLOCKED` where an executor did not return;
-`NEEDS_CONTEXT` where the eval was refused. The caller re-runs `npm run eval -- check <run root>`
-and compares. The runner edits no file of the skill under test.
+`npm run eval -- results <run root>` writes `RESULTS.md` under
+`<plugin>/tests/evals/<skill>/<date>/`, outside the skill. It contains one row per case and trial
+with the four measures, each with its number and its evidence path, then the eval's status: `DONE`
+where each case passes on each trial; `DONE_WITH_CONCERNS` where a case passes on some trials;
+`BLOCKED` where an executor did not return; `NEEDS_CONTEXT` where the eval was refused. The caller
+re-runs `npm run eval -- check <run root>` and compares. The runner edits no file of the skill under
+test.

@@ -1,6 +1,6 @@
 # Skills lint
 
-This file settles the mechanical limits for a target once. A report can then cite the lint
+Use this file to check the mechanical limits for a target once. A report can then cite the lint
 result. The report does not need to work out the limits by hand again. A finding does not need
 to argue the limits again.
 
@@ -17,7 +17,7 @@ business, not this file's business. Establish what those checks are. Do not assu
 
 ## Which command
 
-The target decides which command settles the mechanical checks.
+The target decides which command runs the mechanical checks.
 
 A SKILL.md goes to `npm run audit -- <path>`, run from the root of this plugin's repository. That
 command takes the path, so the target need not sit in that repository. It reports every mechanical
@@ -34,24 +34,26 @@ Everything below about a command that will not run applies to both.
 The lint command belongs to the current repository, not to this plugin, so look for it in this
 order.
 
-1. The `repo-setup.md` record in the project's memory directory, written by `repo-setup`,
-   records the command a person confirmed. If it exists, use it.
+1. The `repo-setup.md` file in the project's memory directory, written by `repo-setup`,
+   records the command a person confirmed. Use it where the record names the command as confirmed.
+   Where the index line reads `lint: unresolved`, or the command is under `Unresolved`, the record
+   has no answer, so go to step 3.
 2. `npm run lint` is the default. Try it where step 1 finds no recorded command. A recorded
    command always wins, because a person confirmed it.
 3. This repository has no recorded command and no `npm run lint`. Use the `repo-setup` skill to
    establish the command. Then record it. Do not guess the command from what the repository
    seems to contain.
 
-## When it does not settle the target
+## When it does not check the target
 
-A lint fails to settle your target in more than one way, and these cases are not interchangeable.
-Others exist, so read them as examples rather than as the whole list. In every case,
-say what happened. Then continue with the judgement rules. Do not work out the mechanical limits by
-hand again. Do not present that result as a lint result.
+A lint fails to check your target in more than one way, and these cases are not interchangeable.
+Others exist, so read them as examples rather than as the whole list. In every case, say what
+happened. Then continue with the judgement rules. Do not work out the mechanical limits by hand
+again. Do not present that result as a lint result.
 
 **No lint command exists for this repository.** Say so. If a person is present, tell them the
 repository needs one. Until the repository has one, every skill that leans on this file works
-without a mechanical gate.
+without a mechanical check.
 
 **A command exists but you cannot run it from where you are.** This is the usual case for an
 agent that works in one subdirectory of a repository. The repository's lint runs from the root.
@@ -67,12 +69,12 @@ happens, so if the command does not cover the target, report a coverage gap. Say
 not run. A lint can report every file up to date. It can do this while it never opens the file
 you audit. This kind of lint is worse than no lint. It makes a pass that nobody questions.
 
-Sometimes a run fails without settling which case applies. A timeout is one example. An error
-that does not name a cause is another example. Run the command one more time, but only after something
-changes. If nothing changes, do not run it again. Instead, record that the command could not
-run. Say what you saw.
+Sometimes a run fails without showing which case applies. A timeout is one example. An error that
+does not name a cause is another example. Run the command one more time, but only after something
+changes. If nothing changes, do not run it again. Instead, record that the command could not run.
+Say what you saw.
 
 Some lints describe themselves, often behind a flag such as `--explain`. A self-description built
 from the same data as the run cannot disagree with the run. Prefer it over any prose, including
-prose in this file. Where the project's memory holds a `repo-setup.md` record, it says whether the lint offers one.
-Where it does not, try the flag and see.
+prose in this file. Where the project's memory contains a `repo-setup.md` file, it says whether the
+lint offers one. Where it does not, try the flag and see.

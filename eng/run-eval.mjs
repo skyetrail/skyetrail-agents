@@ -207,7 +207,7 @@ const writeJson = (f, o) => fs.writeFileSync(f, JSON.stringify(o, null, 2) + "\n
 // ---------------------------------------------------------------------------
 function executorPrompt({ dir, skillFile, query, files, facts, model, repo, repoRoot }) {
   const lines = [
-    `You are one executor in an eval. Your working directory is ${dir}. Create files only under ${dir}/out/.`,
+    `You are one executor in an eval. Your working directory is ${dir}. Create files only under ${dir}/out/. The files under ${dir}/in/ are inputs. Do not change them, and write each file you deliver under ${dir}/out/.`,
     `Do not read any directory outside ${dir} except the skill named below, the files it points to${repoRoot ? `, and the repository that holds it, ${repoRoot}, where you may run the commands the skill names` : ""}.`,
     "There is no person to ask. Where the skill you follow tells you to ask a person, return the status it names for that case, with the question you would have asked, and stop.",
   ];

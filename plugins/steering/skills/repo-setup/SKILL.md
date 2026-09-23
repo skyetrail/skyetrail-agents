@@ -12,6 +12,9 @@ skill changes nothing in the repository. It also states plainly anything a perso
 
 This skill is safe to run again. A second run replaces what it confirms and keeps the rest.
 
+The house words in this skill, such as caller, person, and report, keep the one meaning
+`../../shared/terms.md` gives them.
+
 ## What counts as a repo fact
 
 A repo fact is anything true of the repository rather than of the task in hand, which an agent
@@ -23,11 +26,11 @@ A fact about one task, one branch, or one person's preference is not a repo fact
 
 ## Workflow
 
-1. **Read the existing record first.** Where the memory directory already holds `repo-setup.md`,
-   this run is a re-run. Check whether each recorded command still resolves. Keep the recorded
-   answer where it does. Do not ask the person again about a question the record already answers.
-   Then run `git status --porcelain` in the repository and keep its output, because step 6
-   compares against it.
+1. **Read the existing record first.** Where the memory directory already contains
+   `repo-setup.md`, this run is a re-run. Check whether each recorded command still resolves. Keep
+   the recorded answer where it does. Do not ask the person again about a question the record
+   already answers. Then run `git status --porcelain` in the repository and keep its output, because
+   step 6 compares against it.
 2. **Establish the lint command.** Try `npm run lint` first. That is this project's default, and
    a repository that has it needs no further discussion. Where it is absent, or fails because no
    such script exists, gather the candidates by reading files only. A candidate is anywhere this
@@ -41,13 +44,13 @@ A fact about one task, one branch, or one person's preference is not a repo fact
    `node_modules` fetches it, and that is an install step. Where you cannot confirm a candidate
    without changing something, record it as unconfirmed and say why.
 4. **Write the record, whatever you found.** Write `repo-setup.md` in the memory directory, in
-   the shape below, and one line for it in that directory's `MEMORY.md`, replacing the line where
+   the format below, and one line for it in that directory's `MEMORY.md`, replacing the line where
    one is there. One working candidate is the answer, and the record names it as confirmed. Where
    several candidates disagree, cover different files, or none works today, the record names no
    command as confirmed and lists every candidate with what it covers under `Unresolved`, so the
-   next agent inherits the discovery rather than repeating it. Where the file already holds a fact
-   this run did not establish, write that fact back unchanged. Where your system prompt does not
-   name a memory directory, put the record in your report and return `NEEDS_CONTEXT`, naming the
+   next agent inherits the discovery rather than repeating it. Where the file already contains a
+   fact this run did not establish, write that fact back unchanged. Where your system prompt does
+   not name a memory directory, put the record in your report and return `NEEDS_CONTEXT`, naming the
    directory as the missing field.
 5. **Take the decision to a person where more than one answer is possible.** Put the candidates
    in front of the person with what each covers and what you saw, and ask which one is the lint
@@ -62,17 +65,21 @@ A fact about one task, one branch, or one person's preference is not a repo fact
    git status --porcelain      # must match what step 1 kept, or you changed the repository
    ```
 
-   Then confirm the one thing no command settles: you saw every command in the record work, in
-   this run. Fix anything that does not hold and run the checks again. Where you cannot fix it,
-   delete the file and the index line where this run created them, and report `BLOCKED` with the
-   check that failed. Never delete a record you did not write in this run.
+   Then confirm the one thing no command checks: every command in the record worked in this run,
+   or a person confirmed it. Fix anything that does not hold and run the checks again. Where a
+   check still fails, keep the record and change three things. Write each failed check and its
+   output under `Unresolved`, so a kept record never reads `Unresolved: none`. Move each fact this
+   run wrote that neither worked in this run nor has a person's confirmation out of the confirmed
+   lines and under `Unresolved`. Where the lint command moved, or its run changed the repository,
+   write `lint unresolved` in the description and `lint: unresolved` in the index line. Then report
+   `BLOCKED` with the check that failed. Never delete a record.
 
 ## The record
 
 ```
 ---
 name: repo-setup
-description: "<the lint command, and what it covers, in one line>"
+description: "<the lint command, and what it covers, in one line, or lint unresolved>"
 metadata:
   type: project
 ---
@@ -85,7 +92,7 @@ Established by the `repo-setup` skill on <date>. Re-run it rather than editing t
 Unresolved: <anything a person still has to decide, or "none">
 ```
 
-The index line in `MEMORY.md`: `- [Repo setup](repo-setup.md) — lint: <command>`.
+The index line in `MEMORY.md`: `- [Repo setup](repo-setup.md) — lint: <command, or unresolved>`.
 
 ## Statuses
 
@@ -93,7 +100,7 @@ The index line in `MEMORY.md`: `- [Repo setup](repo-setup.md) — lint: <command
 | --- | --- | --- |
 | `DONE` | `repo-setup.md` is written and every check in step 6 holds. | Use the recorded facts. Do not re-establish them. |
 | `NEEDS_DECISION` | More than one candidate remains, or none was found, and no person was there to decide. `repo-setup.md` lists what was found under `Unresolved`. | Put the candidates to a person. Never pick one on their behalf. |
-| `BLOCKED` | A check failed and no edit fixed it, or the memory directory could not be written. | Read the cause. Fix it, then run this skill again. |
+| `BLOCKED` | A check failed and no edit fixed it, or the memory directory could not be written. Where the record exists, the failed fact is under `Unresolved`. | Read the cause. Fix it, then run this skill again. |
 | `NEEDS_CONTEXT` | The instruction that dispatched this run left out something it needed. | Supply what was missing. This is the caller's failure, not the agent's. |
 
 Add a status only where a run needs one these four do not cover, and declare it here.
@@ -117,6 +124,6 @@ Stopping for either reason carries no penalty. Both are correct outcomes.
 
 This skill establishes and records facts. It does not fix what it finds, and it does not choose
 between candidates for the person. It writes nothing inside the repository. No skill takes over
-where this one stops. Both stop conditions hand back to a person.
+where this one stops. Both stopping points hand back to a person.
 
 A direct instruction from the person wins over anything here.

@@ -1,13 +1,14 @@
 # Dispatch protocol
 
-The caller's side of dispatching an agent. `./steering-rules.md` covers what the prompt says.
-`./handoff-rules.md` covers everything that applies because the dispatched agent will not see this
-conversation. That includes the report's sections and the caller's side of composing the prompt.
-This file covers what the caller does with both.
+What the caller does to dispatch an agent. `./steering-rules.md` covers what the prompt says.
+`./handoff-rules.md` covers everything that applies because the dispatched agent starts from the
+prompt and returns its results to a caller that did not watch it work. That includes the report's
+sections and what the caller does to compose the prompt. This file covers what the caller does
+with both.
 
-Read `./handoff-rules.md` when you compose a prompt. Do not read it when you audit this file. The
-prompts this file governs are hand-offs. This file is not one, because you are reading it inside
-the conversation its author is having.
+Read `./handoff-rules.md` when you compose a prompt that meets the **hand-off** condition. Do not
+read it when you audit this file. Most prompts this file governs are hand-offs. This file is not
+one, because no agent starts from it as its instruction.
 
 The skill `writing-agents` applies this file. This file supplies criteria and defines no task of its
 own.
@@ -15,7 +16,7 @@ own.
 ## Contents
 
 - One principle
-- Three terms
+- Terms
 - Invariants
 - Evidence
 - Re-running checks
@@ -27,30 +28,26 @@ own.
 ## One principle
 
 A script makes any determination that runs deterministically. Dispatch an agent only for what
-needs an assessment. A script returns the same shape every run. You can version it and review it.
-It emits provenance without being asked. It gives the caller an exit code to gate on.
+needs an assessment. A script returns the same structure every run. You can version it and review
+it. It records where each result came from without being asked. It gives the caller an exit code
+to check.
 
 That covers at least five things, not the whole list.
 
 - Which facts hold before dispatch.
 - Whether the established facts carry a value in every required field.
 - Whether the caller filled every hole in a prompt.
-- Whether a returned report holds each command the prompt named, with that command's result.
+- Whether a returned report contains each command the prompt named, with that command's result.
 - Whether re-running those commands on the delivered artifact prints what the report shows.
 
 One caution. An agent that cannot find something says so. A script instead returns an empty
 result, which reads as nothing to do. State what an empty result means. State whether you expect
 it.
 
-## Three terms
+## Terms
 
-A hole is a labeled blank in a prompt template, while a field is a labeled fact in the record the
-caller establishes before dispatch. Filling a template writes field values into holes. The two
-correspond, but they differ. Fields exist before any template. A template need not use every
-field.
-
-The caller is the agent or person that dispatched this run and receives what it returns. A person
-who invoked a skill directly is its caller.
+`./terms.md` defines hole, field, and caller. The other house words in this file, such as gate,
+claim, and tick, keep the one meaning that file gives them.
 
 ## Invariants
 
@@ -63,29 +60,31 @@ who invoked a skill directly is its caller.
    A prompt saying only "report your findings" fails this, because it names neither.
 4. The retry limit is stated, along with what must change before a retry. The default is two
    attempts per agent. Re-dispatching the same prompt to the same model is not a retry.
-5. The prompt states who proves what, and both sides assess it. The agent returns evidence rather
-   than a verdict. The caller checks the report is complete, then re-runs what it can re-run
-   against the artifact it received. A pass from one side alone settles nothing. The prompt still
+5. The prompt states what the agent proves and what the caller checks. The agent returns evidence
+   rather than a verdict. The caller checks the report is complete, then re-runs what it can re-run
+   against the artifact it received. A pass from one party alone proves nothing. The prompt still
    forbids any change that makes a check pass without satisfying what the check tests. Weakening a
    check, editing a test, narrowing a command, deleting a failing test, stubbing the code under
    test, and adding a skip marker are examples, not the whole list.
 6. The prompt states what happens to partial work when a run stops. By default, keep it. Name its
    location in the report. Leave the decision to a person. Do not revert automatically, because
    partial work that passes its own checks is often worth keeping.
-7. An agent that dispatches work collects the result before its own turn ends. A dispatched task with no collected result is unfinished work, and not a completed dispatch.
+7. An agent that dispatches work collects the result before its own turn ends. A dispatched task
+   with no collected result is unfinished work, and not a completed dispatch.
 8. The prompt names the model and the effort level. Left to inherit from the calling session, two
    runs of one prompt stop being comparable.
-9. A check the caller cannot re-run does not gate delivery. Turn it into an artifact instead. The
-   run writes what it saw to a file, and the caller checks that file's existence and content.
+9. A check the caller cannot re-run is not a gate, so its result does not set the status the run
+   reports. Have the run write what it saw to a file, and the caller checks that file's existence
+   and content. No check holds delivery back, a gate included.
 
 ## Evidence
 
 A complete report is not a true one. In two recorded runs, the report was complete and carried
-false claims anyway. Completeness stays worth checking, and it settles nothing on its own.
+false claims anyway. Completeness stays worth checking, and it proves nothing on its own.
 
-Evidence is a command, its exact output, and the path it ran against. The agent returns evidence.
-A verdict is not evidence. "The check passes", "18 pass and 0 fail", and a ticked line are
-verdicts. Each one asks the caller to trust a judgement it cannot see.
+For a command, evidence is the command, its exact output, and the path it ran against. The agent
+returns evidence. A verdict is not evidence. "The check passes", "18 pass and 0 fail", and a
+ticked checklist line are verdicts. Each one asks the caller to trust a judgement it cannot see.
 
 Invariant 3 caps what crosses back, and evidence obeys it. The whole output goes to the file. The
 report includes the command, the path, and the lines that decide the result.
@@ -124,9 +123,8 @@ text, the caller compares that text to the text the prompt sent.
 Some checks leave the caller nothing to run. Name them in the prompt, and state what the caller
 does instead, best first.
 
-1. Turn the check into an artifact. The run writes what it saw to a file. The caller reads
-   the file and checks it holds what the check needs. A re-read is not a re-run, and it beats a
-   claim.
+1. Have the run write what it saw to a file. The caller reads the file and checks it contains
+   what the check needs. A re-read is not a re-run, and it beats a claim.
 2. Have a script determine the fact, and check the agent's claim against it. `Establishing facts`
    below covers this.
 3. Believe the claim. The caller records which claims it believed, and why no cheaper answer
@@ -134,13 +132,14 @@ does instead, best first.
 
 Believing a claim is a legitimate answer. Presenting it as an independent check is not.
 
-Invariant 9 exists because one recorded gate required a dispatch inside the agent's session, which
-the caller never sees. In six runs under that gate, every one delivered a file whose own text says
-it is not the deliverable. Without that gate, two runs each delivered something usable. The gate
-blocked every delivery, and the caller could check none of it.
+Invariant 9 exists because one recorded check held delivery back until a dispatch inside the
+agent's session had run, which the caller never sees. In six runs under that check, every one
+delivered a file whose own text says it is not the deliverable. Without that check, two runs each
+delivered something usable. The check held back every delivery, and the caller could check none
+of it.
 
-Keep the dispatch, and have it write its result to a file, gating on that file's existence and
-content. The caller reads that file and gets the same answer every time.
+Keep the dispatch, and have it write its result to a file. The status then comes from that file's
+existence and content. The caller reads that file and gets the same answer every time.
 
 ## Statuses
 
@@ -154,18 +153,20 @@ than anything about the domain, so every template uses them with the same meanin
 | --- | --- | --- | --- |
 | DONE | The work is finished and its checks pass. | Every check the prompt named, each with its command, its path, and the lines that decide it. | Check the report is complete. Re-run each reproducible check against the delivered path. |
 | DONE_WITH_CONCERNS | The work is finished and the agent has doubts worth reading. | The DONE evidence, and each concern stated apart from it. A concern does not include a command. | Do the DONE re-runs. Read every concern. Decide each one before using the result. |
-| BLOCKED | The agent cannot finish. | The last command run, its output, its path, and where the partial work sits. | Re-run that command against the delivered path. Fix the cause, or report the block upward. Do not re-send the same prompt. |
+| BLOCKED | A required step did not run, or the agent cannot finish. | The step that did not run, the last command run, its output, its path, and the path of the artifact it delivered, whole or partial. | Re-run that command against the delivered path. Read the delivered artifact. Fix the cause, or report the block upward. Do not re-send the same prompt. |
 | NEEDS_CONTEXT | The instruction was insufficient. This is the caller's failure, not the agent's. | The missing field or hole, named, and where the agent looked for it. No command output, because the run did not start. | Supply what was missing. Then re-dispatch. Fix the template too, so the next call includes it. |
 
 A check that did not run is not a concern. If a required step was skipped or deferred, the status
-is BLOCKED, or NEEDS_CONTEXT when the cause is something the caller failed to supply.
+is BLOCKED, or NEEDS_CONTEXT when the cause is something the caller failed to supply. A BLOCKED
+run still delivers its artifact and names the step that did not run.
 
-Every status declares whether it affects only the agent reporting it or stops the whole run. The
-four above affect one agent. A status added for a run may not.
+Every status declares whether it affects only the agent reporting it or stops every agent the
+caller dispatched for the same work. Each of the four core statuses above affects one agent. A
+status added for a run may not.
 
-Sometimes an agent finds a fact whose origin no longer matches. That agent has proved every prompt
-in the run wrong, not only its own. A reader takes a failure to affect one task. So state
-the wider reach where it applies.
+Sometimes an agent finds a fact whose origin no longer matches. That agent has proved wrong every
+prompt the caller dispatched for the same work, not only its own. A reader takes a failure to
+affect one task. So state the wider reach where it applies.
 
 Returning BLOCKED or NEEDS_CONTEXT costs the agent nothing. Say so in the prompt. An agent that
 reads a stop as a mark against it will guess rather than stop, and a guess is harder to catch than
@@ -176,9 +177,9 @@ template's status set is fixed and documented, so two dispatch types can share a
 reports can be merged. The same holds for the set of fields a template's callers establish:
 fixed and documented, so it does not accumulate fields most callers never fill.
 
-Write both columns for each status into the artifact that runs the work: the evidence the agent
-returns, and the caller's obligation. Held as a convention rather than written down, they are not
-a protocol.
+Write both columns for each status into the prompt or template that runs the work: the evidence
+the agent returns, and the caller's obligation. Kept as a convention rather than written down,
+they are not a protocol.
 
 ## Shapes
 
@@ -189,18 +190,19 @@ a protocol.
 - **Establish then fan out.** Use it when the facts the workers need are not yet known. Nothing is
   dispatched until those facts are established and validated.
 - **Classify then route.** Use it when the items of work are of more than one kind and each kind
-  needs its own prompt. A classifier reads one item and returns its class and the test that
-  decided it. The caller then sends the item to the prompt for that class. A script classifies
-  where a rule can decide, such as a file extension or a field value. An agent classifies only
-  where the class needs a reading. An item that fits no class, or more than one, goes to a person
-  and never to the nearest class. The template is in `writing-agents`.
+  needs its own prompt. A classifier reads one item and returns its category and the test that
+  decided it. The caller then sends the item to the prompt for that category. A script classifies
+  where a rule can decide, such as a file extension or a field value. An agent classifies only where
+  the category needs a reading. An item that fits no category, or more than one, goes to a person
+  and never to the nearest category. The template is in `writing-agents`.
 
 Agents that modify shared state are not a fan-out case even when the tasks look independent. Shared
-state is anything two agents both read or write. A file, a record, a branch, and an external system
-are examples, not the whole list.
+state is anything two agents both read or write. A file, a database row, a branch, and an external
+system are examples, not the whole list.
 
-These four cover the dependency patterns seen so far, not every pattern there is. Stop and report what is missing where work fits none of them. Do the same where you cannot
-establish a fact a shape depends on. Do not force the work into the nearest shape.
+These four cover the dependency patterns seen so far, not every pattern there is. Stop and report
+what is missing where work fits none of them. Do the same where you cannot establish a fact a
+dispatch shape depends on. Do not force the work into the nearest dispatch shape.
 
 ## Establishing facts
 
