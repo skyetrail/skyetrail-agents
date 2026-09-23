@@ -26,8 +26,9 @@ Run every `npm` command in this skill from the root of this plugin's repository.
 
 Copy this checklist into `record.md` beside the skill's directory and into your report. Tick each
 line as you finish it. A tick carries the path, the command, or the section of a file from this run
-that shows the line is done. The skill's own text proves nothing, and neither does a rule file. A
-line you cannot tick stays unticked and carries one line saying why.
+that shows the line is done. Do not cite the skill's own text or a rule file as proof, because
+neither shows what this run did. A line you cannot tick stays unticked and carries one line saying
+why.
 
 ```text
 eval-author

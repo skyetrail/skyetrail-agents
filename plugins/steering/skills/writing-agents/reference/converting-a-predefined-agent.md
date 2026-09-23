@@ -19,9 +19,8 @@ in the template body, so the person can call it varying later. A hole you add un
 call site, and `../../../shared/dispatch-protocol.md` keeps fixed the set of fields, the labeled
 facts a template's callers establish before dispatch, so a new hole needs a new field.
 
-Then run the whole workflow, starting at step 1. A converted agent is a composed prompt once you
-reach that point, so nothing further about it is special. Composed means built at the point of
-dispatch from a template and the fields the prompt's caller establishes. Reading a definition is not
-the same as establishing the facts it asserts, and the definition has never been through the rule
-files either. Keep the set of fields the prompt's callers establish fixed and documented, like the
-set of holes.
+Then run the whole workflow from step 1, as for any other composed prompt. Composed means built at
+the point of dispatch from a template and the fields the prompt's caller establishes. Run every step
+on the text from the definition, because nobody has checked that text against the rule files, and
+reading a fact in it does not establish the fact. Keep the set of fields the prompt's callers
+establish fixed and documented, like the set of holes.

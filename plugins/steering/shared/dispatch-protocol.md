@@ -52,7 +52,8 @@ claim, and tick, keep the one meaning that file gives them.
 1. The caller establishes the facts the prompt asserts before dispatch. Each fact records its
    origin. Neither a script nor an agent is needed for what the caller already knows.
 2. The prompt enumerates the status values the agent may return. It states the caller's obligation
-   for each one. A status with no defined caller action is decoration.
+   for each one, because a status with no defined action for the caller changes nothing the caller
+   does.
 3. The detail goes to a file. A capped summary returns to the caller, and the cap is 30 lines unless
    the prompt sets another. The prompt names both. A prompt saying only "report your findings" fails
    this, because it names neither.
@@ -60,15 +61,16 @@ claim, and tick, keep the one meaning that file gives them.
    attempts per agent. Re-dispatching the same prompt to the same model is not a retry.
 5. The prompt states what the agent proves and what the caller checks. The agent returns evidence
    rather than a verdict. The caller checks the report is complete, then re-runs what it can re-run
-   against the artifact it received. A pass from one party alone proves nothing. The prompt still
-   forbids any change that makes a check pass without satisfying what the check tests. Weakening a
-   check, editing a test, narrowing a command, deleting a failing test, stubbing the code under
-   test, and adding a skip marker are examples, not the whole list.
+   against the artifact it received. The caller treats a pass as proof only when the agent's run of
+   the check and the caller's re-run both pass. The prompt still forbids any change that makes a
+   check pass without satisfying what the check tests. Weakening a check, editing a test, narrowing
+   a command, deleting a failing test, stubbing the code under test, and adding a skip marker are
+   examples, not the whole list.
 6. The prompt states what happens to partial work when a run stops. By default, keep it. Name its
    location in the report. Leave the decision to a person. Do not revert automatically, because
    partial work that passes its own checks is often worth keeping.
-7. An agent that dispatches work collects the result before its own turn ends. A dispatched task
-   with no collected result is unfinished work, and not a completed dispatch.
+7. An agent that dispatches work collects the result before its own turn ends, because a dispatched
+   task with no collected result is unfinished work.
 8. The prompt names the model and the effort level. Left to inherit from the calling session, two
    runs of one prompt stop being comparable.
 9. A check the caller cannot re-run is not a gate, so its result does not set the status the run
@@ -77,8 +79,9 @@ claim, and tick, keep the one meaning that file gives them.
 
 ## Evidence
 
-A complete report is not a true one. In two recorded runs, the report was complete and carried false
-claims anyway. Completeness stays worth checking, and it proves nothing on its own.
+The caller checks that a report is complete, and does not treat completeness on its own as proof
+that its claims are true. In two recorded runs, the report was complete and carried false claims
+anyway.
 
 For a command, evidence is the command, its exact output, and the path it ran against. The agent
 returns evidence. A verdict is not evidence. "The check passes", "18 pass and 0 fail", and a ticked
@@ -90,7 +93,7 @@ report includes the command, the path, and the lines that decide the result.
 The path matters most. In two recorded runs, a check passed by running it somewhere else. One
 invented a repository, wrote an example against that invention, grepped the invention, and ticked
 the line. One copied its draft to a path built to satisfy a name check, audited the copy, deleted
-it, and reported the copy's numbers. Both claims were true of a file, and neither was true of the
+it, and reported the copy's numbers. In both runs, the claim was true of a file other than the
 delivered artifact.
 
 So the evidence names the path it ran against, and the caller re-runs against the delivered path.
@@ -105,9 +108,9 @@ A mechanical audit command answers yes. One such command reproduced exactly acro
 runs, and it was the only honest, repeatable part of that round. Both parties run it, on the
 delivered artifact, for the cost of one command.
 
-Re-running a check is not re-doing the agent's work. The caller runs the commands the prompt named
-against the delivered path and compares each output to the report, without repeating the reading,
-the searching, the judgement, or the writing. That prohibition stands unchanged.
+To re-run a check, the caller runs the commands the prompt named against the delivered path and
+compares each output to the report. It repeats none of the reading, the searching, the judgement, or
+the writing, because the rule against re-doing the agent's work still applies.
 
 Where an output differs from the report, do not accept the result. Fix the cause, or report it
 upward. Treat the difference as a failure of the run, not as two readings of one result.
@@ -122,26 +125,24 @@ Some checks leave the caller nothing to run. Name them in the prompt, and state 
 instead, best first.
 
 1. Have the run write what it saw to a file. The caller reads the file and checks it contains what
-   the check needs. A re-read is not a re-run, and it beats a claim.
+   the check needs. Reading the file is weaker than a re-run and stronger than believing a claim.
 2. Have a script determine the fact, and check the agent's claim against it. `Establishing facts`
    below covers this.
 3. Believe the claim. The caller records which claims it believed, and why no cheaper answer
-   applied.
-
-Believing a claim is a legitimate answer. Presenting it as an independent check is not.
+   applied. It does not present a believed claim as an independent check.
 
 Invariant 9 exists because one recorded check held delivery back until a dispatch inside the agent's
 session had run, which the caller never sees. In six runs under that check, every one delivered a
 file whose own text says it is not the deliverable. Without that check, two runs each delivered
-something usable. The check held back every delivery, and the caller could check none of it.
+something usable.
 
 Keep the dispatch, and have it write its result to a file. The status then comes from that file's
 existence and content. The caller reads that file and gets the same answer every time.
 
 ## Statuses
 
-The sequence of a run needs almost no writing. The obligations per status need all of it, because
-they do not exist unless someone writes them down.
+Write the caller's obligation for each status in full, because those obligations exist only where
+someone writes them down. Write almost nothing about the order of a run's steps.
 
 Standardise this core. These four describe the agent's relationship to its instruction rather than
 anything about the domain, so every template uses them with the same meaning.
@@ -175,8 +176,7 @@ be merged. The same holds for the set of fields a template's callers establish: 
 documented, so it does not accumulate fields most callers never fill.
 
 Write both columns for each status into the prompt or template that runs the work: the evidence the
-agent returns, and the caller's obligation. Kept as a convention rather than written down, they are
-not a protocol.
+agent returns, and the caller's obligation.
 
 ## Shapes
 

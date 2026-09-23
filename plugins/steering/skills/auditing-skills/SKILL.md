@@ -38,8 +38,8 @@ document.
 
 Where the target is none of these, stop and report `OUT_OF_SCOPE`. Say what the target appears to
 be. Do not force the rules onto it. Where you cannot read the target or a rule file, stop and report
-`BLOCKED`. Name the file you could not read. Do not audit from memory instead. These stopping points
-sit here, ahead of the workflow, not beside the report. They decide whether the audit starts at all.
+`BLOCKED`. Name the file you could not read. Do not audit from memory instead. Check for these two
+stopping points before step 1, because they decide whether the audit starts at all.
 
 ## Where this stops
 
@@ -50,9 +50,9 @@ This audit does not judge writing style. This includes punctuation, heading case
 not change what an agent does.
 
 This audit runs the command in step 1 on the target, whether or not the author recorded a result.
-Running one command takes little effort, and two parties running it on one file is the check that
-holds. This audit repeats none of the author's reading, searching, or judgement. Confirm the record
-is complete instead.
+Running one command takes little effort, and a second run on the same file, by someone other than
+the author, confirms or refutes the author's result. This audit repeats none of the author's
+reading, searching, or judgement. Confirm the record is complete instead.
 
 A direct instruction from the person overrides this audit.
 
@@ -63,14 +63,14 @@ A direct instruction from the person overrides this audit.
    and cite it in the report. This decides every mechanical check once. The findings never re-argue
    them. Where you cannot run the command, or it runs without reaching the target, follow what
    `../../shared/lint.md` says about that case. That file also covers a repository with no such
-   command, and says when you may run a command again. Then say in the report what did not run. Do
-   not re-derive a mechanical check by hand instead. Where you re-derive one anyway, say so in the
-   report. A report that hides an unrun check is worse than one that admits a gap.
+   command, and says when you may run a command again. Then say in the report what did not run,
+   because a caller who is not told assumes every check ran. Do not re-derive a mechanical check by
+   hand instead. Where you re-derive one anyway, say so in the report.
 2. Read the target in full. Read every reference file it names too. A rule the target satisfies in a
    file you did not open reads as a failure.
 3. Work through each rule. Mark it pass, fail, warn, or not applicable. This lets the caller tell a
-   rule that held from one that never applied. A rule whose condition does not hold is not
-   applicable. Not applicable is not the same as a pass.
+   rule that held from one that never applied. Where a rule's condition does not hold, mark it not
+   applicable, never pass.
 4. Apply the calibration below before you write anything down. This stops first impressions from
    hardening into findings.
 5. Report.
@@ -105,8 +105,8 @@ These are not findings.
 
 `../../shared/steering-rules.md` states the default outcome. Fail means the rule is broken and you
 can point at where. Warn means you cannot tell from what you can read whether the rule is broken.
-The rule's severity carries how much the break matters, not the choice between warn and fail. Where
-unsure, mark it warn. Give one line of reason.
+Choose between fail and warn only by that test, because the rule's severity already records how much
+the break matters. Where unsure, mark it warn. Give one line of reason.
 
 Count one finding per root cause. A missing section is one finding even when several rules depend on
 it. List the dependent rules under that finding, not as findings of their own. A rule about the
@@ -115,14 +115,14 @@ position or wording of a section that does not exist is not applicable.
 ## Before a release or adoption decision
 
 Where the audit decides a release or an adoption, run two independent audits of the same target.
-Reconcile the two audits. A finding that both report is a finding. A finding that only one reports
+Reconcile the two audits. Keep each finding that both audits report. A finding that only one reports
 becomes a warn that states both readings. Severity is the higher of the two. One audit is enough for
 ordinary work.
 
-Where the two audits pass and fail the same rule on the same text, that is not a one-reporter
-finding. It does not become a warn. Report it as a finding against that text, at the higher
-severity, giving both readings. When the two auditors disagree about what a line says, that
-disagreement shows the line is unclear. It is worth more than either verdict alone.
+Where the two audits pass and fail the same rule on the same text, report a finding against that
+text, at the higher severity, giving both readings. It does not become a warn, because both audits
+judged that text. When the two auditors disagree about what a line says, the disagreement shows the
+line is unclear, and neither verdict alone shows that.
 
 ## Re-auditing a target
 
@@ -160,9 +160,10 @@ Source takes one of three words, and nothing else.
 
 Read Source off the rule file, not off what the rule reminds you of. Where a rule file records no
 published origin, mark it House, and where it does not record any origins at all, also say so once
-above the table. House then reads as unrecorded, not as ours. The caller can then check a published
-rule at its source, and weigh a house rule as ours. Claim a published origin the rule file does not
-record, and you send the caller to a page that does not state the rule.
+above the table. That note tells the caller that House in this report means the origin is
+unrecorded, not that this project wrote the rule. The caller can then check a published rule at its
+source, and weigh a house rule as ours. Do not claim a published origin the rule file does not
+record, because that sends the caller to a page that does not state the rule.
 
 Mark every fail and warn a defect or a difference. Count the defects and the differences separately.
 A defect is one where you can name what an agent would do wrong.
@@ -172,16 +173,14 @@ A defect is one where you can name what an agent would do wrong.
 - A credential is written into a log.
 
 A difference is where the target works another way. You cannot say what goes wrong. You can only say
-that we would write it another way. Unmarked, the two read alike at the same severity. Nobody can
-tell a document that will misbehave from one that is merely unfamiliar.
+that we would write it another way. Without the mark, a defect and a difference at the same severity
+look alike, and nobody can tell a document that will misbehave from one that is only unfamiliar.
 
-Only a defect blocks. Severity says how much a problem matters. Defect or difference says whether
-there is one. A blocking difference does not hold the target back. Read it instead as a signal about
-the rule, not the target. A rule that fires at blocking severity on something nobody can name a
-consequence for reaches past what it can judge.
+Only a defect blocks, because the defect or difference mark says whether a problem exists, and
+severity says only how much it would matter. A blocking difference does not hold the target back.
+Treat it as a sign that the rule is too broad, because nobody can name a consequence for it.
 
 A blocking defect means the target needs work before use. The report lists advisory items once.
 Advisory items never block. This is narrower than the same sentence in
-`../../shared/steering-rules.md`. That sentence speaks of any blocking failure. That file has no
-defect and difference marking. So that file cannot make the distinction. This file does make the
-distinction.
+`../../shared/steering-rules.md`. That sentence speaks of any blocking failure, because that file
+has no defect and difference marking.

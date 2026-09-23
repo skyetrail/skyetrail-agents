@@ -50,9 +50,10 @@ Where the items of work are of more than one kind and each kind needs its own pr
 
 Copy this checklist into `record.md` beside the artifact, and into your report. Tick each line as
 you finish it, by changing `[ ]` to `[x]`. A tick carries the path or the command from this run that
-shows the line is done. The skill's own text proves nothing, and neither does a rule file. For a
-step about applying a rule file, the tick names the sections of the delivered artifact where those
-rules land. A line you cannot tick stays unticked and carries one line saying why.
+shows the line is done. The path of this skill or of a rule file, or a quote from either, does not
+count, because neither file shows what this run did. For a step about applying a rule file, the tick
+names the sections of the delivered artifact where those rules land. A line you cannot tick stays
+unticked and carries one line saying why.
 
 ```text
 writing-agents
@@ -73,7 +74,8 @@ writing-agents
 2. **List what you know about the subject** before you apply any rule. This subject list is what the
    prompt's reader must have. Check the finished prompt against that list and put back what it
    dropped. The section "Structure versus subject matter" in `../../shared/authoring.md` states the
-   step. The rule files carry the structure of a prompt and none of its subject matter.
+   step. Take the subject matter of the prompt from this list, because the rule files give the
+   structure of a prompt and none of its subject matter.
 3. **Write the prompt** against `../../shared/steering-rules.md`. Decide the condition **hand-off**
    by its test in that file, and write against `../../shared/handoff-rules.md` where it holds. A
    prompt for a subagent or a scheduled run meets it. `../../shared/handoff-rules.md` contains the
@@ -114,9 +116,9 @@ Write the prompt to the path the person named. Where nobody named one and you ca
 `prompts/<task>.md` under the current working directory and name it in your report. The person
 chooses the final one. Write the caller side to `caller.md` beside the prompt.
 
-A failed check changes the status you report and never whether you deliver. A run that cannot
-dispatch or cannot ask still delivers. Every check that could not run goes to `record.md`, with one
-line on why.
+Deliver the prompt and the caller side even when a check fails. The failed check changes the status
+you report. A run that cannot dispatch or cannot ask still delivers. Every check that could not run
+goes to `record.md`, with one line on why.
 
 Then run `npm run audit -- <artifact path>` from the root of this plugin's repository, and paste its
 output into `record.md`. Your caller, the agent or person that invoked this skill, runs the same

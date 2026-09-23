@@ -38,11 +38,11 @@ A fact about one task, one branch, or one person's preference is not a repo fact
    `package.json`, targets in a `Makefile`, hooks in `.pre-commit-config.yaml`, the commands a CI
    workflow runs, and whatever the README tells contributors to run are examples, not the whole
    list. Where you find no candidate, say you found none. Do not conclude that none exists.
-3. **Do not change the repository to find out.** Establishing a fact is a read. Do not install
-   packages, run an install step, create a file to see what a tool says, or run a command that
-   writes or fixes in place. You may run a command that only reports. Running `npx <tool>` where the
-   tool is not in `node_modules` fetches it, and that is an install step. Where you cannot confirm a
-   candidate without changing something, record it as unconfirmed and say why.
+3. **Do not change the repository to find out.** Do not install packages, run an install step,
+   create a file to see what a tool says, or run a command that writes or fixes in place. You may
+   run a command that only reports. Running `npx <tool>` where the tool is not in `node_modules`
+   fetches it, and that is an install step. Where you cannot confirm a candidate without changing
+   something, record it as unconfirmed and say why.
 4. **Write the record, whatever you found.** Write `repo-setup.md` in the memory directory, in the
    format below, and one line for it in that directory's `MEMORY.md`, replacing the line where one
    is there. One working candidate is the answer, and the record names it as confirmed. Where
@@ -109,16 +109,16 @@ Add a status only where a run needs one these four do not cover, and declare it 
 
 Where a decision belongs to a person and no person is there, write the record with the candidates
 under `Unresolved` first, then stop and report `NEEDS_DECISION` with the candidates and what you saw
-about each. Do not pick one to keep moving. A guessed lint command is worse than none, because every
-later skill trusts it.
+about each. Do not pick one to keep moving. Leave the lint command unresolved rather than record a
+guess, because every later skill runs the recorded command without checking it.
 
-A command that fails because no such script exists has answered the question. A permission error, a
-timeout, or a failure that does not name a cause has not. Run that one once more, only after
-something has changed, such as running from the repository root. Where nothing changed, record it as
-unconfirmed and say what you saw. Unconfirmed and absent differ, and a later reader cannot tell them
+A command that fails because no such script exists shows the command is absent. A permission error,
+a timeout, or a failure that does not name a cause does not show that. Run that one once more, only
+after something has changed, such as running from the repository root. Where nothing changed, record
+it as unconfirmed, not absent, and say what you saw, because a later reader cannot tell the two
 apart unless you say which.
 
-Stopping for either reason carries no penalty. Both are correct outcomes.
+Stopping for either reason is a correct outcome and carries no penalty.
 
 ## Where this stops
 

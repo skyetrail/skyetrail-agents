@@ -7,7 +7,8 @@ npm run vale
 ```
 
 A clean run prints nothing and exits 0. `.vale.ini` contains the configuration. Read the rules
-there, not a list here. A restated list drifts from its source.
+there. This file does not restate them, because a restated list stops matching `.vale.ini` when the
+configuration changes.
 
 Keep each prose line to 100 columns. `npm run wrap` reflows every paragraph that needs it, and
 `npm run lint` fails on a longer line. `eng/wrap.mjs` states what counts as prose. Run the vale npm

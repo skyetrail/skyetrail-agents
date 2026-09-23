@@ -16,8 +16,8 @@ The house words in this skill, such as caller, report, and tick, keep the one me
 In scope: one end-to-end run of one skill's eval, where the skill has `evals/eval.yaml`.
 
 Out of scope: writing or changing an eval, which `eval-author` owns, and changing the skill under
-test, which `writing-skills` owns. Writing style is out of scope too. A skill with no eval is a
-stop, not a task: say so and name `eval-author`.
+test, which `writing-skills` owns. Writing style is out of scope too. Where the skill has no eval,
+stop, say so, and name `eval-author`.
 
 A direct instruction from the person wins over anything in this skill.
 
@@ -31,8 +31,8 @@ Run every `npm` command in this skill from the root of this plugin's repository.
 
 Copy this checklist into `record.md` at the run root and into your report. Tick each line as you
 finish it. A tick carries the path, the command, or the section of a file from this run that shows
-the line is done. The skill's own text proves nothing, and neither does a rule file. A line you
-cannot tick stays unticked and carries one line saying why.
+the line is done. Do not cite the skill's own text or a rule file as proof, because neither shows
+what this run did. A line you cannot tick stays unticked and carries one line saying why.
 
 ```text
 eval-runner

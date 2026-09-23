@@ -6,8 +6,8 @@ answer in this conversation, a prompt, a skill, and an instruction file. These f
 set. Take a request you cannot place in one of them back to the person.
 
 The skills `writing-skills` and `writing-agents` apply this file. It supplies criteria and defines
-no task of its own. `auditing-skills` does not apply it. An auditor reads a finished artifact and
-chooses nothing.
+no task of its own. `auditing-skills` does not apply it, because an auditor reads a finished
+artifact and has no class to choose.
 
 Out of scope: how to write the artifact once the class is decided, and what the finished artifact
 must contain. The writing style is out of scope too. The skill named beside each class covers the
@@ -76,7 +76,7 @@ that skill. Hand the request over. Do not write the artifact your own skill prod
 ## Where two tests hold
 
 Fill from the top and stop at the first yes. This section is for a reader who feels a later class
-fits better. The earlier class still wins, because it costs less per use.
+fits better. Take the earlier class anyway, because it costs less per use.
 
 - A script costs no agent context.
 - An answer costs one turn.
@@ -87,8 +87,8 @@ fits better. The earlier class still wins, because it costs less per use.
 So a repeatable check you can decide with a regex is a script, even where a skill could carry it
 too.
 
-Do not name the class the request comes closest to. Closeness carries no metric, so two readers
-return two classes. The order above is the metric.
+Do not name the class the request comes closest to, because two readers judge closeness differently
+and return two classes. Use the order above instead.
 
 ## Tests that read `cannot tell`
 
@@ -106,14 +106,14 @@ Ask the person that question. Do not take the next class down. Do not reword a t
 Fill the block again only after the person answers, because you get the same `cannot tell` from the
 same words.
 
-Returning the test that reads `cannot tell` is a complete answer. Returning the artifact with the
-block unfilled is not.
+Do not return the artifact with the block unfilled. Those three things are a complete answer on
+their own.
 
 Where you already wrote part of the artifact, say where it sits and name the test that reads
-`cannot tell`. That text is a draft. A draft is not the deliverable. Naming a status beside it does
-not make it one. Leave the keep-or-discard call to the person. This applies only where the artifact
-test reads `cannot tell`. Where a later check could not run, your skill still delivers the artifact.
-Name that check in your report.
+`cannot tell`. That text is a draft, not the deliverable, even with a status written beside it.
+Leave the keep-or-discard call to the person. This applies only where the artifact test reads
+`cannot tell`. Where a later check could not run, your skill still delivers the artifact. Name that
+check in your report.
 
 ## Requests with more than one kind of work
 
@@ -131,8 +131,9 @@ in it, change the order. Do not drop the item, unless your skill measured that t
 right without help.
 
 Then read the finished artifact once more. Name every instruction in it that came from your
-knowledge of the subject rather than from a rule file. Where you can name none, you dropped them
-all. Put them back, except an item your skill measured the model gets right without help.
+knowledge of the subject rather than from a rule file. Where you can name none, you left out every
+item on your subject list. Put each one back, except an item your skill measured the model gets
+right without help.
 
 One run showed this loss. For one task, two agents wrote independently, and the agent with the rule
 files left out four things the agent without them wrote.
@@ -142,5 +143,5 @@ files left out four things the agent without them wrote.
 - A rule to judge a report by its facts alone, whoever sent it.
 - An instruction to split a report that contains two problems.
 
-Every one is subject matter and none is structure. These four are what one run dropped, not the
-whole set a run can drop.
+All four are subject matter, which the rule files do not carry. These four are what one run dropped,
+not the whole set a run can drop.

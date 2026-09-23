@@ -72,11 +72,12 @@ working directory.
 ## Economy
 
 The script reads economy from the harness's own logs and never from what the executor says about
-itself. A hook the repository configures appends one line per tool call, with a timestamp, the agent
-id where the payload has one, and the tool name. Tool calls and seconds come from those lines for
-the executor's agent id. Tokens come from the harness's export where one exists, and a missing token
-figure is not measured, never a fail. An executor's own account of its calls is a claim. Where a log
-exists the script reports the difference. The results page names the source of each number.
+itself, because that account is a claim. A hook the repository configures appends one line per tool
+call, with a timestamp, the agent id where the payload has one, and the tool name. Tool calls and
+seconds come from those lines for the executor's agent id. Tokens come from the harness's export
+where one exists. A missing token figure counts as not measured and never as a fail. Where a log
+exists, the script reports the difference between the log and the executor's own account of its
+calls. The results page names the source of each number.
 
 ## The results page
 
