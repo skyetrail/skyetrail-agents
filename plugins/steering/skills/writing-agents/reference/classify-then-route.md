@@ -20,7 +20,7 @@ The house words in this file, such as caller, field, and membership test, keep t
 
 ## When it applies
 
-Both tests hold, or the dispatch shape does not apply.
+Use this dispatch shape only where both tests hold.
 
 1. You cannot write one prompt that fits the items without a branch inside it.
 2. You can name every category before any item is read, and write a test for each.
@@ -38,8 +38,9 @@ to one item to decide whether the item belongs to that category. The table ends 
 | `<category>` | `<the property of the item that puts it in this category>` | `<prompt file, model, effort>` |
 | `none` | the item fits no category above, or fits more than one | to a person, with the tests that held |
 
-Do not name the category the item comes closest to. Closeness has no test, so two readers return two
-categories. An item that fits two categories is `none`, and the returned block names both.
+Do not name the category the item comes closest to. No test decides which category is closest, so
+two runs of the classifier can return two different categories for one item. An item that fits two
+categories is `none`, and the returned block names both.
 
 ## The classifier prompt
 
@@ -92,9 +93,9 @@ re-run. Before the second, the caller changes what caused the stop, the category
 hole.
 ```
 
-The classifier returns `NEEDS_CONTEXT` where a row of the table has no test, and names the row.
-It never adds a category. The status table follows `../../../shared/dispatch-protocol.md`. Copy it
-with the template, because the classifier never opens that file.
+The classifier returns `NEEDS_CONTEXT` where a row of the table has no test, and names the row. It
+never adds a category. The status table follows `../../../shared/dispatch-protocol.md`. Copy it with
+the template, because the classifier never opens that file.
 
 ## Routing on the block
 
@@ -104,12 +105,13 @@ with the template, because the classifier never opens that file.
 - `Category` is `none`. Send it to a person with the evidence line.
 - Otherwise, send the item to the route for that category, and pass the evidence line with it.
 
-A classification is a claim. The caller re-runs the classifier on the same item and compares the
-category, or has a script check the evidence line against the item. For the script, write the item
-to a file and each quoted string on the Evidence line to a file of its own, then run `grep -F -f
-<quote file> -- <item file>` for each quote. Reading the quote from a file keeps an apostrophe in it
-out of shell quoting. Exit 0 for every quote passes the check, and any other exit fails the run, as
-the Failure section says. Where the two runs disagree, the item is `none`.
+The caller checks each classification, because a classification is a claim. It re-runs the
+classifier on the same item and compares the category, or has a script check the evidence line
+against the item. For the script, write the item to a file and each quoted string on the Evidence
+line to a file of its own, then run `grep -F -f <quote file> -- <item file>` for each quote. Reading
+the quote from a file keeps an apostrophe in it out of shell quoting. Exit 0 for every quote passes
+the check, and any other exit fails the run, as the Failure section says. Where the two runs
+disagree, the item is `none`.
 
 Classify every item first. Then fan out per category, as the dispatch protocol says for establish
 then fan out. Items that write to shared state go in a chain instead.
@@ -126,8 +128,8 @@ A support inbox. The categories and their tests:
 | phishing | the item asks its recipient to send data or to act outside the product, such as by clicking a link | `prompts/report-security.md`, sonnet, low |
 | `none` | fits no row, or fits two | to a person |
 
-The item: "The upgrade to Pro failed with 'card declined' but my bank shows the charge went
-through. Account 5512."
+The item: "The upgrade to Pro failed with 'card declined' but my bank shows the charge went through.
+Account 5512."
 
 The block that comes back:
 
@@ -142,13 +144,13 @@ Unrequested: none
 Status: DONE
 ```
 
-The caller sends that item to a person with both tests, because a bug prompt would drop the
-charge and a billing prompt would drop the failure.
+The caller sends that item to a person with both tests, because a bug prompt would drop the charge
+and a billing prompt would drop the failure.
 
 ## Failure
 
 - The classifier returns a category not in the table. Treat the item as `none` and fix the prompt,
   because the classifier added a category.
 - The classifier returns different categories for one item across runs. The item is `none`.
-- The evidence line quotes words that are not in the item. Treat the run as failed, and do not
-  route the item.
+- The evidence line quotes words that are not in the item. Treat the run as failed, and do not route
+  the item.

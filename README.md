@@ -2,40 +2,36 @@
 
 Open source, MIT licensed agent plugins from Skyetrail.
 
-[Skyetrail](https://skyetrail.com) is an AI engineering and due diligence
-consultancy for utilities and cleantech companies. We build small plugins to make
-our own agent work faster and more consistent, and we share them here so anyone
-can use them. Everything in this repository is free to use under the
-[MIT License](LICENSE).
+[Skyetrail](https://skyetrail.com) is an AI engineering and due diligence consultancy for utilities
+and cleantech companies. We build small plugins to make our own agent work faster and more
+consistent, and we share them here so anyone can use them. Everything in this repository is free to
+use under the [MIT License](LICENSE).
 
 ## What is in here
 
-Each plugin is a self contained folder with a manifest and one or more skills. A
-skill is a folder with a `SKILL.md` file that tells an agent how to do a specific
-task. The agent reads the name and description of every skill at startup and
-loads the full instructions only when a task matches, so you can keep many skills
-on hand at a low cost.
+Each plugin is a self contained folder with a manifest and one or more skills. A skill is a folder
+with a `SKILL.md` file that tells an agent how to do a specific task. The agent reads the name and
+description of every skill at startup and loads the full instructions only when a task matches, so
+you can keep many skills on hand at a low cost.
 
-These plugins follow the
-[Agent Plugins specification](https://agent-plugins.org) and the
-[Agent Skills](https://agentskills.io) format. They are not tied to one tool, so
-any client that supports the spec can load them. Each plugin has one
-manifest, `plugin.json`, at its root, and the catalog of plugins lives in
-`marketplace.json` at the repository root.
+These plugins follow the [Agent Plugins specification](https://agent-plugins.org) and the [Agent
+Skills](https://agentskills.io) format. They are not tied to one tool, so any client that supports
+the spec can load them. Each plugin has one manifest, `plugin.json`, at its root, and the catalog of
+plugins lives in `marketplace.json` at the repository root.
 
-The Agent Plugins specification leaves distribution out of scope, so the root
-location for the catalog is this repository's neutral convention. Claude Code's
-installer reads the catalog only from `.claude-plugin/marketplace.json`, so the
-generator writes that one copy as a shim. Edit the root file. Never edit the copy.
+The Agent Plugins specification leaves distribution out of scope, so the root location for the
+catalog is this repository's neutral convention. Claude Code's installer reads the catalog only from
+`.claude-plugin/marketplace.json`, so the generator writes that one copy as a shim. Edit the root
+file. Never edit the copy.
 
 ## Install
 
 You can use these plugins in two ways:
 
-- Copy a plugin folder, or a skill folder, into your own project. A skill
-  is just a folder with a `SKILL.md` file, so it works on its own.
-- Add this repository as a marketplace in a host that supports the Open Plugin
-  Specification, then install the plugin you want.
+- Copy a plugin folder, or a skill folder, into your own project. A skill is just a folder with a
+  `SKILL.md` file, so it works on its own.
+- Add this repository as a marketplace in a host that supports the Open Plugin Specification, then
+  install the plugin you want.
 
 In a host that uses slash commands:
 
@@ -75,8 +71,8 @@ In a host that uses slash commands:
 
 ## Contributing
 
-We welcome new plugins and skills. See [CONTRIBUTING.md](CONTRIBUTING.md) for the
-repository layout, how to add a plugin or a skill, and how to run the generator.
+We welcome new plugins and skills. See [CONTRIBUTING.md](CONTRIBUTING.md) for the repository layout,
+how to add a plugin or a skill, and how to run the generator.
 
 ## Acknowledgements
 

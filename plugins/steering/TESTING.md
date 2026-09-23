@@ -3,8 +3,8 @@
 The main instrument is an execution round. Run the skill on the model that will execute it. Use a
 working directory that only that run uses, and compare it against a second run that loads nothing.
 
-An audit is the weakest instrument. No difference turned up between the rules before four rounds
-of fixing and the rules after, across eight blind audits. A gate that stopped every delivery then
+An audit is the weakest instrument. No difference turned up between the rules before four rounds of
+fixing and the rules after, across eight blind audits. A gate that stopped every delivery then
 turned up across six execution runs. Measure execution.
 
 `OUTCOMES.md` holds the results and the numbers. `METHOD.md` holds the practice that transfers to
@@ -16,9 +16,8 @@ These tests need Claude Code. None of them runs on claude.ai.
 
 **No session in the last three rounds could dispatch a subagent.** That finding came from six
 independent runs, and a judge confirmed it. `TaskCreate` writes a pending to-do item and does not
-run a model. `TaskGet`
-reads it back. `SendMessage` needs a teammate someone already named. None of them starts a
-fresh-context agent and returns its output.
+run a model. `TaskGet` reads it back. `SendMessage` needs a teammate someone already named. None of
+them starts a fresh-context agent and returns its output.
 
 So never write a step that dispatches a subagent from inside a run. Start each arm as its own
 session instead. A gate that needed a dispatch blocked all six deliveries on 2026-08-12.
@@ -56,10 +55,9 @@ subject matter.
 What this measures shows in the four results below. On 2026-08-12, six of six skilled runs delivered
 a file its own text calls not the deliverable, against two unaided runs that delivered. Later the
 same day, after the gate changed, six of six delivered the artifact. One caller re-run caught a
-false tick: the run claimed every path
-in a file opens, and three of its five paths do not exist. One skilled prompt dropped security
-headers, session fixation, type confusion, privilege escalation and two trust-boundary cases that
-the unaided prompt named.
+false tick: the run claimed every path in a file opens, and three of its five paths do not exist.
+One skilled prompt dropped security headers, session fixation, type confusion, privilege escalation
+and two trust-boundary cases that the unaided prompt named.
 
 ## Check the round is clean before you score
 
@@ -71,8 +69,8 @@ said so. Agreement between those runs is co-authorship, not convergence.
 
 **Prior output readable inside the repository.** The previous round's artifacts for the same task
 sat at `plugins/skyetrail/tests/baselines/`. One run chose the same two filenames, carried nine
-byte-identical lines, and said it read them. The other two runs did not leave a trace of it. That fixture
-fell from three usable runs to two, and it cannot run again until those files move.
+byte-identical lines, and said it read them. The other two runs did not leave a trace of it. That
+fixture fell from three usable runs to two, and it cannot run again until those files move.
 
 Run four checks before you score.
 
@@ -107,9 +105,9 @@ The subject rows and the coverage row in `steering-rules.md` cover that case.
 The trigger test ran on 2026-08-11. Both arms scored 36 of 36, on every run and every request.
 
 Do not run it again. Perfect scores on both arms leave two readings open. Either the rules change
-nothing, or the test had no room to show a change. Only the first would justify cutting a rule.
-With 18 should-trigger trials per arm, a true miss rate of 10 percent does not show a miss about
-15 percent of the time.
+nothing, or the test had no room to show a change. Only the first would justify cutting a rule. With
+18 should-trigger trials per arm, a true miss rate of 10 percent does not show a miss about 15
+percent of the time.
 
 A test that decides the two description rules needs requests near a decision boundary, and enough
 trials to see a five percent difference. Pre-register the power beside the prediction.
@@ -117,7 +115,8 @@ trials to see a five percent difference. Pre-register the power beside the predi
 Method: build two variants that differ in one description and nothing else. Strip the answer key
 from the runner prompt. Run each request at least three times, because triggering is not
 deterministic. Record which skill fired, or none.
-[trigger-test/RESULTS.md](./tests/outcomes/trigger-test/RESULTS.md) holds the executed arms and two declared deviations.
+[trigger-test/RESULTS.md](./tests/outcomes/trigger-test/RESULTS.md) holds the executed arms and two
+declared deviations.
 
 ### A query set for this plugin's own skills
 

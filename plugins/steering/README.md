@@ -2,11 +2,15 @@
 
 # steering
 
-Skills for steering agents. Write a skill with a measured baseline, audit a skill or an agent prompt against the house rules, and write the prompt and caller side for a dispatched agent. Shared rule files and a dispatch protocol back all three.
+Skills for steering agents. Write a skill with a measured baseline, audit a skill or an agent prompt
+against the house rules, and write the prompt and caller side for a dispatched agent. Shared rule
+files and a dispatch protocol back all three.
 
 ## Install
 
-This plugin follows the [Agent Plugins specification](https://agent-plugins.org), so any client that supports the spec can load it. Copy the plugin folder into your project, or add this repository as a marketplace in your host.
+This plugin follows the [Agent Plugins specification](https://agent-plugins.org), so any client that
+supports the spec can load it. Copy the plugin folder into your project, or add this repository as a
+marketplace in your host.
 
 In a host that uses slash commands:
 
@@ -46,9 +50,9 @@ In a host that uses slash commands:
 Steering is anything a person writes to direct what an agent does. A skill, a subagent prompt, a
 rules file and a hand-off brief are examples, not the whole set.
 
-This plugin includes skills that write or check steering, and the rule files those skills
-apply. Twenty experiments measured them, and every rule here came from a measured failure. A
-practice with no failure behind it is a preference, so this plugin contains none.
+This plugin includes skills that write or check steering, and the rule files those skills apply.
+Twenty experiments measured them, and every rule here came from a measured failure. The plugin
+leaves out any practice with no failure behind it, because such a practice is a preference.
 
 [METHOD.md](./METHOD.md) states the method, and you can use that method without these rules.
 [OUTCOMES.md](./OUTCOMES.md) states each experiment and what it showed. This page states what you
@@ -56,8 +60,8 @@ get, what we learned, and what is still open.
 
 ## The skills
 
-A skill is a short file of instructions an agent loads partway through a job, when the job needs it. Each one below states
-the artifact it produces before it states any step.
+A skill is a short file of instructions an agent loads partway through a job, when the job needs it.
+Each one below states the artifact it produces before it states any step.
 
 | Skill | What it produces |
 | --- | --- |
@@ -72,8 +76,8 @@ Each skill writes a record of what it changed. A record does not replace the art
 six isolated runs produced six records and zero usable files, and that round counts as a failure.
 Produce the artifact first, then write the record.
 
-`repo-setup` is safe to run again. A second run replaces what it confirms and keeps the rest.
-One re-run confirmed that by direct count and recursive diff.
+`repo-setup` is safe to run again. A second run replaces what it confirms and keeps the rest. One
+re-run confirmed that by direct count and recursive diff.
 
 ## The rule files
 
@@ -123,16 +127,15 @@ npm run audit -- path/to/some-skill
 npm run audit -- --explain
 ```
 
-For the judgement rules, invoke the `auditing-skills` skill on the target. It runs the command
-first and cites the result. It then adds what a script cannot decide.
+For the judgement rules, invoke the `auditing-skills` skill on the target. It runs the command first
+and cites the result. It then adds what a script cannot decide.
 
 **One thing to know before you use `writing-skills` or `writing-agents`.** Both ask you to measure a
 draft by dispatching a fresh agent with no skill loaded. Many sessions cannot dispatch one. Six
 recorded runs met that case, and every one of them said so and carried on.
 
-Where your session cannot dispatch, the skill still produces the artifact. What it could not measure
-travels with the artifact, in a record naming the check that did not run. Nothing is silently
-skipped, and nothing is held back.
+Where your session cannot dispatch, the skill still produces the artifact. It also writes a record,
+delivered with the artifact, that names each check that did not run.
 
 A word this page uses precisely. A **gate** is a check the caller re-runs on the artifact it
 received, and its result sets the status the run reports. A check the caller cannot re-run is a
@@ -142,65 +145,64 @@ received, and its result sets the status the run reports. A check the caller can
 
 Install this plugin if you write skills or agent prompts, and you want evidence that they work.
 
-1. Write against a baseline. A fresh agent runs a realistic task with no steering loaded. Its
-   mistakes decide what the steering adds, and it adds nothing for what the model already gets
-   right.
-2. Measure on Claude Sonnet 5. Sonnet executes these skills, so Sonnet runs the test. Give one task
-   to two arms, one set of runs with no skill loaded and one with the skill loaded, with an isolated
-   working directory per run. Compare the delivered artifacts.
-3. Audit last, and expect little. An audit measures conformance to the rules. It cannot see whether
-   the file works.
+1. Write against a baseline. A fresh agent runs a realistic task with no steering loaded. Add
+   steering only for that agent's mistakes, because the model already gets the rest right.
+2. Measure on Claude Sonnet 5, because Sonnet executes these skills. Give one task to two arms, one
+   set of runs with no skill loaded and one with the skill loaded, with an isolated working
+   directory per run. Compare the delivered artifacts.
+3. Audit last. An audit measures conformance to the rules. It cannot see whether the file works.
 
-One rule now governs every gate in `writing-skills` and `writing-agents`. A gate is a check the caller re-runs on the
-artifact it received. Its result sets the status the run reports, and the artifact is delivered
-whatever that result is. Anything the caller cannot re-run is not a gate, and becomes a file the
-caller reads. The measurement behind that rule is below.
+One rule now governs every gate in `writing-skills` and `writing-agents`. A gate is a check the
+caller re-runs on the artifact it received. Its result sets the status the run reports, and the
+artifact is delivered whatever that result is. Anything the caller cannot re-run is a claim, and
+goes in a file the caller reads. The measurement behind that rule is below.
 
-[METHOD.md](./METHOD.md) states each practice and names the failure that produced it. Read it
-before you change a rule file.
+[METHOD.md](./METHOD.md) states each practice and names the failure that produced it. Read it before
+you change a rule file.
 
 ## What we learned
 
 Six results, each measured. [OUTCOMES.md](./OUTCOMES.md) describes the experiment behind each one.
 
-**Auditing your own files against your own rules measures conformance, not quality.** Four rounds
-of audit and fix cleared the previous round's findings every time, and every confirmed fix held. A
-pre-registered blind A/B then compared the rules before those rounds against the rules after, on a
-repository we did not write. Every measure tied or reversed. Three of four predictions were wrong,
-and the one that held predicted no difference. Those rounds retired 144 findings and created 67 new
-ones. Most of the new ones came from the previous round's fixes. Enough statistical power exists to
-show a large difference across eight audits over two targets. Seeing a small difference would need
-more than that number of audits.
+**Auditing your own files against your own rules measures conformance, not quality.** Audit and fix,
+run four rounds in a row, cleared the previous round's findings every time, and every confirmed fix
+held. A pre-registered blind A/B then compared the rules before those rounds against the rules
+after, on a repository we did not write. Every measure tied or reversed. Three of four predictions
+were wrong, and the one that held predicted no difference. Those rounds retired 144 findings and
+created 67 new ones. Most of the new ones came from the previous round's fixes. Enough statistical
+power exists to show a large difference across eight audits over two targets. Seeing a small
+difference would need more than that number of audits.
 
-**Measure on the model that executes, not on the model that authors.** The project then ran its own
-skills on Claude Sonnet 5. That measured execution for the first time, and it found defects no
-audit reached.
+**Measure steering on the model that executes it, even when another model wrote it.** The project
+then ran its own skills on Claude Sonnet 5. That measured execution for the first time, and it found
+defects no audit reached.
 
-**A gate the dispatched agent reports is not a gate.** Isolated runs, six of them, did not produce a
-usable file. Every one wrote a file whose own text says it is not the deliverable, and two unaided
-runs, which had no skill loaded, delivered one. The gate required a subagent dispatch inside the
-run's own session. No session could dispatch, so every run stopped. The gate was cheated twice. One
-invented a repository and grepped that. One audited a copy at a path built to pass a name check,
-then deleted the copy. The project owner named the fix, and the caller and the dispatched agent now
-assess each gate independently. **All six then delivered a usable file.** A caller caught a false
-result by re-running one run's own check. Neither earlier cheat recurred.
+**Have the caller re-run each check that sets the status, instead of relying on the dispatched
+agent's report.** Isolated runs, six of them, did not produce a usable file. Every one wrote a file
+whose own text says it is not the deliverable, and two unaided runs, which had no skill loaded,
+delivered one. The gate required a subagent dispatch inside the run's own session. No session could
+dispatch, so every run stopped. The gate was cheated twice. One invented a repository and grepped
+that. One audited a copy at a path built to pass a name check, then deleted the copy. The project
+owner named the fix, and the caller and the dispatched agent now assess each gate independently.
+**All six then delivered a usable file.** A caller caught a false result by re-running one run's own
+check. Neither earlier cheat recurred.
 
-**A rule that asks for something which does not exist gets a proxy.** Every produced security
-prompt defined done as one entry per changed file. Removing the worked example failed. Naming the
-failure failed. Supplying a test failed too. One author ran the test, described a passing run that
-misses the vulnerability, and kept the check. For judgement work, no mechanical check can decide
-whether the work is done, and rewording the rule does not change that.
+**When a rule asks for a check that cannot exist, the author writes the nearest check that can, such
+as a count.** Every produced security prompt defined done as one entry per changed file. Removing
+the worked example failed. Naming the failure failed. Supplying a test failed too. One author ran
+the test, described a passing run that misses the vulnerability, and kept the check. For judgement
+work, no mechanical check can decide whether the work is done, so rewording the rule does not remove
+the count.
 
-**Structure variance comes from absent rules, not from bad ones.** Checklist ticks, the `[x]` a run
-writes to mark a line done, became identical across runs, from zero of three runs to three of
-three. Structure still varies, and zero of three runs agree on it.
-Every structural difference traces to a rule that is absent rather than to a sentence that permits
-it.
+**Structure varies across runs only where no rule covers it.** Checklist ticks, the `[x]` a run
+writes to mark a line done, became identical across runs, from zero of three runs to three of three.
+Structure still varies, and zero of three runs agree on it. Every structural difference traces to a
+rule that is absent rather than to a sentence that permits it.
 
 **Simplified Technical English changes nothing an agent does, and costs about one percent in
-length.** The result was an exact tie, across eight blind runs over two arms. The rewrite added nine words on 949,
-so the larger cost predicted in [DESIGN.md](./tests/outcomes/ste-bench/DESIGN.md) was wrong. Adopt
-the style for the person who maintains the file, and claim nothing more. Moving nine files to it
+length.** The result was an exact tie, across eight blind runs over two arms. The rewrite added nine
+words on 949, so the larger cost predicted in [DESIGN.md](./tests/outcomes/ste-bench/DESIGN.md) was
+wrong. Adopt the style only to help the person who maintains the file. Moving nine files to it
 changed what three of them demanded, and every change came from splitting one sentence into two.
 Check a style rewrite for equivalence before you accept it.
 
@@ -210,19 +212,19 @@ unaided run still writes the better severity rubric.
 
 ## Evidence gaps
 
-Claude Sonnet 5 ran every worker job. One round put Opus in the main-agent role with Sonnet
-workers, and matched the earlier results. No other model was measured as an executor.
+Claude Sonnet 5 ran every worker job. One round put Opus in the main-agent role with Sonnet workers,
+and matched the earlier results. No other model was measured as an executor.
 
 Subagent dispatch was not available in the sessions that produced the last three rounds. A judge
 confirmed that independently across six runs. Any part of these rules that assumes a live dispatch
 is untested in those sessions.
 
 Reproduction between two auditors of one file runs at 78 to 89 percent. Across three double-audited
-files, paired audits returned opposite verdicts on the same sentence five times. Read one audit as
-a weak signal, and pair it when the answer matters.
+files, paired audits returned opposite verdicts on the same sentence five times. Read one audit as a
+weak signal, and pair it when the answer matters.
 
-No baseline has run since 2026-08-01, and two skills were rewritten on 2026-08-12. Treat every
-file in `tests/baselines/` as stale.
+No baseline has run since 2026-08-01, and two skills were rewritten on 2026-08-12. Treat every file
+in `tests/baselines/` as stale.
 
 Nobody outside this project has tested any of it. We pointed the rules at one other author's work
 twice. We built the first fixture ourselves, and it produced four void findings that came from the
@@ -251,9 +253,10 @@ The open items are listed once, in [OUTCOMES.md](./OUTCOMES.md) under "What is s
   this project auditing itself.
 - [tests/baselines/](./tests/baselines/) contains one before-and-after file per skill. None records
   a run after 2026-08-01.
-- The tests directory's [README.md](./tests/README.md) says what it keeps and where removed files are. It covers
-  none of the five rounds after that, so read it as history.
+- The tests directory's [README.md](./tests/README.md) says what it keeps and where removed files
+  are. It covers none of the five rounds after that, so read it as history.
 
 ## License
 
-MIT. Part of the [skyetrail-agents](https://github.com/skyetrail/skyetrail-agents) plugin collection from Skyetrail.
+MIT. Part of the [skyetrail-agents](https://github.com/skyetrail/skyetrail-agents) plugin collection
+from Skyetrail.

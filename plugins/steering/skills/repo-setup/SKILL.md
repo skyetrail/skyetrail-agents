@@ -7,8 +7,8 @@ description: Establishes the basic facts about the repository an agent is workin
 
 This skill produces a checked record of this repository's basic facts and writes it to one fixed
 path: `repo-setup.md` in the project's memory, the persistent memory directory your system prompt
-names for this project. Every run that reaches step 4 writes that file, whatever it found. The
-skill changes nothing in the repository. It also states plainly anything a person still has to decide.
+names for this project. Every run that reaches step 4 writes that file, whatever it found. The skill
+changes nothing in the repository. It also states plainly anything a person still has to decide.
 
 This skill is safe to run again. A second run replaces what it confirms and keeps the rest.
 
@@ -18,44 +18,44 @@ The house words in this skill, such as caller, person, and report, keep the one 
 ## What counts as a repo fact
 
 A repo fact is anything true of the repository rather than of the task in hand, which an agent
-working here would otherwise work out for itself. The lint command is the first, and today it is
-the only one this skill establishes. The test command, the build command, and the package manager
-in use are examples of the same kind of thing, not the whole list.
+working here would otherwise work out for itself. The lint command is the first, and today it is the
+only one this skill establishes. The test command, the build command, and the package manager in use
+are examples of the same kind of thing, not the whole list.
 
 A fact about one task, one branch, or one person's preference is not a repo fact.
 
 ## Workflow
 
-1. **Read the existing record first.** Where the memory directory already contains
-   `repo-setup.md`, this run is a re-run. Check whether each recorded command still resolves. Keep
-   the recorded answer where it does. Do not ask the person again about a question the record
-   already answers. Then run `git status --porcelain` in the repository and keep its output, because
-   step 6 compares against it.
-2. **Establish the lint command.** Try `npm run lint` first. That is this project's default, and
-   a repository that has it needs no further discussion. Where it is absent, or fails because no
-   such script exists, gather the candidates by reading files only. A candidate is anywhere this
+1. **Read the existing record first.** Where the memory directory already contains `repo-setup.md`,
+   this run is a re-run. Check whether each recorded command still resolves. Keep the recorded
+   answer where it does. Do not ask the person again about a question the record already answers.
+   Then run `git status --porcelain` in the repository and keep its output, because step 6 compares
+   against it.
+2. **Establish the lint command.** Try `npm run lint` first. That is this project's default, and a
+   repository that has it needs no further discussion. Where it is absent, or fails because no such
+   script exists, gather the candidates by reading files only. A candidate is anywhere this
    repository records a command that checks the code without changing it. The scripts in
    `package.json`, targets in a `Makefile`, hooks in `.pre-commit-config.yaml`, the commands a CI
    workflow runs, and whatever the README tells contributors to run are examples, not the whole
    list. Where you find no candidate, say you found none. Do not conclude that none exists.
-3. **Do not change the repository to find out.** Establishing a fact is a read. Do not install
-   packages, run an install step, create a file to see what a tool says, or run a command that
-   writes or fixes in place. You may run a command that only reports. Running `npx <tool>` where the tool is not in
-   `node_modules` fetches it, and that is an install step. Where you cannot confirm a candidate
-   without changing something, record it as unconfirmed and say why.
-4. **Write the record, whatever you found.** Write `repo-setup.md` in the memory directory, in
-   the format below, and one line for it in that directory's `MEMORY.md`, replacing the line where
-   one is there. One working candidate is the answer, and the record names it as confirmed. Where
+3. **Do not change the repository to find out.** Do not install packages, run an install step,
+   create a file to see what a tool says, or run a command that writes or fixes in place. You may
+   run a command that only reports. Running `npx <tool>` where the tool is not in `node_modules`
+   fetches it, and that is an install step. Where you cannot confirm a candidate without changing
+   something, record it as unconfirmed and say why.
+4. **Write the record, whatever you found.** Write `repo-setup.md` in the memory directory, in the
+   format below, and one line for it in that directory's `MEMORY.md`, replacing the line where one
+   is there. One working candidate is the answer, and the record names it as confirmed. Where
    several candidates disagree, cover different files, or none works today, the record names no
    command as confirmed and lists every candidate with what it covers under `Unresolved`, so the
    next agent inherits the discovery rather than repeating it. Where the file already contains a
    fact this run did not establish, write that fact back unchanged. Where your system prompt does
    not name a memory directory, put the record in your report and return `NEEDS_CONTEXT`, naming the
    directory as the missing field.
-5. **Take the decision to a person where more than one answer is possible.** Put the candidates
-   in front of the person with what each covers and what you saw, and ask which one is the lint
-   command. Where you find no candidate at all, tell the person the repository needs one, and
-   that skills relying on one cannot run their mechanical checks until it has one.
+5. **Take the decision to a person where more than one answer is possible.** Put the candidates in
+   front of the person with what each covers and what you saw, and ask which one is the lint
+   command. Where you find no candidate at all, tell the person the repository needs one, and that
+   skills relying on one cannot run their mechanical checks until it has one.
 6. **Check your own work before you report.** Run these commands. Do not judge by eye.
 
    ```
@@ -65,13 +65,13 @@ A fact about one task, one branch, or one person's preference is not a repo fact
    git status --porcelain      # must match what step 1 kept, or you changed the repository
    ```
 
-   Then confirm the one thing no command checks: every command in the record worked in this run,
-   or a person confirmed it. Fix anything that does not hold and run the checks again. Where a
-   check still fails, keep the record and change three things. Write each failed check and its
-   output under `Unresolved`, so a kept record never reads `Unresolved: none`. Move each fact this
-   run wrote that neither worked in this run nor has a person's confirmation out of the confirmed
-   lines and under `Unresolved`. Where the lint command moved, or its run changed the repository,
-   write `lint unresolved` in the description and `lint: unresolved` in the index line. Then report
+   Then confirm the one thing no command checks: every command in the record worked in this run, or
+   a person confirmed it. Fix anything that does not hold and run the checks again. Where a check
+   still fails, keep the record and change three things. Write each failed check and its output
+   under `Unresolved`, so a kept record never reads `Unresolved: none`. Move each fact this run
+   wrote that neither worked in this run nor has a person's confirmation out of the confirmed lines
+   and under `Unresolved`. Where the lint command moved, or its run changed the repository, write
+   `lint unresolved` in the description and `lint: unresolved` in the index line. Then report
    `BLOCKED` with the check that failed. Never delete a record.
 
 ## The record
@@ -108,17 +108,17 @@ Add a status only where a run needs one these four do not cover, and declare it 
 ## When to stop
 
 Where a decision belongs to a person and no person is there, write the record with the candidates
-under `Unresolved` first, then stop and report `NEEDS_DECISION` with the candidates and what you
-saw about each. Do not pick one to keep moving. A guessed lint
-command is worse than none, because every later skill trusts it.
+under `Unresolved` first, then stop and report `NEEDS_DECISION` with the candidates and what you saw
+about each. Do not pick one to keep moving. Leave the lint command unresolved rather than record a
+guess, because every later skill runs the recorded command without checking it.
 
-A command that fails because no such script exists has answered the question. A permission error,
-a timeout, or a failure that does not name a cause has not. Run that one once more, only after something
-has changed, such as running from the repository root. Where nothing changed, record it as
-unconfirmed and say what you saw. Unconfirmed and absent differ, and a later reader cannot tell
-them apart unless you say which.
+A command that fails because no such script exists shows the command is absent. A permission error,
+a timeout, or a failure that does not name a cause does not show that. Run that one once more, only
+after something has changed, such as running from the repository root. Where nothing changed, record
+it as unconfirmed, not absent, and say what you saw, because a later reader cannot tell the two
+apart unless you say which.
 
-Stopping for either reason carries no penalty. Both are correct outcomes.
+Stopping for either reason is a correct outcome and carries no penalty.
 
 ## Where this stops
 

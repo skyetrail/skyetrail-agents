@@ -11,11 +11,11 @@ defines no task of its own. Where a procedural property an audit needs is missin
 those two skills. The stopping points and the evidence each finding includes are two examples, not
 the whole list.
 
-A mechanical check is a script's job, not judgement work. `./lint.md` names the command that decides
-those checks, and says what to do where the command does not run. Ask the command itself what it
-checks. Confirm its output rather than re-deriving a check by hand. Do not restate the checks here.
-A second copy of that list drifts from the first. An agent then loads two files that say different
-things.
+Leave each mechanical check to a script, because a script gives the same result on every run.
+`./lint.md` names the command that decides those checks, and says what to do where the command does
+not run. Ask the command itself what it checks. Confirm its output rather than re-deriving a check
+by hand. Do not restate the checks here. A second copy of that list drifts from the first. An agent
+then loads two files that say different things.
 
 ## Contents
 
@@ -37,8 +37,8 @@ things.
 | The description includes the file types, error text, and casual phrasings people actually type. | Important |
 | The description does not summarise the workflow or the process. | Important |
 
-Skills undertrigger more often than they overtrigger. So a description that reads as slightly
-insistent is closer to right than one that reads as neutral.
+Prefer a description that reads as slightly insistent over one that reads as neutral, because skills
+undertrigger more often than they overtrigger.
 
 The command checks one narrow case of the first rule: whether a name is built only from generic
 words. It cannot tell whether a name reads as a clear noun phrase. So read the rule as well as the
@@ -69,28 +69,28 @@ command's output.
 | A default that names a set of values also carries the test that assigns each member. | Important |
 | A workflow whose steps a reader could lose track of carries a checklist. | Advisory |
 
-Read each paragraph. Ask what an agent does differently after reading it. If the answer is
-nothing, it is a finding. These kinds are the ones seen so far, not the whole list. The test above
-decides a kind they do not cover.
+Read each paragraph. Ask what an agent does differently after reading it. If the answer is nothing,
+it is a finding. These kinds are the ones seen so far, not the whole list. The test above decides a
+kind they do not cover.
 
-- A paragraph about how this document changed: which wording replaced which, what an earlier
-  round of review showed, why a section moved. A previously tried approach to the work itself that
-  failed is different. It belongs. Stating it stops an agent from repeating it.
+- A paragraph about how this document changed: which wording replaced which, what an earlier round
+  of review showed, why a section moved. A paragraph about a previously tried approach to the work
+  itself that failed is not a finding, because stating it stops an agent from repeating it.
 - A statement of how sure the authors are, such as a rule being unverified or a test not yet run.
-  Severity already carries how much a rule matters, and a paragraph nudging a severity is a worse
-  instrument than the severity field.
+  Severity already carries how much a rule matters, so change the severity rather than add a
+  paragraph that argues for a different one.
 - A count of anything, especially of things in another file. The number gives an agent nothing and
   goes wrong the moment someone adds one.
-- A restatement of a list defined in another file. The copy drifts. An agent then loads two
-  files that say different things.
+- A restatement of a list defined in another file. The copy drifts. An agent then loads two files
+  that say different things.
 
 Content does not count as a finding where it changes what an agent does with the next paragraph.
-That test decides a case the examples below do not cover. This is a partial list. An
-explanation of why a constraint exists, where the rule requiring it says to give the reason. A
-worked example of a rule being met and broken. A line saying what the document does not cover.
+That test decides a case the examples below do not cover. This is a partial list. An explanation of
+why a constraint exists, where the rule requiring it says to give the reason. A worked example of a
+rule being met and broken. A line saying what the document does not cover.
 
-Provenance, doubt, and history belong where the authors read them, not in a file loaded on every
-run.
+Put provenance, doubt, and history where the authors read them, such as a decisions log, and keep
+them out of any file an agent loads on every run.
 
 ## Loading
 
@@ -109,9 +109,9 @@ A line cap on the SKILL.md is the command's proxy for the detail rule. A SKILL.m
 still carry the detail, so read the rule as well as the command's output.
 
 These rules cover the files a skill includes inside its own directory, its bundled files. A bundled
-script is a bundled file the skill runs. The rule files under `shared/` are not bundled, and a
-skill points at them by relative path. A file is one hop from a SKILL.md where that SKILL.md names
-its path directly.
+script is a bundled file the skill runs. The rule files under `shared/` are not bundled, and a skill
+points at them by relative path. A file is one hop from a SKILL.md where that SKILL.md names its
+path directly.
 
 ## Code
 
