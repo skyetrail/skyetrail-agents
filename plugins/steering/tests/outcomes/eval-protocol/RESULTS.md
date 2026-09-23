@@ -81,6 +81,28 @@ dispatches children of its own. The next step is a three-trial run from a sessio
 repository, so the hook logs economy.
 
 
+## writing-skills, second run: abandoned
+
+The second run planned three trials per case, 19 executors, with the runner in the session. It
+never reached the check step. On the first dispatch 18 of 19 executors died on the account's
+session usage limit; the one that returned was the question case, `NEEDS_CONTEXT` with a
+question. On the retry none returned: twelve hit the limit again, and six were stopped by the
+harness's ten-minute stream watchdog while each waited on a child it had dispatched. One such
+child, a no-skill baseline, ran on after its parent died and finished after about 39 minutes. The
+trigger classifier ran: every request named `writing-skills` on all three trials, and the audit
+request named `auditing-skills`.
+
+Two findings came out of it. A `writing-skills` executor waits on children longer than the
+watchdog allows, so a full run needs either a longer watchdog or executors that do not wait on
+a baseline. And 19 parallel executors with their own children exceed one account's session
+budget, so a run needs pacing, not one fan-out.
+
+The run also produced the economy source the first run lacked. Claude Code writes a transcript
+for every dispatched agent, and the script now reads tool calls, seconds and tokens from it by
+agent id. An adversarial review of that reader found that the transcript writes one line per
+content block, each carrying the whole turn's usage, so tokens were counted two to five times
+over. The reader now keeps one usage record per API message.
+
 ## What the round did not measure
 
 Economy, on either skill: the hook is configured in this repository and this session ran from
