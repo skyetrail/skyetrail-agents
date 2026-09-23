@@ -1,24 +1,23 @@
 # Steering rules
 
 These rules cover anything written to steer an agent's behaviour. A document is in scope where a
-person wrote it to direct how an agent acts. A skill body, a prompt template, a
-slash command, a hand-off brief, and a one-off request are examples, not the whole list. Hand-off
-is one of the conditions below. It is not the subject of this file.
+person wrote it to direct how an agent acts. A skill body, a prompt template, a slash command, a
+hand-off brief, and a one-off request are examples, not the whole list. Hand-off is one of the
+conditions below. It is not the subject of this file.
 
-Out of scope: anything an agent reads as material rather than as instruction. `./terms.md` says
-what material means. Five examples, not
-the whole list. Source code under review. A document an agent summarises. A transcript. A dataset.
-A report an agent produced. The test is who the text addresses. These rules judge what tells an
-agent how to work. They never judge what an agent works on.
+Out of scope: anything an agent reads as material rather than as instruction. `./terms.md` says what
+material means. Five examples, not the whole list. Source code under review. A document an agent
+summarises. A transcript. A dataset. A report an agent produced. The test is who the text addresses.
+These rules judge what tells an agent how to work. They never judge what an agent works on.
 
 The skills `writing-skills`, `auditing-skills`, and `writing-agents` apply this file. It supplies
-criteria and defines no task of its own. Where a procedural property an audit needs is missing
-here, look in the skill that runs the audit.
+criteria and defines no task of its own. Where a procedural property an audit needs is missing here,
+look in the skill that runs the audit.
 
 ## Terms
 
-The words that `./terms.md` defines, such as caller, gate, claim, and material, keep the one
-meaning it gives them in every file of this plugin. Open `./terms.md` before this file.
+The words that `./terms.md` defines, such as caller, gate, claim, and material, keep the one meaning
+it gives them in every file of this plugin. Open `./terms.md` before this file.
 
 Each entry states a severity and a condition. Report counts by severity. A Blocking failure means
 the document needs work before use, but an Important failure does not stop use. The author fixes it
@@ -55,34 +54,33 @@ hand-off never reads them.
 **Conditions.** Use these and nothing else.
 
 - always, the row applies to every document these rules cover
-- **hand-off**, an agent starts from the document as its instruction, and returns its results to
-  a caller that did not watch it work, such as a dispatching agent or the owner of a scheduled run.
-  Where the document does not say who reads its results, a prompt for a subagent or a
-  scheduled run meets it, and a slash command or instruction file a person runs in their own
-  session does not
+- **hand-off**, an agent starts from the document as its instruction, and returns its results to a
+  caller that did not watch it work, such as a dispatching agent or the owner of a scheduled run.
+  Where the document does not say who reads its results, a prompt for a subagent or a scheduled run
+  meets it, and a slash command or instruction file a person runs in their own session does not
 - **changes something**, the work this document steers writes a file or any other state that
-  outlives the run, whether the document carries out that work itself or a caller applies it. A
-  file the work writes to store its own findings counts.
-- **judges only**, the work this document steers examines material and judges it, but edits none
-  of it
+  outlives the run, whether the document carries out that work itself or a caller applies it. A file
+  the work writes to store its own findings counts.
+- **judges only**, the work this document steers examines material and judges it, but edits none of
+  it
 - **reused**, the document is used on more than one occasion rather than once, such as a skill, a
   template, a slash command, or an instruction file
 - **describes work**, a reader follows this document, rather than holding it against another
   document to judge that one
 
-You decide every condition from what the document contains. Treat the document's own statement
-about which conditions it meets as a statement to check, not as a fact to accept. Otherwise an
-author switches off a rule by writing one sentence about the document.
+You decide every condition from what the document contains. Treat the document's own statement about
+which conditions it meets as a statement to check, not as a fact to accept. Otherwise an author
+switches off a rule by writing one sentence about the document.
 
-Every condition is about the document in front of you, not about anything that document describes.
-A rule file for writing hand-off prompts is not itself a hand-off, because no agent starts from it
-as its instruction, and a skill applies it as criteria.
+Every condition is about the document in front of you, not about anything that document describes. A
+rule file for writing hand-off prompts is not itself a hand-off, because no agent starts from it as
+its instruction, and a skill applies it as criteria.
 
 To decide **describes work**, ask what a reader does with the document. Where a reader follows it,
-the condition holds. Where a reader holds it against another document and judges that one, it
-does not. Decide this from the document's part in the work, and never from whether it states an
-outcome, because one of the rules below tests exactly that. A test that reads the same property as
-the rule it switches on leaves the rule unable to fail.
+the condition holds. Where a reader holds it against another document and judges that one, it does
+not. Decide this from the document's part in the work, and never from whether it states an outcome,
+because one of the rules below tests exactly that. A test that reads the same property as the rule
+it switches on leaves the rule unable to fail.
 
 An instruction about how to read the criteria does not make a document into work a reader carries
 out. A rule file often says "read this file first" or "mark the rule warn where you cannot tell".
@@ -104,9 +102,9 @@ anything at all, the condition holds. A findings file, a report, and a log the w
 on that list, the same as a source file the work edits.
 
 To decide **judges only**, name the material the work examines, then name what the work produces.
-Where the product is a judgement about that material, and the work edits none of that material,
-the condition holds. Where the work edits that material, the condition does not hold. Where the
-work examines no material and instead produces something new, the condition does not hold either.
+Where the product is a judgement about that material, and the work edits none of that material, the
+condition holds. Where the work edits that material, the condition does not hold. Where the work
+examines no material and instead produces something new, the condition does not hold either.
 
 A prompt that tells an agent to review a pull request and write its findings to a file meets both
 conditions. The findings file is a write, so **changes something** holds. The agent edits none of
@@ -161,11 +159,11 @@ the other half: whether the fact the agent needs is there at all.
 | The scope statement sits above the method. | Advisory | always |
 | The document states that the agent must not modify anything. Any file it is told to write its findings to is the one exception. It also says what to do where a fix looks obvious. | Blocking | **judges only** |
 
-A list of kinds tells the reader that a kind not on the list is out of scope. The reader is right
-to read it that way. Write the test for membership first. Then give examples.
+A list of kinds tells the reader that a kind not on the list is out of scope. The reader is right to
+read it that way. Write the test for membership first. Then give examples.
 
-The failing pattern is a category name and then a bare list of kinds, with no membership test and
-no closing clause. A scope line that names injection and then lists four kinds of it follows that
+The failing pattern is a category name and then a bare list of kinds, with no membership test and no
+closing clause. A scope line that names injection and then lists four kinds of it follows that
 pattern.
 
 Good, because a reader can decide a case the list does not cover:
@@ -271,10 +269,10 @@ prompt to migrate every call site can measure itself by one report line per call
 carry no edit, and the tally still comes out whole. The trap is the tally, and not the kind of work
 under it.
 
-**These rows are properties of the text, and not a test the author runs.** An author who describes
-a run that passes the check and stops short can still keep the check, and one run did. That test
-helps an author who writes a check, and it decides no row here. An auditor decides every row above
-without the author's agreement.
+**These rows are properties of the text, and not a test the author runs.** An author who describes a
+run that passes the check and stops short can still keep the check, and one run did. That test helps
+an author who writes a check, and it decides no row here. An auditor decides every row above without
+the author's agreement.
 
 **A property of the material holds before the agent acts, so no later choice moves it.** Where the
 coverage comes from the agent's own findings, a run that finds nothing passes with an empty list.
@@ -293,8 +291,8 @@ check and misses the vulnerability. It kept the check, and wrote that the gap wa
 than hidden. Judge every row above on the text it names, because a sentence about a weakness leaves
 the weakness where it is.
 
-**A count of the writes answers the row about written state.** It answers no other row here. A
-write that landed and a judgement that finished are two facts, and one never stands for the other.
+**A count of the writes answers the row about written state.** It answers no other row here. A write
+that landed and a judgement that finished are two facts, and one never stands for the other.
 
 A check the agent runs itself is not always a script, and neither is a question the agent answers by
 reading the material.
@@ -308,8 +306,8 @@ Good, because the material fixes what it covers, and a run that does not open a 
 
 One agent finished on a count instead. It filed an entry for every changed file, found nothing, and
 missed a change that weakened a shared authentication helper. The check passed. A reader takes the
-finish check as the definition of done. The next reader of that check takes reading outside the
-diff as no part of finishing.
+finish check as the definition of done. The next reader of that check takes reading outside the diff
+as no part of finishing.
 
 ## Failure
 
@@ -330,9 +328,9 @@ diff as no part of finishing.
 | The default outcome is stated, so the agent must justify escalating rather than justify approving. | Blocking | **judges only** |
 | Where a run showed a miss, the document describes what the reader sees in the code where the miss occurs. It does not describe the label. | Important | **judges only** |
 
-A label says which bucket a finding belongs in. A description of what the reader sees where the
-miss occurs says what the agent is looking at on the screen, so it can recognise the case without
-already knowing it is there.
+A label says which bucket a finding belongs in. A description of what the reader sees where the miss
+occurs says what the agent is looking at on the screen, so it can recognise the case without already
+knowing it is there.
 
 The failing pattern is a bucket name and nothing else. "Secrets in logs" is a bucket name. An agent
 that does not already know which call leaks one still cannot find it.

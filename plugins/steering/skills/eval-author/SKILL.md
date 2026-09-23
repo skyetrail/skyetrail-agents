@@ -15,9 +15,8 @@ The house words in this skill, such as baseline, miss, and tick, keep the one me
 
 In scope: a new eval for one skill, or a change to an existing one.
 
-Out of scope: running the eval, because `eval-runner` owns that. Changing the skill is out of
-scope too, because `writing-skills` owns it, and so is an eval for a skill this repository cannot
-change.
+Out of scope: running the eval, because `eval-runner` owns that. Changing the skill is out of scope
+too, because `writing-skills` owns it, and so is an eval for a skill this repository cannot change.
 
 A direct instruction from the person wins over anything in this skill.
 
@@ -25,10 +24,10 @@ A direct instruction from the person wins over anything in this skill.
 
 Run every `npm` command in this skill from the root of this plugin's repository.
 
-Copy this checklist into `record.md` beside the skill's directory and into your report. Tick
-each line as you finish it. A tick carries the path, the command, or the section of a file from
-this run that shows the line is done. The skill's own text proves nothing, and neither does a rule
-file. A line you cannot tick stays unticked and carries one line saying why.
+Copy this checklist into `record.md` beside the skill's directory and into your report. Tick each
+line as you finish it. A tick carries the path, the command, or the section of a file from this run
+that shows the line is done. The skill's own text proves nothing, and neither does a rule file. A
+line you cannot tick stays unticked and carries one line saying why.
 
 ```text
 eval-author
@@ -49,9 +48,9 @@ skill: <absolute path of the SKILL.md>
    skill's own Scope, Failure and Calibration sections, and your report says that no run informed
    the cases.
 2. **One case per numbered miss.** The query is the task the baseline ran, in the person's words.
-   The files are a sibling of that task's fixture: the same structure, different names and
-   values. `expected_behavior` says the miss is absent, in terms of what the output shows where the
-   miss occurs.
+   The files are a sibling of that task's fixture: the same structure, different names and values.
+   `expected_behavior` says the miss is absent, in terms of what the output shows where the miss
+   occurs.
 3. **The required kinds.** One case the skill must catch. One it must leave alone, whose
    `expected_behavior` says the skill invents nothing. One marked `trigger: none`, a request the
    skill must decline, with no check and no judgement.
@@ -63,20 +62,21 @@ skill: <absolute path of the SKILL.md>
    must or must not exist, write it as `check`, one shell command that reads only `in/` and `out/`.
    Write `expected_behavior` only for what needs a reading, in one paragraph a judge decides from
    the output alone, and never as a restatement of the check.
-6. **Fixtures.** Write every fixture under `evals/fixtures/`. Never copy the file the skill was measured against when it was written. Write a sibling. Where
-   the fixture is a repository, mark the case `repo: true`.
+6. **Fixtures.** Write every fixture under `evals/fixtures/`. Never copy the file the skill was
+   measured against when it was written. Write a sibling. Where the fixture is a repository, mark
+   the case `repo: true`.
 7. **Run the dry plan.** Run `npm run eval -- plan <path to SKILL.md> --dry` from the root of this
-   plugin's repository and paste its output. Fix every refusal and every warning it
-   prints, then run it again.
+   plugin's repository and paste its output. Fix every refusal and every warning it prints, then run
+   it again.
 8. **Audit.** Run `npm run audit -- <path to SKILL.md>` and paste its output. The `eval-template`
    check passes.
-9. **Prove you changed nothing else.** Run `git status --porcelain <skill directory>` and paste
-   it. Every line it prints is under `evals/`.
+9. **Prove you changed nothing else.** Run `git status --porcelain <skill directory>` and paste it.
+   Every line it prints is under `evals/`.
 
 ## Delivery
 
-Report the path of the eval, the number of cases by kind, and the source you used. The eval is
-run by `eval-runner`; say so, and do not run it yourself.
+Report the path of the eval, the number of cases by kind, and the source you used. The eval is run
+by `eval-runner`; say so, and do not run it yourself.
 
 Stop, and report what you have, where the skill does not exist, where the repository cannot change
 the skill, or where two dry runs still print a refusal.

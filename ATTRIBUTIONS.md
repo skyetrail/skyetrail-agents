@@ -1,16 +1,15 @@
 # Attributions
 
-Skyetrail Agents builds on open source work from others. Thank you to the
-maintainers.
+Skyetrail Agents builds on open source work from others. Thank you to the maintainers.
 
 ## github/awesome-copilot
 
-The README generation tooling (`eng/generate-readmes.mjs`) and the README
-validation workflow (`.github/workflows/validate-readme.yml`) are adapted from
-[github/awesome-copilot](https://github.com/github/awesome-copilot). That project
-established the pattern this repository follows: generate the repository and
-per-plugin README files from the marketplace manifest and the component
-frontmatter, and check in CI that the committed files are current.
+The README generation tooling (`eng/generate-readmes.mjs`) and the README validation workflow
+(`.github/workflows/validate-readme.yml`) are adapted from
+[github/awesome-copilot](https://github.com/github/awesome-copilot). That project established the
+pattern this repository follows: generate the repository and per-plugin README files from the
+marketplace manifest and the component frontmatter, and check in CI that the committed files are
+current.
 
 awesome-copilot is published under the MIT License:
 

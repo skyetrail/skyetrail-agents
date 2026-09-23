@@ -4,8 +4,8 @@ Every experiment this project ran, and what each one decided.
 
 ## What was under test
 
-This plugin holds the skills `SUMMARY.md` lists. A skill is a short file of instructions an agent loads partway through
-a job.
+This plugin holds the skills `SUMMARY.md` lists. A skill is a short file of instructions an agent
+loads partway through a job.
 
 - `writing-skills` writes a new skill.
 - `writing-agents` writes a brief for a second agent that starts with no memory.
@@ -46,35 +46,35 @@ after the one before it. The order is by what each one answered, and not by date
 | round-eight | Does the tick check reach a record at the run root, and do ticks anchor? | Yes. The judge's re-run showed the check on all three records. Ticks anchored 38 of 38, against 10 of 38 in round six, and one run audited before its ticks existed. |
 | eval-protocol | Can a skill carry a test another agent runs the same way every time, with no person in the loop? | Yes on `repo-setup`. The runner completed every step on both passes. The first pass found two defects in the eval and the second passed every case. `writing-skills` follows. |
 
-Each row's detail is in `tests/outcomes/<name>/RESULTS.md`, beside the pre-registration or
-design that fixed its question before the runs.
+Each row's detail is in `tests/outcomes/<name>/RESULTS.md`, beside the pre-registration or design
+that fixed its question before the runs.
 
 ## What is still open
 
-- Downstream gain on coverage is parked. Unaided Sonnet found every planted fault on both
-  fixtures, so a with-and-without comparison on faults has no room. The skill changes the shape of
-  a review. Measuring that needs a fixture with faults the model misses on its own, or a rubric
-  for shape, and neither is planned.
+- Downstream gain on coverage is parked. Unaided Sonnet found every planted fault on both fixtures,
+  so a with-and-without comparison on faults has no room. The skill changes the shape of a review.
+  Measuring that needs a fixture with faults the model misses on its own, or a rubric for shape, and
+  neither is planned.
 
 ## Closed on 2026-09-02
 
 - File count of produced skills, 2 to 5: by design. The owner's rule is to constrain the container
   and the evidence, never the model's planning, and how a run lays out its detail is planning.
-- Ticks in `writing-skills` records: the check now reaches a record at the run root, and round
-  eight anchored 38 of 38 against round six's 10 of 38. We did not add a rule for it.
+- Ticks in `writing-skills` records: the check now reaches a record at the run root, and round eight
+  anchored 38 of 38 against round six's 10 of 38. We did not add a rule for it.
 - `repo-setup`: measured on both paths in round seven, six of six.
 
 ## Closed or dropped on 2026-09-01
 
 - Severity tiers: fixed by the default-with-test rule in the structure round, three of three.
-- The `auditing-skills` baseline: it ran as the audit child in six real runs across rounds four
-  and five, and its findings were real and were fixed. That is execution evidence.
+- The `auditing-skills` baseline: it ran as the audit child in six real runs across rounds four and
+  five, and its findings were real and were fixed. That is execution evidence.
 - The Workflow-tool dispatch limit: a harness fact, recorded in METHOD and DECISIONS.
 - The lock-timeout drop: by design. The domain author supplies what to look for and the skill
   supplies the shape. The subject list protects only what a run wrote down first.
-- The 24 judgement decisions and the description rules: dropped. The terminology pass and the
-  rounds since covered the first, and anything left shows as a failed rubric item. The second
-  needs thirty trials per arm for a number nobody would act on.
+- The 24 judgement decisions and the description rules: dropped. The terminology pass and the rounds
+  since covered the first, and anything left shows as a failed rubric item. The second needs thirty
+  trials per arm for a number nobody would act on.
 
 ## What to read next
 

@@ -1,10 +1,9 @@
 # Authoring
 
-Read this file to run the artifact test, five questions that decide which kind of artifact a
-request needs. You end with one class and the number of the deciding test. The classes are a
-script, an answer in this conversation, a prompt, a skill, and an instruction file. These five are
-the whole set. Take a
-request you cannot place in one of them back to the person.
+Read this file to run the artifact test, five questions that decide which kind of artifact a request
+needs. You end with one class and the number of the deciding test. The classes are a script, an
+answer in this conversation, a prompt, a skill, and an instruction file. These five are the whole
+set. Take a request you cannot place in one of them back to the person.
 
 The skills `writing-skills` and `writing-agents` apply this file. It supplies criteria and defines
 no task of its own. `auditing-skills` does not apply it. An auditor reads a finished artifact and
@@ -61,19 +60,18 @@ Take the first test that reads `yes`, and act on it.
    `CLAUDE.md` or `AGENTS.md`. Write that file only where the person asks, because such a file is
    often shared, and another tool may replace it. No skill takes this over.
 
-The prompt for a subagent and the prompt of a scheduled run are examples of guidance an agent
-starts from. So is a transcript or a summary of a conversation given to a fresh agent. A skill
-differs, because an agent loads it partway through its work, whether a person or a caller's
-prompt started that work. A skill that a subagent or a scheduled run loads is still a skill. So is
-guidance a person starts by a slash command on more than one occasion, and test 3 does not hold
-for it. A file every session loads at its start, such as `CLAUDE.md`, is not the whole instruction
-for one task, because each session's request is that. It is not loaded partway through the work
-either, so neither test 3 nor test 4 holds for it, and test 5 decides it. A skill whose description
-makes it load in every session, whatever the request, counts as loaded at the start, so test 5
-decides it too.
+The prompt for a subagent and the prompt of a scheduled run are examples of guidance an agent starts
+from. So is a transcript or a summary of a conversation given to a fresh agent. A skill differs,
+because an agent loads it partway through its work, whether a person or a caller's prompt started
+that work. A skill that a subagent or a scheduled run loads is still a skill. So is guidance a
+person starts by a slash command on more than one occasion, and test 3 does not hold for it. A file
+every session loads at its start, such as `CLAUDE.md`, is not the whole instruction for one task,
+because each session's request is that. It is not loaded partway through the work either, so neither
+test 3 nor test 4 holds for it, and test 5 decides it. A skill whose description makes it load in
+every session, whatever the request, counts as loaded at the start, so test 5 decides it too.
 
-Where the class names a skill other than the one you run, give the number of the deciding test.
-Name that skill. Hand the request over. Do not write the artifact your own skill produces.
+Where the class names a skill other than the one you run, give the number of the deciding test. Name
+that skill. Hand the request over. Do not write the artifact your own skill produces.
 
 ## Where two tests hold
 
@@ -95,8 +93,8 @@ return two classes. The order above is the metric.
 ## Tests that read `cannot tell`
 
 A test reads `cannot tell` where you cannot answer its question. This differs from a test whose
-answer is no. The person did not name occasions, so you cannot count them. The person did not name
-a reader, so you cannot say which context will have the guidance. This is a partial list.
+answer is no. The person did not name occasions, so you cannot count them. The person did not name a
+reader, so you cannot say which context will have the guidance. This is a partial list.
 
 Write `cannot tell` on that line and stop. Then return these three things.
 
@@ -104,9 +102,9 @@ Write `cannot tell` on that line and stop. Then return these three things.
 2. The question in it you could not answer.
 3. The one question the person must answer so that the test no longer reads `cannot tell`.
 
-Ask the person that question. Do not take the next class down. Do not reword a test to make it
-hold. Fill the block again only after the person answers, because you get the same `cannot tell`
-from the same words.
+Ask the person that question. Do not take the next class down. Do not reword a test to make it hold.
+Fill the block again only after the person answers, because you get the same `cannot tell` from the
+same words.
 
 Returning the test that reads `cannot tell` is a complete answer. Returning the artifact with the
 block unfilled is not.
@@ -114,8 +112,8 @@ block unfilled is not.
 Where you already wrote part of the artifact, say where it sits and name the test that reads
 `cannot tell`. That text is a draft. A draft is not the deliverable. Naming a status beside it does
 not make it one. Leave the keep-or-discard call to the person. This applies only where the artifact
-test reads `cannot tell`. Where a later check could not run, your skill still delivers the
-artifact. Name that check in your report.
+test reads `cannot tell`. Where a later check could not run, your skill still delivers the artifact.
+Name that check in your report.
 
 ## Requests with more than one kind of work
 
@@ -128,16 +126,16 @@ The rule files under `shared/` carry the order and the structure of an artifact.
 its subject matter.
 
 Write down what you know about the subject that a reader must have. Do this before you apply any
-section order. Keep that list. Check the finished artifact against it. Where you cannot find an
-item in it, change the order. Do not drop the item, unless your skill measured that the model
-gets it right without help.
+section order. Keep that list. Check the finished artifact against it. Where you cannot find an item
+in it, change the order. Do not drop the item, unless your skill measured that the model gets it
+right without help.
 
 Then read the finished artifact once more. Name every instruction in it that came from your
 knowledge of the subject rather than from a rule file. Where you can name none, you dropped them
 all. Put them back, except an item your skill measured the model gets right without help.
 
-One run showed this loss. For one task, two agents wrote independently, and the agent with the
-rule files left out four things the agent without them wrote.
+One run showed this loss. For one task, two agents wrote independently, and the agent with the rule
+files left out four things the agent without them wrote.
 
 - A pre-triage step for a security report.
 - A warning against discussing that report in a public tracker.

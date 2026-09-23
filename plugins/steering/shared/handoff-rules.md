@@ -1,19 +1,19 @@
 # Hand-off rules
 
 These rules apply only when an agent starts from the document as its instruction, and returns its
-results to a caller that did not watch it work.
-Read this file with `./steering-rules.md` when the **hand-off** condition is met. Do not read it otherwise.
+results to a caller that did not watch it work. Read this file with `./steering-rules.md` when the
+**hand-off** condition is met. Do not read it otherwise.
 
 Severity, the default outcome, warn, and reporting work exactly as in `./steering-rules.md`, and
-`./terms.md` defines the words used here. Any blocking failure means the document needs work
-before use.
+`./terms.md` defines the words used here. Any blocking failure means the document needs work before
+use.
 
 The skills `auditing-skills` and `writing-agents` apply these rules. This file supplies criteria and
 defines no task of its own. Where a procedural property an audit needs is missing here, look in the
 skill that runs the audit. The stopping points are one example and not the whole list.
 
-Auditors and authors misread the rule about detail and summary most often. It is about what
-crosses back to the caller, not about how much the agent may write.
+Auditors and authors misread the rule about detail and summary most often. It is about what crosses
+back to the caller, not about how much the agent may write.
 
 The failing pattern is a report instruction naming neither a file nor a cap. A prompt asking only
 for the agent's findings is that pattern. The caller then has everything the agent read.

@@ -92,9 +92,9 @@ re-run. Before the second, the caller changes what caused the stop, the category
 hole.
 ```
 
-The classifier returns `NEEDS_CONTEXT` where a row of the table has no test, and names the row.
-It never adds a category. The status table follows `../../../shared/dispatch-protocol.md`. Copy it
-with the template, because the classifier never opens that file.
+The classifier returns `NEEDS_CONTEXT` where a row of the table has no test, and names the row. It
+never adds a category. The status table follows `../../../shared/dispatch-protocol.md`. Copy it with
+the template, because the classifier never opens that file.
 
 ## Routing on the block
 
@@ -126,8 +126,8 @@ A support inbox. The categories and their tests:
 | phishing | the item asks its recipient to send data or to act outside the product, such as by clicking a link | `prompts/report-security.md`, sonnet, low |
 | `none` | fits no row, or fits two | to a person |
 
-The item: "The upgrade to Pro failed with 'card declined' but my bank shows the charge went
-through. Account 5512."
+The item: "The upgrade to Pro failed with 'card declined' but my bank shows the charge went through.
+Account 5512."
 
 The block that comes back:
 
@@ -142,13 +142,13 @@ Unrequested: none
 Status: DONE
 ```
 
-The caller sends that item to a person with both tests, because a bug prompt would drop the
-charge and a billing prompt would drop the failure.
+The caller sends that item to a person with both tests, because a bug prompt would drop the charge
+and a billing prompt would drop the failure.
 
 ## Failure
 
 - The classifier returns a category not in the table. Treat the item as `none` and fix the prompt,
   because the classifier added a category.
 - The classifier returns different categories for one item across runs. The item is `none`.
-- The evidence line quotes words that are not in the item. Treat the run as failed, and do not
-  route the item.
+- The evidence line quotes words that are not in the item. Treat the run as failed, and do not route
+  the item.

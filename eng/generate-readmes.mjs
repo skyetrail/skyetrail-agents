@@ -17,6 +17,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { wrapText } from "./wrap.mjs";
 import {
   CONTENTS_REQUIRED_LINES,
   MAX_BODY_LINES,
@@ -494,6 +495,8 @@ function main() {
 
   let changed = 0;
   for (const out of outputs) {
+    // a generated README meets the same line limit as the markdown written by hand
+    if (out.file.endsWith(".md")) out.content = wrapText(out.content);
     const current = exists(out.file) ? read(out.file) : null;
     if (current === out.content) continue;
     changed++;

@@ -22,33 +22,32 @@ Use `../../shared/steering-rules.md` for every target. Then add a file for what 
 another for each condition the target meets.
 
 - A SKILL.md. Add `../../shared/skill-rules.md`.
-- A target meeting the **hand-off** condition, meaning an agent starts from the target as its instruction
-  and returns its results to a caller that did not watch it work. Add `../../shared/handoff-rules.md`. A prompt written for a
-  subagent and the prompt of a scheduled run are two examples, not the whole list. A file of rules for writing
-  hand-off prompts does not meet it, because no agent starts from it as its instruction.
-  `../../shared/steering-rules.md` states the test and why two earlier audits split on it.
-- Anything else written to steer what an agent does. A command, a runbook, and a one-off request
-  are examples, not the whole list. Where a person wrote it to steer an agent, it belongs here,
-  and it does not need an extra file for what it is. It still takes a file for each condition it
-  meets.
+- A target meeting the **hand-off** condition, meaning an agent starts from the target as its
+  instruction and returns its results to a caller that did not watch it work. Add
+  `../../shared/handoff-rules.md`. A prompt written for a subagent and the prompt of a scheduled run
+  are two examples, not the whole list. A file of rules for writing hand-off prompts does not meet
+  it, because no agent starts from it as its instruction. `../../shared/steering-rules.md` states
+  the test and why two earlier audits split on it.
+- Anything else written to steer what an agent does. A command, a runbook, and a one-off request are
+  examples, not the whole list. Where a person wrote it to steer an agent, it belongs here, and it
+  does not need an extra file for what it is. It still takes a file for each condition it meets.
 
 Decide the conditions from what the target contains, not from how you are using it. Route by
-condition rather than by what you would call the document, because more than one name fits the
-same document.
+condition rather than by what you would call the document, because more than one name fits the same
+document.
 
 Where the target is none of these, stop and report `OUT_OF_SCOPE`. Say what the target appears to
-be. Do not force the rules onto it. Where you cannot read the target or a rule file, stop and
-report `BLOCKED`. Name the file you could not read. Do not audit from memory instead. These
-stopping points sit here, ahead of the workflow, not beside the report. They decide whether the
-audit starts at all.
+be. Do not force the rules onto it. Where you cannot read the target or a rule file, stop and report
+`BLOCKED`. Name the file you could not read. Do not audit from memory instead. These stopping points
+sit here, ahead of the workflow, not beside the report. They decide whether the audit starts at all.
 
 ## Where this stops
 
-This audit does not edit the target. Where a fix is obvious, name it in the report. Do not make
-the fix. Use `writing-skills` to apply it.
+This audit does not edit the target. Where a fix is obvious, name it in the report. Do not make the
+fix. Use `writing-skills` to apply it.
 
-This audit does not judge writing style. This includes punctuation, heading case, and tone.
-Those do not change what an agent does.
+This audit does not judge writing style. This includes punctuation, heading case, and tone. Those do
+not change what an agent does.
 
 This audit runs the command in step 1 on the target, whether or not the author recorded a result.
 Running one command takes little effort, and two parties running it on one file is the check that
@@ -60,25 +59,24 @@ A direct instruction from the person overrides this audit.
 ## Workflow
 
 1. Run `npm run audit -- <path>` over the target, from the root of this plugin's repository. The
-   command takes the target path, so the target need not sit in that repository. Record its
-   result and cite it in the report. This decides every mechanical check once. The findings never
-   re-argue them. Where you cannot run the command, or it runs without reaching the target,
-   follow what `../../shared/lint.md` says about that case. That file also covers a repository
-   with no such command, and says when you may run a command again. Then say in the report what
-   did not run. Do not re-derive a mechanical check by hand instead. Where you re-derive one
-   anyway, say so in the report. A report that hides an unrun check is worse than one that admits
-   a gap.
-2. Read the target in full. Read every reference file it names too. A rule the target satisfies
-   in a file you did not open reads as a failure.
-3. Work through each rule. Mark it pass, fail, warn, or not applicable. This lets the caller tell
-   a rule that held from one that never applied. A rule whose condition does not hold is not
+   command takes the target path, so the target need not sit in that repository. Record its result
+   and cite it in the report. This decides every mechanical check once. The findings never re-argue
+   them. Where you cannot run the command, or it runs without reaching the target, follow what
+   `../../shared/lint.md` says about that case. That file also covers a repository with no such
+   command, and says when you may run a command again. Then say in the report what did not run. Do
+   not re-derive a mechanical check by hand instead. Where you re-derive one anyway, say so in the
+   report. A report that hides an unrun check is worse than one that admits a gap.
+2. Read the target in full. Read every reference file it names too. A rule the target satisfies in a
+   file you did not open reads as a failure.
+3. Work through each rule. Mark it pass, fail, warn, or not applicable. This lets the caller tell a
+   rule that held from one that never applied. A rule whose condition does not hold is not
    applicable. Not applicable is not the same as a pass.
 4. Apply the calibration below before you write anything down. This stops first impressions from
    hardening into findings.
 5. Report.
 
-This audit runs steps 1 through 5 once per skill where the target contains more than one, such as
-a plugin or a repository. List the skills first, give one table per skill, then one summary across
+This audit runs steps 1 through 5 once per skill where the target contains more than one, such as a
+plugin or a repository. List the skills first, give one table per skill, then one summary across
 them.
 
 ## Calibration
@@ -110,16 +108,16 @@ can point at where. Warn means you cannot tell from what you can read whether th
 The rule's severity carries how much the break matters, not the choice between warn and fail. Where
 unsure, mark it warn. Give one line of reason.
 
-Count one finding per root cause. A missing section is one finding even when several rules depend
-on it. List the dependent rules under that finding, not as findings of their own. A rule about
-the position or wording of a section that does not exist is not applicable.
+Count one finding per root cause. A missing section is one finding even when several rules depend on
+it. List the dependent rules under that finding, not as findings of their own. A rule about the
+position or wording of a section that does not exist is not applicable.
 
 ## Before a release or adoption decision
 
 Where the audit decides a release or an adoption, run two independent audits of the same target.
-Reconcile the two audits. A finding that both report is a finding. A finding that only one
-reports becomes a warn that states both readings. Severity is the higher of the two. One audit is
-enough for ordinary work.
+Reconcile the two audits. A finding that both report is a finding. A finding that only one reports
+becomes a warn that states both readings. Severity is the higher of the two. One audit is enough for
+ordinary work.
 
 Where the two audits pass and fail the same rule on the same text, that is not a one-reporter
 finding. It does not become a warn. Report it as a finding against that text, at the higher
@@ -149,10 +147,10 @@ this audit invented the word rather than reporting the gap.
 | --- | --- | --- | --- | --- | --- |
 
 State the command's result first. Every fail and warn carries evidence. Evidence is the line or
-section it came from. Then give counts by severity. Then give the three fixes to make first.
-Keep the table's wording fixed. Then you can compare two runs over the same target without
-editing either. Do not report findings as prose ranked by severity instead of this table. That
-was the earlier form. You could not compare two runs of it without rewriting one of them.
+section it came from. Then give counts by severity. Then give the three fixes to make first. Keep
+the table's wording fixed. Then you can compare two runs over the same target without editing
+either. Do not report findings as prose ranked by severity instead of this table. That was the
+earlier form. You could not compare two runs of it without rewriting one of them.
 
 Source takes one of three words, and nothing else.
 
@@ -166,21 +164,21 @@ above the table. House then reads as unrecorded, not as ours. The caller can the
 rule at its source, and weigh a house rule as ours. Claim a published origin the rule file does not
 record, and you send the caller to a page that does not state the rule.
 
-Mark every fail and warn a defect or a difference. Count the defects and the differences
-separately. A defect is one where you can name what an agent would do wrong.
+Mark every fail and warn a defect or a difference. Count the defects and the differences separately.
+A defect is one where you can name what an agent would do wrong.
 
 - An unlisted project type does not get set up.
 - A real finding is marked out of scope.
 - A credential is written into a log.
 
-A difference is where the target works another way. You cannot say what goes wrong. You can only
-say that we would write it another way. Unmarked, the two read alike at the same severity. Nobody
-can tell a document that will misbehave from one that is merely unfamiliar.
+A difference is where the target works another way. You cannot say what goes wrong. You can only say
+that we would write it another way. Unmarked, the two read alike at the same severity. Nobody can
+tell a document that will misbehave from one that is merely unfamiliar.
 
 Only a defect blocks. Severity says how much a problem matters. Defect or difference says whether
-there is one. A blocking difference does not hold the target back. Read it instead as a signal
-about the rule, not the target. A rule that fires at blocking severity on something nobody can
-name a consequence for reaches past what it can judge.
+there is one. A blocking difference does not hold the target back. Read it instead as a signal about
+the rule, not the target. A rule that fires at blocking severity on something nobody can name a
+consequence for reaches past what it can judge.
 
 A blocking defect means the target needs work before use. The report lists advisory items once.
 Advisory items never block. This is narrower than the same sentence in

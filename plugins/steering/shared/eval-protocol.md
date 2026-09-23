@@ -16,9 +16,9 @@ defines no task of its own. `./terms.md` defines the terms used here.
 ## The eval
 
 A skill keeps its eval at `evals/eval.yaml` beside `SKILL.md`, with fixtures under
-`evals/fixtures/`. Nothing in `SKILL.md` or under `reference/` points at `evals/`, so the eval
-never loads with the skill. `npm run eval -- plan <path> --dry` reads an eval and refuses one that
-breaks a rule below, naming the rule.
+`evals/fixtures/`. Nothing in `SKILL.md` or under `reference/` points at `evals/`, so the eval never
+loads with the skill. `npm run eval -- plan <path> --dry` reads an eval and refuses one that breaks
+a rule below, naming the rule.
 
 | Rule | Severity |
 | --- | --- |
@@ -34,15 +34,15 @@ breaks a rule below, naming the rule.
 | More than eight cases carries a sentence saying why. | Advisory |
 
 The values the eval sets, each with its default: `model`, the model that executes, `sonnet`;
-`judge`, the model that judges, `opus`; `trials`, runs per judged case, `3`, and `1` for a case
-with a check and no judgement; `budget`, per trial, `tool_calls: 40`, `seconds: 600`, and
+`judge`, the model that judges, `opus`; `trials`, runs per judged case, `3`, and `1` for a case with
+a check and no judgement; `budget`, per trial, `tool_calls: 40`, `seconds: 600`, and
 `tokens: 120000` where the harness reports tokens. A case marked `repo: true` has its `in/`
 initialised as a git repository with one commit before it runs, for a skill whose checks read git.
 
 ## Measures
 
-A case is scored on all four and passes where all four pass. The eval passes where each case
-passes on each trial.
+A case is scored on all four and passes where all four pass. The eval passes where each case passes
+on each trial.
 
 | Measure | Passes where |
 | --- | --- |
@@ -53,31 +53,30 @@ passes on each trial.
 
 ## No person in the loop
 
-An eval runs unattended. The executor's prompt says there is no person to ask. Where the skill
-would ask, the executor returns the status the skill names for that case, with the question it
-would have asked, and stops. The question case passes on that status and on a check that finds
-the question. The answered case has the answer under `facts`, which the runner writes into
-the prompt as facts established before dispatch, and passes on `DONE`.
+An eval runs unattended. The executor's prompt says there is no person to ask. Where the skill would
+ask, the executor returns the status the skill names for that case, with the question it would have
+asked, and stops. The question case passes on that status and on a check that finds the question.
+The answered case has the answer under `facts`, which the runner writes into the prompt as facts
+established before dispatch, and passes on `DONE`.
 
 ## One directory per executor
 
 The script creates one directory per case and trial under a run root. Each contains `in/`, the
-fixtures; `out/`, where the executor writes everything it produces; `prompt.md`, its whole
-prompt; and `executor.json`, which the runner fills with the returned status and the harness's
-agent id. The executor is told that directory is its working directory and its only place to
-write, and that it may read the repository that contains the skill and run the commands the skill
-names there. No two executors share a path, and none reads another's. Every check runs with that
-directory as its working directory.
+fixtures; `out/`, where the executor writes everything it produces; `prompt.md`, its whole prompt;
+and `executor.json`, which the runner fills with the returned status and the harness's agent id. The
+executor is told that directory is its working directory and its only place to write, and that it
+may read the repository that contains the skill and run the commands the skill names there. No two
+executors share a path, and none reads another's. Every check runs with that directory as its
+working directory.
 
 ## Economy
 
 The script reads economy from the harness's own logs and never from what the executor says about
-itself. A hook the repository configures appends one line per tool call, with a timestamp, the
-agent id where the payload has one, and the tool name. Tool calls and seconds come from those
-lines for the executor's agent id. Tokens come from the harness's export where one exists, and a
-missing token figure is not measured, never a fail. An executor's own account of its calls is a claim. Where a log exists the script reports the
-difference. The results page names the source of
-each number.
+itself. A hook the repository configures appends one line per tool call, with a timestamp, the agent
+id where the payload has one, and the tool name. Tool calls and seconds come from those lines for
+the executor's agent id. Tokens come from the harness's export where one exists, and a missing token
+figure is not measured, never a fail. An executor's own account of its calls is a claim. Where a log
+exists the script reports the difference. The results page names the source of each number.
 
 ## The results page
 
