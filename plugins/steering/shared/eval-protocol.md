@@ -72,11 +72,16 @@ working directory.
 ## Economy
 
 The script reads economy from the harness's own logs and never from what the executor says about
-itself, because that account is a claim. A hook the repository configures appends one line per tool
-call, with a timestamp, the agent id where the payload has one, and the tool name. Tool calls and
-seconds come from those lines for the executor's agent id. Tokens come from the harness's export
-where one exists. A missing token figure counts as not measured and never as a fail. Where a log
-exists, the script reports the difference between the log and the executor's own account of its
+itself, because that account is a claim. In Claude Code the log is the transcript the harness writes
+for every dispatched agent, under
+`~/.claude/projects/<project>/<session>/subagents/agent-<id>.jsonl`, found by the agent id the
+dispatch tool reported. Tool calls are its tool-use blocks. Seconds run from its first line to its
+last. Tokens are the ones the model processed fresh, which is input, cache writes, and output,
+summed once per API turn. Cache reads are reported beside them and not counted. Children the
+executor dispatched have transcripts of their own and are not counted. Where no transcript exists,
+the script falls back to a hook the repository configures, which writes one line per tool call with
+the agent id. A figure the script cannot read counts as not measured and never as a fail. Where a
+log exists, the script reports the difference between the log and the executor's own account of its
 calls. The results page names the source of each number.
 
 ## The results page

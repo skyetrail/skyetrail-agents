@@ -112,6 +112,7 @@ export function parseYaml(text) {
 // ---------------------------------------------------------------------------
 // Loading and validating an eval
 // ---------------------------------------------------------------------------
+export { transcriptEconomy };
 export const DEFAULTS = { model: "sonnet", judge: "opus", trials: 3, budget: { tool_calls: 40, seconds: 600, tokens: 120000 } };
 const STATUSES = ["DONE", "DONE_WITH_CONCERNS", "BLOCKED", "NEEDS_CONTEXT"];
 
@@ -290,10 +291,57 @@ function untickedLines(dir) {
   let n = 0; const walk = (d) => { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const f = path.join(d, e.name); if (e.isDirectory()) walk(f); else if (e.name.endsWith(".md")) n += (fs.readFileSync(f, "utf8").match(/^\s*\[ \]/gm) || []).length; } };
   if (fs.existsSync(dir)) walk(dir); return n;
 }
+// Claude Code writes one transcript per dispatched agent under
+// ~/.claude/projects/<project>/<session>/subagents/agent-<id>.jsonl, with the API usage
+// and a timestamp on every assistant line. That file is the economy source: tool
+// calls are its tool_use blocks, seconds run from its first line to its last, and
+// tokens are the ones the model processed fresh (input, cache writes, output), summed
+// once per API turn; cache reads are reported beside them. Children the agent dispatched have transcripts of
+// their own and are not counted here.
+const isDir = (d) => { try { return fs.statSync(d).isDirectory(); } catch { return false; } };
+const readdirSafe = (d) => { try { return fs.readdirSync(d); } catch { return []; } };
+function findTranscript(agentId) {
+  const root = path.join(os.homedir(), ".claude", "projects");
+  if (!isDir(root)) return null;
+  const name = `agent-${String(agentId).replace(/^agent-/, "")}.jsonl`;
+  // the newest file wins where one id appears under more than one session
+  let best = null, bestTime = -1;
+  const consider = (f) => { try { const t = fs.statSync(f).mtimeMs; if (t > bestTime) { best = f; bestTime = t; } } catch {} };
+  for (const proj of readdirSafe(root)) {
+    const pd = path.join(root, proj); if (!isDir(pd)) continue;
+    for (const sess of readdirSafe(pd)) {
+      const sd = path.join(pd, sess, "subagents"); if (!isDir(sd)) continue;
+      const f = path.join(sd, name); if (fs.existsSync(f)) consider(f);
+      const wd = path.join(sd, "workflows");
+      if (isDir(wd)) for (const w of readdirSafe(wd)) { const g = path.join(wd, w, name); if (fs.existsSync(g)) consider(g); }
+    }
+  }
+  return best;
+}
+function transcriptEconomy(agentId) {
+  const file = findTranscript(agentId); if (!file) return null;
+  // one API turn is written as one line per content block, every line carrying that
+  // turn's usage, and the output count on an early line is a partial snapshot: keep
+  // the last usage seen per message id, and count tool-use blocks on every line
+  let calls = 0, first = null, last = null; const tools = []; const usage = new Map();
+  for (const l of fs.readFileSync(file, "utf8").split("\n")) {
+    if (!l) continue; let d; try { d = JSON.parse(l); } catch { continue; }
+    if (d.timestamp) { first = first || d.timestamp; last = d.timestamp; }
+    if (d.type !== "assistant" || !d.message) continue;
+    if (d.message.usage) usage.set(d.message.id || d.requestId || d.uuid, d.message.usage);
+    for (const b of d.message.content || []) if (b && b.type === "tool_use") { calls++; tools.push(b.name); }
+  }
+  let output = 0, fresh = 0, cached = 0;
+  for (const u of usage.values()) { output += u.output_tokens || 0; fresh += (u.input_tokens || 0) + (u.cache_creation_input_tokens || 0); cached += u.cache_read_input_tokens || 0; }
+  const seconds = first && last ? Math.round((Date.parse(last) - Date.parse(first)) / 1000) : null;
+  return { source: `transcript ${file}`, tool_calls: calls, seconds, tokens: fresh + output, output_tokens: output, cache_read_tokens: cached, turns: usage.size, tools };
+}
 const ADAPTERS = {
   claude(agentId) {
+    if (!agentId) return { source: "no agent id recorded", tool_calls: null, seconds: null, tokens: null };
+    const t = transcriptEconomy(agentId); if (t) return t;
     const file = process.env.EVAL_TOOL_LOG || path.join(os.homedir(), ".claude", "eval-tools.log");
-    if (!agentId || !fs.existsSync(file)) return { source: agentId ? `no log at ${file}` : "no agent id recorded", tool_calls: null, seconds: null, tokens: null };
+    if (!fs.existsSync(file)) return { source: `no transcript for agent ${agentId} and no log at ${file}`, tool_calls: null, seconds: null, tokens: null };
     const rows = fs.readFileSync(file, "utf8").split("\n").filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter((r) => r && r.agent_id === agentId);
     if (!rows.length) return { source: `${file}: no line for agent ${agentId}`, tool_calls: 0, seconds: null, tokens: null };
     const ts = rows.map((r) => r.ts); return { source: `${file}, agent_id ${agentId}`, tool_calls: rows.length, seconds: Math.round((Math.max(...ts) - Math.min(...ts)) / 1000), tokens: null, tools: rows.map((r) => r.tool_name) };
@@ -378,7 +426,7 @@ function results() {
     if (!row.trials.length) { L.push(`| ${row.name} | - | ${trig(row)} | - | - | - |`); if (tPass === false) allPass = false; if (tPass) anyPass = true; continue; }
     row.trials.forEach((t, k) => {
       if (t.status === null) blocked = true;
-      const e = t.economy || {}; const eco = `${e.tool_calls ?? "?"} calls, ${e.seconds ?? "?"} s, ${e.tokens ?? "tokens not measured"}${e.pass ? "" : " OVER BUDGET"}`;
+      const e = t.economy || {}; const eco = `${e.tool_calls ?? "?"} calls, ${e.seconds ?? "?"} s, ${e.tokens != null ? `${e.tokens} tokens` + (e.cache_read_tokens != null ? ` (${e.cache_read_tokens} cache reads)` : "") : "tokens not measured"}${e.pass ? "" : " OVER BUDGET"}`;
       const res = [t.check ? `check exit ${t.check.exit}${t.check.repeatable ? "" : " (not repeatable)"}` : null, t.judge ? (t.judge.pass === null ? "judge pending" : `judge ${t.judge.pass ? "pass" : "fail"}${t.judge.quote ? `: "${t.judge.quote}"` : ""}`) : null].filter(Boolean).join("; ") || "-";
       const rPass = (!t.check || t.check.pass) && (!t.judge || t.judge.pass === true);
       const pass = (tPass !== false) && t.completion && e.pass && rPass;
