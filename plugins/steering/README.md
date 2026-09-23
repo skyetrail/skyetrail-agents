@@ -56,7 +56,7 @@ get, what we learned, and what is still open.
 
 ## The skills
 
-A skill is a short instruction file an agent reads before it starts a job. Each one below states
+A skill is a short file of instructions an agent loads partway through a job, when the job needs it. Each one below states
 the artifact it produces before it states any step.
 
 | Skill | What it produces |
@@ -85,7 +85,7 @@ One re-run confirmed that by direct count and recursive diff.
 | [skill-rules.md](./shared/skill-rules.md) | The rules that apply when the target is a SKILL.md. |
 | [handoff-rules.md](./shared/handoff-rules.md) | The rules that apply when an agent starts from the prompt and returns its results to a caller that did not watch it work. |
 | [dispatch-protocol.md](./shared/dispatch-protocol.md) | What the caller does to dispatch an agent, and with what comes back. |
-| [authoring.md](./shared/authoring.md) | Whether a request needs a script, an answer, a prompt or a skill. |
+| [authoring.md](./shared/authoring.md) | Whether a request needs a script, an answer, a prompt, a skill or an instruction file. |
 | [lint.md](./shared/lint.md) | Which command runs the mechanical checks, and what to do when it will not run. |
 | [style.md](./shared/style.md) | The Vale prose-lint check and its scope. |
 | [eval-protocol.md](./shared/eval-protocol.md) | The one template for a skill's runnable eval, and how a run is scored. |

@@ -15,10 +15,10 @@ The house words in this skill, such as caller, gate, and tick, keep the one mean
 
 ## Read the artifact test first
 
-Open `../../shared/authoring.md` before you plan or write anything. Fill the artifact-test block
-in that file and put the filled block in your report. The artifact test is four questions in that
-file that decide whether a request needs a script, an answer, a prompt, or a skill. Then route on
-the class it returns, which is one of those four.
+Open `../../shared/authoring.md` before you plan or write anything. Fill the artifact-test block in
+that file and put the filled block in your report. The artifact test is five questions in that file
+that decide whether a request needs a script, an answer, a prompt, a skill, or an instruction file.
+Then route on the class it returns, which is one of those five.
 
 - The class is a prompt. Run the workflow below.
 - The class is anything else. Stop. Name the class and the deciding test, and name the skill for

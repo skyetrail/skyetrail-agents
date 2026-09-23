@@ -35,7 +35,9 @@ The lint command belongs to the current repository, not to this plugin, so look 
 order.
 
 1. The `repo-setup.md` file in the project's memory directory, written by `repo-setup`,
-   records the command a person confirmed. If it exists, use it.
+   records the command a person confirmed. Use it where the record names the command as confirmed.
+   Where the index line reads `lint: unresolved`, or the command is under `Unresolved`, the record
+   has no answer, so go to step 3.
 2. `npm run lint` is the default. Try it where step 1 finds no recorded command. A recorded
    command always wins, because a person confirmed it.
 3. This repository has no recorded command and no `npm run lint`. Use the `repo-setup` skill to

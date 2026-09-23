@@ -65,17 +65,21 @@ A fact about one task, one branch, or one person's preference is not a repo fact
    git status --porcelain      # must match what step 1 kept, or you changed the repository
    ```
 
-   Then confirm the one thing no command checks: you saw every command in the record work, in
-   this run. Fix anything that does not hold and run the checks again. Where you cannot fix it,
-   delete the file and the index line where this run created them, and report `BLOCKED` with the
-   check that failed. Never delete a record you did not write in this run.
+   Then confirm the one thing no command checks: every command in the record worked in this run,
+   or a person confirmed it. Fix anything that does not hold and run the checks again. Where a
+   check still fails, keep the record and change three things. Write each failed check and its
+   output under `Unresolved`, so a kept record never reads `Unresolved: none`. Move each fact this
+   run wrote that neither worked in this run nor has a person's confirmation out of the confirmed
+   lines and under `Unresolved`. Where the lint command moved, or its run changed the repository,
+   write `lint unresolved` in the description and `lint: unresolved` in the index line. Then report
+   `BLOCKED` with the check that failed. Never delete a record.
 
 ## The record
 
 ```
 ---
 name: repo-setup
-description: "<the lint command, and what it covers, in one line>"
+description: "<the lint command, and what it covers, in one line, or lint unresolved>"
 metadata:
   type: project
 ---
@@ -88,7 +92,7 @@ Established by the `repo-setup` skill on <date>. Re-run it rather than editing t
 Unresolved: <anything a person still has to decide, or "none">
 ```
 
-The index line in `MEMORY.md`: `- [Repo setup](repo-setup.md) — lint: <command>`.
+The index line in `MEMORY.md`: `- [Repo setup](repo-setup.md) — lint: <command, or unresolved>`.
 
 ## Statuses
 
@@ -96,7 +100,7 @@ The index line in `MEMORY.md`: `- [Repo setup](repo-setup.md) — lint: <command
 | --- | --- | --- |
 | `DONE` | `repo-setup.md` is written and every check in step 6 holds. | Use the recorded facts. Do not re-establish them. |
 | `NEEDS_DECISION` | More than one candidate remains, or none was found, and no person was there to decide. `repo-setup.md` lists what was found under `Unresolved`. | Put the candidates to a person. Never pick one on their behalf. |
-| `BLOCKED` | A check failed and no edit fixed it, or the memory directory could not be written. | Read the cause. Fix it, then run this skill again. |
+| `BLOCKED` | A check failed and no edit fixed it, or the memory directory could not be written. Where the record exists, the failed fact is under `Unresolved`. | Read the cause. Fix it, then run this skill again. |
 | `NEEDS_CONTEXT` | The instruction that dispatched this run left out something it needed. | Supply what was missing. This is the caller's failure, not the agent's. |
 
 Add a status only where a run needs one these four do not cover, and declare it here.

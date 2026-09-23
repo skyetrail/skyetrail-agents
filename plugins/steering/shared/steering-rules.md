@@ -65,7 +65,8 @@ hand-off never reads them.
   file the work writes to store its own findings counts.
 - **judges only**, the work this document steers examines material and judges it, but edits none
   of it
-- **reused**, the document is a skill or template rather than a one-off
+- **reused**, the document is used on more than one occasion rather than once, such as a skill, a
+  template, a slash command, or an instruction file
 - **describes work**, a reader follows this document, rather than holding it against another
   document to judge that one
 
@@ -133,6 +134,7 @@ phrase must show the fault, put the label inside the quoted line. Then no copy l
 | --- | --- | --- |
 | The finished outcome is stated, not just a topic or an area of work. | Blocking | describes work |
 | The outcome statement sits at the top, before context and method. | Advisory | describes work |
+| Where the document describes work, its outcome is stated in terms the agent can check without asking the author. | Important | reused |
 
 ## Context
 

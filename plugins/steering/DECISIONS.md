@@ -109,6 +109,11 @@ cases and the checks that catch them.
 - **`repo-setup` writes its record between fixed markers in `AGENTS.md`, and a second run replaces
   the block. 2026-08-01.** A re-run against a file holding someone else's writing left exactly one
   marker pair and preserved the hand-written content character for character.
+- **`repo-setup` keeps its record when a check fails. 2026-09-23.** It writes each failed check
+  under `Unresolved`, moves there each fact that neither worked in the run nor has a person's
+  confirmation, marks the lint unresolved where it moved, and reports `BLOCKED`. Deleting the
+  record hid what the run saw, and an `Unresolved` line already stops a later agent from trusting
+  the fact. `shared/lint.md` treats an unresolved record as no answer.
 
 ## The rules
 
@@ -164,6 +169,18 @@ cases and the checks that catch them.
 audit fell from 75 to 53. Lines loaded went from 374 to 381, which is no change. Removed rule text
 was replaced almost one for one by operative text that has a nameable consequence. So this was a
 reasoning-load win and not a context win.
+
+**An instruction file is a fifth class of the artifact test. 2026-09-23.** A file that every
+session loads at its start, such as `CLAUDE.md`, fit none of the four classes. It costs the most
+context of the five, so its test comes last. The run gives the person the lines and writes the file
+only on request, because such a file is often shared, and another tool may replace it.
+
+**The outcome row covers reused documents. 2026-09-23.** The hand-off condition no longer covers a
+slash command or an instruction file that a person runs. So the row about an outcome the agent can
+check without asking the author moved into `steering-rules.md` with the condition **reused**, and
+**reused** now names a slash command and an instruction file among its examples. The row stays in
+`handoff-rules.md` for a one-off hand-off. The conventions row stays where it is, because
+an `always` row in `steering-rules.md` already covers it.
 
 ## The Finish rule
 

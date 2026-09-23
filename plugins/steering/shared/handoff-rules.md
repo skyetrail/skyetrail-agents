@@ -27,7 +27,7 @@ Good, because the detail stays where it was produced and the caller gets what it
 
 | Rule | Severity |
 | --- | --- |
-| The outcome is stated in terms the agent can check without asking the author. | Important |
+| The outcome is stated in terms the agent can check without asking the author. Where **reused** holds, `./steering-rules.md` applies this row, so skip it here. | Important |
 
 ## Context
 

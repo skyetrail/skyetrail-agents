@@ -13,10 +13,10 @@ The house words in this skill, such as caller, gate, and tick, keep the one mean
 
 ## Read the artifact test first
 
-Open `../../shared/authoring.md` before you plan or write anything. The artifact test is the four
-questions in that file that decide whether a request needs a script, an answer, a prompt, or a
-skill. Fill the artifact-test block in that file and put the filled block in your report. Then
-route on the class it returns.
+Open `../../shared/authoring.md` before you plan or write anything. The artifact test is the five
+questions in that file that decide whether a request needs a script, an answer, a prompt, a skill,
+or an instruction file. Fill the artifact-test block in that file and put the filled block in your
+report. Then route on the class it returns.
 
 - The class is a skill. Run the workflow below.
 - The class is anything else. Stop. Name the class and the deciding test, and name the skill for
@@ -75,7 +75,7 @@ delivered: <absolute path of the SKILL.md you wrote>
 [ ] 8  body started from ./reference/skeleton.md and written against ../../shared/steering-rules.md and ../../shared/skill-rules.md; one instruction per numbered miss; beyond what the rule files require, nothing added for a judgement the baseline made correctly
 [ ] 9  with-skill run dispatched and saved to runs/with-skill.md, one row per miss, or blocked with the error text
 [ ] 10 npm run audit run on the delivered path; output pasted into record.md; the printed path matches, or blocked with the error text
-[ ] 11 audit by another agent dispatched with auditing-skills and findings pasted into record.md, or blocked with the error text
+[ ] 11 audit by another agent dispatched with auditing-skills, its report saved to runs/audit.md and its findings pasted into record.md, or blocked with the error text
 [ ] 12 measured block written into record.md; every path in it opens
 ```
 
@@ -153,7 +153,8 @@ this case.
     line character for character, or it measured another file. Audit the delivered file where it
     is, never a copy.
 11. **Dispatch an audit by another agent**, in a fresh context, of the delivered path with
-    `auditing-skills`, and paste the findings into `record.md`. Fix each blocking finding or say in `record.md` why not. Do not
+    `auditing-skills`. Save its whole report to `runs/audit.md`, and paste the findings into
+    `record.md`. Fix each blocking finding or say in `record.md` why not. Do not
     audit your own draft. Where you cannot dispatch, follow the branch in step 5.
 12. **Write the measured block**, which says how each measuring step ended, into `record.md`, one
     line for each of steps 5, 6, 9, 10 and 11: `ran <path>`, `not in this case`, or
@@ -171,10 +172,12 @@ the checklist in `record.md`. Where it cannot run, write the error text there in
 output. Decide each advisory line it reports: fix it, or say in `record.md` why not. Then paste the final
 output. That block is what the caller compares against.
 
-Every statement in `record.md` is one the caller checks from what you delivered. The caller
-re-runs `npm run audit` on the delivered path and opens each path in the measured block. The
-caller also looks for each quote in the saved runs. Who ran the audit of step 11 is a claim that
-the caller cannot check, so do not let it set the status.
+The caller checks three things from what you delivered. It re-runs `npm run audit` on the
+delivered path, opens each path in the measured block, and looks for each quote in the saved runs.
+Everything else in `record.md` is a claim the caller cannot check. Who ran the runs of steps 5, 9
+and 11 and what each loaded, each `blocked` line, the case decided at step 2, the small-change
+count, and when the subject list was written are examples. Do not set the status from a claim
+alone.
 
 Stop, and report what you have, at any of these points.
 

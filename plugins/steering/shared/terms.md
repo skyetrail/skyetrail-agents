@@ -28,9 +28,9 @@ points here near its top, so a reader can look one up before step 1.
 ## Artifacts and records
 
 - **The artifact** is the file or reply a run delivers to its caller.
-- **The artifact test** is the four questions in `./authoring.md` that decide which kind of
-  artifact a request needs. Its answer is the **class**, one of a script, an answer, a prompt, or
-  a skill.
+- **The artifact test** is the five questions in `./authoring.md` that decide which kind of
+  artifact a request needs. Its answer is the **class**, one of a script, an answer, a prompt, a
+  skill, or an instruction file.
 - **The report** is what a run sends back to its caller when it ends. Where a person invoked the
   skill, the report is the reply to that person.
 - **A record** is the file a skill writes to show what its run did. `writing-skills`,

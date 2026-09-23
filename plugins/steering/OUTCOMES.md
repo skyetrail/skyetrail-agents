@@ -4,7 +4,7 @@ Every experiment this project ran, and what each one decided.
 
 ## What was under test
 
-This plugin holds four skills. A skill is a short instruction file an agent reads before it starts
+This plugin holds the skills `SUMMARY.md` lists. A skill is a short file of instructions an agent loads partway through
 a job.
 
 - `writing-skills` writes a new skill.

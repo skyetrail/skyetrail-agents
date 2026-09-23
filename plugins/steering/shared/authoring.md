@@ -1,8 +1,9 @@
 # Authoring
 
-Read this file to run the artifact test, four questions that decide which kind of artifact a
+Read this file to run the artifact test, five questions that decide which kind of artifact a
 request needs. You end with one class and the number of the deciding test. The classes are a
-script, an answer in this conversation, a prompt, and a skill. These four are the whole set. Take a
+script, an answer in this conversation, a prompt, a skill, and an instruction file. These five are
+the whole set. Take a
 request you cannot place in one of them back to the person.
 
 The skills `writing-skills` and `writing-agents` apply this file. It supplies criteria and defines
@@ -28,15 +29,16 @@ Copy this block into your report and fill it. Do this before you write any of th
 ```
 Artifact test
 
-1 script   You can write down the command or the regex that
-           returns what the request asks for, and running it
-           needs no judgement.                                     yes | no | cannot tell
-2 answer   The guidance serves one occasion, and only the person
-           in this conversation reads it.                          yes | no | cannot tell
-3 prompt   The guidance is the text the agent starts from, as
-           its instruction.                                        yes | no | cannot tell
-4 skill    An agent loads the guidance partway through its work,
-           on more than one occasion.                              yes | no | cannot tell
+1 script           You can write down the command or the regex that returns what
+                   the request asks for, and running it needs no judgement.       yes | no | cannot tell
+2 answer           The guidance serves one occasion, and the only reader
+                   is the person in this conversation.                            yes | no | cannot tell
+3 prompt           The guidance is the whole instruction an agent starts
+                   from, for one task or one dispatch.                            yes | no | cannot tell
+4 skill            An agent loads the guidance partway through its work,
+                   on more than one occasion.                                     yes | no | cannot tell
+5 instruction file The guidance applies to every session in a repository, a
+                   project, or all of a person's sessions, whatever the request.  yes | no | cannot tell
 
 Class:
 Deciding test:
@@ -55,13 +57,20 @@ Take the first test that reads `yes`, and act on it.
 2. **An answer.** Say the guidance in your report. Do not write a file. No skill takes this over.
 3. **A prompt.** Use `writing-agents`.
 4. **A skill.** Use `writing-skills`.
+5. **An instruction file.** Give the person the lines, and name the file they belong in, such as
+   `CLAUDE.md` or `AGENTS.md`. Write that file only where the person asks, because such a file is
+   often shared, and another tool may replace it. No skill takes this over.
 
 The prompt for a subagent and the prompt of a scheduled run are examples of guidance an agent
 starts from. So is a transcript or a summary of a conversation given to a fresh agent. A skill
 differs, because an agent loads it partway through its work, whether a person or a caller's
 prompt started that work. A skill that a subagent or a scheduled run loads is still a skill. So is
 guidance a person starts by a slash command on more than one occasion, and test 3 does not hold
-for it.
+for it. A file every session loads at its start, such as `CLAUDE.md`, is not the whole instruction
+for one task, because each session's request is that. It is not loaded partway through the work
+either, so neither test 3 nor test 4 holds for it, and test 5 decides it. A skill whose description
+makes it load in every session, whatever the request, counts as loaded at the start, so test 5
+decides it too.
 
 Where the class names a skill other than the one you run, give the number of the deciding test.
 Name that skill. Hand the request over. Do not write the artifact your own skill produces.
@@ -75,6 +84,7 @@ fits better. The earlier class still wins, because it costs less per use.
 - An answer costs one turn.
 - A prompt costs one dispatch.
 - A skill costs context in every agent that loads it, on every run.
+- An instruction file costs context in every session it covers, whatever the task.
 
 So a repeatable check you can decide with a regex is a script, even where a skill could carry it
 too.
