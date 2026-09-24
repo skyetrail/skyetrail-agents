@@ -5,8 +5,9 @@ description: Runs a skill's eval, the runnable test at evals/eval.yaml beside it
 
 # Eval runner
 
-Produces a results page under `<plugin>/tests/evals/<skill>/<date>/RESULTS.md` and a run root of one
-directory per case and trial, by running `../../shared/eval-protocol.md` against one skill.
+Produces a results page under `<plugin>/tests/evals/<skill>/<date>/RESULTS.md` and a run root whose
+`plan.json` maps each case and trial to its own blind directory, by running
+`../../shared/eval-protocol.md` against one skill.
 
 The house words in this skill, such as caller, report, and tick, keep the one meaning
 `../../shared/terms.md` gives them.

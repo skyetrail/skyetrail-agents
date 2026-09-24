@@ -61,13 +61,22 @@ established before dispatch, and passes on `DONE`.
 
 ## One directory per executor
 
-The script creates one directory per case and trial under a run root. Each contains `in/`, the
-fixtures; `out/`, where the executor writes everything it produces; `prompt.md`, its whole prompt;
-and `executor.json`, which the runner fills with the returned status and the harness's agent id. The
-executor is told that directory is its working directory and its only place to write, and that it
-may read the repository that contains the skill and run the commands the skill names there. No two
-executors share a path, and none reads another's. Every check runs with that directory as its
-working directory.
+An executor never sees the eval it is measured by. The script creates one directory per case and
+trial under a blind root, `_blind/` beside the run roots, named by a random token, so no path names
+the case. Each contains two directories and nothing else. `work/` contains `in/`, the fixtures;
+`out/`, where the executor writes everything it produces; `prompt.md`, its whole prompt; and
+`executor.json`, which the runner fills with the returned status and the harness's agent id. `repo/`
+is a copy of the repository that contains the skill, without `.git`, without any skill's `evals/`,
+and without any plugin's `tests/`. The executor is told that `work/` is its working directory and
+its only place to write, and that it may read the copy and run the commands the skill names there.
+No two executors share a path, and none reads another's. `plan.json` at the run root maps each case
+to its directories. Every check runs with `work/` as its working directory. The check step copies
+each judged trial's `in/` and `out/` to `_judge/<run>/<item id>/`, so the judge sees no case name,
+trial number or condition either.
+
+The first eval run of `writing-skills` with three trials showed why. With the live repository
+readable, seven of thirteen executors read the eval's checks or its fixtures. With the staged copy,
+none of six did.
 
 ## Economy
 
