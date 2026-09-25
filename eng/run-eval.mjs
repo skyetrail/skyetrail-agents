@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // The mechanical half of the eval protocol, plugins/steering/shared/eval-protocol.md.
 //
-//   npm run eval -- plan <SKILL.md | eval.yaml> [--run-root DIR] [--dry] [--harness claude|copilot] [--trials N]
+//   npm run eval -- plan <SKILL.md | eval.yaml> [--run-root DIR] [--blind-root DIR] [--no-blind] [--dry] [--harness claude|copilot] [--trials N]
 //   npm run eval -- check <run root>
 //   npm run eval -- results <run root> [--out DIR]
 //
@@ -36,7 +36,10 @@ function scalar(s) {
   s = s.trim();
   if (s === "") return null;
   if (/^\[.*\]$/.test(s)) return s.slice(1, -1).split(",").map((x) => scalar(x)).filter((x) => x !== null);
-  if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) return s.slice(1, -1);
+  // a double-quoted scalar takes YAML's escapes for a quote and a backslash; a single-quoted one
+  // takes '' for a quote
+  if (s.startsWith('"') && s.endsWith('"')) return s.slice(1, -1).replace(/\\(["\\])/g, "$1");
+  if (s.startsWith("'") && s.endsWith("'")) return s.slice(1, -1).replace(/''/g, "'");
   if (s === "true") return true;
   if (s === "false") return false;
   if (s === "none" || s === "null" || s === "~") return "none" === s ? "none" : null;
@@ -206,6 +209,30 @@ const writeJson = (f, o) => fs.writeFileSync(f, JSON.stringify(o, null, 2) + "\n
 // ---------------------------------------------------------------------------
 // plan
 // ---------------------------------------------------------------------------
+// An executor must not see the eval it is measured by. It may read the repository that holds the
+// skill, to run the commands the skill names, so each trial gets its own staged copy of that
+// repository with every skill's evals/ and every plugin's tests/ left out. The trial directory and
+// its copy sit under a blind root, in a directory named by a random token, so no path names the
+// case and no sibling holds another trial's plan, checks or output.
+const EXCLUDED = [/^\.git(\/|$)/, /^node_modules(\/|$)/, /^plugins\/[^/]+\/skills\/[^/]+\/evals(\/|$)/, /^plugins\/[^/]+\/tests(\/|$)/];
+function stageRepo(repoRoot, dest) {
+  fs.cpSync(repoRoot, dest, {
+    recursive: true,
+    filter: (src) => {
+      const rel = path.relative(repoRoot, src).split(path.sep).join("/");
+      return rel === "" || !EXCLUDED.some((re) => re.test(rel));
+    },
+  });
+  const nm = path.join(repoRoot, "node_modules");
+  if (fs.existsSync(nm)) fs.symlinkSync(nm, path.join(dest, "node_modules"));
+}
+function blindToken(taken) {
+  for (;;) {
+    const t = Math.random().toString(16).slice(2, 8);
+    if (!taken.has(t)) { taken.add(t); return t; }
+  }
+}
+
 function executorPrompt({ dir, skillFile, query, files, facts, model, repo, repoRoot }) {
   const lines = [
     `You are one executor in an eval. Your working directory is ${dir}. Create files only under ${dir}/out/. The files under ${dir}/in/ are inputs. Do not change them, and write each file you deliver under ${dir}/out/.`,
@@ -248,10 +275,23 @@ function plan() {
   if (flag("--dry")) { console.log("dry run: nothing written"); return; }
   fs.mkdirSync(runRoot, { recursive: true });
   const planObj = { skill: ev.skill, skill_file: skillFile, skill_dir: skillDir, eval_file: evalFile, plugin_root: pluginRoot, commit: gitCommit(skillDir), harness, model, judge, trials, trials_override: trialsOverride, budget, static_load: load, warnings, created: new Date().toISOString(), cases: [] };
+  const blind = !flag("--no-blind") && gitRoot(skillDir) !== null;
+  const blindRoot = path.resolve(arg("--blind-root", path.join(path.dirname(path.dirname(runRoot)), "_blind")));
+  const taken = new Set(fs.existsSync(blindRoot) ? fs.readdirSync(blindRoot) : []);
+  planObj.blind = blind ? { root: blindRoot, excluded: EXCLUDED.map(String) } : null;
   for (const c of cases) {
     const dirs = [];
     for (let t = 1; t <= c.trials; t++) {
-      const dir = path.join(runRoot, c.name, `t${t}`);
+      let dir = path.join(runRoot, c.name, `t${t}`);
+      let trialSkill = skillFile;
+      let trialRepo = repoRoot;
+      if (blind) {
+        const base = path.join(blindRoot, blindToken(taken));
+        dir = path.join(base, "work");
+        trialRepo = path.join(base, "repo");
+        stageRepo(repoRoot, trialRepo);
+        trialSkill = path.join(trialRepo, path.relative(repoRoot, skillFile));
+      }
       fs.mkdirSync(path.join(dir, "in"), { recursive: true }); fs.mkdirSync(path.join(dir, "out"), { recursive: true });
       for (const f of c.files) fs.copyFileSync(path.join(evalDir, f), path.join(dir, "in", path.basename(f)));
       if (c.repo) {
@@ -259,7 +299,7 @@ function plan() {
         const inDir = path.join(dir, "in");
         for (const a of [["init", "-q"], ["add", "-A"], ["-c", "user.name=fixture", "-c", "user.email=fixture@example", "commit", "-q", "-m", "fixture"]]) spawnSync("git", ["-C", inDir, ...a], { encoding: "utf8" });
       }
-      fs.writeFileSync(path.join(dir, "prompt.md"), executorPrompt({ dir, skillFile, query: c.query, files: c.files, facts: c.facts, model, repo: c.repo, repoRoot }));
+      fs.writeFileSync(path.join(dir, "prompt.md"), executorPrompt({ dir, skillFile: trialSkill, query: c.query, files: c.files, facts: c.facts, model, repo: c.repo, repoRoot: trialRepo }));
       writeJson(path.join(dir, "executor.json"), { status: null, agent_id: null, question: null, returned: null, model });
       dirs.push(dir);
     }
@@ -398,7 +438,23 @@ function check() {
   }
   const judgeJson = readJson(path.join(root, "judge.json"), null);
   if (judgeJson && Array.isArray(judgeJson.items)) for (const row of out.cases) for (const t of row.trials) if (t.judge) { const j = judgeJson.items.find((x) => x.id === t.judge.id); if (j) { t.judge.pass = j.pass === true; t.judge.quote = j.quote || null; } }
-  for (const j of shuffle(judged, 20260902)) { judgePrompt.push(`## ${j.id}`, `Output files: ${j.files.length ? j.files.map((f) => path.join(j.dir, "out", f)).join(", ") : "(none written)"}`, `Input files: ${path.join(j.dir, "in")}`, `expected_behavior: ${j.expected_behavior}`, ""); }
+  // The judge sees no case name, trial number or condition either: each item's in/ and out/ are
+  // copied under a directory named by the item's id, beside the blind root, and the prompt names
+  // only those copies.
+  const judgeRoot = p.blind ? path.join(path.dirname(p.blind.root), "_judge", path.basename(root)) : null;
+  for (const j of shuffle(judged, 20260902)) {
+    let base = j.dir;
+    if (judgeRoot) {
+      base = path.join(judgeRoot, j.id);
+      for (const k of ["in", "out"]) {
+        const src = path.join(j.dir, k);
+        const dest = path.join(base, k);
+        if (fs.existsSync(src)) { fs.rmSync(dest, { recursive: true, force: true }); fs.cpSync(src, dest, { recursive: true, verbatimSymlinks: true }); }
+      }
+    }
+    judgePrompt.push(`## ${j.id}`, `Output files: ${j.files.length ? j.files.map((f) => path.join(base, "out", f)).join(", ") : "(none written)"}`, `Input files: ${path.join(base, "in")}`, `expected_behavior: ${j.expected_behavior}`, "");
+  }
+  if (judgeRoot) fs.writeFileSync(path.join(judgeRoot, "judge-prompt.md"), judgePrompt.join("\n") + "\n");
   fs.writeFileSync(path.join(root, "judge-prompt.md"), judgePrompt.join("\n") + "\n");
   writeJson(path.join(root, "checks.json"), out);
   const need = judged.length && !judgeJson ? " Dispatch judge-prompt.md and save judge.json, then run check again." : "";

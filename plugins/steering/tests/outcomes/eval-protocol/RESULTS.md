@@ -103,6 +103,60 @@ agent id. An adversarial review of that reader found that the transcript writes 
 content block, each carrying the whole turn's usage, so tokens were counted two to five times
 over. The reader now keeps one usage record per API message.
 
+## writing-skills, third run: three trials, paced
+
+Run on 2026-09-23 against `main` at `fdc70f5`, after the readability pass. The runner was the
+session. Executors ran four at a time, 19 in all, on Sonnet, and the judge ran on Opus. The page is
+`tests/evals/writing-skills/2026-09-23-23-03-15/RESULTS.md`, and the run root keeps `record.md`.
+
+| Measure | Result |
+| --- | --- |
+| trigger | 8 of 8 cases at 3 of 3, the decline case included |
+| check | 19 of 19 trials exit 0, twice each |
+| judge | 18 of 18 judged trials pass |
+| completion | 17 of 19 as expected: one fixture defect, one `DONE_WITH_CONCERNS` |
+| economy | 19 of 19 over the default budget, 8 to 122 tool calls and 0.13M to 1.34M fresh tokens per executor, children not counted |
+
+**Executors saw the eval.** The prompt let an executor read the repository that holds the skill,
+so it could run `npm run audit`, and that repository holds the eval. Seven of the first thirteen
+executors read `evals/eval.yaml` or its fixtures, and one wrote that it treated the request as
+the case named in its directory. The last six trials ran against a staged copy of the repository
+with no skill's `evals/` and no plugin's `tests/`, in directories named by a random token. None of
+the six saw the eval. `eng/run-eval.mjs` now stages every trial this way and stages the judge's
+inputs the same way, so no path shows a case, a trial or a condition. Both groups passed at the same
+rate, so the leak did not inflate this run. The same fact shows the eval has little headroom: a run
+that could read its own pass conditions scored no higher than one that could not.
+
+**Findings on the skill.**
+
+1. The artifact test routed one of three small-change trials to the class script, because a
+   regex can make a one-line edit. That trial followed `authoring.md`'s instruction for a script
+   and skipped the `writing-skills` workflow. The test does not say that an edit to an existing
+   skill keeps the skill's class. `authoring.md` also tells the reader to act on a script or an
+   answer while both skills' routers say to stop, which the readability review listed and this run
+   showed in execution.
+2. One executor copied the plugin's pointer to `shared/terms.md` into the skill it wrote, where the
+   path does not exist. The audit caught it.
+3. One executor dispatched its baseline before it finished the artifact test, then stopped at
+   `cannot tell`. The result was right and the order was not.
+
+**Findings on the eval.**
+
+1. The small-change fixture is a bare `SKILL.md` with no skill directory and no
+   `reference/lock-behavior.md`, so the audit fails two checks before any edit. Two trials reported
+   that state as `DONE_WITH_CONCERNS` and `DONE`.
+2. The YAML reader left `\"` escaped inside a double-quoted value, so the question case's check
+   could never pass. The reader now unescapes it.
+3. The default budget of 40 tool calls, 600 seconds and 120,000 tokens fits one agent and not a
+   skill that dispatches three. The eval sets no budget of its own.
+
+**Harness behavior.** An executor that dispatched a child in the background and ended its turn
+never received the child's result, because it reached the runner. The runner relayed five such
+results word for word and resumed each executor. The ten-minute stream watchdog stopped three
+agents: one audit child whose long report was cut off mid-stream twice, and two executors in the
+middle of a long write. One was retried and two were resumed from their transcripts. The session's
+usage limit did not stop this run.
+
 ## What the round did not measure
 
 Economy, on either skill: the hook is configured in this repository and this session ran from
