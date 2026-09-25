@@ -91,7 +91,6 @@ re-run confirmed that by direct count and recursive diff.
 | [dispatch-protocol.md](./shared/dispatch-protocol.md) | What the caller does to dispatch an agent, and with what comes back. |
 | [authoring.md](./shared/authoring.md) | Whether a request needs a script, an answer, a prompt, a skill or an instruction file. |
 | [lint.md](./shared/lint.md) | Which command runs the mechanical checks, and what to do when it will not run. |
-| [style.md](./shared/style.md) | The Vale prose-lint check and its scope. |
 | [eval-protocol.md](./shared/eval-protocol.md) | The one template for a skill's runnable eval, and how a run is scored. |
 | [terms.md](./shared/terms.md) | The one meaning each house word has in every file of this plugin. |
 
@@ -245,7 +244,6 @@ The open items are listed once, in [OUTCOMES.md](./OUTCOMES.md) under "What is s
 - [METHOD.md](./METHOD.md) states the practices, and names the failure behind each one.
 - [OUTCOMES.md](./OUTCOMES.md) states all twenty experiments and what each one showed.
 - [TESTING.md](./TESTING.md) states how to test a skill here.
-- [style.md](./shared/style.md) names the Vale check and its scope.
 - [The determinism results](./tests/outcomes/determinism/RESULTS.md) contain more evidence than any
   other results file here, spanning three rounds that produced the count-proxy diagnosis, where done
   meant one entry per changed file, and the gate fix.

@@ -225,6 +225,16 @@ records that a step was reached, not that it passed.
 
 ## Reversals
 
+**The writing style left the prompts. 2026-09-24.** `shared/style.md` is deleted, and no skill tells
+an author to write against a style. The Vale lint stays in `npm run lint`. The measurement is the
+style experiment of 2026-09-23 and 2026-09-24, kept outside this repository in
+`skyetrail-agents-runs/style-experiment/2026-09-23/RESULTS.md`. Blind judges on Sonnet 5 and Fable
+5.1 scored every text. With Opus 5.5, the arm given the retired skyetrail-writing checklist scored
+2.88 of 5 against 4.25 without it, and lost all eight task and judge pairs. In 14 of 16 notes the
+judges said the styled texts defined terms the reader already knew and repeated their points. The
+checklist's only gain was mechanical, 6.7 Vale findings per 1,000 words against 14.5, and the lint
+enforces that without a prompt.
+
 **The baseline dispatch stopped being a gate. 2026-08-12.** The measurement stays and the gate is
 gone. `writing-skills` held its work back until the run dispatched a subagent. No session could
 dispatch, so six of six runs stopped and delivered a draft. The gate worked as designed and the

@@ -49,9 +49,7 @@ scope, so the root location is this repository's neutral convention. The one gen
 `.claude-plugin/marketplace.json`, the shim Claude Code's installer requires. Never edit the shim by
 hand.
 
-## Writing style
+## Prose lint
 
-The project style is Vale, run against the ai-tells style. Run it with `npm run vale`. See
-[`.vale.ini`](.vale.ini) for the configuration and
-[`plugins/steering/shared/style.md`](plugins/steering/shared/style.md) for how this applies inside
-the steering plugin.
+`npm run lint` runs Vale with the ai-tells style on every markdown file. [`.vale.ini`](.vale.ini)
+holds the configuration. Fix each finding before you commit.

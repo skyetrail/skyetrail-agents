@@ -80,7 +80,7 @@ writing-agents
    by its test in that file, and write against `../../shared/handoff-rules.md` where it holds. A
    prompt for a subagent or a scheduled run meets it. `../../shared/handoff-rules.md` contains the
    rule that detail goes to a file the prompt names and a capped summary returns to the prompt's
-   caller. Write every sentence against `../../shared/style.md`.
+   caller.
 4. **Copy the statuses into the prompt** from `../../shared/dispatch-protocol.md`, each with its
    caller obligation, and the retry limit with what must change before a retry. That file contains
    the table. Copy the block rather than pointing the agent at the file.
