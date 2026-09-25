@@ -10,8 +10,7 @@ no task of its own. `auditing-skills` does not apply it, because an auditor read
 artifact and has no class to choose.
 
 Out of scope: how to write the artifact once the class is decided, and what the finished artifact
-must contain. The writing style is out of scope too. The skill named beside each class covers the
-first two. `./style.md` covers the third.
+must contain. The skill named beside each class covers both.
 
 ## Contents
 

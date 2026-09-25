@@ -55,9 +55,8 @@ A plugin can also hold `commands/` and `agents/` folders. The generator picks up
 
 3. Run the generator (see below) and commit the changes.
 
-Write the skill body in clear, everyday language. The project style is the ai-tells Vale ruleset,
-which `npm run lint` runs, and `plugins/steering/shared/style.md` says what it covers. The lint also
-fails on a prose line over 100 columns, and `npm run wrap` reflows the paragraphs that have one.
+`npm run lint` runs the ai-tells Vale ruleset on the skill body. The lint also fails on a prose line
+over 100 columns, and `npm run wrap` reflows the paragraphs that have one.
 
 ## Add a new plugin
 
